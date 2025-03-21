@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 // Данные кейсов из документации - 20 кейсов
 const allCases = [

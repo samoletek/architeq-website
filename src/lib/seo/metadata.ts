@@ -1,4 +1,4 @@
-// Базовый интерфейс для метаданных страницы
+
 export interface PageMetadata {
     title: string;
     description: string;

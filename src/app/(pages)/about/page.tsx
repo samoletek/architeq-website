@@ -1,6 +1,5 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';

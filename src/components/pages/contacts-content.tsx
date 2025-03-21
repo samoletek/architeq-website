@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import CalendlyWidget from '@/components/ui/calendly-widget';
-import Link from 'next/link';
 
 export default function ContactsPage() {
   // Состояние формы

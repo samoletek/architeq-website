@@ -1,5 +1,3 @@
-// src/components/navigation/header.tsx
-
 'use client'
 
 import { useState, useEffect } from 'react'
