@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Documentation & Forms',
+  description: 'Automate document creation, processing, and management. Streamline form data collection and processing to reduce administrative burden and ensure compliance.',
+  keywords: ['document automation', 'form automation', 'document generation', 'electronic signatures', 'document management', 'web forms', 'form integration'],
+  openGraph: {
+    title: 'Documentation & Forms | §78',
+    description: 'Automate document creation, processing, and management. Streamline form data collection and processing to reduce administrative burden and ensure compliance.',
+    url: `${siteMetadata.siteUrl}/services/documentation`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/documentation`,
+  },
+};
 
 export default function DocumentationPage() {
   const documentSolutions = [

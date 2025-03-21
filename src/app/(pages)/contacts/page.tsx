@@ -4,6 +4,26 @@ import { useState } from 'react';
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import CalendlyWidget from '@/components/ui/calendly-widget';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description: 'Get in touch with our business automation experts. Contact §78 for a free consultation about CRM integration, AI solutions, document automation, and more.',
+  keywords: ['contact us', 'business automation consultation', 'free consultation', 'automation services', 'book a call'],
+  openGraph: {
+    title: 'Contact Us | §78',
+    description: 'Get in touch with our business automation experts. Contact §78 for a free consultation about CRM integration, AI solutions, document automation, and more.',
+    url: `${siteMetadata.siteUrl}/contacts`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/contacts`,
+  },
+};
 
 export default function ContactsPage() {
   // Состояние формы
@@ -40,46 +60,63 @@ export default function ContactsPage() {
     }));
   };
   
-  // Обработчик отправки формы
-  const handleSubmit = async (e: React.FormEvent) => {
+// Обработчик отправки формы
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Проверка обязательных полей
     if (!formData.name || !formData.email || !formData.message) {
       setSubmitMessage({
         type: 'error',
-        text: 'Please fill out all required fields.'
+        text: 'Пожалуйста, заполните все обязательные поля.'
       });
       return;
     }
     
-    // Эмуляция отправки формы
+    // Начинаем отправку
     setIsSubmitting(true);
     
     try {
-      // Здесь будет реальная отправка формы на бэкенд
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Успешная отправка
-      setSubmitMessage({
-        type: 'success',
-        text: 'Your message has been sent! We will contact you shortly.'
+      // Отправка данных на наш API endpoint
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
       
-      // Сброс формы
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        message: '',
-        interest: 'General Inquiry',
-      });
+      const data = await response.json();
+      
+      if (data.success) {
+        // Успешная отправка
+        setSubmitMessage({
+          type: 'success',
+          text: 'Ваше сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.'
+        });
+        
+        // Сброс формы
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          phone: '',
+          message: '',
+          interest: 'General Inquiry',
+        });
+      } else {
+        // Ошибка отправки
+        setSubmitMessage({
+          type: 'error',
+          text: data.message || 'Произошла ошибка. Пожалуйста, попробуйте позже.'
+        });
+      }
     } catch (error) {
       // Ошибка отправки
+      console.error('Form submission error:', error);
       setSubmitMessage({
         type: 'error',
-        text: 'An error occurred. Please try again later.'
+        text: 'Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.'
       });
     } finally {
       setIsSubmitting(false);
@@ -231,32 +268,26 @@ export default function ContactsPage() {
             
             {/* Calendly Integration */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Book a Free Consultation</h2>
-              <div className="bg-dark-gray rounded-lg p-6 mb-8">
+                {/* Embedded Calendly */}
+                <div className="bg-dark-gray rounded-lg p-6 mb-8">
+                <h3 className="text-xl font-semibold mb-4">Book a Free Consultation</h3>
                 <p className="text-light-gray mb-4">
-                  Schedule a 30-minute call with our automation experts to discuss your needs and how we can help streamline your business processes.
+                    Schedule a 30-minute call with our automation experts to discuss your needs and how we can help streamline your business processes.
                 </p>
-                <div className="mb-6">
-                  <ul className="space-y-3 text-light-gray">
-                    <li className="flex items-start">
-                      <span className="text-primary mr-2">•</span>
-                      <span>No obligation consultations</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary mr-2">•</span>
-                      <span>Available in multiple time zones</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-primary mr-2">•</span>
-                      <span>Get expert advice on your specific case</span>
-                    </li>
-                  </ul>
+                <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
+                    <CalendlyWidget 
+                    url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                    styles={{
+                        height: "650px",
+                        width: "100%"
+                    }}
+                    prefill={{
+                        name: formData.name,
+                        email: formData.email
+                    }}
+                    />
                 </div>
                 
-                {/* Calendly button - в будущем заменить на встраиваемый iframe */}
-                <Button variant="primary" className="w-full">
-                  Schedule a Call
-                </Button>
                 <p className="text-xs text-light-gray mt-2 text-center">
                   Powered by Calendly
                 </p>

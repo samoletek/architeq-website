@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Business Process Automation',
+  description: 'Streamline your business operations with our business process automation services. Eliminate manual tasks, reduce errors, and improve efficiency.',
+  keywords: ['business process automation', 'workflow automation', 'process optimization', 'efficiency improvement', 'task automation'],
+  openGraph: {
+    title: 'Business Process Automation | §78',
+    description: 'Streamline your business operations with our business process automation services. Eliminate manual tasks, reduce errors, and improve efficiency.',
+    url: `${siteMetadata.siteUrl}/services/business-process`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/business-process`,
+  },
+};
 
 export default function BusinessProcessPage() {
   const benefits = [

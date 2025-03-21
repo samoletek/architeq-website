@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Financial Systems Integration',
+  description: 'Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting. Connect Stripe, QuickBooks, Xero and other systems.',
+  keywords: ['financial automation', 'accounting integration', 'invoice automation', 'payment tracking', 'financial reporting', 'QuickBooks integration', 'Stripe integration'],
+  openGraph: {
+    title: 'Financial Systems Integration | §78',
+    description: 'Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting. Connect Stripe, QuickBooks, Xero and other systems.',
+    url: `${siteMetadata.siteUrl}/services/finance`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/finance`,
+  },
+};
 
 export default function FinancePage() {
   const financeSolutions = [

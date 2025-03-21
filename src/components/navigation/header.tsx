@@ -1,3 +1,5 @@
+// src/components/navigation/header.tsx
+
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -59,9 +61,11 @@ export default function Header() {
         </nav>
 
         {/* CTA button */}
-        <Button className="hidden md:inline-flex">
-          Book a Consultation
-        </Button>
+        <Link href="/contacts" className="hidden md:inline-flex">
+          <Button>
+            Book a Consultation
+          </Button>
+        </Link>
 
         {/* Mobile menu - button */}
         <button 
@@ -99,9 +103,11 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Button className="w-full mt-4">
-              Book a Consultation
-            </Button>
+            <Link href="/contacts" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="w-full mt-4">
+                Book a Consultation
+              </Button>
+            </Link>
           </div>
         </div>
       )}

@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'CRM System Integration',
+  description: 'Connect your CRM with other business tools to create a unified information environment. Improve data flow, enhance customer service, and eliminate manual data entry.',
+  keywords: ['CRM integration', 'CRM connection', 'Monday integration', 'Salesforce integration', 'HubSpot integration', 'unified data', 'data synchronization'],
+  openGraph: {
+    title: 'CRM System Integration | §78',
+    description: 'Connect your CRM with other business tools to create a unified information environment. Improve data flow, enhance customer service, and eliminate manual data entry.',
+    url: `${siteMetadata.siteUrl}/services/crm-integration`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/crm-integration`,
+  },
+};
 
 export default function CRMIntegrationPage() {
   const benefits = [

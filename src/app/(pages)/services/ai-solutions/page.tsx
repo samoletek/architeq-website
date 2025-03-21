@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'AI-Powered Solutions',
+  description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice bots, natural language processing, and predictive analytics.',
+  keywords: ['AI solutions', 'artificial intelligence', 'voice bots', 'predictive analytics', 'natural language processing', 'machine learning', 'AI automation'],
+  openGraph: {
+    title: 'AI-Powered Solutions | §78',
+    description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice bots, natural language processing, and predictive analytics.',
+    url: `${siteMetadata.siteUrl}/services/ai-solutions`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/ai-solutions`,
+  },
+};
 
 export default function AISolutionsPage() {
   const aiSolutions = [

@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Our Services',
+  description: 'Comprehensive business process automation services including CRM integration, AI solutions, document automation, and more.',
+  keywords: ['automation services', 'business automation', 'CRM integration', 'AI solutions', 'document automation'],
+  openGraph: {
+    title: 'Our Services | §78',
+    description: 'Comprehensive business process automation services including CRM integration, AI solutions, document automation, and more.',
+    url: `${siteMetadata.siteUrl}/services`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services`,
+  },
+};
 
 const services = [
   {

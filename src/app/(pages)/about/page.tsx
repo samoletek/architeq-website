@@ -2,6 +2,30 @@ import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'About Us | §78',
+  description: 'Learn about §78, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
+  keywords: ['about us', 'company history', 'automation team', 'methodology', 'technology stack', 'business automation'],
+  openGraph: {
+    title: 'About Us | §78',
+    description: 'Learn about §78, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
+    url: `${siteMetadata.siteUrl}/about`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | §78',
+    description: 'Learn about §78, our history, team, methodology, and technology stack.',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/about`,
+  },
+};
 
 export default function AboutPage() {
   // Данные о команде

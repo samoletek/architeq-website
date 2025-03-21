@@ -1,6 +1,25 @@
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Industry-Specific Boxed Solutions',
+  description: 'Ready-to-implement automation packages tailored for specific industries like logistics, manufacturing, real estate, and more. Get industry-optimized automation quickly.',
+  keywords: ['boxed solutions', 'industry solutions', 'pre-configured automation', 'industry-specific automation', 'ready-to-use solutions', 'vertical solutions'],
+  openGraph: {
+    title: 'Industry-Specific Boxed Solutions | §78',
+    description: 'Ready-to-implement automation packages tailored for specific industries like logistics, manufacturing, real estate, and more. Get industry-optimized automation quickly.',
+    url: `${siteMetadata.siteUrl}/services/boxed-solutions`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/services/boxed-solutions`,
+  },
+};
 
 export default function BoxedSolutionsPage() {
   const industrySolutions = [

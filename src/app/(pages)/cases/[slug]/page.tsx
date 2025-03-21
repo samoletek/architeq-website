@@ -2,8 +2,47 @@ import { notFound } from 'next/navigation';
 import SiteLayout from '@/components/layout/site-layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
 
-// Массив со всеми данными кейсов
+// Функция для генерации метаданных на основе данных кейса
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // Находим кейс по слагу
+  const caseStudy = caseStudies.find(cs => cs.id === params.slug);
+  
+  // Если кейс не найден, используем дефолтные метаданные
+  if (!caseStudy) {
+    return {
+      title: 'Case Study | §78',
+      description: 'Explore our detailed case studies to see how we implement automation solutions for businesses.',
+    };
+  }
+  
+  // Генерируем метаданные на основе данных кейса
+  return {
+    title: `${caseStudy.title} | §78 Case Study`,
+    description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
+    keywords: [caseStudy.industry, caseStudy.solutionType, 'case study', 'automation', 'business process', caseStudy.company],
+    openGraph: {
+      title: `${caseStudy.title} | §78 Case Study`,
+      description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
+      url: `${siteMetadata.siteUrl}/cases/${params.slug}`,
+      siteName: siteMetadata.siteName,
+      locale: siteMetadata.defaultLocale,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${caseStudy.title} | §78 Case Study`,
+      description: `How ${caseStudy.company} achieved results with our solutions.`,
+    },
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/cases/${params.slug}`,
+    },
+  };
+}
+
+// Массив со всеми кейсами
 const caseStudies = [
     // Financial Automations
     {

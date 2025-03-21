@@ -50,7 +50,9 @@ export default function Footer() {
               Business process automation to optimize your company's operations
             </p>
             <div className="mt-6">
-              <Button variant="primary">Contact Us</Button>
+              <Link href="/contacts">
+                <Button variant="primary">Contact Us</Button>
+              </Link>
             </div>
           </div>
 

@@ -5,6 +5,25 @@ import SiteLayout from '@/components/layout/site-layout';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import type { Metadata } from 'next';
+import { siteMetadata } from '@/lib/seo/metadata';
+
+export const metadata: Metadata = {
+  title: 'Case Studies',
+  description: 'Explore our successful business automation case studies across various industries. See real results of our CRM integration, AI solutions, and document automation.',
+  keywords: ['case studies', 'business automation examples', 'success stories', 'automation results', 'automation projects'],
+  openGraph: {
+    title: 'Case Studies | §78',
+    description: 'Explore our successful business automation case studies across various industries. See real results of our CRM integration, AI solutions, and document automation.',
+    url: `${siteMetadata.siteUrl}/cases`,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.defaultLocale,
+    type: 'website',
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/cases`,
+  },
+};
 
 // Данные кейсов из документации - 20 кейсов
 const allCases = [
