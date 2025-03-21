@@ -2,11 +2,19 @@ import { notFound } from 'next/navigation';
 import SiteLayout from '@/components/layout/site-layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
 
+// Параметры для generateMetadata
+type Props = {
+  params: {
+    slug: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
 // Функция для генерации метаданных на основе данных кейса
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   // Находим кейс по слагу
   const caseStudy = caseStudies.find(cs => cs.id === params.slug);
   
