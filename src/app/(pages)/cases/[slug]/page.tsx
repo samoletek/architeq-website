@@ -2,53 +2,8 @@ import { notFound } from 'next/navigation';
 import SiteLayout from '@/components/layout/site-layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
-
-// Параметры для generateMetadata
-type Props = {
-  params: {
-    slug: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
-// Функция для генерации метаданных на основе данных кейса
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  // Находим кейс по слагу
-  const caseStudy = caseStudies.find(cs => cs.id === params.slug);
-  
-  // Если кейс не найден, используем дефолтные метаданные
-  if (!caseStudy) {
-    return {
-      title: 'Case Study | §78',
-      description: 'Explore our detailed case studies to see how we implement automation solutions for businesses.',
-    };
-  }
-  
-  // Генерируем метаданные на основе данных кейса
-  return {
-    title: `${caseStudy.title} | §78 Case Study`,
-    description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
-    keywords: [caseStudy.industry, caseStudy.solutionType, 'case study', 'automation', 'business process', caseStudy.company],
-    openGraph: {
-      title: `${caseStudy.title} | §78 Case Study`,
-      description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
-      url: `${siteMetadata.siteUrl}/cases/${params.slug}`,
-      siteName: siteMetadata.siteName,
-      locale: siteMetadata.defaultLocale,
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${caseStudy.title} | §78 Case Study`,
-      description: `How ${caseStudy.company} achieved results with our solutions.`,
-    },
-    alternates: {
-      canonical: `${siteMetadata.siteUrl}/cases/${params.slug}`,
-    },
-  };
-}
 
 // Массив со всеми кейсами
 const caseStudies = [
@@ -808,17 +763,57 @@ const caseStudies = [
     }
   ];
 
-// Поиск кейса по его идентификатору (slug)
-function getCaseStudyBySlug(slug: string) {
-  return caseStudies.find(caseStudy => caseStudy.id === slug);
+  type Props = {
+    params: { slug: string }
+  }
+
+// Функция для генерации метаданных
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Находим кейс по слагу
+  const caseStudy = caseStudies.find(cs => cs.id === params.slug);
+  
+  // Если кейс не найден, используем дефолтные метаданные
+  if (!caseStudy) {
+    return {
+      title: 'Case Study | §78',
+      description: 'Explore our detailed case studies to see how we implement automation solutions for businesses.',
+    };
+  }
+  
+  return {
+    title: `${caseStudy.title} | §78 Case Study`,
+    description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
+    keywords: [caseStudy.industry, caseStudy.solutionType, 'case study', 'automation', 'business process', caseStudy.company],
+    openGraph: {
+      title: `${caseStudy.title} | §78 Case Study`,
+      description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
+      url: `${siteMetadata.siteUrl}/cases/${params.slug}`,
+      siteName: siteMetadata.siteName,
+      locale: siteMetadata.defaultLocale,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${caseStudy.title} | §78 Case Study`,
+      description: `How ${caseStudy.company} achieved results with our solutions.`,
+    },
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/cases/${params.slug}`,
+    },
+  };
 }
 
-function getRelatedCaseStudies(relatedIds: string[]) {
-  return caseStudies.filter(caseStudy => relatedIds.includes(caseStudy.id));
+// Получение всех возможных путей для статической генерации
+export async function generateStaticParams() {
+  return caseStudies.map((cs) => ({
+    slug: cs.id,
+  }));
 }
-export default function CaseStudyPage({ params }: { params: { slug: string } }) {
+
+// Основная функция страницы
+export default function CaseStudyPage({ params }: Props) {
   // Получение данных кейса по slug
-  const caseStudy = getCaseStudyBySlug(params.slug);
+  const caseStudy = caseStudies.find(caseStudy => caseStudy.id === params.slug);
   
   // Если кейс не найден, возвращаем 404
   if (!caseStudy) {
@@ -826,7 +821,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   }
   
   // Получение связанных кейсов
-  const relatedCases = getRelatedCaseStudies(caseStudy.relatedCases);
+  const relatedCases = caseStudies.filter(caseStudy => 
+    caseStudy.relatedCases.includes(params.slug));
 
   return (
     <SiteLayout>
