@@ -5,15 +5,6 @@ import { Button } from '@/components/ui/button';
 import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
 
-// Определение параметров страницы
-type Params = {
-  slug: string;
-}
-
-type Props = {
-  params: Params;
-}
-
 // Определение структуры кейса
 interface CaseStudy {
   id: string;
