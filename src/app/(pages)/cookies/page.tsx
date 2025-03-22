@@ -101,7 +101,7 @@ export default function CookiesPage() {
               
               <h2 className="text-2xl font-bold mt-10 mb-4">More Information</h2>
               <p className="text-light-gray mb-4">
-                Hopefully, the above has clarified things for you. As was previously mentioned, if there is something that you aren't sure whether you need or not, it's usually safer to leave cookies enabled in case it does interact with one of the features you use on our site.
+                Hopefully, the above has clarified things for you. As was previously mentioned, if there is something that you are not sure whether you need or not, it is usually safer to leave cookies enabled in case it does interact with one of the features you use on our site.
               </p>
               <p className="text-light-gray mb-4">
                 However, if you are still looking for more information, then you can contact us through one of our preferred contact methods:

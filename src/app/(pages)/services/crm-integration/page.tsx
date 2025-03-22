@@ -155,7 +155,7 @@ export default function CRMIntegrationPage() {
                 By integrating your CRM with other tools, you eliminate manual data entry, reduce errors, and ensure that all departments have access to the most up-to-date customer information.
               </p>
               <p className="text-light-gray">
-                Our approach to CRM integration focuses on creating custom connections that align with your specific business processes and objectives, whether you're using Monday.com, HubSpot, Salesforce, or any other CRM platform.
+                Our approach to CRM integration focuses on creating custom connections that align with your specific business processes and objectives, whether you are using Monday.com, HubSpot, Salesforce, or any other CRM platform.
               </p>
             </div>
             <div className="bg-dark-gray p-8 rounded-xl">

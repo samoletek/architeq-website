@@ -6,8 +6,25 @@ import { Button } from '@/components/ui/button';
 import SolutionSwitcher from '@/components/ui/solution-switcher';
 import Link from 'next/link';
 
+// Определение типов
+interface SolutionTab {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+}
+
+interface Solution {
+  id: string;
+  label: string;
+  icon: string;
+  description: string;
+  features: string[];
+  imageUrl: string;
+}
+
 // Данные о решениях
-const solutions = [
+const solutions: Solution[] = [
   {
     id: 'business-process',
     label: 'Business Process',
@@ -97,7 +114,7 @@ const solutions = [
 export default function SolutionsSection() {
   const [activeSolution, setActiveSolution] = useState(solutions[0]);
 
-  const handleSolutionChange = (solution: any) => {
+  const handleSolutionChange = (solution: SolutionTab) => {
     setActiveSolution(solutions.find(s => s.id === solution.id) || solutions[0]);
   };
 

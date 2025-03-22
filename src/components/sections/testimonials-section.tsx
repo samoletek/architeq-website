@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
 
@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils/utils';
 const testimonials = [
   {
     id: 1,
-    quote: "§78 helped us automate our entire invoicing process. What used to take days now happens automatically, and we&apos;ve seen a significant improvement in cash flow.",
+    quote: "§78 helped us automate our entire invoicing process. What used to take days now happens automatically, and we have seen a significant improvement in cash flow.",
     author: "Alex Johnson",
     title: "CFO at EclipseGroup",
     image: "/images/testimonials/alex-johnson.jpg",
@@ -32,17 +32,23 @@ const testimonials = [
 export default function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  
+  // Вычисляем количество отзывов один раз при рендере
+  const testimonialsCount = testimonials.length;
+  
+  // Создаем функцию для смены индекса, которая не будет пересоздаваться при каждом рендере
+  const nextTestimonial = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % testimonialsCount);
+  }, [testimonialsCount]);
 
   // Автопереключение каждые 5 секунд
   useEffect(() => {
     if (!autoplay) return;
     
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    const interval = setInterval(nextTestimonial, 5000);
     
     return () => clearInterval(interval);
-  }, [autoplay, testimonials.length]);
+  }, [autoplay, nextTestimonial]); // Убрали testimonials.length из зависимостей, используя testimonialsCount
 
   // Пауза автопереключения при наведении мыши
   const handleMouseEnter = () => setAutoplay(false);
@@ -65,7 +71,7 @@ export default function TestimonialsSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
           <p className="text-light-gray max-w-2xl mx-auto">
-            Don&apos;t just take our word for it. Here&apos;s what our clients have to say about our automation solutions.
+            Do not just take our word for it. Here is what our clients have to say about our automation solutions.
           </p>
         </div>
 

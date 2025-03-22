@@ -581,7 +581,7 @@ export default function DocumentationPage() {
             
             <div className="bg-dark-gray rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">How long does implementation typically take?</h3>
-              <p className="text-light-gray">Implementation time varies based on the complexity of your documents and workflows. Simple document automation can be implemented in 2-3 weeks, while more complex solutions with multiple integrations might take 4-8 weeks. We'll provide a detailed timeline during our initial consultation.</p>
+              <p className="text-light-gray">Implementation time varies based on the complexity of your documents and workflows. Simple document automation can be implemented in 2-3 weeks, while more complex solutions with multiple integrations might take 4-8 weeks. We will provide a detailed timeline during our initial consultation.</p>
             </div>
             
             <div className="bg-dark-gray rounded-lg p-6">

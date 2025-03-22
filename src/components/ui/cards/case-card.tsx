@@ -11,7 +11,7 @@ interface CaseCardProps {
   industry: string;
   company: string;
   results: string[];
-  image: string;
+  image: string; // оставляем для будущего использования
   tags: string[];
   href: string;
   className?: string;
@@ -24,7 +24,7 @@ export function CaseCard({
   industry,
   company,
   results,
-  image,
+  // image, // убираем из деструктуризации, т.к. не используется в данный момент
   tags,
   href,
   className,

@@ -215,7 +215,7 @@ export default function BusinessProcessPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Benefits of Business Process Automation</h2>
             <p className="text-light-gray max-w-3xl mx-auto">
-              Our business process automation solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line.
+              Our business process automation solutions deliver tangible benefits that directly impact your organizations efficiency and bottom line.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

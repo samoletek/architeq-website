@@ -309,7 +309,7 @@ export default function AISolutionsPage() {
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-neon-purple flex items-center justify-center text-xl font-bold">3</div>
               <h3 className="text-xl font-semibold mb-3 mt-4">Development & Training</h3>
               <p className="text-light-gray">
-                We develop and train the AI models using your data, ensuring they're optimized for your specific use case and performance requirements.
+                We develop and train the AI models using your data, ensuring they are optimized for your specific use case and performance requirements.
               </p>
             </div>
 
@@ -525,7 +525,7 @@ export default function AISolutionsPage() {
           <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-medium-gray rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">How long does it take to implement an AI solution?</h3>
-              <p className="text-light-gray">Most AI solutions can be implemented within 4-8 weeks, depending on complexity and scope. We'll provide a detailed timeline during our initial consultation.</p>
+              <p className="text-light-gray">Most AI solutions can be implemented within 4-8 weeks, depending on complexity and scope. We will provide a detailed timeline during our initial consultation.</p>
             </div>
             
             <div className="bg-medium-gray rounded-lg p-6">

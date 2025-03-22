@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface CalendlyWidgetProps {
   url: string;
@@ -33,24 +33,8 @@ export default function CalendlyWidget({
 }: CalendlyWidgetProps) {
   const calendlyRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Убедимся, что Calendly API загружен
-    if (typeof window !== 'undefined' && !window.Calendly) {
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-
-    // Очистка при размонтировании компонента
-    return () => {
-      if (calendlyRef.current && window.Calendly) {
-        window.Calendly.destroyBadgeWidget(calendlyRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
+  // Функция для инициализации виджета
+  const initWidget = useCallback(() => {
     // Инициализируем виджет, когда Calendly API загружен
     if (typeof window !== 'undefined' && window.Calendly && calendlyRef.current) {
       if (prefill) {
@@ -73,6 +57,34 @@ export default function CalendlyWidget({
       }
     }
   }, [url, prefill]);
+
+  // Загрузка скрипта Calendly
+  useEffect(() => {
+    // Убедимся, что Calendly API загружен
+    if (typeof window !== 'undefined' && !window.Calendly) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      script.onload = initWidget; // Инициализируем после загрузки скрипта
+      document.head.appendChild(script);
+    } else {
+      // Если скрипт уже загружен, просто инициализируем виджет
+      initWidget();
+    }
+  }, [initWidget]);
+
+  // Очистка при размонтировании компонента
+  useEffect(() => {
+    return () => {
+      if (calendlyRef.current && window.Calendly) {
+        try {
+          window.Calendly.destroyBadgeWidget(calendlyRef.current);
+        } catch (e) {
+          console.error('Error destroying Calendly widget:', e);
+        }
+      }
+    };
+  }, []);
 
   return (
     <div 

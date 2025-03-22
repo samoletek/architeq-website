@@ -177,12 +177,6 @@ export default function BoxedSolutionsPage() {
     }
   }
 
-  // Placeholder for images
-  const placeholderStyle = {
-    background: 'linear-gradient(135deg, #333 0%, #1E1E1E 100%)',
-    height: '200px'
-  };
-
   return (
     <SiteLayout>
       {/* Hero section */}
@@ -455,7 +449,7 @@ export default function BoxedSolutionsPage() {
               <div className="absolute top-8 left-8 text-5xl text-primary opacity-20">"</div>
               <div className="relative z-10">
                 <p className="text-lg mb-6 text-light-gray">
-                  The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We've eliminated the administrative bottlenecks that were holding back our growth.
+                  The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We have eliminated the administrative bottlenecks that were holding back our growth.
                 </p>
                 <div>
                   <p className="font-bold">Mark Johnson</p>
@@ -488,9 +482,9 @@ export default function BoxedSolutionsPage() {
           <div className="bg-dark-gradient rounded-xl p-8 md:p-12 border border-medium-gray">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-4">Don't See Your Industry?</h2>
+                <h2 className="text-3xl font-bold mb-4">Do Not See Your Industry?</h2>
                 <p className="text-light-gray mb-6">
-                  If you don't see a boxed solution for your specific industry, don't worry. We also offer custom automation solutions tailored to your unique business needs.
+                  If you do not see a boxed solution for your specific industry, do not worry. We also offer custom automation solutions tailored to your unique business needs.
                 </p>
                 <p className="text-light-gray mb-6">
                   Our team of experts will analyze your workflows, identify automation opportunities, and develop a solution that addresses your specific challenges.
@@ -502,7 +496,7 @@ export default function BoxedSolutionsPage() {
                 </Link>
               </div>
               <div className="bg-dark-gray rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">We've Built Custom Solutions For:</h3>
+                <h3 className="text-xl font-semibold mb-4">We Have Built Custom Solutions For:</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
