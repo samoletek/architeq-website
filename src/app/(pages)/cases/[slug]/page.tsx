@@ -6,13 +6,12 @@ import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
 
 // Определение параметров страницы
-interface PageParams {
+type Params = {
   slug: string;
 }
 
-// Определение свойств страницы
-interface PageProps {
-  params: PageParams;
+type Props = {
+  params: Params;
 }
 
 // Определение структуры кейса
@@ -40,7 +39,7 @@ interface CaseStudy {
 }
 
 // Функция для генерации метаданных
-export function generateMetadata({ params }: PageProps): Metadata {
+export function generateMetadata({ params }: Props): Metadata {
   // Находим кейс по слагу
   const caseStudy = caseStudies.find(cs => cs.id === params.slug);
   
@@ -77,7 +76,7 @@ export function generateMetadata({ params }: PageProps): Metadata {
 }
 
 // Генерация статических путей для предварительного рендеринга
-export async function generateStaticParams(): Promise<PageParams[]> {
+export async function generateStaticParams(): Promise<Params[]> {
   return caseStudies.map(caseStudy => ({
     slug: caseStudy.id
   }));
@@ -851,7 +850,7 @@ function getRelatedCaseStudies(relatedIds: string[]) {
 }
 
 // Компонент страницы кейса
-export default function CaseStudyPage({ params }: PageProps) {
+export default function CaseStudyPage({ params }: Props) {
   // Получение данных кейса по slug
   const caseStudy = getCaseStudyBySlug(params.slug);
   
