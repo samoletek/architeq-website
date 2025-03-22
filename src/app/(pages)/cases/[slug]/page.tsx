@@ -851,7 +851,7 @@ export default function CaseStudyPage() {
       <SiteLayout>
         <div className="container mx-auto px-4 py-20 text-center">
           <h2 className="text-3xl font-bold mb-4">Case Study Not Found</h2>
-          <p className="text-light-gray mb-8">We couldn't find the case study you're looking for.</p>
+          <p className="text-light-gray mb-8">We could not find the case study you are looking for.</p>
           <Link href="/cases">
             <Button variant="primary">View All Case Studies</Button>
           </Link>
