@@ -73,18 +73,19 @@ export default function CalendlyWidget({
     }
   }, [initWidget]);
 
-  // Очистка при размонтировании компонента
-  useEffect(() => {
-    return () => {
-      if (calendlyRef.current && window.Calendly) {
-        try {
-          window.Calendly.destroyBadgeWidget(calendlyRef.current);
-        } catch (e) {
-          console.error('Error destroying Calendly widget:', e);
-        }
+// Очистка при размонтировании компонента
+useEffect(() => {
+  return () => {
+    const currentRef = calendlyRef.current;
+    if (currentRef && window.Calendly) {
+      try {
+        window.Calendly.destroyBadgeWidget(currentRef);
+      } catch (e) {
+        console.error('Error destroying Calendly widget:', e);
       }
-    };
-  }, []);
+    }
+  };
+}, []);
 
   return (
     <div 

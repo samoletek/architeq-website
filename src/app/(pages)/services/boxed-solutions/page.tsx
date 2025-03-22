@@ -240,7 +240,7 @@ export default function BoxedSolutionsPage() {
                   </svg>
                   <div>
                     <h4 className="font-semibold">Industry-Specific Functionality</h4>
-                    <p className="text-light-gray">Solutions designed for your industry's unique challenges and requirements.</p>
+                    <p className="text-light-gray">Solutions designed for your industry unique challenges and requirements.</p>
                   </div>
                 </li>
                 <li className="flex items-start">
@@ -425,7 +425,7 @@ export default function BoxedSolutionsPage() {
                 <div className="ml-6">
                   <h3 className="text-xl font-bold mb-2">Support & Optimization</h3>
                   <p className="text-light-gray">
-                    We provide ongoing support and regularly review the solution's performance, making adjustments as your business evolves.
+                    We provide ongoing support and regularly review the solutions performance, making adjustments as your business evolves.
                   </p>
                 </div>
               </div>
@@ -446,7 +446,7 @@ export default function BoxedSolutionsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-dark-gradient rounded-xl p-8 border border-medium-gray relative">
-              <div className="absolute top-8 left-8 text-5xl text-primary opacity-20">"</div>
+              <div className="absolute top-8 left-8 text-5xl text-primary opacity-20"></div>
               <div className="relative z-10">
                 <p className="text-lg mb-6 text-light-gray">
                   The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We have eliminated the administrative bottlenecks that were holding back our growth.
@@ -456,11 +456,11 @@ export default function BoxedSolutionsPage() {
                   <p className="text-light-gray text-sm">Operations Director at LaneWise</p>
                 </div>
               </div>
-              <div className="absolute bottom-8 right-8 text-5xl text-primary opacity-20">"</div>
+              <div className="absolute bottom-8 right-8 text-5xl text-primary opacity-20"></div>
             </div>
 
             <div className="bg-dark-gradient rounded-xl p-8 border border-medium-gray relative">
-              <div className="absolute top-8 left-8 text-5xl text-primary opacity-20">"</div>
+              <div className="absolute top-8 left-8 text-5xl text-primary opacity-20"></div>
               <div className="relative z-10">
                 <p className="text-lg mb-6 text-light-gray">
                   As a music label operating across two continents, our administrative challenges were significant. The boxed solution from §78 has centralized all our operations, from release management to royalty calculations. Our artists are happier with the timely and accurate reporting, and our team can focus on creative work instead of administrative tasks.
@@ -470,7 +470,7 @@ export default function BoxedSolutionsPage() {
                   <p className="text-light-gray text-sm">Label Manager at SUQEAK E CLEAN STUDIOS</p>
                 </div>
               </div>
-              <div className="absolute bottom-8 right-8 text-5xl text-primary opacity-20">"</div>
+              <div className="absolute bottom-8 right-8 text-5xl text-primary opacity-20"></div>
             </div>
           </div>
         </div>

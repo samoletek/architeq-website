@@ -97,7 +97,8 @@ export default function FinancePage() {
     }
   ];
 
-  const casesStudies = [
+  // Данные кейсов - добавлен underscore для объявления переменной как неиспользуемой
+  const _casesStudies = [
     {
       id: "stripe-invoicing",
       title: "Stripe Invoicing and Financial Control",
@@ -181,8 +182,8 @@ export default function FinancePage() {
     }
   }
 
-  // Placeholder for images
-  const placeholderStyle = {
+  // Placeholder for images - добавлен underscore для объявления переменной как неиспользуемой
+  const _placeholderStyle = {
     background: 'linear-gradient(135deg, #333 0%, #1E1E1E 100%)',
     height: '200px'
   };
