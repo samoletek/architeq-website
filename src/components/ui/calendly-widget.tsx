@@ -75,8 +75,9 @@ export default function CalendlyWidget({
 
 // Очистка при размонтировании компонента
 useEffect(() => {
+  const currentRef = calendlyRef.current;
+  
   return () => {
-    const currentRef = calendlyRef.current;
     if (currentRef && window.Calendly) {
       try {
         window.Calendly.destroyBadgeWidget(currentRef);

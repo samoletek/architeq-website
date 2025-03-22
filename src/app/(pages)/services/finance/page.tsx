@@ -97,43 +97,6 @@ export default function FinancePage() {
     }
   ];
 
-  // Данные кейсов - добавлен underscore для объявления переменной как неиспользуемой
-  const _casesStudies = [
-    {
-      id: "stripe-invoicing",
-      title: "Stripe Invoicing and Financial Control",
-      company: "EclipseGroup",
-      description: "Integration of CRM with financial systems for automatic invoice creation and payment tracking.",
-      results: [
-        "85% reduction in time spent on invoicing",
-        "30% acceleration in receiving payments",
-        "Elimination of errors in data transfer"
-      ]
-    },
-    {
-      id: "quickbooks-integration",
-      title: "QuickBooks Integration for Automatic Accounting",
-      company: "485 Logistics",
-      description: "Bidirectional synchronization between CRM and QuickBooks for seamless financial data management.",
-      results: [
-        "75% reduction in time spent on financial reporting",
-        "Elimination of double data entry",
-        "Increased accuracy of financial reports"
-      ]
-    },
-    {
-      id: "factoring-automation",
-      title: "Factoring Data Submission Automation",
-      company: "LaneWise",
-      description: "Automatic calculation and submission of accounts receivable data to factoring companies.",
-      results: [
-        "Reduction of process from several hours to several minutes",
-        "Elimination of human errors in calculations",
-        "Faster receipt of financing"
-      ]
-    }
-  ];
-
   // Function to render icons
   function renderIcon(icon: string) {
     switch (icon) {
@@ -181,12 +144,6 @@ export default function FinancePage() {
         );
     }
   }
-
-  // Placeholder for images - добавлен underscore для объявления переменной как неиспользуемой
-  const _placeholderStyle = {
-    background: 'linear-gradient(135deg, #333 0%, #1E1E1E 100%)',
-    height: '200px'
-  };
 
   return (
     <SiteLayout>
