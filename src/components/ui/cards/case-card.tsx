@@ -47,6 +47,7 @@ export function CaseCard({
         onMouseLeave={() => setIsHovered(false)}
         whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
+        style={style}
       >
         <div className="relative">
           <ImageWithFallback
