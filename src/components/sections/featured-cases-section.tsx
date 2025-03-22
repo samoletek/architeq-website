@@ -64,7 +64,7 @@ export default function FeaturedCasesSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Case Studies</h2>
           <p className="text-light-gray max-w-2xl mx-auto">
-            Explore how we've helped companies across various industries optimize their processes and achieve significant results.
+            Explore how we&apos;ve helped companies across various industries optimize their processes and achieve significant results.
           </p>
         </div>
 

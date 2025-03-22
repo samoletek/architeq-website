@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
@@ -375,7 +375,7 @@ export default function CasesPage() {
   const [showFilterSection, setShowFilterSection] = useState<string | null>(null);
 
   // Умный поиск по всем полям
-  const performSearch = (item: any, query: string) => {
+  const performSearch = (item: Record<string, unknown>, query: string) => {
     if (!query) return true;
     
     const searchIn = [
@@ -385,8 +385,8 @@ export default function CasesPage() {
       item.industry,
       item.solutionType,
       item.location,
-      ...item.technologies,
-      ...item.results
+      ...((item.technologies as string[]) || []),
+      ...((item.results as string[]) || [])
     ].join(' ').toLowerCase();
     
     return query.toLowerCase().split(' ').every(word => searchIn.includes(word));
@@ -465,7 +465,7 @@ export default function CasesPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
             <p className="text-xl text-light-gray mb-6">
-              Explore how we've helped businesses across various industries optimize their processes and achieve significant results.
+              Explore how we&apos;ve helped businesses across various industries optimize their processes and achieve significant results.
             </p>
             <Button variant="primary" size="lg" href="/contacts">
               Book a Similar Solution
@@ -704,7 +704,7 @@ export default function CasesPage() {
               </svg>
               <h3 className="text-xl font-semibold mb-2">No Case Studies Found</h3>
               <p className="text-light-gray mb-4">
-                We couldn't find any case studies matching your current filters.
+                We couldn&apos;t find any case studies matching your current filters.
               </p>
               <Button variant="secondary" onClick={clearAllFilters}>
                 Clear All Filters

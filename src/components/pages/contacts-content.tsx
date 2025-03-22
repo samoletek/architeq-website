@@ -307,7 +307,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <div className="bg-medium-gray rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
-              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We'll provide a detailed timeline during our initial consultation.</p>
+              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We&apos;ll provide a detailed timeline during our initial consultation.</p>
             </div>
             
             <div className="bg-medium-gray rounded-lg p-6">

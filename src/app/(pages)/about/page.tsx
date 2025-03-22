@@ -106,7 +106,7 @@ export default function AboutPage() {
                 Our founders noticed that while enterprise companies benefited from automation, smaller businesses often lacked the resources and expertise to implement these solutions.
               </p>
               <p className="text-light-gray">
-                We've since grown into a team of automation specialists serving clients across multiple industries in the US, Europe, Australia, and Japan.
+                We&apos;ve since grown into a team of automation specialists serving clients across multiple industries in the US, Europe, Australia, and Japan.
               </p>
             </div>
             <div>
@@ -198,7 +198,7 @@ export default function AboutPage() {
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-xl font-bold">4</div>
               <h3 className="text-xl font-semibold mb-3 mt-4">Continuous Improvement</h3>
               <p className="text-light-gray">
-                We provide ongoing support and regularly review the solution's performance, making adjustments to optimize efficiency and adapt to changing needs.
+                We provide ongoing support and regularly review the solution&apos;s performance, making adjustments to optimize efficiency and adapt to changing needs.
               </p>
             </div>
           </div>
@@ -247,7 +247,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Work With Us?</h2>
           <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Let's discuss how our team can help automate and optimize your business processes.
+            Let&apos;s discuss how our team can help automate and optimize your business processes.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/contacts">

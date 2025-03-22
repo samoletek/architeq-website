@@ -15,6 +15,30 @@ interface PageProps {
   params: PageParams;
 }
 
+// Определение структуры кейса
+interface CaseStudy {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  industry: string;
+  solutionType: string;
+  shortDescription: string;
+  problem: string;
+  solution: string[];
+  visualizationType: string;
+  visualizationDescription: string;
+  visualizationStyle: string;
+  technologies: string[];
+  results: string[];
+  testimonial?: {
+    quote: string;
+    author: string;
+    position: string;
+  };
+  relatedCases: string[];
+}
+
 // Функция для генерации метаданных
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   // Находим кейс по слагу
@@ -59,7 +83,7 @@ export async function generateStaticParams(): Promise<PageParams[]> {
   }));
 }
 // Массив со всеми кейсами
-const caseStudies = [
+const caseStudies: CaseStudy[] = [
     // Financial Automations
     {
       id: 'stripe-invoicing',
@@ -128,7 +152,7 @@ const caseStudies = [
         'Automation of routine accounting operations'
       ],
       testimonial: {
-        quote: "After implementing this integration, our accounting department saved nearly 30 hours per month that was previously spent on manual data entry. The accuracy of our financial reporting has dramatically improved and we're able to make business decisions based on real-time financial data.",
+        quote: "After implementing this integration, our accounting department saved nearly 30 hours per month that was previously spent on manual data entry. The accuracy of our financial reporting has dramatically improved and we&apos;re able to make business decisions based on real-time financial data.",
         author: "Michael Rodriguez",
         position: "Operations Director at 485 Logistics"
       },
@@ -273,7 +297,7 @@ const caseStudies = [
         'Improvement of customer experience'
       ],
       testimonial: {
-        quote: "The web form integration has transformed how we collect information from clients. Before, we'd chase documents and manually enter data. Now clients complete forms online, and all information automatically appears in our CRM. It's faster, more accurate, and provides a much better experience for our customers.",
+        quote: "The web form integration has transformed how we collect information from clients. Before, we&apos;d chase documents and manually enter data. Now clients complete forms online, and all information automatically appears in our CRM. It&apos;s faster, more accurate, and provides a much better experience for our customers.",
         author: "Jessica Thompson",
         position: "Marketing Director at Ameriland Capital"
       },
@@ -349,7 +373,7 @@ const caseStudies = [
         'Improvement of internal team communication'
       ],
       testimonial: {
-        quote: "The notification system has transformed our team's responsiveness. Before, important updates would get buried in emails or missed entirely. Now, critical information is automatically routed to the right people through their preferred channels. Our clients are impressed with how quickly we respond to their needs.",
+        quote: "The notification system has transformed our team&apos;s responsiveness. Before, important updates would get buried in emails or missed entirely. Now, critical information is automatically routed to the right people through their preferred channels. Our clients are impressed with how quickly we respond to their needs.",
         author: "Thomas Wright",
         position: "Project Manager at MC Keeper"
       },
@@ -363,7 +387,7 @@ const caseStudies = [
       industry: 'Analytics',
       solutionType: 'CRM System Integration',
       shortDescription: 'Development of customized interactive dashboards for real-time business monitoring.',
-      problem: `It's difficult for managers to get up-to-date summary information about business status. Creating reports takes a lot of time, data often becomes outdated by the time of presentation.`,
+      problem: `It&apos;s difficult for managers to get up-to-date summary information about business status. Creating reports takes a lot of time, data often becomes outdated by the time of presentation.`,
       solution: [
         'Development of customized interactive dashboards',
         'Automatic data collection from multiple sources',
@@ -427,7 +451,7 @@ const caseStudies = [
         'Increased customer loyalty through Quality Control department integration and automations'
       ],
       testimonial: {
-        quote: "The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We've eliminated the administrative bottlenecks that were holding back our growth.",
+        quote: "The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We&apos;ve eliminated the administrative bottlenecks that were holding back our growth.",
         author: "Mark Johnson",
         position: "Operations Director at LaneWise"
       },
@@ -467,7 +491,7 @@ const caseStudies = [
         'Increased customer loyalty'
       ],
       testimonial: {
-        quote: "The cabinetry solution has transformed how we run our manufacturing operations. The integration between our design software and production scheduling is seamless. We've eliminated specification errors that used to cause costly rework, and our production timeline has become much more predictable.",
+        quote: "The cabinetry solution has transformed how we run our manufacturing operations. The integration between our design software and production scheduling is seamless. We&apos;ve eliminated specification errors that used to cause costly rework, and our production timeline has become much more predictable.",
         author: "Daniel Rodriguez",
         position: "Owner at AllWood Design"
       },
@@ -544,7 +568,7 @@ const caseStudies = [
         'Automation of up to 60% of administrative work'
       ],
       testimonial: {
-        quote: "The real estate solution has transformed our agency's operations. Our agents now spend more time with clients and less time on paperwork. The automated lead qualification and showing scheduling have increased our conversion rates, and the electronic signature integration has shortened our closing cycles dramatically.",
+        quote: "The real estate solution has transformed our agency&apos;s operations. Our agents now spend more time with clients and less time on paperwork. The automated lead qualification and showing scheduling have increased our conversion rates, and the electronic signature integration has shortened our closing cycles dramatically.",
         author: "Richard Morris",
         position: "Broker at Ameriland Capital"
       },
@@ -582,7 +606,7 @@ const caseStudies = [
         'Improved customer experience and increased positive reviews'
       ],
       testimonial: {
-        quote: "The AI components in our roofing business solution have been a game-changer. The voice bot handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We've increased our capacity without adding administrative staff.",
+        quote: "The AI components in our roofing business solution have been a game-changer. The voice bot handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We&apos;ve increased our capacity without adding administrative staff.",
         author: "James Peterson",
         position: "Owner at Up-Struct LLC"
       },
@@ -622,7 +646,7 @@ const caseStudies = [
         '90% reduction in communication errors'
       ],
       testimonial: {
-        quote: "The AI voice bot has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we've been able to scale our operations without expanding our support team.",
+        quote: "The AI voice bot has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we&apos;ve been able to scale our operations without expanding our support team.",
         author: "Sarah Wilson",
         position: "Customer Service Manager at Up-Struct LLC"
       },
@@ -672,7 +696,7 @@ const caseStudies = [
       industry: 'Customer Service',
       solutionType: 'AI Solution',
       shortDescription: 'System for automatic transcription and analysis of client conversations to improve service quality.',
-      problem: `Companies don't have an accurate way to track and analyze operator interactions with clients. Manual listening to calls takes a lot of time, and identifying problem areas and script compliance is difficult.`,
+      problem: `Companies don&apos;t have an accurate way to track and analyze operator interactions with clients. Manual listening to calls takes a lot of time, and identifying problem areas and script compliance is difficult.`,
       solution: [
         'Automatic speech recognition of operators and clients',
         'Converting conversations to text with speaker markup',
@@ -696,7 +720,7 @@ const caseStudies = [
         'Improvement of customer service quality and sales conversion'
       ],
       testimonial: {
-        quote: "The speech-to-text analysis system has transformed our quality control process. We're now able to analyze 100% of customer interactions rather than just a small sample. We've identified patterns in successful calls, coached our team based on data rather than intuition, and significantly improved our conversion rates.",
+        quote: "The speech-to-text analysis system has transformed our quality control process. We&apos;re now able to analyze 100% of customer interactions rather than just a small sample. We&apos;ve identified patterns in successful calls, coached our team based on data rather than intuition, and significantly improved our conversion rates.",
         author: "Rebecca Mitchell",
         position: "Call Center Director"
       },
@@ -735,7 +759,7 @@ const caseStudies = [
         'Unification of calculations within company'
       ],
       testimonial: {
-        quote: "The financial computation system has eliminated the errors and inconsistencies that used to plague our payment process. Calculations that used to take days now happen automatically, and we've been able to implement more complex payment structures without adding administrative burden.",
+        quote: "The financial computation system has eliminated the errors and inconsistencies that used to plague our payment process. Calculations that used to take days now happen automatically, and we&apos;ve been able to implement more complex payment structures without adding administrative burden.",
         author: "Nathan Lewis",
         position: "Financial Director at SUQEAK E CLEAN STUDIOS"
       },
@@ -749,7 +773,7 @@ const caseStudies = [
       industry: 'Corporate Communications',
       solutionType: 'Integration & Automation',
       shortDescription: 'Complex automatic notification system in Slack with filtering, routing, and priority management.',
-      problem: `Teams drown in the flow of messages and notifications, critical information gets lost, there's no structured approach to communication, no prioritization of notifications.`,
+      problem: `Teams drown in the flow of messages and notifications, critical information gets lost, there&apos;s no structured approach to communication, no prioritization of notifications.`,
       solution: [
         'Filtering messages by keywords, senders, and importance',
         'Automatic routing of messages to appropriate channels or private chats',
@@ -772,7 +796,7 @@ const caseStudies = [
         'Automation of information exchange between departments'
       ],
       testimonial: {
-        quote: "The Slack notification system has transformed our internal communications. Important messages now stand out, and team members receive exactly the information they need without the noise. We've eliminated the 'I didn't see that message' problem, and cross-departmental coordination has improved dramatically.",
+        quote: "The Slack notification system has transformed our internal communications. Important messages now stand out, and team members receive exactly the information they need without the noise. We&apos;ve eliminated the &apos;I didn&apos;t see that message&apos; problem, and cross-departmental coordination has improved dramatically.",
         author: "Jennifer Clark",
         position: "Team Lead at MC Keeper"
       },
@@ -1035,7 +1059,7 @@ export default function CaseStudyPage({ params }: PageProps) {
               <div className="bg-dark-gradient rounded-lg p-6 mb-8 border border-medium-gray">
                 <h3 className="text-lg font-semibold mb-3">Need a Similar Solution?</h3>
                 <p className="text-light-gray mb-4">
-                  Let's discuss how we can implement a similar automation solution tailored to your business needs.
+                  Let&apos;s discuss how we can implement a similar automation solution tailored to your business needs.
                 </p>
                 <Button variant="primary" className="w-full" href="/contacts">
                   Book a Free Consultation
@@ -1047,7 +1071,7 @@ export default function CaseStudyPage({ params }: PageProps) {
                 <div className="bg-dark-gray rounded-lg p-6">
                   <h3 className="text-lg font-semibold mb-4">Related Case Studies</h3>
                   <div className="space-y-4">
-                    {relatedCases.map((relatedCase: any) => (
+                    {relatedCases.map((relatedCase: CaseStudy) => (
                       <Link 
                         key={relatedCase.id}
                         href={`/cases/${relatedCase.id}`}

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils/utils';
 const testimonials = [
   {
     id: 1,
-    quote: "§78 helped us automate our entire invoicing process. What used to take days now happens automatically, and we've seen a significant improvement in cash flow.",
+    quote: "§78 helped us automate our entire invoicing process. What used to take days now happens automatically, and we&apos;ve seen a significant improvement in cash flow.",
     author: "Alex Johnson",
     title: "CFO at EclipseGroup",
     image: "/images/testimonials/alex-johnson.jpg",
@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [autoplay]);
+  }, [autoplay, testimonials.length]);
 
   // Пауза автопереключения при наведении мыши
   const handleMouseEnter = () => setAutoplay(false);
@@ -65,14 +65,14 @@ export default function TestimonialsSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
           <p className="text-light-gray max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our clients have to say about our automation solutions.
+            Don&apos;t just take our word for it. Here&apos;s what our clients have to say about our automation solutions.
           </p>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
           {/* Кавычки */}
-          <div className="absolute -top-10 -left-10 text-6xl text-primary opacity-30">"</div>
-          <div className="absolute -bottom-10 -right-10 text-6xl text-primary opacity-30">"</div>
+          <div className="absolute -top-10 -left-10 text-6xl text-primary opacity-30">&quot;</div>
+          <div className="absolute -bottom-10 -right-10 text-6xl text-primary opacity-30">&quot;</div>
           
           {/* Карусель отзывов */}
           <div className="relative h-64 md:h-48 overflow-hidden">

@@ -47,7 +47,7 @@ export default function Footer() {
           <div className="md:col-span-4">
             <div className="text-4xl font-bold">§78</div>
             <p className="mt-4 text-light-gray">
-              Business process automation to optimize your company's operations
+              Business process automation to optimize your company&apos;s operations
             </p>
             <div className="mt-6">
               <Link href="/contacts">

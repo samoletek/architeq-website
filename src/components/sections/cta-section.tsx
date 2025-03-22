@@ -85,7 +85,7 @@ export default function CTASection() {
             transition={{ duration: 0.5, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            No obligations. We'll show you how automation can work for your specific business.
+            No obligations. We&apos;ll show you how automation can work for your specific business.
           </motion.p>
         </div>
       </div>

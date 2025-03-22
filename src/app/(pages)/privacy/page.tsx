@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               
               <h2 className="text-2xl font-bold mt-10 mb-4">Introduction</h2>
               <p className="text-light-gray mb-4">
-                §78 ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+                §78 (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
               </p>
               <p className="text-light-gray mb-4">
                 This privacy policy applies to all personal data we collect through our website at §78.com, as well as any associated services, sales, marketing, or events.
