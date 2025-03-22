@@ -29,17 +29,12 @@ interface CaseStudy {
   relatedCases: string[];
 }
 
-// Правильное определение типа params
-type Params = {
-  slug: string;
-};
-
-type Props = {
-  params: Params;
-};
-
-// Функция генерации метаданных
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+// Генерация метаданных
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { slug: string } 
+}): Promise<Metadata> {
   // Находим кейс по слагу
   const caseStudy = caseStudies.find(cs => cs.id === params.slug);
   
@@ -51,7 +46,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Генерируем метаданные на основе данных кейса
   return {
     title: `${caseStudy.title} | §78 Case Study`,
     description: `${caseStudy.shortDescription} Learn how ${caseStudy.company} achieved significant results with our automation solutions.`,
@@ -76,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // Генерация статических путей
-export function generateStaticParams(): Params[] {
+export function generateStaticParams() {
   return caseStudies.map(caseStudy => ({
     slug: caseStudy.id
   }));
@@ -851,7 +845,11 @@ function getRelatedCaseStudies(relatedIds: string[]) {
 }
 
 // Компонент страницы кейса
-export default function CaseStudyPage({ params }: Props) {
+export default async function CaseStudyPage({
+  params
+}: {
+  params: { slug: string }
+}) {
   // Получение данных кейса по slug
   const caseStudy = getCaseStudyBySlug(params.slug);
   
