@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
@@ -20,7 +21,9 @@ const config: Config = {
         'neon-purple': '#FF00FF',
       },
       fontFamily: {
-        sans: ['Manrope', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-ibm-plex-mono)', 'monospace'],
+        heading: ['var(--font-inter)', 'sans-serif'],
       },
       boxShadow: {
         'neon-glow': '0 0 5px rgba(255, 69, 0, 0.5), 0 0 20px rgba(255, 69, 0, 0.3)',

@@ -1,10 +1,17 @@
+// src/app/layout.tsx
 import type { Metadata } from 'next'
-import { Manrope } from 'next/font/google'
+import { Inter, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 
-const manrope = Manrope({ 
+const inter = Inter({ 
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-manrope',
+  variable: '--font-inter',
+})
+
+const ibmPlexMono = IBM_Plex_Mono({ 
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-ibm-plex-mono',
 })
 
 export const metadata: Metadata = {
@@ -19,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} font-sans bg-background text-white`}>
+      <body className={`${inter.variable} ${ibmPlexMono.variable} font-mono bg-background text-white`}>
         {children}
       </body>
     </html>
