@@ -108,11 +108,7 @@ declare global {
         prefill?: {
           name?: string;
           email?: string;
-          customAnswers?: {
-            a1?: string;
-            a2?: string;
-            a3?: string;
-          }
+          customAnswers?: Record<string, string>;
         }
       }) => void;
       destroyBadgeWidget: (element: HTMLElement) => void;

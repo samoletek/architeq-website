@@ -1,9 +1,11 @@
+// src/components/ui/cards/case-card.tsx
 "use client";
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
+import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 
 interface CaseCardProps {
   title: string;
@@ -11,7 +13,7 @@ interface CaseCardProps {
   industry: string;
   company: string;
   results: string[];
-  image: string; // оставляем для будущего использования
+  image: string;
   tags: string[];
   href: string;
   className?: string;
@@ -24,7 +26,7 @@ export function CaseCard({
   industry,
   company,
   results,
-  // image, // убираем из деструктуризации, т.к. не используется в данный момент
+  image,
   tags,
   href,
   className,
@@ -46,16 +48,18 @@ export function CaseCard({
         whileHover={{ y: -5 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Временная заглушка для изображения */}
-        <div style={style} className="relative">
-          {/* Будет заменено на реальное изображение */}
-          {/* <Image
-            src={image}
+        <div className="relative">
+          <ImageWithFallback
+            src={image} 
             alt={title}
-            fill
-            className="object-cover transition-transform duration-300"
-            style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
-          /> */}
+            className="object-cover w-full"
+            style={{ 
+              height: '200px',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              transition: 'transform 0.3s ease'
+            }}
+            fallbackText={company.charAt(0)}
+          />
           
           {/* Градиентная накладка */}
           <div className="absolute inset-0 bg-gradient-to-t from-dark-gray to-transparent opacity-70"></div>
