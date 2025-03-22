@@ -29,24 +29,28 @@ interface CaseStudy {
   relatedCases: string[];
 }
 
-type PageProps = {
-  params: { slug: string };
+// Правильное определение типа params
+type Params = {
+  slug: string;
+};
+
+type Props = {
+  params: Params;
 };
 
 // Функция генерации метаданных
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-
-    // Находим кейс по слагу
-    const caseStudy = caseStudies.find(cs => cs.id === params.slug);
-    
-    // Если кейс не найден, используем дефолтные метаданные
-    if (!caseStudy) {
-      return {
-        title: 'Case Study | §78',
-        description: 'Explore our detailed case studies to see how we implement automation solutions for businesses.',
-      };
-    }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Находим кейс по слагу
+  const caseStudy = caseStudies.find(cs => cs.id === params.slug);
   
+  // Если кейс не найден, используем дефолтные метаданные
+  if (!caseStudy) {
+    return {
+      title: 'Case Study | §78',
+      description: 'Explore our detailed case studies to see how we implement automation solutions for businesses.',
+    };
+  }
+
   // Генерируем метаданные на основе данных кейса
   return {
     title: `${caseStudy.title} | §78 Case Study`,
@@ -72,11 +76,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // Генерация статических путей
-export function generateStaticParams() {
+export function generateStaticParams(): Params[] {
   return caseStudies.map(caseStudy => ({
     slug: caseStudy.id
   }));
 }
+
 // Массив со всеми кейсами
 const caseStudies: CaseStudy[] = [
     // Financial Automations
@@ -846,11 +851,7 @@ function getRelatedCaseStudies(relatedIds: string[]) {
 }
 
 // Компонент страницы кейса
-export default function CaseStudyPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default function CaseStudyPage({ params }: Props) {
   // Получение данных кейса по slug
   const caseStudy = getCaseStudyBySlug(params.slug);
   
