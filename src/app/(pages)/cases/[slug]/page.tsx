@@ -40,7 +40,7 @@ interface CaseStudy {
 }
 
 // Функция для генерации метаданных
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export function generateMetadata({ params }: PageProps): Metadata {
   // Находим кейс по слагу
   const caseStudy = caseStudies.find(cs => cs.id === params.slug);
   
