@@ -1,8 +1,16 @@
 s78-website/
 ├── node_modules/
 ├── public/
-│   └── images/
-│       └── cases/  # Директория для изображений кейсов
+│   ├── images/
+│   │   ├── cases/      # Изображения для кейсов
+│   │   ├── team/       # Фотографии команды
+│   │   ├── solutions/  # Изображения решений
+│   │   └── testimonials/ # Фотографии для отзывов
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
 ├── src/
 │   ├── app/
 │   │   ├── (pages)/
@@ -34,7 +42,9 @@ s78-website/
 │   │   │   │   └── page.tsx  # Общая страница услуг
 │   │   │   └── terms/
 │   │   │       └── page.tsx  # Условия использования
-│   │   ├── favicon.ico
+│   │   ├── api/
+│   │   │   └── contact/
+│   │   │       └── route.ts  # API-эндпоинт для обработки формы
 │   │   ├── globals.css  # Глобальные стили
 │   │   ├── layout.tsx  # Основной лейаут приложения
 │   │   └── page.tsx  # Главная страница
@@ -44,6 +54,9 @@ s78-website/
 │   │   ├── navigation/
 │   │   │   ├── footer.tsx  # Компонент подвала
 │   │   │   └── header.tsx  # Компонент шапки
+│   │   ├── pages/
+│   │   │   ├── cases-content.tsx  # Содержимое страницы кейсов
+│   │   │   └── contacts-content.tsx  # Содержимое страницы контактов
 │   │   ├── sections/
 │   │   │   ├── benefits-section.tsx  # Секция преимуществ
 │   │   │   ├── cta-section.tsx  # Секция призыва к действию
@@ -56,19 +69,27 @@ s78-website/
 │   │       │   └── case-card.tsx  # Компонент карточки кейса
 │   │       ├── filters/
 │   │       │   └── case-filters.tsx  # Компонент фильтров для кейсов
+│   │       ├── icons/
+│   │       │   └── icon.tsx  # Компонент иконок
 │   │       ├── benefit-card.tsx  # Компонент карточки преимущества
 │   │       ├── button.tsx  # Компонент кнопки
+│   │       ├── calendly-widget.tsx  # Виджет Calendly
+│   │       ├── image-with-fallback.tsx  # Компонент изображения с заглушкой
 │   │       └── solution-switcher.tsx  # Компонент переключателя решений
-│   └── lib/utils/
-│       └── utils.ts  # Вспомогательные функции
+│   └── lib/
+│       ├── seo/
+│       │   └── metadata.ts  # Метаданные для SEO
+│       ├── services/
+│       │   └── monday-service.ts  # Сервис для работы с Monday.com API
+│       └── utils/
+│           └── utils.ts  # Вспомогательные функции
+├── .env.local  # Переменные окружения
 ├── .gitignore
 ├── eslint.config.mjs
-├── next-env.d.ts
-├── next.config.ts
-├── package-lock.json
+├── next.config.js
 ├── package.json
-├── postcss.config.mjs
+├── postcss.config.js
 ├── README.md
-├── structure.md
+├── structure.md  # Структура проекта
 ├── tailwind.config.ts
 └── tsconfig.json
