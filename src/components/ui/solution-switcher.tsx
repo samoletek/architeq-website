@@ -4,13 +4,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { Icon } from './icons/icon';
+import { Icon, IconName } from './icons/icon';
 
 interface SolutionTab {
   id: string;
   label: string;
   description: string;
-  icon: string;
+  icon: IconName;
 }
 
 interface SolutionSwitcherProps {
@@ -106,7 +106,7 @@ export default function SolutionSwitcher({
                   : "text-light-gray hover:text-white"
               )}
             >
-              <Icon name={tab.icon as any} className="mr-2 h-5 w-5" />
+              <Icon name={tab.icon} className="mr-2 h-5 w-5" />
               <span className="font-medium">{tab.label}</span>
             </button>
           ))}
