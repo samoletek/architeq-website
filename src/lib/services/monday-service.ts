@@ -30,28 +30,49 @@ export async function submitToMonday(formData: FormData): Promise<{ success: boo
       };
     }
     
+    // Проверка обязательных полей формы
+    if (!formData.name || !formData.email || !formData.message) {
+      console.error('Missing required form fields');
+      return {
+        success: false,
+        message: 'Please fill all required fields.'
+      };
+    }
+    
     // Подготавливаем данные для колонок
     const columnValues: Record<string, unknown> = {};
     
     if (nameColumnId) columnValues[nameColumnId] = formData.name;
     if (emailColumnId) columnValues[emailColumnId] = { email: formData.email, text: formData.email };
-    if (companyColumnId) columnValues[companyColumnId] = formData.company;
-    if (phoneColumnId) columnValues[phoneColumnId] = { phone: formData.phone, countryShortName: 'US' };
+    if (companyColumnId) columnValues[companyColumnId] = formData.company || '';
+    if (phoneColumnId && formData.phone) columnValues[phoneColumnId] = { phone: formData.phone, countryShortName: 'US' };
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     if (interestColumnId) columnValues[interestColumnId] = { label: formData.interest };
     
+    // Обрабатываем имя элемента для безопасного включения в запрос
+    const itemName = `Contact from ${formData.name.replace(/["\\]/g, '')}`;
+    
     // Формируем мутацию GraphQL
     const mutation = `
-      mutation CreateItem {
+      mutation CreateItem($boardId: ID!, $itemName: String!, $columnValues: JSON!) {
         create_item (
-          board_id: ${boardId},
-          item_name: "Contact from ${formData.name}",
-          column_values: ${JSON.stringify(JSON.stringify(columnValues))}
+          board_id: $boardId,
+          item_name: $itemName,
+          column_values: $columnValues
         ) {
           id
         }
       }
     `;
+    
+    // Переменные для мутации
+    const variables = {
+      boardId: boardId,
+      itemName: itemName,
+      columnValues: JSON.stringify(columnValues)
+    };
+    
+    console.log('Sending request to Monday.com:', { mutation, variables });
     
     // Отправляем данные в Monday.com
     const response = await fetch('https://api.monday.com/v2', {
@@ -60,26 +81,42 @@ export async function submitToMonday(formData: FormData): Promise<{ success: boo
         'Content-Type': 'application/json',
         'Authorization': apiKey
       },
-      body: JSON.stringify({ query: mutation })
+      body: JSON.stringify({ 
+        query: mutation,
+        variables: variables
+      })
     });
     
-    const responseData = await response.json();
-    
-    // Проверяем успешность запроса
-    if (responseData.errors) {
-      console.error('Monday.com API error:', responseData.errors);
+    // Проверяем HTTP статус
+    if (!response.ok) {
+      console.error(`HTTP Error: ${response.status} ${response.statusText}`);
       return {
         success: false,
-        message: 'Error submitting form. Please try again later.'
+        message: `Server error (${response.status}). Please try again later.`
+      };
+    }
+    
+    const responseData = await response.json();
+    console.log('Monday.com API response:', responseData);
+    
+    // Проверяем успешность запроса
+    if (responseData.errors && responseData.errors.length > 0) {
+      const errorMessage = responseData.errors[0].message || 'Unknown error';
+      console.error('Monday.com API error:', errorMessage, responseData.errors);
+      return {
+        success: false,
+        message: `Error submitting form: ${errorMessage}`
       };
     }
     
     if (responseData.data && responseData.data.create_item && responseData.data.create_item.id) {
+      console.log('Successfully created item with ID:', responseData.data.create_item.id);
       return {
         success: true,
-        message: 'Form submitted successfully!'
+        message: 'Thank you! Your message has been submitted successfully.'
       };
     } else {
+      console.error('Unexpected response format:', responseData);
       return {
         success: false,
         message: 'Error submitting form. Please try again later.'
@@ -89,7 +126,7 @@ export async function submitToMonday(formData: FormData): Promise<{ success: boo
     console.error('Error submitting to Monday.com:', error);
     return {
       success: false,
-      message: 'Error submitting form. Please try again later.'
+      message: 'An unexpected error occurred. Please try again later.'
     };
   }
 }
