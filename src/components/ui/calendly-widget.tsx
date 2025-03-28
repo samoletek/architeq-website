@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 interface CalendlyWidgetProps {
   url: string;
@@ -32,6 +32,7 @@ export default function CalendlyWidget({
   prefill
 }: CalendlyWidgetProps) {
   const calendlyRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Функция для инициализации виджета
   const initWidget = useCallback(() => {
@@ -55,6 +56,20 @@ export default function CalendlyWidget({
           parentElement: calendlyRef.current
         });
       }
+      
+      // Добавляем обработчик события загрузки
+      const handleWidgetLoad = () => {
+        setIsLoading(false);
+      };
+      
+      // Пытаемся найти iframe внутри виджета
+      const iframe = calendlyRef.current.querySelector('iframe');
+      if (iframe) {
+        iframe.onload = handleWidgetLoad;
+      } else {
+        // Если iframe еще не создан, установим таймер для проверки статуса загрузки
+        setTimeout(() => setIsLoading(false), 3000);
+      }
     }
   }, [url, prefill]);
 
@@ -71,30 +86,47 @@ export default function CalendlyWidget({
       // Если скрипт уже загружен, просто инициализируем виджет
       initWidget();
     }
+    
+    // Устанавливаем таймаут на случай, если виджет загружается слишком долго
+    const loadingTimeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+    
+    return () => clearTimeout(loadingTimeout);
   }, [initWidget]);
 
-// Очистка при размонтировании компонента
-useEffect(() => {
-  const currentRef = calendlyRef.current;
-  
-  return () => {
-    if (currentRef && window.Calendly) {
-      try {
-        window.Calendly.destroyBadgeWidget(currentRef);
-      } catch (e) {
-        console.error('Error destroying Calendly widget:', e);
+  // Очистка при размонтировании компонента
+  useEffect(() => {
+    const currentRef = calendlyRef.current;
+    
+    return () => {
+      if (currentRef && window.Calendly) {
+        try {
+          window.Calendly.destroyBadgeWidget(currentRef);
+        } catch (e) {
+          console.error('Error destroying Calendly widget:', e);
+        }
       }
-    }
-  };
-}, []);
+    };
+  }, []);
 
   return (
-    <div 
-      ref={calendlyRef}
-      className={`calendly-inline-widget ${className}`} 
-      style={styles}
-      data-auto-load="false"
-    ></div>
+    <div className="relative">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-dark-gray/50 z-10 rounded-lg">
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin mb-3"></div>
+            <p className="text-light-gray">Loading...</p>
+          </div>
+        </div>
+      )}
+      <div 
+        ref={calendlyRef}
+        className={`calendly-inline-widget ${className}`} 
+        style={styles}
+        data-auto-load="false"
+      ></div>
+    </div>
   );
 }
 
