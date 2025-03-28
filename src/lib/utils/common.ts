@@ -87,7 +87,7 @@ export function formatDate(date: Date | string, locale: string = 'en-US'): strin
     /**
      * Сохраняет данные в localStorage
      */
-    set(key: string, value: any): void {
+    set<T>(key: string, value: T): void {
       if (typeof window === 'undefined') return;
       
       try {

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
 import { SectionAnimation } from '@/components/ui/section-animation';
 import { motion } from 'framer-motion';
-import { Icon } from '@/components/ui/icons/icon';
 
 // Тип для группы ссылок футера
 export interface FooterLinkGroup {

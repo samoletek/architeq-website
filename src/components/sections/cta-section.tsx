@@ -61,9 +61,6 @@ export default function CTASection({
     className
   );
   
-  // Отступ для компактного режима
-  const contentPadding = compact ? "px-4" : "px-8";
-  
   return (
     <section className={sectionClasses}>
       {/* Градиентный фон, если включен */}

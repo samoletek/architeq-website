@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
     const validationErrors: Record<string, string> = {};
     
     for (const [field, validator] of Object.entries(validators)) {
-      // @ts-ignore - Динамический доступ к полям
+      // @ts-expect-error - Динамический доступ к полям
       if (!validator(data[field])) {
         validationErrors[field] = `Invalid ${field}`;
       }

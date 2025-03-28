@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CaseFilters, FilterGroup } from '@/components/ui/filters/case-filters';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
 import { SectionAnimation } from '@/components/ui/section-animation';
-import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { Icon } from '@/components/ui/icons/icon';
 

@@ -80,9 +80,11 @@ function detectLowPerformance(): boolean {
 function detectTouch(): boolean {
   if (typeof window === 'undefined') return false;
   
+  // Проверяем поддержку сенсорного экрана различными способами
   return 'ontouchstart' in window || 
     navigator.maxTouchPoints > 0 || 
-    (navigator as any).msMaxTouchPoints > 0;
+    // Безопасно проверяем наличие свойства msMaxTouchPoints
+    !!(navigator as unknown as { msMaxTouchPoints?: number }).msMaxTouchPoints;
 }
 
 /**
@@ -181,14 +183,17 @@ export function useOrientationChange(): {
 
 /**
  * Утилита для определения, нужно ли загружать тяжелую анимацию на текущем устройстве
+ * Эта функция должна использоваться только внутри React-компонентов!
  */
-export function shouldUseHeavyAnimations(): boolean {
-  if (typeof window === 'undefined') return false;
+export function useHeavyAnimations(): boolean {
+  const { isDesktop, isLowPerformance } = useDeviceDetection();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   
-  const { isLowPerformance, isDesktop } = useDeviceDetection();
-  
-  // Проверяем настройки предпочтений пользователя
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+  }, []);
   
   // Включаем тяжелые анимации только на мощных десктопах без предпочтения к уменьшению движения
   return isDesktop && !isLowPerformance && !prefersReducedMotion;
@@ -201,7 +206,8 @@ export function useIsVisible(ref: React.RefObject<HTMLElement>): boolean {
   const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    if (!ref.current) return;
+    const currentRef = ref.current;
+    if (!currentRef) return;
     
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -210,12 +216,10 @@ export function useIsVisible(ref: React.RefObject<HTMLElement>): boolean {
       { threshold: 0.1 } // Элемент считается видимым, когда 10% его площади в области просмотра
     );
     
-    observer.observe(ref.current);
+    observer.observe(currentRef);
     
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.unobserve(currentRef);
     };
   }, [ref]);
   

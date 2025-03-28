@@ -56,14 +56,12 @@ export const scaleInVariants = {
   }
 };
 
-// Функция для выбора вариантов анимации в зависимости от производительности устройства
-export function getAdaptiveAnimationVariants(animationType: string) {
+// Хук для выбора вариантов анимации в зависимости от производительности устройства
+export function useAdaptiveAnimationVariants(animationType: string) {
   const { isMobile, isLowPerformance } = useDeviceDetection();
   
-  // Для мобильных устройств или устройств с низкой производительностью 
-  // используем более простые анимации
+  // Если устройство мобильное или с низкой производительностью, используем более простые анимации
   if (isMobile || isLowPerformance) {
-    // Возвращаем только fade in для всех типов
     return fadeInVariants;
   }
   
@@ -151,9 +149,9 @@ export function createStaggeredAnimations(childrenCount: number, baseDelay: numb
   }));
 }
 
-// Адаптивные настройки анимации в зависимости от устройства
-export function getAnimationSettings() {
-  const { isMobile, isTablet, isDesktop, isLowPerformance } = useDeviceDetection();
+// Хук для получения адаптивных настроек анимации в зависимости от устройства
+export function useAnimationSettings() {
+  const { isMobile, isTablet, isLowPerformance } = useDeviceDetection();
   
   // Базовые настройки
   const baseSettings = {
@@ -203,11 +201,35 @@ export function supportsWebAnimations(): boolean {
   return typeof Element !== 'undefined' && 'animate' in Element.prototype;
 }
 
-// Проверка разрешения на анимацию (учитывает prefers-reduced-motion)
+// Хук для проверки разрешения на анимацию (учитывает prefers-reduced-motion)
+export function useEnableAnimations(): boolean {
+  const { isLowPerformance } = useDeviceDetection();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+  }, []);
+  
+  // Отключаем анимации для устройств с низкой производительностью
+  // или если пользователь предпочитает уменьшить движение
+  return !isLowPerformance && !prefersReducedMotion;
+}
+
+// Функция для обратной совместимости - используется вне React-компонентов
 export function shouldEnableAnimations(): boolean {
   if (typeof window === 'undefined') return false;
   
-  const { isLowPerformance } = useDeviceDetection();
+  // Определяем маломощность устройства без использования хука
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
+  const isOldBrowser = 
+    /msie\s[1-8]|trident\/[1-6]|edge\/[1-12]/i.test(ua) || 
+    /firefox\/[1-50]/i.test(ua) ||
+    /chrome\/[1-50]/i.test(ua);
+    
+  const isLowPerformance = isOldBrowser || (isMobile && window.innerWidth < 768);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   // Отключаем анимации для устройств с низкой производительностью

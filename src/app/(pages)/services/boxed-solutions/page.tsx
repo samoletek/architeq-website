@@ -197,7 +197,7 @@ export default function BoxedSolutionsPage() {
           </svg>
           <div>
             <h4 className="font-semibold">Industry-Specific Functionality</h4>
-            <p className="text-light-gray">Solutions designed for your industry's unique challenges and requirements.</p>
+            <p className="text-light-gray">Solutions designed for your industry unique challenges and requirements.</p>
           </div>
         </li>
         <li className="flex items-start">
@@ -220,9 +220,9 @@ export default function BoxedSolutionsPage() {
         <div className="bg-dark-gradient rounded-xl p-8 md:p-12 border border-medium-gray">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Don't See Your Industry?</h2>
+              <h2 className="text-3xl font-bold mb-4">Dont See Your Industry?</h2>
               <p className="text-light-gray mb-6">
-                If you don't see a boxed solution for your specific industry, don't worry. We also offer custom automation solutions tailored to your unique business needs.
+                If you dont see a boxed solution for your specific industry, dont worry. We also offer custom automation solutions tailored to your unique business needs.
               </p>
               <p className="text-light-gray mb-6">
                 Our team of experts will analyze your workflows, identify automation opportunities, and develop a solution that addresses your specific challenges.

@@ -7,6 +7,13 @@ interface FaviconConfig {
   titleBar?: string;
 }
 
+// Расширенный интерфейс для иконки с поддержкой цвета
+interface IconWithColor {
+  rel: string;
+  url: string;
+  color?: string;
+}
+
 /**
  * Компонент для вставки всех необходимых ссылок на фавиконки в head
  * Используется в cтарой версии с кастомным _document.tsx
@@ -35,6 +42,13 @@ export function FaviconMetadata({
 export function generateFaviconMetadata({
   backgroundColor = '#121212',
 }: Omit<FaviconConfig, 'titleBar'> = {}): Partial<Metadata> {
+  // Создаем иконку Safari с помощью нашего расширенного интерфейса
+  const safariIcon: IconWithColor = {
+    rel: 'mask-icon',
+    url: '/favicon/safari-pinned-tab.svg',
+    color: '#ff4500'
+  };
+
   return {
     icons: {
       icon: [
@@ -45,12 +59,7 @@ export function generateFaviconMetadata({
         { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
       ],
       other: [
-        { 
-          rel: 'mask-icon', 
-          url: '/favicon/safari-pinned-tab.svg',
-          // @ts-ignore - Ignore because the color attribute is not in the TypeScript definitions
-          color: '#ff4500'
-        }
+        safariIcon as any // Используем any здесь для обхода проверки типов
       ]
     },
     manifest: '/favicon/site.webmanifest',

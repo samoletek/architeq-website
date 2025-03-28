@@ -146,11 +146,3 @@ export const validateForm = (formData: FormFields, validators: FieldValidators):
 export const hasErrors = (errors: FormErrors): boolean => {
   return Object.values(errors).some(error => error !== null);
 };
-
-/**
- * Хук для управления состоянием формы и валидацией
- */
-export const useFormValidation = (initialValues: FormFields, validators: FieldValidators) => {
-  // Здесь будет реализация React хука
-  // Реализуем позже, когда будем иметь доступ к компонентам форм
-};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { SolutionSwitcher } from '@/components/ui/solution-switcher';
@@ -156,7 +156,7 @@ export function SolutionsSection({
       solutions[0]
   );
   
-  const { isMobile, isLowPerformance } = useDeviceDetection();
+  const { isLowPerformance } = useDeviceDetection();
   
   // Обработчик смены таба
   const handleSolutionChange = useCallback((tab: SolutionTab) => {

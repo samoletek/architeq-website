@@ -224,7 +224,6 @@ interface FAQPageSchemaProps extends BaseSchemaProps {
  * Схема данных для страницы вопросов и ответов
  */
 export function FAQPageSchema({
-  url,
   mainEntity
 }: FAQPageSchemaProps) {
   const schemaData = {

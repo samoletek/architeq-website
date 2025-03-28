@@ -175,7 +175,7 @@ export function CaseFilters({
               
               {searchQuery.trim() && (
                 <span className="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs flex items-center">
-                  Поиск: "{searchQuery.trim()}"
+                  Search: {searchQuery.trim()}
                   <button 
                     onClick={() => onSearchChange('')}
                     className="ml-1 focus:outline-none"
@@ -415,7 +415,7 @@ export function CaseFilters({
                 
                 {searchQuery.trim() && (
                   <span className="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs flex items-center">
-                    Поиск: "{searchQuery.trim()}"
+                    Search: {searchQuery.trim()}
                     <button 
                       onClick={() => onSearchChange('')}
                       className="ml-1 focus:outline-none"

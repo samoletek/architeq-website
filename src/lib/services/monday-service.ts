@@ -23,6 +23,28 @@ export interface MondayResponse {
 }
 
 /**
+ * Тип для API ответа Monday.com
+ */
+interface MondayApiResponse {
+  data?: Record<string, unknown>;
+  errors?: Array<{ message: string }>;
+}
+
+/**
+ * Тип для элемента доски Monday.com
+ */
+interface MondayBoardItem {
+  id: string;
+  name: string;
+  column_values: Array<{
+    id: string;
+    title: string;
+    text: string;
+    value: string;
+  }>;
+}
+
+/**
  * Проверяет наличие всех необходимых переменных окружения
  */
 function checkEnvironmentVariables(): { valid: boolean; missing: string[] } {
@@ -45,7 +67,7 @@ function checkEnvironmentVariables(): { valid: boolean; missing: string[] } {
 /**
  * Отправляет запрос к API Monday.com
  */
-async function sendMondayRequest(query: string, variables?: Record<string, any>): Promise<any> {
+async function sendMondayRequest(query: string, variables?: Record<string, unknown>): Promise<MondayApiResponse> {
   const apiKey = process.env.NEXT_PUBLIC_MONDAY_API_KEY;
   
   try {
@@ -106,8 +128,8 @@ async function checkExistingContact(email: string): Promise<string | null> {
     
     const response = await sendMondayRequest(query, variables);
     
-    if (response.data?.items_by_column_values?.length > 0) {
-      return response.data.items_by_column_values[0].id;
+    if (response.data?.items_by_column_values && Array.isArray(response.data.items_by_column_values) && response.data.items_by_column_values.length > 0) {
+      return (response.data.items_by_column_values[0] as { id: string }).id;
     }
     
     return null;
@@ -133,7 +155,6 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     }
     
     // Получаем значения из переменных окружения
-    const apiKey = process.env.NEXT_PUBLIC_MONDAY_API_KEY;
     const boardId = process.env.NEXT_PUBLIC_MONDAY_BOARD_ID;
     
     // ID колонок из переменных окружения
@@ -179,7 +200,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     if (interestColumnId && formData.interest) {
       try {
         columnValues[interestColumnId] = { labels: [formData.interest] };
-      } catch (e) {
+      } catch (_) {
         // Если формат не поддерживается, используем простое текстовое поле
         columnValues[interestColumnId] = formData.interest;
       }
@@ -250,11 +271,11 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
         throw new Error(response.errors[0].message);
       }
       
-      if (response.data && response.data.create_item && response.data.create_item.id) {
+      if (response.data && response.data.create_item && (response.data.create_item as { id: string }).id) {
         return {
           success: true,
           message: 'Thank you! Your message has been submitted successfully.',
-          itemId: response.data.create_item.id
+          itemId: (response.data.create_item as { id: string }).id
         };
       }
     }
@@ -290,7 +311,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
 export async function getBoardItems(
   boardId: string = process.env.NEXT_PUBLIC_MONDAY_BOARD_ID || '', 
   limit: number = 100
-): Promise<any[]> {
+): Promise<MondayBoardItem[]> {
   try {
     const query = `
       query GetBoardItems($boardId: ID!, $limit: Int) {
@@ -320,8 +341,8 @@ export async function getBoardItems(
       throw new Error(response.errors[0].message);
     }
     
-    if (response.data?.boards && response.data.boards.length > 0) {
-      return response.data.boards[0].items || [];
+    if (response.data?.boards && Array.isArray(response.data.boards) && response.data.boards.length > 0) {
+      return (response.data.boards[0] as { items: MondayBoardItem[] }).items || [];
     }
     
     return [];

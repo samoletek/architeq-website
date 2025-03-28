@@ -239,7 +239,7 @@ export default function TestimonialsSection({
               >
                 <div className="p-6">
                   {withQuotes && (
-                    <div className="text-4xl text-primary opacity-20 mb-3">"</div>
+                    <div className="text-4xl text-primary opacity-20 mb-3"></div>
                   )}
                   
                   {testimonial.rating && (
@@ -312,8 +312,8 @@ export default function TestimonialsSection({
           {/* Большие кавычки, если включено */}
           {withQuotes && (
             <>
-              <div className="absolute -top-10 -left-10 text-6xl text-primary opacity-30">"</div>
-              <div className="absolute -bottom-10 -right-10 text-6xl text-primary opacity-30">"</div>
+              <div className="absolute -top-10 -left-10 text-6xl text-primary opacity-30"></div>
+              <div className="absolute -bottom-10 -right-10 text-6xl text-primary opacity-30"></div>
             </>
           )}
           
@@ -440,7 +440,7 @@ export function SingleTestimonial({
   return (
     <div className={cn("bg-dark-gray rounded-lg p-6", className)}>
       {withQuote && (
-        <div className="text-4xl text-primary opacity-20 mb-3">"</div>
+        <div className="text-4xl text-primary opacity-20 mb-3"></div>
       )}
       
       {testimonial.rating && (

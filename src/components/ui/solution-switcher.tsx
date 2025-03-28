@@ -72,7 +72,7 @@ export function SolutionSwitcher({
     if (defaultTab && defaultTab !== activeTab) {
       setActiveTab(defaultTab);
     }
-  }, [defaultTab]);
+  }, [defaultTab, activeTab]);
   
   // Функция для рендеринга содержимого вкладки
   const renderTabContent = (tab: SolutionTab) => {

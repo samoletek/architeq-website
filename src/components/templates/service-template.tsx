@@ -98,12 +98,7 @@ export default function ServiceTemplate({
   };
 
   // Определение цветового класса для соответствующих компонентов
-  const colorClass = {
-    primary: 'text-primary border-primary/30 hover:border-primary/50 shadow-primary-glow',
-    'neon-blue': 'text-neon-blue border-neon-blue/30 hover:border-neon-blue/50 shadow-neon-blue-glow',
-    'neon-purple': 'text-neon-purple border-neon-purple/30 hover:border-neon-purple/50 shadow-neon-purple-glow'
-  }[primaryColor] || 'text-primary border-primary/30 hover:border-primary/50 shadow-primary-glow';
-  
+
   const accentColorClass = {
     primary: 'text-primary',
     'neon-blue': 'text-neon-blue',
@@ -173,7 +168,7 @@ export default function ServiceTemplate({
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Benefits</h2>
               <p className="text-light-gray max-w-3xl mx-auto">
-                Our solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line.
+                Our solutions deliver tangible benefits that directly impact your organizations efficiency and bottom line.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

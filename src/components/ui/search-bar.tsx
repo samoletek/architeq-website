@@ -49,7 +49,6 @@ export function SearchBar({
   const [inputFocused, setInputFocused] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isMobile } = useDeviceDetection();
   const pathname = usePathname();
   
   // Фильтрация и ограничение результатов

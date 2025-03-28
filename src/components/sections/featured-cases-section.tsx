@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CaseCard } from '@/components/ui/cards/case-card';
@@ -92,8 +91,6 @@ export default function FeaturedCasesSection({
   variant = 'default',
   caseCardVariant = 'default'
 }: FeaturedCasesSectionProps) {
-  const { isMobile } = useDeviceDetection();
-  
   // Ограничиваем количество отображаемых кейсов
   const displayCases = cases.slice(0, maxCases);
   
