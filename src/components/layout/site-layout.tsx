@@ -1,5 +1,7 @@
+// src/components/layout/site-layout.tsx
 import Header from '@/components/navigation/header'
 import Footer from '@/components/navigation/footer'
+import PageTransition from '@/components/ui/page-transition'
 
 export default function SiteLayout({
   children,
@@ -10,7 +12,9 @@ export default function SiteLayout({
     <>
       <Header />
       <main className="pt-20">
-        {children}
+        <PageTransition>
+          {children}
+        </PageTransition>
       </main>
       <Footer />
     </>

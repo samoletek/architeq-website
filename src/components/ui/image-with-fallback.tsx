@@ -1,3 +1,4 @@
+// src/components/ui/image-with-fallback.tsx (обновленный)
 "use client";
 
 import { useState } from 'react';
@@ -14,6 +15,7 @@ interface ImageWithFallbackProps {
   fallbackText?: string;
   category?: 'team' | 'solution' | 'testimonial' | 'case';
   style?: React.CSSProperties;
+  priority?: boolean;
 }
 
 export function ImageWithFallback({
@@ -25,7 +27,8 @@ export function ImageWithFallback({
   fallbackClassName,
   fallbackText,
   category,
-  style
+  style,
+  priority = false,
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
   
@@ -95,7 +98,7 @@ export function ImageWithFallback({
     );
   }
   
-  // Отображаем реальное изображение
+  // Отображаем реальное изображение с ленивой загрузкой
   return (
     <Image
       src={src}
@@ -105,6 +108,8 @@ export function ImageWithFallback({
       className={cn("rounded-lg object-cover", className)}
       style={style}
       onError={() => setError(true)}
+      loading={priority ? "eager" : "lazy"}
+      priority={priority}
     />
   );
 }
