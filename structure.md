@@ -1,11 +1,18 @@
 s78-website/
 ├── node_modules/
 ├── public/
+│   ├── favicon/
+│   │   ├── android-chrome-192x192.png
+│   │   ├── android-chrome-512x512.png
+│   │   ├── apple-touch-icon.png
+│   │   ├── favicon-16x16.png
+│   │   ├── favicon-32x32.png
+│   │   └── site.webmanifest
 │   ├── images/
-│   │   ├── cases/      # Изображения для кейсов
-│   │   ├── team/       # Фотографии команды
-│   │   ├── solutions/  # Изображения решений
-│   │   └── testimonials/ # Фотографии для отзывов
+│   │   ├── cases/
+│   │   ├── team/
+│   │   ├── solutions/
+│   │   └── testimonials/
 │   ├── file.svg
 │   ├── globe.svg
 │   ├── next.svg
@@ -15,81 +22,222 @@ s78-website/
 │   ├── app/
 │   │   ├── (pages)/
 │   │   │   ├── about/
-│   │   │   │   └── page.tsx  # Страница "О нас"
+│   │   │   │   └── page.tsx
 │   │   │   ├── cases/
 │   │   │   │   ├── [slug]/
-│   │   │   │   │   └── page.tsx  # Динамическая страница кейса
-│   │   │   │   └── page.tsx  # Список кейсов с фильтрами
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
 │   │   │   ├── contacts/
-│   │   │   │   └── page.tsx  # Контактная форма
+│   │   │   │   └── page.tsx
 │   │   │   ├── cookies/
-│   │   │   │   └── page.tsx  # Политика использования cookie
+│   │   │   │   └── page.tsx
 │   │   │   ├── privacy/
-│   │   │   │   └── page.tsx  # Политика конфиденциальности
+│   │   │   │   └── page.tsx
 │   │   │   ├── services/
 │   │   │   │   ├── ai-solutions/
-│   │   │   │   │   └── page.tsx  # Страница услуги "AI-решения"
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── boxed-solutions/
-│   │   │   │   │   └── page.tsx  # Страница услуги "Готовые решения"
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── business-process/
-│   │   │   │   │   └── page.tsx  # Страница услуги "Автоматизация бизнес-процессов"
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── crm-integration/
-│   │   │   │   │   └── page.tsx  # Страница услуги "Интеграция CRM"
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── documentation/
-│   │   │   │   │   └── page.tsx  # Страница услуги "Документация"
+│   │   │   │   │   └── page.tsx
 │   │   │   │   ├── finance/
-│   │   │   │   │   └── page.tsx  # Страница услуги "Финансовые системы"
-│   │   │   │   └── page.tsx  # Общая страница услуг
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
 │   │   │   └── terms/
-│   │   │       └── page.tsx  # Условия использования
+│   │   │       └── page.tsx
 │   │   ├── api/
 │   │   │   └── contact/
-│   │   │       └── route.ts  # API-эндпоинт для обработки формы
-│   │   ├── globals.css  # Глобальные стили
-│   │   ├── layout.tsx  # Основной лейаут приложения
-│   │   └── page.tsx  # Главная страница
+│   │   │       └── route.ts
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
 │   ├── components/
 │   │   ├── layout/
-│   │   │   └── site-layout.tsx  # Компонент общего лейаута сайта
+│   │   │   └── site-layout.tsx
 │   │   ├── navigation/
-│   │   │   ├── footer.tsx  # Компонент подвала
-│   │   │   └── header.tsx  # Компонент шапки
+│   │   │   ├── footer.tsx
+│   │   │   └── header.tsx
 │   │   ├── pages/
-│   │   │   ├── cases-content.tsx  # Содержимое страницы кейсов
-│   │   │   └── contacts-content.tsx  # Содержимое страницы контактов
+│   │   │   ├── cases-content.tsx
+│   │   │   └── contacts-content.tsx
 │   │   ├── sections/
-│   │   │   ├── benefits-section.tsx  # Секция преимуществ
-│   │   │   ├── cta-section.tsx  # Секция призыва к действию
-│   │   │   ├── featured-cases-section.tsx  # Секция избранных кейсов
-│   │   │   ├── hero-section.tsx  # Главная секция
-│   │   │   ├── solutions-section.tsx  # Секция решений
-│   │   │   └── testimonials-section.tsx  # Секция отзывов
+│   │   │   ├── benefits-section.tsx
+│   │   │   ├── cta-section.tsx
+│   │   │   ├── featured-cases-section.tsx
+│   │   │   ├── hero-section.tsx
+│   │   │   ├── solutions-section.tsx
+│   │   │   └── testimonials-section.tsx
+│   │   ├── templates/
+│   │   │   └── service-template.tsx
 │   │   └── ui/
 │   │       ├── cards/
-│   │       │   └── case-card.tsx  # Компонент карточки кейса
+│   │       │   └── case-card.tsx
 │   │       ├── filters/
-│   │       │   └── case-filters.tsx  # Компонент фильтров для кейсов
+│   │       │   └── case-filters.tsx
 │   │       ├── icons/
-│   │       │   └── icon.tsx  # Компонент иконок
-│   │       ├── benefit-card.tsx  # Компонент карточки преимущества
-│   │       ├── button.tsx  # Компонент кнопки
-│   │       ├── calendly-widget.tsx  # Виджет Calendly
-│   │       ├── image-with-fallback.tsx  # Компонент изображения с заглушкой
-│   │       └── solution-switcher.tsx  # Компонент переключателя решений
+│   │       │   └── icon.tsx
+│   │       ├── benefit-card.tsx
+│   │       ├── button.tsx
+│   │       ├── calendly-widget.tsx
+│   │       ├── form-input.tsx
+│   │       ├── form-select.tsx
+│   │       ├── image-with-fallback.tsx
+│   │       ├── loading-button.tsx
+│   │       ├── page-transition.tsx
+│   │       ├── section-animation.tsx
+│   │       └── solution-switcher.tsx
 │   └── lib/
 │       ├── seo/
-│       │   └── metadata.ts  # Метаданные для SEO
+│       │   ├── favicon-metadata.tsx
+│       │   ├── metadata.ts
+│       │   ├── service-metadata.tsx
+│       │   └── schema.tsx
 │       ├── services/
-│       │   └── monday-service.ts  # Сервис для работы с Monday.com API
+│       │   └── monday-service.ts
 │       └── utils/
-│           └── utils.ts  # Вспомогательные функции
-├── .env.local  # Переменные окружения
+│           ├── device-detection.ts
+│           └── utils.ts
+├── .env.local
 ├── .gitignore
 ├── eslint.config.mjs
 ├── next.config.js
 ├── package.json
 ├── postcss.config.js
 ├── README.md
-├── structure.md  # Структура проекта
+├── structure.md
 ├── tailwind.config.ts
 └── tsconfig.json
+
+
+# Структура проекта §78-website
+
+## Корневые файлы
+- `.gitignore` - исключения для Git
+- `.env.local` - локальные переменные окружения (не отслеживается Git)
+- `eslint.config.mjs` - конфигурация линтера
+- `next.config.js` - конфигурация Next.js
+- `package.json` - зависимости и скрипты проекта
+- `postcss.config.js` - конфигурация PostCSS
+- `README.md` - описание проекта
+- `structure.md` - структура проекта (этот файл)
+- `tailwind.config.ts` - конфигурация Tailwind CSS
+- `tsconfig.json` - конфигурация TypeScript
+
+## Публичные ресурсы (/public)
+- `/favicon/` - иконки для браузеров
+  - `android-chrome-192x192.png`
+  - `android-chrome-512x512.png`
+  - `apple-touch-icon.png`
+  - `favicon-16x16.png` 
+  - `favicon-32x32.png`
+  - `site.webmanifest`
+- `/images/` - изображения
+  - `/cases/` - изображения для кейсов
+  - `/team/` - фотографии команды
+  - `/solutions/` - изображения решений
+  - `/testimonials/` - фотографии для отзывов
+- Иконки и SVG
+  - `file.svg`
+  - `globe.svg`
+  - `next.svg`
+  - `vercel.svg`
+  - `window.svg`
+
+## Исходный код (/src)
+
+### Приложение Next.js (/app)
+- `globals.css` - глобальные стили
+- `layout.tsx` - корневой layout приложения
+- `page.tsx` - главная страница
+
+- `/api/` - API эндпоинты
+  - `/contact/`
+    - `route.ts` - обработчик формы контактов
+
+- `/(pages)/` - страницы сайта
+  - `/about/`
+    - `page.tsx` - страница О нас
+  - `/cases/`
+    - `page.tsx` - список кейсов
+    - `/[slug]/` - динамические страницы кейсов
+      - `page.tsx`
+  - `/contacts/`
+    - `page.tsx` - страница контактов
+  - `/cookies/`
+    - `page.tsx` - политика cookies
+  - `/privacy/`
+    - `page.tsx` - политика приватности
+  - `/terms/`
+    - `page.tsx` - условия использования
+  - `/services/`
+    - `page.tsx` - обзор услуг
+    - `/ai-solutions/`
+      - `page.tsx` - AI решения
+    - `/boxed-solutions/`
+      - `page.tsx` - готовые бизнес-решения
+    - `/business-process/`
+      - `page.tsx` - автоматизация бизнес-процессов
+    - `/crm-integration/`
+      - `page.tsx` - интеграция CRM
+    - `/documentation/`
+      - `page.tsx` - документация и формы
+    - `/finance/`
+      - `page.tsx` - финансовые системы
+
+### Компоненты (/components)
+- `/layout/`
+  - `site-layout.tsx` - общий шаблон сайта
+
+- `/navigation/`
+  - `header.tsx` - шапка сайта
+  - `footer.tsx` - подвал сайта
+
+- `/pages/` - компоненты для отдельных страниц
+  - `cases-content.tsx` - содержимое страницы кейсов
+  - `contacts-content.tsx` - содержимое страницы контактов
+
+- `/sections/` - секции для главной страницы
+  - `hero-section.tsx` - главный баннер
+  - `benefits-section.tsx` - секция преимуществ
+  - `featured-cases-section.tsx` - избранные кейсы
+  - `solutions-section.tsx` - секция решений
+  - `testimonials-section.tsx` - отзывы
+  - `cta-section.tsx` - призыв к действию
+
+- `/templates/` - шаблоны страниц
+  - `service-template.tsx` - шаблон для страниц услуг
+
+- `/ui/` - переиспользуемые UI компоненты
+  - `/cards/`
+    - `case-card.tsx` - карточка кейса
+  - `/filters/`
+    - `case-filters.tsx` - фильтры для кейсов
+  - `/icons/`
+    - `icon.tsx` - компонент иконок
+  - `benefit-card.tsx` - карточка преимущества
+  - `button.tsx` - кнопка
+  - `calendly-widget.tsx` - виджет Calendly
+  - `form-input.tsx` - компонент поля ввода
+  - `form-select.tsx` - компонент выпадающего списка
+  - `image-with-fallback.tsx` - изображение с запасным вариантом
+  - `loading-button.tsx` - кнопка с индикатором загрузки
+  - `page-transition.tsx` - анимация перехода между страницами
+  - `section-animation.tsx` - анимация секций
+  - `solution-switcher.tsx` - переключатель решений
+
+### Утилиты и сервисы (/lib)
+- `/seo/` - компоненты для SEO
+  - `favicon-metadata.tsx` - метаданные фавиконок
+  - `metadata.ts` - общие метаданные
+  - `schema.tsx` - схемы Schema.org
+
+- `/services/` - сервисы для внешних API
+  - `monday-service.ts` - интеграция с Monday.com
+
+- `/utils/` - вспомогательные функции
+  - `device-detection.ts` - определение типа устройства
+  - `utils.ts` - общие утилиты

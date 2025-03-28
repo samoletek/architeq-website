@@ -1,27 +1,39 @@
-import SiteLayout from '@/components/layout/site-layout';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import type { Metadata } from 'next';
-import { siteMetadata } from '@/lib/seo/metadata';
+import { generateServiceMetadata } from '@/lib/seo/service-metadata';
+import ServiceTemplate from '@/components/templates/service-template';
 
-export const metadata: Metadata = {
+export const metadata = generateServiceMetadata({
   title: 'AI-Powered Solutions',
   description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice bots, natural language processing, and predictive analytics.',
   keywords: ['AI solutions', 'artificial intelligence', 'voice bots', 'predictive analytics', 'natural language processing', 'machine learning', 'AI automation'],
-  openGraph: {
-    title: 'AI-Powered Solutions | §78',
-    description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice bots, natural language processing, and predictive analytics.',
-    url: `${siteMetadata.siteUrl}/services/ai-solutions`,
-    siteName: siteMetadata.siteName,
-    locale: siteMetadata.defaultLocale,
-    type: 'website',
-  },
-  alternates: {
-    canonical: `${siteMetadata.siteUrl}/services/ai-solutions`,
-  },
-};
+  path: '/services/ai-solutions'
+});
 
 export default function AISolutionsPage() {
+  // Данные для преимуществ
+  const benefits = [
+    {
+      title: "Time Efficiency",
+      description: "Automate complex tasks that would take humans hours to complete, freeing up your team for high-value activities.",
+      icon: "clock"
+    },
+    {
+      title: "Data Analysis",
+      description: "Process and analyze large volumes of data to uncover patterns and insights that humans might miss.",
+      icon: "chart"
+    },
+    {
+      title: "24/7 Availability",
+      description: "AI systems can work around the clock without breaks, ensuring continuous service for your customers.",
+      icon: "calendar"
+    },
+    {
+      title: "Scalability",
+      description: "Handle fluctuating workloads without needing to hire additional staff during peak periods.",
+      icon: "scale"
+    }
+  ];
+
+  // Данные для решений
   const aiSolutions = [
     {
       title: "AI Voice Bots",
@@ -32,7 +44,8 @@ export default function AISolutionsPage() {
         "Consistent customer experience",
         "Scalable to handle volume fluctuations"
       ],
-      icon: "voice"
+      icon: "voice",
+      caseId: "ai-voice-bot"
     },
     {
       title: "CRM AI Assistants",
@@ -43,7 +56,8 @@ export default function AISolutionsPage() {
         "Improved decision making with complete data",
         "More effective client interactions"
       ],
-      icon: "search"
+      icon: "search",
+      caseId: "ai-crm-assistant"
     },
     {
       title: "Communication Analysis",
@@ -54,7 +68,8 @@ export default function AISolutionsPage() {
         "Recognition of emotional tone",
         "Training material generation"
       ],
-      icon: "analysis"
+      icon: "analysis",
+      caseId: "speech-to-text-analysis"
     },
     {
       title: "Predictive Analytics",
@@ -69,6 +84,31 @@ export default function AISolutionsPage() {
     }
   ];
 
+  // Данные для процесса
+  const processes = [
+    {
+      step: 1,
+      title: "Discovery & Planning",
+      description: "We assess your business needs, identify opportunities for AI implementation, and develop a comprehensive implementation plan."
+    },
+    {
+      step: 2,
+      title: "Solution Design",
+      description: "Our team designs a custom AI solution tailored to your specific requirements, focusing on integration with your existing systems."
+    },
+    {
+      step: 3,
+      title: "Development & Training",
+      description: "We develop and train the AI models using your data, ensuring they are optimized for your specific use case and performance requirements."
+    },
+    {
+      step: 4,
+      title: "Deployment & Refinement",
+      description: "We deploy the solution in your environment, provide training, and continuously refine the AI based on real-world performance and feedback."
+    }
+  ];
+
+  // Данные для кейсов
   const caseStudies = [
     {
       id: "ai-voice-bot",
@@ -105,7 +145,27 @@ export default function AISolutionsPage() {
     }
   ];
 
-  // Function to render icons
+  // Данные для FAQ
+  const faqs = [
+    {
+      question: "How long does it take to implement an AI solution?",
+      answer: "Most AI solutions can be implemented within 4-8 weeks, depending on complexity and scope. We will provide a detailed timeline during our initial consultation."
+    },
+    {
+      question: "Do I need a large dataset to use AI?",
+      answer: "While more data generally leads to better results, we can work with smaller datasets or leverage pre-trained models that require less data to be effective for your specific use case."
+    },
+    {
+      question: "How are AI solutions maintained?",
+      answer: "We provide ongoing maintenance and monitoring to ensure your AI solution continues to perform optimally. This includes regular performance reviews, model retraining, and updates as needed."
+    },
+    {
+      question: "How secure is my data with AI solutions?",
+      answer: "Data security is a top priority. We implement industry-standard security measures and can design solutions that keep your data within your own environment if required."
+    }
+  ];
+
+  // Функция для рендеринга иконок
   function renderIcon(icon: string) {
     switch (icon) {
       case 'voice':
@@ -132,6 +192,30 @@ export default function AISolutionsPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
           </svg>
         );
+      case 'clock':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        );
+      case 'chart':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        );
+      case 'calendar':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        );
+      case 'scale':
+        return (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+          </svg>
+        );
       default:
         return (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -141,428 +225,153 @@ export default function AISolutionsPage() {
     }
   }
 
-  // Placeholder for images
-  const placeholderStyle = {
-    background: 'linear-gradient(135deg, #333 0%, #1E1E1E 100%)',
-    height: '200px'
-  };
+  // Пример настраиваемого содержимого для секции обзора
+  const overviewSideContent = (
+    <>
+      <h3 className="text-2xl font-bold mb-4">AI Technologies We Use</h3>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Natural Language Processing</span>
+        </div>
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Speech Recognition</span>
+        </div>
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Machine Learning</span>
+        </div>
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Predictive Analytics</span>
+        </div>
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>OpenAI GPT Models</span>
+        </div>
+        <div className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-purple mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Text-to-Speech</span>
+        </div>
+      </div>
+    </>
+  );
+
+  // Пример дополнительной секции с отраслевыми применениями
+  const industriesSection = (
+    <section className="py-20 bg-dark-gray">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">AI Use Cases by Industry</h2>
+          <p className="text-light-gray max-w-3xl mx-auto">
+            AI solutions can benefit businesses across various industries. Here are some common applications.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
+            <h3 className="text-xl font-semibold mb-3">Retail & E-commerce</h3>
+            <ul className="text-light-gray space-y-2">
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Customer service chatbots and voice assistants</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Personalized product recommendations</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Inventory forecasting and management</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
+            <h3 className="text-xl font-semibold mb-3">Financial Services</h3>
+            <ul className="text-light-gray space-y-2">
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Fraud detection and prevention</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Customer service automation</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Risk assessment and management</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
+            <h3 className="text-xl font-semibold mb-3">Healthcare</h3>
+            <ul className="text-light-gray space-y-2">
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Patient appointment scheduling and reminders</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Medical record information retrieval</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-purple mr-2">•</span>
+                <span>Automated patient follow-up communication</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 
   return (
-    <SiteLayout>
-      {/* Hero section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center text-light-gray mb-4">
-              <Link href="/services" className="hover:text-white transition-colors">
-                Services
-              </Link>
-              <span className="mx-2">/</span>
-              <span className="text-white">AI-Powered Solutions</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">AI-Powered Solutions</h1>
-            <p className="text-xl text-light-gray mb-10 max-w-3xl">
-              Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights that drive business growth.
+    <ServiceTemplate
+      serviceId="ai-solutions"
+      serviceTitle="AI-Powered Solutions"
+      serviceDescription="Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights that drive business growth."
+      breadcrumbTitle="AI-Powered Solutions"
+      overview={{
+        title: "What Are AI-Powered Solutions?",
+        description: (
+          <>
+            <p className="text-light-gray mb-4">
+              AI-powered solutions use artificial intelligence and machine learning to automate complex tasks, analyze large volumes of data, and generate insights that would be impossible or impractical for humans to produce manually.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary" size="lg" href="/contacts">
-                Book a Free Consultation
-              </Button>
-              <Button variant="secondary" size="lg" href="/cases">
-                View Related Case Studies
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Overview section */}
-      <section className="py-20 bg-site-bg">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">What Are AI-Powered Solutions?</h2>
-              <p className="text-light-gray mb-4">
-                AI-powered solutions use artificial intelligence and machine learning to automate complex tasks, analyze large volumes of data, and generate insights that would be impossible or impractical for humans to produce manually.
-              </p>
-              <p className="text-light-gray mb-4">
-                Our AI solutions are designed to integrate seamlessly with your existing business processes and systems, enhancing rather than replacing human capabilities.
-              </p>
-              <p className="text-light-gray">
-                Whether you need to automate customer interactions, gain insights from communications, or leverage predictive analytics, our AI solutions can help you operate more efficiently and make better business decisions.
-              </p>
-            </div>
-            <div className="bg-dark-gray p-8 rounded-xl">
-              <h3 className="text-2xl font-bold mb-4">AI Technologies We Use</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Natural Language Processing</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Speech Recognition</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Machine Learning</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Predictive Analytics</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>OpenAI GPT Models</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Text-to-Speech</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Solutions section */}
-      <section className="py-20 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our AI Solutions</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              We offer a range of AI-powered solutions that can be tailored to your specific business needs and integrated with your existing systems.
+            <p className="text-light-gray mb-4">
+              Our AI solutions are designed to integrate seamlessly with your existing business processes and systems, enhancing rather than replacing human capabilities.
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {aiSolutions.map((solution, index) => (
-              <div 
-                key={index}
-                className="bg-dark-gradient rounded-xl p-6 border border-medium-gray hover:border-neon-purple/30 transition-all duration-300 hover:shadow-neon-purple-glow"
-              >
-                <div className="flex items-start">
-                  <div className="rounded-full w-16 h-16 flex items-center justify-center mr-6 bg-medium-gray text-neon-purple">
-                    {renderIcon(solution.icon)}
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3">{solution.title}</h3>
-                    <p className="text-light-gray mb-4">{solution.description}</p>
-                    
-                    <h4 className="text-sm font-medium mb-2 text-neon-purple">Key Benefits:</h4>
-                    <ul className="text-light-gray space-y-1">
-                      {solution.benefits.map((benefit, benefitIndex) => (
-                        <li key={benefitIndex} className="flex items-start">
-                          <span className="text-neon-purple mr-2">•</span>
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Implementation Process section */}
-      <section className="py-20 bg-site-bg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">AI Implementation Process</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              Our proven approach ensures that AI solutions are implemented successfully and deliver tangible business value.
+            <p className="text-light-gray">
+              Whether you need to automate customer interactions, gain insights from communications, or leverage predictive analytics, our AI solutions can help you operate more efficiently and make better business decisions.
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
-              <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-neon-purple flex items-center justify-center text-xl font-bold">1</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Discovery & Planning</h3>
-              <p className="text-light-gray">
-                We assess your business needs, identify opportunities for AI implementation, and develop a comprehensive implementation plan.
-              </p>
-            </div>
-
-            <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
-              <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-neon-purple flex items-center justify-center text-xl font-bold">2</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Solution Design</h3>
-              <p className="text-light-gray">
-                Our team designs a custom AI solution tailored to your specific requirements, focusing on integration with your existing systems.
-              </p>
-            </div>
-
-            <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
-              <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-neon-purple flex items-center justify-center text-xl font-bold">3</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Development & Training</h3>
-              <p className="text-light-gray">
-                We develop and train the AI models using your data, ensuring they are optimized for your specific use case and performance requirements.
-              </p>
-            </div>
-
-            <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
-              <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-neon-purple flex items-center justify-center text-xl font-bold">4</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Deployment & Refinement</h3>
-              <p className="text-light-gray">
-                We deploy the solution in your environment, provide training, and continuously refine the AI based on real-world performance and feedback.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases section */}
-      <section className="py-20 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">AI Use Cases by Industry</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              AI solutions can benefit businesses across various industries. Here are some common applications.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Retail & E-commerce</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Customer service chatbots and voice assistants</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Personalized product recommendations</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Inventory forecasting and management</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Financial Services</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Fraud detection and prevention</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Customer service automation</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Risk assessment and management</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Healthcare</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Patient appointment scheduling and reminders</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Medical record information retrieval</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Automated patient follow-up communication</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Manufacturing</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Quality control and defect detection</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Predictive maintenance</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Supply chain optimization</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Real Estate</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Lead qualification and routing</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Automated property showings scheduling</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Property value prediction</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-              <h3 className="text-xl font-semibold mb-3">Customer Service</h3>
-              <ul className="text-light-gray space-y-2">
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Voice and chat customer support</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Call quality analysis and agent feedback</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-neon-purple mr-2">•</span>
-                  <span>Customer sentiment analysis</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Case Studies section */}
-      <section className="py-20 bg-site-bg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Success Stories</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              See how our AI solutions have helped businesses automate tasks and gain valuable insights.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {caseStudies.map((caseStudy, index) => (
-              <div 
-                key={index}
-                className="bg-dark-gray rounded-xl overflow-hidden border border-medium-gray hover:border-neon-purple/30 transition-all duration-300"
-              >
-                <div style={placeholderStyle} className="relative">
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-medium-gray/80 text-white text-xs px-2 py-1 rounded">AI Solution</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{caseStudy.title}</h3>
-                  <p className="text-light-gray text-sm mb-4">{caseStudy.company}</p>
-                  <p className="text-light-gray mb-4">{caseStudy.description}</p>
-                  
-                  <h4 className="text-sm font-semibold mb-2 text-neon-purple">Key Results:</h4>
-                  <ul className="text-light-gray text-sm space-y-1 mb-4">
-                    {caseStudy.results.map((result, resultIndex) => (
-                      <li key={resultIndex} className="flex items-start">
-                        <span className="text-neon-purple mr-2">•</span>
-                        {result}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Link href={`/cases/${caseStudy.id}`} className="text-neon-purple font-medium text-sm flex items-center">
-                    View Case Study
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link href="/cases">
-              <Button variant="secondary">
-                View All AI Solution Case Studies
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-      
-      {/* FAQ section */}
-      <section className="py-20 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              Common questions about our AI-powered solutions.
-            </p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-medium-gray rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-2">How long does it take to implement an AI solution?</h3>
-              <p className="text-light-gray">Most AI solutions can be implemented within 4-8 weeks, depending on complexity and scope. We will provide a detailed timeline during our initial consultation.</p>
-            </div>
-            
-            <div className="bg-medium-gray rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-2">Do I need a large dataset to use AI?</h3>
-              <p className="text-light-gray">While more data generally leads to better results, we can work with smaller datasets or leverage pre-trained models that require less data to be effective for your specific use case.</p>
-            </div>
-            
-            <div className="bg-medium-gray rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-2">How are AI solutions maintained?</h3>
-              <p className="text-light-gray">We provide ongoing maintenance and monitoring to ensure your AI solution continues to perform optimally. This includes regular performance reviews, model retraining, and updates as needed.</p>
-            </div>
-            
-            <div className="bg-medium-gray rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-2">How secure is my data with AI solutions?</h3>
-              <p className="text-light-gray">Data security is a top priority. We implement industry-standard security measures and can design solutions that keep your data within your own environment if required.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* CTA section */}
-      <section className="py-16 bg-dark-gradient">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Leverage AI for Your Business?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Book a free consultation to discuss how our AI-powered solutions can help automate complex tasks and provide valuable insights for your business.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button variant="primary" size="lg" href="/contacts">
-              Book a Free Consultation
-            </Button>
-            <Button variant="secondary" size="lg" href="/cases">
-              View Our Case Studies
-            </Button>
-          </div>
-        </div>
-      </section>
-    </SiteLayout>
+          </>
+        ),
+        sideContent: overviewSideContent
+      }}
+      benefits={benefits}
+      features={aiSolutions}
+      processes={processes}
+      caseStudies={caseStudies}
+      faqs={faqs}
+      additionalSections={industriesSection}
+      primaryColor="neon-purple"
+      accentColor="neon-purple"
+      iconRenderer={renderIcon}
+    />
   );
 }
