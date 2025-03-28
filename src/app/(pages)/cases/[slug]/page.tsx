@@ -828,7 +828,6 @@ export default function CaseStudyPage() {
       // Обновляем метаданные динамически
       if (foundCaseStudy) {
         document.title = `${foundCaseStudy.title} | §78 Case Study`;
-        // Здесь можно добавить больше метаданных, если требуется
       }
     }
   }, [slug]);

@@ -1,37 +1,36 @@
-// src/components/ui/page-transition.tsx
-"use client";
+'use client';
 
-import { ReactNode, useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import { useEnableAnimations } from '@/lib/utils/animation'; // Использование нового хука вместо функции
 
 interface PageTransitionProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-export default function PageTransition({ children }: PageTransitionProps) {
+const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const pathname = usePathname();
+  const enableAnimations = useEnableAnimations(); // Используем хук вместо функции shouldEnableAnimations
   
-  // Эффект для скролла вверх при смене страницы
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  // Если анимации отключены, просто отображаем содержимое без анимаций
+  if (!enableAnimations) {
+    return <>{children}</>;
+  }
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ 
-          type: "tween", 
-          duration: 0.3,
-          ease: "easeInOut" 
-        }}
+        exit={{ opacity: 0, y: 5 }}
+        transition={{ duration: 0.3 }}
       >
         {children}
       </motion.div>
     </AnimatePresence>
   );
-}
+};
+
+export default PageTransition;
