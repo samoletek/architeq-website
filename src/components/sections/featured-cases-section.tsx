@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { SectionAnimation, AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 // Тип для представления кейса
 export interface FeaturedCase {

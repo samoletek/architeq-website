@@ -14,6 +14,13 @@ interface IconWithColor {
   color?: string;
 }
 
+// Тип для других иконок в метаданных
+type OtherIcon = {
+  rel: string;
+  url: string;
+  [key: string]: string | undefined;
+};
+
 /**
  * Компонент для вставки всех необходимых ссылок на фавиконки в head
  * Используется в cтарой версии с кастомным _document.tsx
@@ -59,7 +66,7 @@ export function generateFaviconMetadata({
         { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
       ],
       other: [
-        safariIcon as any // Используем any здесь для обхода проверки типов
+        safariIcon as unknown as OtherIcon
       ]
     },
     manifest: '/favicon/site.webmanifest',

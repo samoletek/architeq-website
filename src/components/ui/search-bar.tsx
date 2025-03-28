@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { usePathname } from 'next/navigation';
 
 // Типы результатов поиска
