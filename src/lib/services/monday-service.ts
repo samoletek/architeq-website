@@ -47,10 +47,10 @@ export async function submitToMonday(formData: FormData): Promise<{ success: boo
     if (companyColumnId) columnValues[companyColumnId] = formData.company || '';
     if (phoneColumnId && formData.phone) columnValues[phoneColumnId] = { phone: formData.phone, countryShortName: 'US' };
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
-    if (interestColumnId) columnValues[interestColumnId] = { label: formData.interest };
+    if (interestColumnId) columnValues[interestColumnId] = { labels: [formData.interest] };
     
     // Обрабатываем имя элемента для безопасного включения в запрос
-    const itemName = `Contact from ${formData.name.replace(/["\\]/g, '')}`;
+    const itemName = `${formData.name.replace(/["\\]/g, '')}`;
     
     // Формируем мутацию GraphQL
     const mutation = `
