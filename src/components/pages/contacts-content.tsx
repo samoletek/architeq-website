@@ -1,124 +1,106 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { LoadingButton } from '@/components/ui/loading-button';
 import CalendlyWidget from '@/components/ui/calendly-widget';
+import { FormInput } from '@/components/ui/form-input';
+import { FormSelect } from '@/components/ui/form-select';
+import { motion } from 'framer-motion';
+import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
+import type { FormFields, FormErrors } from '@/lib/utils/validation';
+
+// Типы для формы
+interface ContactFormData extends FormFields {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  message: string;
+  interest: string;
+}
+
+interface ContactFormState {
+  isSubmitting: boolean;
+  submitMessage: {type: string, text: string} | null;
+  errors: FormErrors;
+  touched: Record<string, boolean>;
+}
+
+// Варианты интересов
+const interestOptions = [
+  { value: 'General Inquiry', label: 'Общий запрос' },
+  { value: 'Business Process Automation', label: 'Автоматизация бизнес-процессов' },
+  { value: 'CRM Integration', label: 'Интеграция CRM' },
+  { value: 'Industry-Specific Solution', label: 'Отраслевое решение' },
+  { value: 'AI Solution', label: 'AI-решение' },
+  { value: 'Documentation & Forms', label: 'Документация и формы' },
+  { value: 'Financial System Integration', label: 'Интеграция финансовых систем' },
+];
+
+// Валидаторы для полей формы
+const formValidators = {
+  name: [required('Введите ваше имя')],
+  email: [required('Введите ваш email'), isEmail('Введите корректный email')],
+  message: [required('Сообщение обязательно для заполнения')],
+  phone: [isPhone('Введите корректный номер телефона')],
+};
 
 export default function ContactsContent() {
   // Состояние формы
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     company: '',
     phone: '',
     message: '',
-    interest: 'General Inquiry',
+    interest: interestOptions[0].value,
   });
   
-  // Состояния валидации
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-  
-  // Состояние отправки и сообщения
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{type: string, text: string} | null>(null);
-  
-  // Варианты интересов
-  const interestOptions = [
-    'General Inquiry',
-    'Business Process Automation',
-    'CRM Integration',
-    'Industry-Specific Solution',
-    'AI Solution',
-    'Documentation & Forms',
-    'Financial System Integration',
-  ];
+  // Состояние формы
+  const [formState, setFormState] = useState<ContactFormState>({
+    isSubmitting: false,
+    submitMessage: null,
+    errors: {},
+    touched: {},
+  });
   
   // Обработчик изменения полей формы
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (name: string) => (value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    
-    // Если поле было помечено как "тронутое", выполняем валидацию при изменении
-    if (touched[name]) {
-      validateField(name, value);
-    }
   };
   
-  // Обработчик события потери фокуса для валидации
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    
-    // Помечаем поле как "тронутое"
-    setTouched(prev => ({
+  // Обработчик события потери фокуса для маркировки поля как "тронутого"
+  const handleBlur = (name: string) => {
+    setFormState(prev => ({
       ...prev,
-      [name]: true
+      touched: {
+        ...prev.touched,
+        [name]: true
+      }
     }));
-    
-    // Валидируем поле
-    validateField(name, value);
-  };
-  
-  // Функция валидации отдельного поля
-  const validateField = (name: string, value: string) => {
-    let errorMessage = '';
-    
-    switch (name) {
-      case 'name':
-        if (!value.trim()) {
-          errorMessage = 'Name required';
-        }
-        break;
-      case 'email':
-        if (!value.trim()) {
-          errorMessage = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          errorMessage = 'Please enter a valid email address';
-        }
-        break;
-      case 'message':
-        if (!value.trim()) {
-          errorMessage = 'The message is obligatory for filling in';
-        }
-        break;
-      case 'phone':
-        if (value.trim() && !/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(value)) {
-          errorMessage = 'Please enter the correct phone number';
-        }
-        break;
-      default:
-        break;
-    }
-    
-    setErrors(prev => ({
-      ...prev,
-      [name]: errorMessage
-    }));
-    
-    return !errorMessage;
   };
   
   // Функция валидации всей формы
-  const validateForm = () => {
-    const nameValid = validateField('name', formData.name);
-    const emailValid = validateField('email', formData.email);
-    const messageValid = validateField('message', formData.message);
-    const phoneValid = validateField('phone', formData.phone);
+  const validateContactForm = () => {
+    const errors = validateForm(formData, formValidators);
     
-    // Помечаем все поля как "тронутые"
-    setTouched({
-      name: true,
-      email: true,
-      message: true,
-      phone: true,
-      company: true,
-      interest: true
-    });
+    setFormState(prev => ({
+      ...prev,
+      errors,
+      touched: {
+        name: true,
+        email: true,
+        message: true,
+        phone: true,
+        company: true,
+        interest: true
+      }
+    }));
     
-    return nameValid && emailValid && messageValid && phoneValid;
+    return Object.keys(errors).length === 0;
   };
 
   // Обработчик отправки формы
@@ -126,17 +108,23 @@ export default function ContactsContent() {
     e.preventDefault();
     
     // Проверяем валидность формы
-    if (!validateForm()) {
-      setSubmitMessage({
-        type: 'error',
-        text: 'Please correct any errors on the form before submitting.'
-      });
+    if (!validateContactForm()) {
+      setFormState(prev => ({
+        ...prev,
+        submitMessage: {
+          type: 'error',
+          text: 'Пожалуйста, исправьте ошибки в форме перед отправкой.'
+        }
+      }));
       return;
     }
     
     // Начинаем отправку
-    setIsSubmitting(true);
-    setSubmitMessage(null);
+    setFormState(prev => ({
+      ...prev,
+      isSubmitting: true,
+      submitMessage: null
+    }));
     
     try {
       // Отправка данных на наш API endpoint
@@ -152,10 +140,14 @@ export default function ContactsContent() {
       
       if (data.success) {
         // Успешная отправка
-        setSubmitMessage({
-          type: 'success',
-          text: 'Thank you! Your message has been successfully sent. We will contact you shortly.'
-        });
+        setFormState(prev => ({
+          ...prev,
+          isSubmitting: false,
+          submitMessage: {
+            type: 'success',
+            text: 'Спасибо! Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.'
+          }
+        }));
         
         // Сброс формы
         setFormData({
@@ -164,41 +156,53 @@ export default function ContactsContent() {
           company: '',
           phone: '',
           message: '',
-          interest: 'General Inquiry',
+          interest: interestOptions[0].value,
         });
         
         // Сброс состояний валидации
-        setErrors({});
-        setTouched({});
+        setFormState(prev => ({
+          ...prev,
+          errors: {},
+          touched: {}
+        }));
       } else {
         // Ошибка отправки
-        setSubmitMessage({
-          type: 'error',
-          text: data.message || 'An error occurred while submitting the form. Please try again later.'
-        });
+        setFormState(prev => ({
+          ...prev,
+          isSubmitting: false,
+          submitMessage: {
+            type: 'error',
+            text: data.message || 'При отправке формы произошла ошибка. Пожалуйста, попробуйте позже.'
+          }
+        }));
       }
     } catch (error) {
       // Ошибка отправки
       console.error('Form submission error:', error);
-      setSubmitMessage({
-        type: 'error',
-        text: 'An error occurred while submitting the form. Please try again later.'
-      });
-    } finally {
-      setIsSubmitting(false);
+      setFormState(prev => ({
+        ...prev,
+        isSubmitting: false,
+        submitMessage: {
+          type: 'error',
+          text: 'При отправке формы произошла ошибка. Пожалуйста, попробуйте позже.'
+        }
+      }));
     }
   };
   
   // Сбрасываем сообщение об успешной отправке через некоторое время
   useEffect(() => {
-    if (submitMessage?.type === 'success') {
+    if (formState.submitMessage?.type === 'success') {
       const timer = setTimeout(() => {
-        setSubmitMessage(null);
+        setFormState(prev => ({
+          ...prev,
+          submitMessage: null
+        }));
       }, 10000);
       
       return () => clearTimeout(timer);
     }
-  }, [submitMessage]);
+  }, [formState.submitMessage]);
   
   return (
     <>
@@ -206,9 +210,9 @@ export default function ContactsContent() {
       <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Связаться с нами</h1>
             <p className="text-xl text-light-gray mb-6">
-              Get in touch with our team to discuss your automation needs and how we can help streamline your business processes.
+              Свяжитесь с нашей командой, чтобы обсудить ваши потребности в автоматизации и как мы можем помочь оптимизировать ваши бизнес-процессы.
             </p>
           </div>
         </div>
@@ -220,159 +224,119 @@ export default function ContactsContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl font-bold mb-6">Отправить сообщение</h2>
               
               {/* Form status message */}
-              {submitMessage && (
-                <div 
+              {formState.submitMessage && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
                   className={`p-4 mb-6 rounded-lg ${
-                    submitMessage.type === 'success' 
+                    formState.submitMessage.type === 'success' 
                       ? 'bg-green-500/20 text-green-200 border border-green-500/30' 
                       : 'bg-red-500/20 text-red-200 border border-red-500/30'
                   }`}
                 >
-                  {submitMessage.text}
-                </div>
+                  {formState.submitMessage.text}
+                </motion.div>
               )}
               
               <form onSubmit={handleSubmit} noValidate>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Your Name <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`w-full bg-dark-gray border ${
-                        errors.name && touched.name ? 'border-red-500' : 'border-medium-gray'
-                      } rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary`}
-                      placeholder="John Doe"
-                      required
-                    />
-                    {errors.name && touched.name && (
-                      <p className="mt-1 text-red-400 text-sm">{errors.name}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email Address <span className="text-primary">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`w-full bg-dark-gray border ${
-                        errors.email && touched.email ? 'border-red-500' : 'border-medium-gray'
-                      } rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary`}
-                      placeholder="your@email.com"
-                      required
-                    />
-                    {errors.email && touched.email && (
-                      <p className="mt-1 text-red-400 text-sm">{errors.email}</p>
-                    )}
-                  </div>
+                  <FormInput
+                    id="name"
+                    name="name"
+                    label="Ваше имя"
+                    value={formData.name}
+                    onChange={(e) => handleChange('name')(e.target.value)}
+                    onBlur={() => handleBlur('name')}
+                    placeholder="Иван Иванов"
+                    error={formState.errors.name || ''}
+                    touched={!!formState.touched.name}
+                    required
+                    validators={formValidators.name}
+                  />
+                  
+                  <FormInput
+                    id="email"
+                    name="email"
+                    label="Email адрес"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange('email')(e.target.value)}
+                    onBlur={() => handleBlur('email')}
+                    placeholder="your@email.com"
+                    error={formState.errors.email || ''}
+                    touched={!!formState.touched.email}
+                    required
+                    validators={formValidators.email}
+                  />
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Company Name
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className="w-full bg-dark-gray border border-medium-gray rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                      placeholder="Your Company"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={`w-full bg-dark-gray border ${
-                        errors.phone && touched.phone ? 'border-red-500' : 'border-medium-gray'
-                      } rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary`}
-                      placeholder="+1 (123) 456-7890"
-                    />
-                    {errors.phone && touched.phone && (
-                      <p className="mt-1 text-red-400 text-sm">{errors.phone}</p>
-                    )}
-                  </div>
+                  <FormInput
+                    id="company"
+                    name="company"
+                    label="Название компании"
+                    value={formData.company}
+                    onChange={(e) => handleChange('company')(e.target.value)}
+                    onBlur={() => handleBlur('company')}
+                    placeholder="Ваша компания"
+                  />
+                  
+                  <FormInput
+                    id="phone"
+                    name="phone"
+                    label="Номер телефона"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleChange('phone')(e.target.value)}
+                    onBlur={() => handleBlur('phone')}
+                    placeholder="+7 (___) ___-__-__"
+                    error={formState.errors.phone || ''}
+                    touched={!!formState.touched.phone}
+                    validators={formValidators.phone}
+                  />
                 </div>
                 
                 <div className="mb-4">
-                  <label htmlFor="interest" className="block text-sm font-medium mb-2">
-                    What are you interested in?
-                  </label>
-                  <select
+                  <FormSelect
                     id="interest"
                     name="interest"
+                    label="Что вас интересует?"
                     value={formData.interest}
-                    onChange={handleChange}
-                    className="w-full bg-dark-gray border border-medium-gray rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                  >
-                    {interestOptions.map((option) => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
+                    onChange={(e) => handleChange('interest')(e.target.value)}
+                    options={interestOptions}
+                  />
                 </div>
                 
                 <div className="mb-6">
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Your Message <span className="text-primary">*</span>
-                  </label>
-                  <textarea
+                  <FormInput
                     id="message"
                     name="message"
+                    label="Ваше сообщение"
+                    type="textarea"
                     value={formData.message}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    onChange={(e) => handleChange('message')(e.target.value)}
+                    onBlur={() => handleBlur('message')}
                     rows={5}
-                    className={`w-full bg-dark-gray border ${
-                      errors.message && touched.message ? 'border-red-500' : 'border-medium-gray'
-                    } rounded-lg py-3 px-4 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary`}
-                    placeholder="Please share the details of your project or inquiry so we can better prepare for the call with you!"
+                    placeholder="Пожалуйста, поделитесь деталями вашего проекта или запроса, чтобы мы могли лучше подготовиться к звонку с вами!"
+                    error={formState.errors.message || ''}
+                    touched={!!formState.touched.message}
                     required
+                    validators={formValidators.message}
                   />
-                  {errors.message && touched.message && (
-                    <p className="mt-1 text-red-400 text-sm">{errors.message}</p>
-                  )}
                 </div>
                 
-                <Button 
+                <LoadingButton 
                   type="submit" 
-                  disabled={isSubmitting}
+                  isLoading={formState.isSubmitting}
+                  loadingText="Отправка..."
                   className="w-full md:w-auto min-w-40"
                 >
-                  {isSubmitting ? (
-                    <span className="flex items-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
-                  ) : 'Send Message'}
-                </Button>
+                  Отправить сообщение
+                </LoadingButton>
               </form>
             </div>
             
@@ -380,9 +344,9 @@ export default function ContactsContent() {
             <div>
               {/* Embedded Calendly */}
               <div className="bg-dark-gray rounded-lg p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4">Book a Free Consultation</h3>
+                <h3 className="text-xl font-semibold mb-4">Бесплатная консультация</h3>
                 <p className="text-light-gray mb-4">
-                  Schedule a 30-minute call with our automation expert to discuss your needs and how we can help streamline your business processes.
+                  Запланируйте 30-минутный звонок с нашим экспертом по автоматизации, чтобы обсудить ваши потребности и как мы можем помочь оптимизировать ваши бизнес-процессы.
                 </p>
                 <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
                   <CalendlyWidget 
@@ -399,13 +363,13 @@ export default function ContactsContent() {
                 </div>
                 
                 <p className="text-xs text-light-gray mt-2 text-center">
-                  Powered by Calendly
+                  Работает на Calendly
                 </p>
               </div>
               
               {/* Additional Contact Information */}
               <div className="bg-dark-gray rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+                <h3 className="text-xl font-semibold mb-4">Контактная информация</h3>
                 
                 <div className="space-y-4">
                   <div>
@@ -414,13 +378,13 @@ export default function ContactsContent() {
                   </div>
                   
                   <div>
-                    <h4 className="font-medium mb-1">Working Hours</h4>
-                    <p className="text-light-gray">We operate across multiple time zones</p>
+                    <h4 className="font-medium mb-1">Рабочие часы</h4>
+                    <p className="text-light-gray">Мы работаем в разных часовых поясах</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-medium mb-1">Languages</h4>
-                    <p className="text-light-gray">English, Ukrainian, Russian</p>
+                    <h4 className="font-medium mb-1">Языки</h4>
+                    <p className="text-light-gray">Английский, Украинский, Русский</p>
                   </div>
                 </div>
               </div>
@@ -432,28 +396,44 @@ export default function ContactsContent() {
       {/* FAQ Section */}
       <section className="py-16 bg-dark-gray">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Часто задаваемые вопросы</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors">
-              <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
-              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We&apos;ll provide a detailed timeline during our initial consultation.</p>
-            </div>
+            <motion.div 
+              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-xl font-semibold mb-2">Как быстро вы можете внедрить решение?</h3>
+              <p className="text-light-gray">Большинство наших решений по автоматизации можно внедрить в течение 2-4 недель, в зависимости от сложности. Мы предоставим подробный график во время нашей первоначальной консультации.</p>
+            </motion.div>
             
-            <div className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors">
-              <h3 className="text-xl font-semibold mb-2">Do you work with clients internationally?</h3>
-              <p className="text-light-gray">Yes, we work with clients across the US, Europe, Australia, and Japan. Our team operates across multiple time zones to provide convenient support.</p>
-            </div>
+            <motion.div 
+              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-xl font-semibold mb-2">Работаете ли вы с клиентами из других стран?</h3>
+              <p className="text-light-gray">Да, мы работаем с клиентами из США, Европы, Австралии и Японии. Наша команда работает в разных часовых поясах, чтобы обеспечить удобную поддержку.</p>
+            </motion.div>
             
-            <div className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors">
-              <h3 className="text-xl font-semibold mb-2">What is your pricing model?</h3>
-              <p className="text-light-gray">Our pricing depends on the scope and complexity of your project. We offer both fixed-price projects and monthly retainers for ongoing support and maintenance.</p>
-            </div>
+            <motion.div 
+              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-xl font-semibold mb-2">Какая у вас модель ценообразования?</h3>
+              <p className="text-light-gray">Наше ценообразование зависит от объема и сложности вашего проекта. Мы предлагаем как проекты с фиксированной ценой, так и ежемесячные платежи для постоянной поддержки и обслуживания.</p>
+            </motion.div>
             
-            <div className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors">
-              <h3 className="text-xl font-semibold mb-2">Do you provide training for our team?</h3>
-              <p className="text-light-gray">Absolutely! We provide comprehensive training to ensure your team can effectively use and maintain the automated systems we implement.</p>
-            </div>
+            <motion.div 
+              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="text-xl font-semibold mb-2">Проводите ли вы обучение для нашей команды?</h3>
+              <p className="text-light-gray">Абсолютно! Мы предоставляем комплексное обучение, чтобы ваша команда могла эффективно использовать и поддерживать автоматизированные системы, которые мы внедряем.</p>
+            </motion.div>
           </div>
         </div>
       </section>

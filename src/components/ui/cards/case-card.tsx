@@ -1,128 +1,239 @@
 // src/components/ui/cards/case-card.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
+import { ImageWithFallback } from '@/components/ui/image-with-fallback';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { storage } from '@/lib/utils/common';
 
-interface CaseCardProps {
+export interface CaseCardProps {
+  id?: string;
   title: string;
-  description?: string; // Оставим как необязательный, но не будем использовать
-  industry?: string; // Оставим как необязательный, но не будем использовать
+  description?: string;
+  industry?: string;
   company: string;
   location?: string;
-  results?: string[]; // Оставим как необязательный, но не будем использовать
-  image?: string; // Оставим как необязательный, но не будем использовать
+  results?: string[];
+  image?: string;
   tags: string[];
   href: string;
   className?: string;
-  style?: React.CSSProperties;
+  isCompact?: boolean;
+  priority?: boolean;
+  onClick?: () => void;
 }
 
+const getGradientColorFromString = (str: string): string => {
+  // Генерируем хеш на основе названия
+  const hash = str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  
+  // Выбираем оттенок из теплой палитры (красный, оранжевый, янтарный)
+  // Hue: 0-60 (красные и оранжевые тона)
+  const baseHue = hash % 60;
+  
+  return `hsl(${baseHue}, 80%, 35%)`;
+};
+
 export function CaseCard({
+  id,
   title,
+  description,
+  industry,
   company,
   location,
+  results,
+  image,
   tags,
   href,
   className,
-  style
+  isCompact = false,
+  priority = false,
+  onClick
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const { isMobile } = useDeviceDetection();
   
-  // Создаем градиент только в теплых тонах
-  const generateWarmGradient = (name: string) => {
-    // Генерируем хеш на основе названия компании
-    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
-    // Выбираем теплые цвета (красный, оранжевый, янтарный)
-    // Hue: 0-60 (красные и оранжевые тона)
-    const baseHue = hash % 60; // Ограничиваем теплыми цветами
-    const hue1 = baseHue;
-    const hue2 = (baseHue + 20) % 60; // Смещение для градиента
-    
-    return `linear-gradient(135deg, 
-      hsl(${hue1}, 75%, 35%) 0%, 
-      hsl(${hue2}, 85%, 25%) 100%)`;
+  // Создаем градиент на основе названия компании
+  const startColor = getGradientColorFromString(company);
+  const endColor = getGradientColorFromString(company + title);
+  const gradientStyle = {
+    background: `linear-gradient(135deg, ${startColor} 0%, ${endColor} 100%)`
   };
-
-  return (
-    <Link href={href}>
-      <motion.div
-        className={cn(
-          'bg-dark-gray rounded-xl overflow-hidden h-full border border-transparent',
-          'hover:border-primary/30 transition-all duration-300 flex flex-col justify-between',
-          isHovered ? 'shadow-neon-glow -translate-y-1' : '',
-          className
-        )}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        whileHover={{ y: -5 }}
-        transition={{ duration: 0.3 }}
-        style={style}
-      >
-        {/* Верхняя часть с градиентом и тегами */}
-        <div 
-          className="pt-3 px-3 pb-3 flex flex-wrap gap-2"
-          style={{
-            background: generateWarmGradient(company)
-          }}
-        >
-          {tags.map((tag, index) => (
-            <span 
-              key={index} 
-              className="bg-black/40 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+  
+  // Эффект для сохранения просмотренных кейсов
+  useEffect(() => {
+    if (id && typeof window !== 'undefined') {
+      // При клике сохраняем в истории просмотренных
+      const handleSaveToHistory = () => {
+        const recentlyViewed = storage.get<string[]>('recentlyViewedCases', []);
         
-        {/* Основной контент (название кейса) */}
-        <div className="px-4 py-5 flex-grow">
-          {/* Название кейса - увеличенный на один пункт */}
-          <h3 className="text-2xl font-sans font-semibold text-white leading-tight">
-            {title}
-          </h3>
-        </div>
+        // Если уже есть в истории, удаляем его (чтобы добавить в начало)
+        const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
         
-        {/* Нижняя часть с компанией и локацией */}
-        <div className="px-3 pb-3">
-          {/* Компания */}
-          <p className="text-white text-base flex items-center mb-1">
-            <span className="text-light-gray mr-2">Company:</span>
-            <span className="font-medium">{company}</span>
-          </p>
-          
-          {/* Локация */}
-          {location && (
-            <p className="text-white/80 text-base flex items-center">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4 mr-1 text-primary" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
+        // Добавляем текущий кейс в начало списка
+        const updatedHistory = [id, ...filteredHistory].slice(0, 10); // Ограничиваем 10 последними
+        
+        storage.set('recentlyViewedCases', updatedHistory);
+      };
+      
+      // Находим ссылку или элемент
+      const linkElement = document.querySelector(`a[href="${href}"]`);
+      if (linkElement) {
+        linkElement.addEventListener('click', handleSaveToHistory);
+        
+        return () => {
+          linkElement.removeEventListener('click', handleSaveToHistory);
+        };
+      }
+    }
+  }, [id, href]);
+  
+  // Определяем высоту карточки в зависимости от режима
+  const cardHeight = isCompact ? 'auto' : 'h-full';
+  
+  // Основной контент карточки
+  const cardContent = (
+    <motion.div
+      className={cn(
+        'bg-dark-gray rounded-xl overflow-hidden border border-transparent',
+        'transition-all duration-300 flex flex-col',
+        isHovered ? 'border-primary/30 shadow-neon-glow -translate-y-1' : 'shadow-sm',
+        cardHeight,
+        className
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: isMobile ? 0 : -5 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Верхняя часть с изображением/градиентом и тегами */}
+      <div className="relative">
+        <div className="pt-3 px-3 pb-3" style={gradientStyle}>
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
+              <span 
+                key={index} 
+                className="bg-black/40 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"
               >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+        
+        {/* Изображение (если есть) */}
+        {image && !isCompact && (
+          <div className="h-40 relative">
+            <ImageWithFallback
+              src={image}
+              alt={`${title} - ${company}`}
+              fill
+              className="w-full"
+              category="case"
+              priority={priority}
+            />
+          </div>
+        )}
+      </div>
+      
+      {/* Основной контент (название кейса и описание) */}
+      <div className="px-4 py-5 flex-grow">
+        {/* Название кейса */}
+        <h3 className="text-xl font-semibold text-white leading-tight mb-2">
+          {title}
+        </h3>
+        
+        {/* Описание (если есть и не в компактном режиме) */}
+        {description && !isCompact && (
+          <p className="text-light-gray text-sm mb-4 line-clamp-3">
+            {description}
+          </p>
+        )}
+        
+        {/* Результаты (если есть и не в компактном режиме) */}
+        {results && results.length > 0 && !isCompact && (
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-2 text-primary">Результаты:</h4>
+            <ul className="text-light-gray text-sm space-y-1">
+              {results.slice(0, 2).map((result, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-primary mr-2">•</span>
+                  <span className="line-clamp-1">{result}</span>
+                </li>
+              ))}
+              {results.length > 2 && (
+                <li className="text-primary text-xs mt-1">+ еще {results.length - 2}</li>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
+      
+      {/* Нижняя часть с компанией и локацией */}
+      <div className="px-3 pb-3 border-t border-medium-gray/40 pt-3 mt-auto">
+        {/* Компания */}
+        <p className="text-white text-sm flex items-center mb-1">
+          <span className="text-light-gray mr-2">Компания:</span>
+          <span className="font-medium truncate">{company}</span>
+        </p>
+        
+        {/* Локация или индустрия */}
+        {(location || industry) && (
+          <p className="text-white/80 text-sm flex items-center">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-4 w-4 mr-1 text-primary flex-shrink-0" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              {location ? (
                 <path 
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                   strokeWidth={2} 
                   d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" 
                 />
+              ) : (
                 <path 
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                   strokeWidth={2} 
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" 
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
                 />
-              </svg>
-              {location}
-            </p>
-          )}
-        </div>
-      </motion.div>
+              )}
+            </svg>
+            <span className="truncate">{location || industry}</span>
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+  
+  // Если задан onClick, оборачиваем в button, иначе в Link
+  if (onClick) {
+    return (
+      <button 
+        onClick={onClick} 
+        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-primary rounded-xl"
+      >
+        {cardContent}
+      </button>
+    );
+  }
+  
+  // По умолчанию оборачиваем в Link
+  return (
+    <Link href={href} className="block">
+      {cardContent}
     </Link>
   );
+}
+
+// Экспортируем компактную версию карточки как отдельный компонент
+export function CompactCaseCard(props: Omit<CaseCardProps, 'isCompact'>) {
+  return <CaseCard {...props} isCompact={true} />;
 }

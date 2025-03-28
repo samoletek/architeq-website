@@ -3,7 +3,7 @@ import SiteLayout from '@/components/layout/site-layout'
 import HeroSection from '@/components/sections/hero-section'
 import BenefitsSection from '@/components/sections/benefits-section'
 import FeaturedCasesSection from '@/components/sections/featured-cases-section'
-import SolutionsSection from '@/components/sections/solutions-section'
+import { SolutionsSection } from '@/components/sections/solutions-section'
 import TestimonialsSection from '@/components/sections/testimonials-section'
 import CTASection from '@/components/sections/cta-section'
 import { generateMetadata } from '@/lib/seo/metadata';

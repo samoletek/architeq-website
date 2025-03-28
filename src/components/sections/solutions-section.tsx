@@ -1,31 +1,53 @@
 "use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import SolutionSwitcher from '@/components/ui/solution-switcher';
+import { SolutionSwitcher } from '@/components/ui/solution-switcher';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
+import { cn } from '@/lib/utils/utils';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { SectionAnimation } from '@/components/ui/section-animation';
+import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 
-// Определение типов
-interface SolutionTab {
+// Тип для таба решения
+export interface SolutionTab {
   id: string;
   label: string;
   description: string;
   icon: IconName;
 }
 
-interface Solution {
+// Тип для полного решения
+export interface Solution {
   id: string;
   label: string;
   icon: IconName;
   description: string;
   features: string[];
-  imageUrl: string;
+  imageUrl?: string;
+  caseStudies?: Array<{
+    id: string;
+    title: string;
+  }>;
+  href?: string;
 }
 
-// Данные о решениях
-const solutions: Solution[] = [
+// Интерфейс для параметров секции
+export interface SolutionsSectionProps {
+  title?: string;
+  subtitle?: string;
+  solutions?: Solution[];
+  className?: string;
+  defaultSolutionId?: string;
+  buttonText?: string;
+  variant?: 'default' | 'alternate';
+  withAnimation?: boolean;
+}
+
+// Данные о решениях по умолчанию
+const defaultSolutions: Solution[] = [
   {
     id: 'business-process',
     label: 'Business Process',
@@ -38,7 +60,8 @@ const solutions: Solution[] = [
       'Data validation and error prevention',
       'Dashboard creation for process monitoring'
     ],
-    imageUrl: '/images/solutions/business-process.jpg'
+    imageUrl: '/images/solutions/business-process.jpg',
+    href: '/services/business-process'
   },
   {
     id: 'crm-integration',
@@ -52,7 +75,8 @@ const solutions: Solution[] = [
       'Document management integration',
       'Custom dashboard creation'
     ],
-    imageUrl: '/images/solutions/crm-integration.jpg'
+    imageUrl: '/images/solutions/crm-integration.jpg',
+    href: '/services/crm-integration'
   },
   {
     id: 'boxed-solutions',
@@ -66,7 +90,8 @@ const solutions: Solution[] = [
       'Best practices implementation',
       'Scalable architecture'
     ],
-    imageUrl: '/images/solutions/boxed-solutions.jpg'
+    imageUrl: '/images/solutions/boxed-solutions.jpg',
+    href: '/services/boxed-solutions'
   },
   {
     id: 'ai-solutions',
@@ -80,7 +105,8 @@ const solutions: Solution[] = [
       'Data pattern recognition',
       'Predictive analytics'
     ],
-    imageUrl: '/images/solutions/ai-solutions.jpg'
+    imageUrl: '/images/solutions/ai-solutions.jpg',
+    href: '/services/ai-solutions'
   },
   {
     id: 'documentation',
@@ -94,7 +120,8 @@ const solutions: Solution[] = [
       'Document version control',
       'Compliance monitoring'
     ],
-    imageUrl: '/images/solutions/documentation.jpg'
+    imageUrl: '/images/solutions/documentation.jpg',
+    href: '/services/documentation'
   },
   {
     id: 'finance',
@@ -108,104 +135,216 @@ const solutions: Solution[] = [
       'Integration with accounting systems',
       'Multi-currency support'
     ],
-    imageUrl: '/images/solutions/finance.jpg'
+    imageUrl: '/images/solutions/finance.jpg',
+    href: '/services/finance'
   }
 ];
 
-export default function SolutionsSection() {
-  const [activeSolution, setActiveSolution] = useState(solutions[0]);
-
-  const handleSolutionChange = (solution: SolutionTab) => {
-    setActiveSolution(solutions.find(s => s.id === solution.id) || solutions[0]);
-  };
-
+export function SolutionsSection({
+  title = "Our Solutions",
+  subtitle = "We offer a comprehensive range of automation solutions tailored to your business needs. Explore our services below.",
+  solutions = defaultSolutions,
+  className,
+  defaultSolutionId,
+  buttonText = "Learn More About",
+  variant = 'default',
+  withAnimation = true
+}: SolutionsSectionProps) {
+  const [activeSolution, setActiveSolution] = useState<Solution>(
+    defaultSolutionId ? 
+      solutions.find(s => s.id === defaultSolutionId) || solutions[0] : 
+      solutions[0]
+  );
+  
+  const { isMobile, isLowPerformance } = useDeviceDetection();
+  
+  // Обработчик смены таба
+  const handleSolutionChange = useCallback((tab: SolutionTab) => {
+    const solution = solutions.find(s => s.id === tab.id);
+    if (solution) {
+      setActiveSolution(solution);
+    }
+  }, [solutions]);
+  
+  // Преобразуем данные решений в формат, ожидаемый компонентом SolutionSwitcher
+  const solutionTabs: SolutionTab[] = solutions.map(solution => ({
+    id: solution.id,
+    label: solution.label,
+    description: solution.description,
+    icon: solution.icon
+  }));
+  
+  // Упрощаем анимацию, если устройство с низкой производительностью
+  const shouldAnimate = withAnimation && !isLowPerformance;
+  
+  // Определяем фон секции в зависимости от варианта
+  const sectionBg = variant === 'default' ? 'bg-dark-gray' : 'bg-site-bg';
+  
   return (
-    <section className="py-20 bg-dark-gray">
+    <section className={cn("py-20", sectionBg, className)}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Solutions</h2>
+        <SectionAnimation className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
           <p className="text-light-gray max-w-2xl mx-auto">
-            We offer a comprehensive range of automation solutions tailored to your business needs. Explore our services below.
+            {subtitle}
           </p>
-        </div>
+        </SectionAnimation>
 
         <SolutionSwitcher
-          tabs={solutions.map(s => ({
-            id: s.id,
-            label: s.label,
-            description: s.description,
-            icon: s.icon
-          }))}
+          tabs={solutionTabs}
           defaultTab={activeSolution.id}
           onTabChange={handleSolutionChange}
         />
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           {/* Левая колонка - информация о решении */}
-          <motion.div
-            key={activeSolution.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
-            <p className="text-light-gray mb-6">{activeSolution.description}</p>
-            
-            <div className="mb-6">
-              <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
-              <ul className="space-y-2">
-                {activeSolution.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
-                    <span className="text-light-gray">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <Link href={`/services/${activeSolution.id}`}>
-              <Button>
-                Learn More About {activeSolution.label}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Button>
-            </Link>
-          </motion.div>
-          
-          {/* Правая колонка - визуализация (временный плейсхолдер) */}
-          <motion.div
-            key={`image-${activeSolution.id}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-            className="bg-medium-gray rounded-lg overflow-hidden h-80 relative"
-          >
-            <div className="absolute inset-0 p-8 flex items-center justify-center">
-              {/* Будет заменено на реальную визуализацию решения */}
-              <div className="text-center">
-                <div className={`text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-dark-gray`}>
-                  <Icon name={activeSolution.icon} className="h-8 w-8" />
-                </div>
-                <div className="text-light-gray text-sm">
-                  Visualization for {activeSolution.label} will be placed here
-                </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`info-${activeSolution.id}`}
+              initial={shouldAnimate ? { opacity: 0, x: -20 } : { opacity: 1 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={shouldAnimate ? { opacity: 0, x: 20 } : { opacity: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
+              <p className="text-light-gray mb-6">{activeSolution.description}</p>
+              
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
+                <ul className="space-y-2">
+                  {activeSolution.features.map((feature, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-primary mr-2">•</span>
+                      <span className="text-light-gray">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          </motion.div>
+              
+              {activeSolution.href && (
+                <Link href={activeSolution.href}>
+                  <Button>
+                    {buttonText} {activeSolution.label}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Button>
+                </Link>
+              )}
+              
+              {/* Ссылки на кейсы, если есть */}
+              {activeSolution.caseStudies && activeSolution.caseStudies.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="text-sm font-medium text-light-gray mb-2">Related Case Studies:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {activeSolution.caseStudies.map((caseStudy) => (
+                      <Link 
+                        key={caseStudy.id}
+                        href={`/cases/${caseStudy.id}`}
+                        className="text-primary text-sm hover:underline"
+                      >
+                        {caseStudy.title}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Правая колонка - изображение или визуализация */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`image-${activeSolution.id}`}
+              initial={shouldAnimate ? { opacity: 0, x: 20 } : { opacity: 1 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="rounded-lg overflow-hidden h-80 relative"
+            >
+              {activeSolution.imageUrl ? (
+                <ImageWithFallback
+                  src={activeSolution.imageUrl}
+                  alt={`${activeSolution.label} solution visualization`}
+                  fill
+                  className="object-cover"
+                  category="solution"
+                />
+              ) : (
+                <div className="absolute inset-0 p-8 flex items-center justify-center bg-medium-gray">
+                  <div className="text-center">
+                    <div className={`text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-dark-gray`}>
+                      <Icon name={activeSolution.icon} className="h-8 w-8" />
+                    </div>
+                    <div className="text-light-gray text-sm">
+                      Visualization for {activeSolution.label} will be placed here
+                    </div>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
+  );
+}
+
+// Компактная версия с отображением только карточек решений
+export function CompactSolutionsSection({
+  solutions = defaultSolutions.slice(0, 4),
+  className,
+  title = "Our Solutions",
+  viewAllHref = "/services"
+}: {
+  solutions?: Solution[];
+  className?: string;
+  title?: string;
+  viewAllHref?: string;
+}) {
+  return (
+    <div className={cn("py-10", className)}>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        {viewAllHref && (
+          <Link href={viewAllHref} className="text-primary hover:underline text-sm font-medium flex items-center">
+            View All
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {solutions.map((solution) => (
+          <Link 
+            key={solution.id}
+            href={solution.href || `/services/${solution.id}`}
+            className="bg-dark-gray hover:bg-dark-gray/80 rounded-lg p-5 transition-colors border border-transparent hover:border-primary/20"
+          >
+            <div className="flex items-center mb-3">
+              <div className="w-10 h-10 rounded-full bg-medium-gray flex items-center justify-center text-primary mr-3">
+                <Icon name={solution.icon} className="h-5 w-5" />
+              </div>
+              <h3 className="font-medium">{solution.label}</h3>
+            </div>
+            <p className="text-light-gray text-sm line-clamp-3">
+              {solution.description}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

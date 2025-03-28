@@ -1,12 +1,319 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CaseFilters, FilterGroup } from '@/components/ui/filters/case-filters';
+import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
+import { SectionAnimation } from '@/components/ui/section-animation';
+import { ImageWithFallback } from '@/components/ui/image-with-fallback';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { Icon } from '@/components/ui/icons/icon';
+
+// Импортируем типы и ассеты
+interface CaseData {
+  id: string;
+  title: string;
+  description: string;
+  industry: string;
+  solutionType: string;
+  company: string;
+  location: string;
+  results: string[];
+  image: string;
+  technologies: string[];
+}
+
+// Основной компонент страницы кейсов
+export default function CasesContent() {
+  // Состояние для фильтров
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedSolutionTypes, setSelectedSolutionTypes] = useState<string[]>([]);
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+  
+  // Состояние для мобильного представления
+  const [showFilterSection, setShowFilterSection] = useState<boolean>(false);
+  const { isMobile } = useDeviceDetection();
+  
+  // Данные для фильтрации
+  const allIndustries = useMemo(() => Array.from(new Set(allCases.map(caseItem => caseItem.industry))), []);
+  const allSolutionTypes = useMemo(() => Array.from(new Set(allCases.map(caseItem => caseItem.solutionType))), []);
+  const allTechnologies = useMemo(() => {
+    const techSet = new Set<string>();
+    allCases.forEach(caseItem => {
+      caseItem.technologies.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet);
+  }, []);
+  
+  // Формируем группы для фильтров
+  const filterGroups: FilterGroup[] = [
+    {
+      id: 'industry',
+      label: 'По индустрии',
+      options: allIndustries.map(industry => ({ 
+        id: industry, 
+        label: industry,
+        count: allCases.filter(c => c.industry === industry).length
+      })),
+      icon: <Icon name="industry" className="w-5 h-5" />,
+      initialOpen: true
+    },
+    {
+      id: 'solutionType',
+      label: 'По типу решения',
+      options: allSolutionTypes.map(type => ({ 
+        id: type, 
+        label: type,
+        count: allCases.filter(c => c.solutionType === type).length
+      })),
+      icon: <Icon name="process" className="w-5 h-5" />,
+      initialOpen: isMobile ? false : true
+    },
+    {
+      id: 'technology',
+      label: 'По технологии',
+      options: allTechnologies.map(tech => ({ 
+        id: tech, 
+        label: tech,
+        count: allCases.filter(c => c.technologies.includes(tech)).length
+      })),
+      icon: <Icon name="connection" className="w-5 h-5" />,
+      initialOpen: isMobile ? false : true
+    }
+  ];
+  
+  // Состояние для выбранных фильтров
+  const selectedOptions = {
+    industry: selectedIndustries,
+    solutionType: selectedSolutionTypes,
+    technology: selectedTechnologies
+  };
+  
+  // Умный поиск по всем полям
+  const performSearch = (item: CaseData, query: string) => {
+    if (!query) return true;
+    
+    const searchIn = [
+      item.title,
+      item.description,
+      item.company,
+      item.industry,
+      item.solutionType,
+      item.location,
+      ...item.technologies,
+      ...item.results
+    ].join(' ').toLowerCase();
+    
+    return query.toLowerCase().split(' ').every(word => searchIn.includes(word));
+  };
+  
+  // Фильтрация кейсов
+  const filteredCases = useMemo(() => {
+    return allCases.filter(caseItem => {
+      // Фильтр по поисковому запросу (умный поиск)
+      const matchesSearch = performSearch(caseItem, searchQuery);
+      
+      // Фильтр по индустрии
+      const matchesIndustries = selectedIndustries.length === 0 || 
+        selectedIndustries.includes(caseItem.industry);
+      
+      // Фильтр по типу решения
+      const matchesSolutionTypes = selectedSolutionTypes.length === 0 || 
+        selectedSolutionTypes.includes(caseItem.solutionType);
+      
+      // Фильтр по технологиям
+      const matchesTechnologies = selectedTechnologies.length === 0 || 
+        caseItem.technologies.some(tech => selectedTechnologies.includes(tech));
+      
+      return matchesSearch && matchesIndustries && matchesSolutionTypes && matchesTechnologies;
+    });
+  }, [
+    searchQuery, 
+    selectedIndustries, 
+    selectedSolutionTypes, 
+    selectedTechnologies
+  ]);
+  
+  // Обработчик для выбора фильтра
+  const handleFilterChange = (groupId: string, optionId: string) => {
+    switch (groupId) {
+      case 'industry':
+        setSelectedIndustries(prev => 
+          prev.includes(optionId) ? prev.filter(i => i !== optionId) : [...prev, optionId]
+        );
+        break;
+      case 'solutionType':
+        setSelectedSolutionTypes(prev => 
+          prev.includes(optionId) ? prev.filter(t => t !== optionId) : [...prev, optionId]
+        );
+        break;
+      case 'technology':
+        setSelectedTechnologies(prev => 
+          prev.includes(optionId) ? prev.filter(t => t !== optionId) : [...prev, optionId]
+        );
+        break;
+    }
+  };
+  
+  // Обработчик для поискового запроса
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
+  
+  // Сброс всех фильтров
+  const clearAllFilters = () => {
+    setSelectedIndustries([]);
+    setSelectedSolutionTypes([]);
+    setSelectedTechnologies([]);
+    setSearchQuery('');
+  };
+
+  return (
+    <>
+      {/* Hero section */}
+      <section className="py-20 md:py-28 bg-dark-gray">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <SectionAnimation>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Примеры работ</h1>
+              <p className="text-xl text-light-gray mb-6">
+                Изучите, как мы помогли компаниям из различных отраслей оптимизировать их процессы и достичь значительных результатов.
+              </p>
+              <Button variant="primary" size="lg" href="/contacts">
+                Заказать похожее решение
+              </Button>
+            </SectionAnimation>
+          </div>
+        </div>
+      </section>
+
+      {/* Filters and case studies */}
+      <section className="py-12 bg-site-bg">
+        <div className="container mx-auto px-4">
+          
+          {/* Мобильная кнопка фильтров */}
+          {isMobile && (
+            <div className="mb-6">
+              <Button 
+                variant={showFilterSection ? "primary" : "secondary"}
+                className="w-full flex items-center justify-center gap-2 mb-4"
+                onClick={() => setShowFilterSection(!showFilterSection)}
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" 
+                  />
+                </svg>
+                {showFilterSection ? 'Скрыть фильтры' : 'Показать фильтры'}
+              </Button>
+            </div>
+          )}
+          
+          {/* Верхний блок с фильтрами и кейсами */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Боковая панель с фильтрами */}
+            <div className={`lg:col-span-3 ${isMobile && !showFilterSection ? 'hidden' : ''}`}>
+              <CaseFilters 
+                groups={filterGroups}
+                selectedOptions={selectedOptions}
+                searchQuery={searchQuery}
+                onFilterChange={handleFilterChange}
+                onSearchChange={handleSearchChange}
+                onClearFilters={clearAllFilters}
+                filterCount={filteredCases.length}
+                isCompact={isMobile}
+                layout="vertical"
+              />
+            </div>
+            
+            {/* Основной контент с кейсами */}
+            <div className="lg:col-span-9">
+              
+              {/* Недавно просмотренные кейсы */}
+              <RecentlyViewedCases 
+                allCases={allCases} 
+                className="mb-10" 
+              />
+              
+              {/* Сетка с кейсами */}
+              {filteredCases.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <AnimatePresence>
+                    {filteredCases.map((caseItem, index) => (
+                      <motion.div
+                        key={caseItem.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        layout
+                      >
+                        <CaseCard 
+                          id={caseItem.id}
+                          title={caseItem.title}
+                          description={caseItem.description}
+                          industry={caseItem.industry}
+                          company={caseItem.company}
+                          location={caseItem.location}
+                          results={caseItem.results}
+                          image={caseItem.image}
+                          tags={[caseItem.solutionType, ...caseItem.technologies.slice(0, 2)]}
+                          href={`/cases/${caseItem.id}`}
+                        />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="bg-dark-gray rounded-lg p-8 text-center max-w-2xl mx-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <h3 className="text-xl font-semibold mb-2">Кейсы не найдены</h3>
+                  <p className="text-light-gray mb-4">
+                    Мы не смогли найти кейсы, соответствующие вашим текущим фильтрам.
+                  </p>
+                  <Button variant="secondary" onClick={clearAllFilters}>
+                    Сбросить все фильтры
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA section */}
+      <section className="py-16 bg-dark-gradient">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Хотите достичь таких же результатов?</h2>
+          <p className="text-light-gray max-w-2xl mx-auto mb-8">
+            Свяжитесь с нами сегодня, чтобы обсудить, как наши решения по автоматизации могут помочь вашему бизнесу достичь оптимальной эффективности и роста.
+          </p>
+          <Button variant="primary" size="lg" href="/contacts">
+            Бесплатная консультация
+          </Button>
+        </div>
+      </section>
+    </>
+  );
+}
 
 // Данные кейсов из документации - 20 кейсов
-const allCases = [
+const allCases: CaseData[] = [
   // Financial Automations
   {
     id: 'stripe-invoicing',
@@ -359,373 +666,3 @@ const allCases = [
     technologies: ['Twilio', 'AirCall', 'Monday CRM', 'Make']
   }
 ];
-
-// Получаем уникальные значения для фильтров
-const allIndustries = Array.from(new Set(allCases.map(caseItem => caseItem.industry)));
-const allSolutionTypes = Array.from(new Set(allCases.map(caseItem => caseItem.solutionType)));
-const allTechnologies = Array.from(new Set(allCases.flatMap(caseItem => caseItem.technologies)));
-
-export default function CasesPage() {
-  // Состояние для фильтров
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
-  const [selectedSolutionTypes, setSelectedSolutionTypes] = useState<string[]>([]);
-  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
-  const [activeFilterTab, setActiveFilterTab] = useState<string>('all');
-  const [showFilterSection, setShowFilterSection] = useState<string | null>(null);
-
-  // Умный поиск по всем полям
-  const performSearch = (item: Record<string, unknown>, query: string) => {
-    if (!query) return true;
-    
-    const searchIn = [
-      item.title,
-      item.description,
-      item.company,
-      item.industry,
-      item.solutionType,
-      item.location,
-      ...((item.technologies as string[]) || []),
-      ...((item.results as string[]) || [])
-    ].join(' ').toLowerCase();
-    
-    return query.toLowerCase().split(' ').every(word => searchIn.includes(word));
-  };
-  
-  // Фильтрация кейсов
-  const filteredCases = allCases.filter(caseItem => {
-    // Фильтр по поисковому запросу (умный поиск)
-    const matchesSearch = performSearch(caseItem, searchQuery);
-    
-    // Фильтр по индустрии
-    const matchesIndustries = selectedIndustries.length === 0 || 
-      selectedIndustries.includes(caseItem.industry);
-    
-    // Фильтр по типу решения
-    const matchesSolutionTypes = selectedSolutionTypes.length === 0 || 
-      selectedSolutionTypes.includes(caseItem.solutionType);
-    
-    // Фильтр по технологиям
-    const matchesTechnologies = selectedTechnologies.length === 0 || 
-      caseItem.technologies.some(tech => selectedTechnologies.includes(tech));
-    
-    return matchesSearch && matchesIndustries && matchesSolutionTypes && matchesTechnologies;
-  });
-
-  // Временная заглушка для изображения
-  const placeholderStyle = {
-    background: 'linear-gradient(135deg, #333 0%, #1E1E1E 100%)',
-    height: '200px'
-  };
-  
-  // Переключение вкладок фильтров
-  const handleTabChange = (tab: string) => {
-    setActiveFilterTab(tab);
-    if (tab !== 'all') {
-      setShowFilterSection(tab);
-    } else {
-      setShowFilterSection(null);
-    }
-  };
-  
-  // Обработчик для выбора фильтра по индустрии
-  const toggleIndustryFilter = (industry: string) => {
-    setSelectedIndustries(prev => 
-      prev.includes(industry) ? prev.filter(i => i !== industry) : [...prev, industry]
-    );
-  };
-  
-  // Обработчик для выбора фильтра по типу решения
-  const toggleSolutionTypeFilter = (type: string) => {
-    setSelectedSolutionTypes(prev => 
-      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
-    );
-  };
-  
-  // Обработчик для выбора фильтра по технологии
-  const toggleTechnologyFilter = (tech: string) => {
-    setSelectedTechnologies(prev => 
-      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
-    );
-  };
-  
-  // Сброс всех фильтров
-  const clearAllFilters = () => {
-    setSelectedIndustries([]);
-    setSelectedSolutionTypes([]);
-    setSelectedTechnologies([]);
-    setSearchQuery('');
-  };
-
-  return (
-    <>
-      {/* Hero section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
-            <p className="text-xl text-light-gray mb-6">
-              Explore how we&apos;ve helped businesses across various industries optimize their processes and achieve significant results.
-            </p>
-            <Button variant="primary" size="lg" href="/contacts">
-              Book a Similar Solution
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Filters section - компактная версия */}
-      <section className="py-8 bg-dark-gray border-b border-medium-gray">
-        <div className="container mx-auto px-4">
-          {/* Поисковая строка */}
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-2 text-center">Search Case Studies</h2>
-            <div className="max-w-2xl mx-auto relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-4 pr-10 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-                placeholder="Search by title, description, or company..."
-              />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          
-          {/* Табы для переключения фильтров */}
-          <div className="flex justify-center border-b border-medium-gray">
-            <button
-              onClick={() => handleTabChange('all')}
-              className={`px-5 py-3 font-medium transition-colors ${activeFilterTab === 'all' ? 'text-primary border-b-2 border-primary -mb-px' : 'text-light-gray hover:text-white'}`}
-            >
-              All Filters
-            </button>
-            <button
-              onClick={() => handleTabChange('industry')}
-              className={`px-5 py-3 font-medium transition-colors ${activeFilterTab === 'industry' ? 'text-primary border-b-2 border-primary -mb-px' : 'text-light-gray hover:text-white'}`}
-            >
-              By Industry
-            </button>
-            <button
-              onClick={() => handleTabChange('solutionType')}
-              className={`px-5 py-3 font-medium transition-colors ${activeFilterTab === 'solutionType' ? 'text-primary border-b-2 border-primary -mb-px' : 'text-light-gray hover:text-white'}`}
-            >
-              By Solution Type
-            </button>
-            <button
-              onClick={() => handleTabChange('technology')}
-              className={`px-5 py-3 font-medium transition-colors ${activeFilterTab === 'technology' ? 'text-primary border-b-2 border-primary -mb-px' : 'text-light-gray hover:text-white'}`}
-            >
-              By Technology
-            </button>
-          </div>
-          
-          {/* Секции фильтров */}
-          {showFilterSection === 'industry' && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-              className="py-4"
-            >
-              <h3 className="text-lg font-medium mb-3">Filter by Industry</h3>
-              <div className="flex flex-wrap gap-2">
-                {allIndustries.map((industry) => (
-                  <button
-                    key={industry}
-                    onClick={() => toggleIndustryFilter(industry)}
-                    className={`px-3 py-2 rounded-lg text-sm ${
-                      selectedIndustries.includes(industry) 
-                        ? 'bg-primary text-white' 
-                        : 'bg-medium-gray text-light-gray hover:bg-dark-gray hover:text-white'
-                    } transition-colors`}
-                  >
-                    {industry}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-          
-          {showFilterSection === 'solutionType' && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-              className="py-4"
-            >
-              <h3 className="text-lg font-medium mb-3">Filter by Solution Type</h3>
-              <div className="flex flex-wrap gap-2">
-                {allSolutionTypes.map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => toggleSolutionTypeFilter(type)}
-                    className={`px-3 py-2 rounded-lg text-sm ${
-                      selectedSolutionTypes.includes(type) 
-                        ? 'bg-primary text-white' 
-                        : 'bg-medium-gray text-light-gray hover:bg-dark-gray hover:text-white'
-                    } transition-colors`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-          
-          {showFilterSection === 'technology' && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
-              className="py-4"
-            >
-              <h3 className="text-lg font-medium mb-3">Filter by Technology</h3>
-              <div className="flex flex-wrap gap-2">
-                {allTechnologies.map((tech) => (
-                  <button
-                    key={tech}
-                    onClick={() => toggleTechnologyFilter(tech)}
-                    className={`px-3 py-2 rounded-lg text-sm ${
-                      selectedTechnologies.includes(tech) 
-                        ? 'bg-primary text-white' 
-                        : 'bg-medium-gray text-light-gray hover:bg-dark-gray hover:text-white'
-                    } transition-colors`}
-                  >
-                    {tech}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-          
-          {/* Активные фильтры и сброс */}
-          {(selectedIndustries.length > 0 || selectedSolutionTypes.length > 0 || selectedTechnologies.length > 0) && (
-            <div className="flex justify-between items-center pt-4">
-              <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-sm text-light-gray">Active filters:</span>
-                
-                {selectedIndustries.map(industry => (
-                  <span 
-                    key={`ind-${industry}`}
-                    className="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs flex items-center"
-                  >
-                    {industry}
-                    <button 
-                      onClick={() => toggleIndustryFilter(industry)}
-                      className="ml-1 focus:outline-none"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                ))}
-                
-                {selectedSolutionTypes.map(type => (
-                  <span 
-                    key={`sol-${type}`}
-                    className="bg-neon-blue/20 text-neon-blue rounded-full px-3 py-1 text-xs flex items-center"
-                  >
-                    {type}
-                    <button 
-                      onClick={() => toggleSolutionTypeFilter(type)}
-                      className="ml-1 focus:outline-none"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                ))}
-                
-                {selectedTechnologies.map(tech => (
-                  <span 
-                    key={`tech-${tech}`}
-                    className="bg-neon-purple/20 text-neon-purple rounded-full px-3 py-1 text-xs flex items-center"
-                  >
-                    {tech}
-                    <button 
-                      onClick={() => toggleTechnologyFilter(tech)}
-                      className="ml-1 focus:outline-none"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                ))}
-              </div>
-              
-              <button
-                onClick={clearAllFilters}
-                className="text-primary hover:text-white transition-colors text-sm"
-              >
-                Clear All
-              </button>
-            </div>
-          )}
-          
-          {/* Количество найденных кейсов */}
-          <div className="mt-4 text-sm text-light-gray">
-            {filteredCases.length} case {filteredCases.length === 1 ? 'study' : 'studies'} found
-          </div>
-        </div>
-      </section>
-
-      {/* Case studies grid */}
-      <section className="py-16 bg-site-bg">
-        <div className="container mx-auto px-4">
-          {filteredCases.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredCases.map((caseItem) => (
-                <CaseCard 
-                  key={caseItem.id}
-                  title={caseItem.title}
-                  description={caseItem.description}
-                  industry={caseItem.industry}
-                  company={caseItem.company}
-                  results={caseItem.results}
-                  image={caseItem.image}
-                  tags={[caseItem.solutionType, ...caseItem.technologies.slice(0, 2)]}
-                  href={`/cases/${caseItem.id}`}
-                  style={placeholderStyle}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-dark-gray rounded-lg p-8 text-center max-w-2xl mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <h3 className="text-xl font-semibold mb-2">No Case Studies Found</h3>
-              <p className="text-light-gray mb-4">
-                We couldn&apos;t find any case studies matching your current filters.
-              </p>
-              <Button variant="secondary" onClick={clearAllFilters}>
-                Clear All Filters
-              </Button>
-            </div>
-          )}
-        </div>
-      </section>
-      
-      {/* CTA section */}
-      <section className="py-16 bg-dark-gradient">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Want to Achieve Similar Results?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Contact us today to discuss how our automation solutions can help your business achieve optimal efficiency and growth.
-          </p>
-          <Button variant="primary" size="lg" href="/contacts">
-            Schedule a Free Consultation
-          </Button>
-        </div>
-      </section>
-    </>
-  );
-}

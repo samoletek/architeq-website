@@ -1,12 +1,28 @@
 "use client";
 
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import BenefitCard from '@/components/ui/benefit-card';
+import { Icon, IconName } from '@/components/ui/icons/icon';
+import { cn } from '@/lib/utils/utils';
 
-// Данные о преимуществах
-const benefits = [
+// Интерфейс для преимущества
+export interface Benefit {
+  title: string;
+  description: string;
+  icon: IconName;
+}
+
+// Интерфейс для параметров секции преимуществ
+export interface BenefitsSectionProps {
+  title?: string;
+  subtitle?: string;
+  benefits?: Benefit[];
+  className?: string;
+  variant?: 'default' | 'alternate';
+}
+
+// Данные о преимуществах по умолчанию
+const defaultBenefits: Benefit[] = [
   {
     title: 'Time Efficiency',
     description: 'Automate routine tasks and save up to 80% of time spent on manual operations.',
@@ -29,71 +45,102 @@ const benefits = [
   },
 ];
 
-export default function BenefitsSection() {
-  const controls = useAnimation();
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    },
-  };
+export default function BenefitsSection({
+  title = "Why Choose Our Solutions",
+  subtitle = "Our approach to business process automation delivers measurable results and tangible benefits.",
+  benefits = defaultBenefits,
+  className,
+  variant = 'default'
+}: BenefitsSectionProps) {
+  // Определяем классы для секции в зависимости от варианта
+  const sectionClasses = cn(
+    "py-20",
+    variant === 'default' ? "bg-dark-gray" : "bg-site-bg",
+    className
+  );
 
   return (
-    <section className="py-20 bg-dark-gray">
+    <section className={sectionClasses}>
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Our Solutions</h2>
-          <p className="text-light-gray max-w-2xl mx-auto">
-            Our approach to business process automation delivers measurable results and tangible benefits.
-          </p>
-        </motion.div>
+        <AnimatedContainer className="text-center mb-12">
+          <AnimatedItem>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+          </AnimatedItem>
+          <AnimatedItem>
+            <p className="text-light-gray max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          </AnimatedItem>
+        </AnimatedContainer>
 
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
+        <AnimatedContainer staggerTime={0.15} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((benefit, index) => (
-            <motion.div key={index} variants={itemVariants}>
+            <AnimatedItem key={index}>
               <BenefitCard 
                 title={benefit.title} 
                 description={benefit.description} 
                 icon={benefit.icon} 
               />
-            </motion.div>
+            </AnimatedItem>
           ))}
-        </motion.div>
+        </AnimatedContainer>
       </div>
     </section>
+  );
+}
+
+// Специальный вариант секции с небольшими преимуществами
+export function CompactBenefitsSection({
+  title = "Key Advantages",
+  benefits,
+  className,
+}: Omit<BenefitsSectionProps, 'variant' | 'subtitle'>) {
+  return (
+    <div className={cn("py-10", className)}>
+      <h3 className="text-2xl font-bold mb-6">{title}</h3>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {benefits?.map((benefit, index) => (
+          <div 
+            key={index}
+            className="bg-dark-gray rounded-lg p-4 flex items-start hover:shadow-sm transition-shadow duration-300"
+          >
+            <div className="rounded-full w-10 h-10 bg-medium-gray text-primary flex items-center justify-center flex-shrink-0 mr-3">
+              <Icon name={benefit.icon} className="h-5 w-5" />
+            </div>
+            <div>
+              <h4 className="font-semibold mb-1">{benefit.title}</h4>
+              <p className="text-light-gray text-sm">{benefit.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Вариант с горизонтальным расположением преимуществ
+export function HorizontalBenefits({
+  benefits = defaultBenefits.slice(0, 3),
+  className,
+}: {
+  benefits?: Benefit[];
+  className?: string;
+}) {
+  return (
+    <div className={cn("flex flex-col md:flex-row gap-6", className)}>
+      {benefits.map((benefit, index) => (
+        <div 
+          key={index}
+          className="flex-1 bg-dark-gray/50 rounded-lg p-6 hover:shadow-sm hover:bg-dark-gray transition-all duration-300"
+        >
+          <div className="rounded-full w-12 h-12 bg-medium-gray text-primary flex items-center justify-center mb-4">
+            <Icon name={benefit.icon} className="h-6 w-6" />
+          </div>
+          <h4 className="text-lg font-semibold mb-2">{benefit.title}</h4>
+          <p className="text-light-gray">{benefit.description}</p>
+        </div>
+      ))}
+    </div>
   );
 }
