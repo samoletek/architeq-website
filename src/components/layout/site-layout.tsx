@@ -1,4 +1,6 @@
 // src/components/layout/site-layout.tsx
+"use client";
+
 import Header from '@/components/navigation/header'
 import Footer from '@/components/navigation/footer'
 import PageTransition from '@/components/ui/page-transition'

@@ -1,5 +1,4 @@
 s78-website/
-├── node_modules/
 ├── public/
 │   ├── favicon/
 │   │   ├── android-chrome-192x192.png
@@ -111,6 +110,7 @@ s78-website/
 ├── structure.md
 ├── tailwind.config.ts
 └── tsconfig.json
+
 
 
 # Структура проекта §78-website

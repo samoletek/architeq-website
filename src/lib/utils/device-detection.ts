@@ -1,4 +1,6 @@
 // src/lib/utils/device-detection.ts
+"use client";
+
 import { useEffect, useState } from 'react';
 
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';

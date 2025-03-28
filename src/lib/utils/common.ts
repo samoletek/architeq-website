@@ -1,4 +1,5 @@
 // src/lib/utils/common.ts
+"use client";
 
 /**
  * Форматирует дату в читаемый формат
