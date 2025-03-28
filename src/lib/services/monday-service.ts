@@ -200,7 +200,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     if (interestColumnId && formData.interest) {
       try {
         columnValues[interestColumnId] = { labels: [formData.interest] };
-      } catch (error) {
+      } catch {
         // Если формат не поддерживается, используем простое текстовое поле
         columnValues[interestColumnId] = formData.interest;
       }
