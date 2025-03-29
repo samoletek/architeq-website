@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CaseFilters, FilterGroup } from '@/components/ui/filters/case-filters';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
-import { SectionAnimation } from '@/components/ui/section-animation';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { Icon } from '@/components/ui/icons/icon';
 

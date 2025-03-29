@@ -61,7 +61,6 @@ export function CaseCard({
   onClick
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const { isMobile } = useDeviceDetection();
 
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
