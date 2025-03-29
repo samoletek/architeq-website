@@ -151,7 +151,7 @@ export default function CTASection({
           {!compact && variant === 'default' && (
             <SectionAnimation delay={0.5}>
               <p className="mt-6 text-sm text-light-gray">
-                No obligations. We&apos;ll show you how automation can work for your specific business.
+                No obligations. We will show you how automation can work for your specific business.
               </p>
             </SectionAnimation>
           )}

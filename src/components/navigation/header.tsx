@@ -376,7 +376,7 @@ export default function Header({
             variant="overlay" 
             isExpanded={true} 
             onToggle={toggleSearch}
-            placeholder="Поиск по сайту..."
+            placeholder="Search is here..."
           />
         )}
       </AnimatePresence>

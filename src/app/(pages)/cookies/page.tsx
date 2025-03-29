@@ -43,7 +43,7 @@ export default function CookiesPage() {
             
             <div className="prose prose-invert prose-lg max-w-none">
               <p className="text-light-gray">
-                Last Updated: March 15, 2025
+                Last Updated: March 1st, 2025
               </p>
               
               <h2 className="text-2xl font-bold mt-10 mb-4">What Are Cookies</h2>

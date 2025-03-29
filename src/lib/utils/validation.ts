@@ -14,7 +14,7 @@ export type Validator = (value: string) => ValidationError;
 /**
  * Проверяет, что поле не пустое
  */
-export const required = (errorMessage: string = 'Это поле обязательно к заполнению'): Validator => {
+export const required = (errorMessage: string = 'This field must be filled'): Validator => {
   return (value: string): ValidationError => {
     return value.trim() ? null : errorMessage;
   };
@@ -25,7 +25,7 @@ export const required = (errorMessage: string = 'Это поле обязате�
  */
 export const minLength = (min: number, errorMessage?: string): Validator => {
   return (value: string): ValidationError => {
-    return value.length >= min ? null : (errorMessage || `Минимальная длина - ${min} символов`);
+    return value.length >= min ? null : (errorMessage || `Min lenght - ${min} symbols`);
   };
 };
 
@@ -34,14 +34,14 @@ export const minLength = (min: number, errorMessage?: string): Validator => {
  */
 export const maxLength = (max: number, errorMessage?: string): Validator => {
   return (value: string): ValidationError => {
-    return value.length <= max ? null : (errorMessage || `Максимальная длина - ${max} символов`);
+    return value.length <= max ? null : (errorMessage || `Max lenght - ${max} symbols`);
   };
 };
 
 /**
  * Проверяет, что строка является действительным email
  */
-export const isEmail = (errorMessage: string = 'Введите корректный email'): Validator => {
+export const isEmail = (errorMessage: string = 'Enter a valid email'): Validator => {
   return (value: string): ValidationError => {
     // Базовая проверка формата email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -52,7 +52,7 @@ export const isEmail = (errorMessage: string = 'Введите корректн�
 /**
  * Проверяет, что строка является действительным телефонным номером
  */
-export const isPhone = (errorMessage: string = 'Введите корректный номер телефона'): Validator => {
+export const isPhone = (errorMessage: string = 'Enter a valid phone number'): Validator => {
   return (value: string): ValidationError => {
     // Убираем все нецифровые символы для проверки
     const digitsOnly = value.replace(/\D/g, '');

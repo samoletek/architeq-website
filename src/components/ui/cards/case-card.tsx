@@ -156,7 +156,7 @@ export function CaseCard({
         {/* Результаты (если есть и не в компактном режиме) */}
         {results && results.length > 0 && !isCompact && (
           <div className="mb-3">
-            <h4 className="text-sm font-medium mb-2 text-primary">Результаты:</h4>
+            <h4 className="text-sm font-medium mb-2 text-primary">Key results:</h4>
             <ul className="text-light-gray text-sm space-y-1">
               {results.slice(0, 2).map((result, index) => (
                 <li key={index} className="flex items-start">
@@ -176,7 +176,7 @@ export function CaseCard({
       <div className="px-3 pb-3 border-t border-medium-gray/40 pt-3 mt-auto">
         {/* Компания */}
         <p className="text-white text-sm flex items-center mb-1">
-          <span className="text-light-gray mr-2">Компания:</span>
+          <span className="text-light-gray mr-2">Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
         

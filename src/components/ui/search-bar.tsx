@@ -34,7 +34,7 @@ interface SearchBarProps {
 
 export function SearchBar({
   className,
-  placeholder = 'Поиск...',
+  placeholder = 'Search...',
   onSearch,
   results = [],
   isLoading = false,
@@ -137,7 +137,7 @@ export function SearchBar({
           {isLoading ? (
             <div className="p-4 text-center">
               <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <p className="mt-2 text-light-gray">Поиск...</p>
+              <p className="mt-2 text-light-gray">Search...</p>
             </div>
           ) : hasResults ? (
             <div>
@@ -187,14 +187,14 @@ export function SearchBar({
                     className="text-primary text-sm hover:underline"
                     onClick={() => setShowResults(false)}
                   >
-                    Показать все результаты
+                    Show all results
                   </Link>
                 </div>
               )}
             </div>
           ) : searchQuery.length > 0 ? (
             <div className="p-4 text-center">
-              <p className="text-light-gray">Ничего не найдено по запросу &quot;{searchQuery}&quot;</p>
+              <p className="text-light-gray">Nothing was found &quot;{searchQuery}&quot;</p>
             </div>
           ) : null}
         </motion.div>
@@ -297,7 +297,7 @@ export function SearchBar({
               {isLoading ? (
                 <div className="p-4 text-center">
                   <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  <p className="mt-2 text-light-gray">Поиск...</p>
+                  <p className="mt-2 text-light-gray">Search...</p>
                 </div>
               ) : hasResults ? (
                 <div>
@@ -347,16 +347,16 @@ export function SearchBar({
                         className="text-primary hover:underline"
                         onClick={onToggle}
                       >
-                        Показать все результаты ({results.length})
+                        Show all results ({results.length})
                       </Link>
                     </div>
                   )}
                 </div>
               ) : (
                 <div className="p-6 text-center">
-                  <p className="text-light-gray mb-4">Ничего не найдено по запросу &quot;{searchQuery}&quot;</p>
+                  <p className="text-light-gray mb-4">Nothing was found &quot;{searchQuery}&quot;</p>
                   <p className="text-sm text-light-gray/70">
-                    Попробуйте использовать другие ключевые слова или проверьте правильность написания.
+                    Try different keywords or check the correct spelling.
                   </p>
                 </div>
               )}
@@ -365,7 +365,7 @@ export function SearchBar({
           
           {!searchQuery && !isLoading && (
             <div className="p-6">
-              <p className="text-light-gray text-center mb-4">Начните вводить запрос для поиска</p>
+              <p className="text-light-gray text-center mb-4">Start typing your search query</p>
               {/* Можно добавить популярные поисковые запросы или категории */}
               <div className="flex flex-wrap gap-2 justify-center">
                 <Button variant="secondary" size="sm" onClick={() => handleInputChange({ target: { value: 'CRM' } } as React.ChangeEvent<HTMLInputElement>)}>

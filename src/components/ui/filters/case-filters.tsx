@@ -48,10 +48,10 @@ export function CaseFilters({
   className,
   filterCount = 0,
   isCompact = false,
-  searchPlaceholder = "Поиск по названию, описанию или компании...",
-  filtersTitle = "Фильтры",
-  clearButtonText = "Очистить всё",
-  activeFiltersTitle = "Активные фильтры:",
+  searchPlaceholder = "Search by name, description or company...",
+  filtersTitle = "Filters",
+  clearButtonText = "Clear all",
+  activeFiltersTitle = "Active filters:",
   layout = 'vertical'
 }: CaseFiltersProps) {
   // Состояние для открытых групп фильтров
@@ -289,7 +289,7 @@ export function CaseFilters({
         {/* Счетчик результатов */}
         {filterCount > 0 && (
           <div className="p-4 text-sm text-light-gray border-t border-medium-gray">
-            {filterCount} {filterCount === 1 ? 'результат' : 'результатов'} найдено
+            {filterCount} {filterCount === 1 ? 'result' : 'results'} found
           </div>
         )}
       </div>
@@ -399,7 +399,7 @@ export function CaseFilters({
         {/* Счетчик результатов (только для вертикального макета) */}
         {isVertical && filterCount > 0 && (
           <div className="px-6 pb-4 text-sm text-light-gray">
-            {filterCount} {filterCount === 1 ? 'результат' : 'результатов'} найдено
+            {filterCount} {filterCount === 1 ? 'result' : 'results'} found
           </div>
         )}
       </div>
@@ -450,7 +450,7 @@ export function CaseFilters({
           {/* Счетчик результатов */}
           {filterCount > 0 && (
             <div className="mb-4 text-sm text-light-gray">
-              {filterCount} {filterCount === 1 ? 'результат' : 'результатов'} найдено
+              {filterCount} {filterCount === 1 ? 'result' : 'results'} found
             </div>
           )}
         </div>

@@ -33,7 +33,7 @@ export default function Home() {
         description="Business process automation solutions for small and medium businesses."
         url="https://78.com"
         foundingDate="2020"
-        founders={["Alex Mercer"]}
+        founders={["Andrii Serhiienko"]}
         address={{
           addressCountry: "United States"
         }}

@@ -31,7 +31,7 @@ interface RecentlyViewedCasesProps {
 export function RecentlyViewedCases({
   allCases,
   maxItems = 3,
-  title = "Недавно просмотренные",
+  title = "Recently Viewed",
   onCaseClick,
   className
 }: RecentlyViewedCasesProps) {
@@ -102,7 +102,7 @@ export function RecentlyViewedCases({
             }}
             className="text-primary text-sm hover:underline"
           >
-            Очистить историю просмотров
+            Clear viewing history
           </button>
         </div>
       </motion.div>

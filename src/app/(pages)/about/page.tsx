@@ -30,26 +30,26 @@ export default function AboutPage() {
   // Данные о команде
   const teamMembers = [
     {
-      name: 'Alex Mercer',
+      name: 'Andrew Serhiienko',
       position: 'Founder & CEO',
-      bio: 'Over 10 years of experience in business process automation and system integration.',
+      bio: 'Over 10 years of experience in business process automation, project management and system integration.',
       image: '/images/team/alex-mercer.jpg'
     },
     {
-      name: 'Maria Chen',
-      position: 'Lead Solution Architect',
+      name: 'Gennady Myazin',
+      position: 'Lead Integration Engineer',
       bio: 'Expert in CRM systems and workflow optimization with background in enterprise solutions.',
       image: '/images/team/maria-chen.jpg'
     },
     {
-      name: 'David Wilson',
+      name: 'Yakov Saveliev',
       position: 'AI Solutions Developer',
       bio: 'Specializes in artificial intelligence and machine learning solutions for business automation.',
       image: '/images/team/david-wilson.jpg'
     },
     {
-      name: 'Sophia Park',
-      position: 'Integration Specialist',
+      name: 'Daniil Apanasov',
+      position: 'Integration Engineer',
       bio: 'Experienced in connecting disparate systems and ensuring seamless data flow between platforms.',
       image: '/images/team/sophia-park.jpg'
     }
