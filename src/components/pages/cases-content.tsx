@@ -51,7 +51,7 @@ export default function CasesContent() {
   const filterGroups: FilterGroup[] = [
     {
       id: 'industry',
-      label: 'По индустрии',
+      label: 'By Industry',
       options: allIndustries.map(industry => ({ 
         id: industry, 
         label: industry,
@@ -62,7 +62,7 @@ export default function CasesContent() {
     },
     {
       id: 'solutionType',
-      label: 'По типу решения',
+      label: 'By Solution Type',
       options: allSolutionTypes.map(type => ({ 
         id: type, 
         label: type,
@@ -73,7 +73,7 @@ export default function CasesContent() {
     },
     {
       id: 'technology',
-      label: 'По технологии',
+      label: 'By Technology',
       options: allTechnologies.map(tech => ({ 
         id: tech, 
         label: tech,
@@ -177,12 +177,12 @@ export default function CasesContent() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <SectionAnimation>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Примеры работ</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
               <p className="text-xl text-light-gray mb-6">
-                Изучите, как мы помогли компаниям из различных отраслей оптимизировать их процессы и достичь значительных результатов.
+                Explore how we've helped companies across various industries optimize their processes and achieve significant results.
               </p>
               <Button variant="primary" size="lg" href="/contacts">
-                Заказать похожее решение
+                Request a Similar Solution
               </Button>
             </SectionAnimation>
           </div>
@@ -215,7 +215,7 @@ export default function CasesContent() {
                     d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" 
                   />
                 </svg>
-                {showFilterSection ? 'Скрыть фильтры' : 'Показать фильтры'}
+                {showFilterSection ? 'Hide Filters' : 'Show Filters'}
               </Button>
             </div>
           )}
@@ -281,12 +281,12 @@ export default function CasesContent() {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xl font-semibold mb-2">Кейсы не найдены</h3>
+                  <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
                   <p className="text-light-gray mb-4">
-                    Мы не смогли найти кейсы, соответствующие вашим текущим фильтрам.
+                    We couldn't find any cases that match your current filters.
                   </p>
                   <Button variant="secondary" onClick={clearAllFilters}>
-                    Сбросить все фильтры
+                    Clear All Filters
                   </Button>
                 </div>
               )}
@@ -298,12 +298,12 @@ export default function CasesContent() {
       {/* CTA section */}
       <section className="py-16 bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Хотите достичь таких же результатов?</h2>
+          <h2 className="text-3xl font-bold mb-4">Want to achieve similar results?</h2>
           <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Свяжитесь с нами сегодня, чтобы обсудить, как наши решения по автоматизации могут помочь вашему бизнесу достичь оптимальной эффективности и роста.
+            Get in touch with us today to discuss how our automation solutions can help your business achieve optimal efficiency and growth.
           </p>
           <Button variant="primary" size="lg" href="/contacts">
-            Бесплатная консультация
+            Free Consultation
           </Button>
         </div>
       </section>

@@ -28,21 +28,21 @@ interface ContactFormState {
 
 // Варианты интересов
 const interestOptions = [
-  { value: 'General Inquiry', label: 'Общий запрос' },
-  { value: 'Business Process Automation', label: 'Автоматизация бизнес-процессов' },
-  { value: 'CRM Integration', label: 'Интеграция CRM' },
-  { value: 'Industry-Specific Solution', label: 'Отраслевое решение' },
-  { value: 'AI Solution', label: 'AI-решение' },
-  { value: 'Documentation & Forms', label: 'Документация и формы' },
-  { value: 'Financial System Integration', label: 'Интеграция финансовых систем' },
+  { value: 'General Inquiry', label: 'General Inquiry' },
+  { value: 'Business Process Automation', label: 'Business Process Automation' },
+  { value: 'CRM Integration', label: 'CRM Integration' },
+  { value: 'Industry-Specific Solution', label: 'Industry-Specific Solution' },
+  { value: 'AI Solution', label: 'AI Solution' },
+  { value: 'Documentation & Forms', label: 'Documentation & Forms' },
+  { value: 'Financial System Integration', label: 'Financial System Integration' },
 ];
 
 // Валидаторы для полей формы
 const formValidators = {
-  name: [required('Введите ваше имя')],
-  email: [required('Введите ваш email'), isEmail('Введите корректный email')],
-  message: [required('Сообщение обязательно для заполнения')],
-  phone: [isPhone('Введите корректный номер телефона')],
+  name: [required('Enter your name')],
+  email: [required('Enter your email'), isEmail('Enter a valid email')],
+  message: [required('Message is required')],
+  phone: [isPhone('Enter a valid phone number')],
 };
 
 export default function ContactsContent() {
@@ -113,7 +113,7 @@ export default function ContactsContent() {
         ...prev,
         submitMessage: {
           type: 'error',
-          text: 'Пожалуйста, исправьте ошибки в форме перед отправкой.'
+          text: 'Please correct the errors in the form before submitting.'
         }
       }));
       return;
@@ -145,7 +145,7 @@ export default function ContactsContent() {
           isSubmitting: false,
           submitMessage: {
             type: 'success',
-            text: 'Спасибо! Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.'
+            text: 'Thank you! Your message has been sent successfully. We will contact you shortly.'
           }
         }));
         
@@ -172,7 +172,7 @@ export default function ContactsContent() {
           isSubmitting: false,
           submitMessage: {
             type: 'error',
-            text: data.message || 'При отправке формы произошла ошибка. Пожалуйста, попробуйте позже.'
+            text: data.message || 'An error occurred while submitting the form. Please try again later.'
           }
         }));
       }
@@ -184,7 +184,7 @@ export default function ContactsContent() {
         isSubmitting: false,
         submitMessage: {
           type: 'error',
-          text: 'При отправке формы произошла ошибка. Пожалуйста, попробуйте позже.'
+          text: 'An error occurred while submitting the form. Please try again later.'
         }
       }));
     }
@@ -210,9 +210,9 @@ export default function ContactsContent() {
       <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Связаться с нами</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl text-light-gray mb-6">
-              Свяжитесь с нашей командой, чтобы обсудить ваши потребности в автоматизации и как мы можем помочь оптимизировать ваши бизнес-процессы.
+              Get in touch with us today to discuss your automation needs and how we can help optimize your business processes.
             </p>
           </div>
         </div>
@@ -224,7 +224,7 @@ export default function ContactsContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Отправить сообщение</h2>
+              <h2 className="text-2xl font-bold mb-6">Send Message</h2>
               
               {/* Form status message */}
               {formState.submitMessage && (
@@ -247,11 +247,11 @@ export default function ContactsContent() {
                   <FormInput
                     id="name"
                     name="name"
-                    label="Ваше имя"
+                    label="Your Name"
                     value={formData.name}
                     onChange={(e) => handleChange('name')(e.target.value)}
                     onBlur={() => handleBlur('name')}
-                    placeholder="Иван Иванов"
+                    placeholder="John Doe"
                     error={formState.errors.name || ''}
                     touched={!!formState.touched.name}
                     required
@@ -261,7 +261,7 @@ export default function ContactsContent() {
                   <FormInput
                     id="email"
                     name="email"
-                    label="Email адрес"
+                    label="Email Address"
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleChange('email')(e.target.value)}
@@ -278,22 +278,22 @@ export default function ContactsContent() {
                   <FormInput
                     id="company"
                     name="company"
-                    label="Название компании"
+                    label="Company Name"
                     value={formData.company}
                     onChange={(e) => handleChange('company')(e.target.value)}
                     onBlur={() => handleBlur('company')}
-                    placeholder="Ваша компания"
+                    placeholder="Your Company"
                   />
                   
                   <FormInput
                     id="phone"
                     name="phone"
-                    label="Номер телефона"
+                    label="Phone Number"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleChange('phone')(e.target.value)}
                     onBlur={() => handleBlur('phone')}
-                    placeholder="+7 (___) ___-__-__"
+                    placeholder="+1 (___) ___-____"
                     error={formState.errors.phone || ''}
                     touched={!!formState.touched.phone}
                     validators={formValidators.phone}
@@ -304,7 +304,7 @@ export default function ContactsContent() {
                   <FormSelect
                     id="interest"
                     name="interest"
-                    label="Что вас интересует?"
+                    label="What Are You Interested In?"
                     value={formData.interest}
                     onChange={(e) => handleChange('interest')(e.target.value)}
                     options={interestOptions}
@@ -315,13 +315,13 @@ export default function ContactsContent() {
                   <FormInput
                     id="message"
                     name="message"
-                    label="Ваше сообщение"
+                    label="Your Message"
                     type="textarea"
                     value={formData.message}
                     onChange={(e) => handleChange('message')(e.target.value)}
                     onBlur={() => handleBlur('message')}
                     rows={5}
-                    placeholder="Пожалуйста, поделитесь деталями вашего проекта или запроса, чтобы мы могли лучше подготовиться к звонку с вами!"
+                    placeholder="Please share details about your project or inquiry so we can better prepare for our call with you!"
                     error={formState.errors.message || ''}
                     touched={!!formState.touched.message}
                     required
@@ -332,10 +332,10 @@ export default function ContactsContent() {
                 <LoadingButton 
                   type="submit" 
                   isLoading={formState.isSubmitting}
-                  loadingText="Отправка..."
+                  loadingText="Sending..."
                   className="w-full md:w-auto min-w-40"
                 >
-                  Отправить сообщение
+                  Send Message
                 </LoadingButton>
               </form>
             </div>
@@ -344,9 +344,9 @@ export default function ContactsContent() {
             <div>
               {/* Embedded Calendly */}
               <div className="bg-dark-gray rounded-lg p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4">Бесплатная консультация</h3>
+                <h3 className="text-xl font-semibold mb-4">Free Consultation</h3>
                 <p className="text-light-gray mb-4">
-                  Запланируйте 30-минутный звонок с нашим экспертом по автоматизации, чтобы обсудить ваши потребности и как мы можем помочь оптимизировать ваши бизнес-процессы.
+                  Schedule a 30-minute call with our automation expert to discuss your needs and how we can help optimize your business processes.
                 </p>
                 <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
                   <CalendlyWidget 
@@ -363,13 +363,13 @@ export default function ContactsContent() {
                 </div>
                 
                 <p className="text-xs text-light-gray mt-2 text-center">
-                  Работает на Calendly
+                  Powered by Calendly
                 </p>
               </div>
               
               {/* Additional Contact Information */}
               <div className="bg-dark-gray rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">Контактная информация</h3>
+                <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
                 
                 <div className="space-y-4">
                   <div>
@@ -378,13 +378,13 @@ export default function ContactsContent() {
                   </div>
                   
                   <div>
-                    <h4 className="font-medium mb-1">Рабочие часы</h4>
-                    <p className="text-light-gray">Мы работаем в разных часовых поясах</p>
+                    <h4 className="font-medium mb-1">Working Hours</h4>
+                    <p className="text-light-gray">We work across different time zones</p>
                   </div>
                   
                   <div>
-                    <h4 className="font-medium mb-1">Языки</h4>
-                    <p className="text-light-gray">Английский, Украинский, Русский</p>
+                    <h4 className="font-medium mb-1">Languages</h4>
+                    <p className="text-light-gray">English, Ukrainian, Russian</p>
                   </div>
                 </div>
               </div>
@@ -396,7 +396,7 @@ export default function ContactsContent() {
       {/* FAQ Section */}
       <section className="py-16 bg-dark-gray">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Часто задаваемые вопросы</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <motion.div 
@@ -404,8 +404,8 @@ export default function ContactsContent() {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-semibold mb-2">Как быстро вы можете внедрить решение?</h3>
-              <p className="text-light-gray">Большинство наших решений по автоматизации можно внедрить в течение 2-4 недель, в зависимости от сложности. Мы предоставим подробный график во время нашей первоначальной консультации.</p>
+              <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
+              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We'll provide a detailed timeline during our initial consultation.</p>
             </motion.div>
             
             <motion.div 
@@ -413,8 +413,8 @@ export default function ContactsContent() {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-semibold mb-2">Работаете ли вы с клиентами из других стран?</h3>
-              <p className="text-light-gray">Да, мы работаем с клиентами из США, Европы, Австралии и Японии. Наша команда работает в разных часовых поясах, чтобы обеспечить удобную поддержку.</p>
+              <h3 className="text-xl font-semibold mb-2">Which countries are your clients from?</h3>
+              <p className="text-light-gray">We work with clients from the USA, Europe, Australia, and Japan. Our team operates across different time zones to provide convenient support for your business.</p>
             </motion.div>
             
             <motion.div 
@@ -422,8 +422,8 @@ export default function ContactsContent() {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-semibold mb-2">Какая у вас модель ценообразования?</h3>
-              <p className="text-light-gray">Наше ценообразование зависит от объема и сложности вашего проекта. Мы предлагаем как проекты с фиксированной ценой, так и ежемесячные платежи для постоянной поддержки и обслуживания.</p>
+              <h3 className="text-xl font-semibold mb-2">What is your pricing model?</h3>
+              <p className="text-light-gray">Our pricing depends on the scope and complexity of your project. We offer both fixed-price projects and monthly payments for ongoing support and maintenance.</p>
             </motion.div>
             
             <motion.div 
@@ -431,8 +431,8 @@ export default function ContactsContent() {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-xl font-semibold mb-2">Проводите ли вы обучение для нашей команды?</h3>
-              <p className="text-light-gray">Абсолютно! Мы предоставляем комплексное обучение, чтобы ваша команда могла эффективно использовать и поддерживать автоматизированные системы, которые мы внедряем.</p>
+              <h3 className="text-xl font-semibold mb-2">Do you provide training for our team?</h3>
+              <p className="text-light-gray">Absolutely! We provide comprehensive training to ensure your team can effectively use and maintain the automated systems we implement.</p>
             </motion.div>
           </div>
         </div>
