@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import Link from 'next/link';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { useState, useEffect } from 'react';
 
 interface HeroSectionProps {
   title?: string;
@@ -21,7 +22,20 @@ interface HeroSectionProps {
   decorativeElements?: boolean;
 }
 
-export default function HeroSection({
+// Создаем "пустой" компонент для первого серверного рендера
+function HeroSkeleton() {
+  return (
+    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-3xl">
+          <div className="min-h-[200px]"></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HeroContent({
   title = "Business Process Automation for Real Business Growth",
   description = "We help small and medium businesses optimize workflows, integrate systems, and automate routine tasks.",
   primaryCta = {
@@ -33,14 +47,14 @@ export default function HeroSection({
     href: "/services"
   },
   decorativeElements = true
-}: HeroSectionProps) {
+}: HeroSectionProps) {  
   const { isMobile, isLowPerformance } = useDeviceDetection();
   
   // Упрощаем анимацию для мобильных или низкопроизводительных устройств
   const simplifiedAnimation = isMobile || isLowPerformance;
 
   return (
-    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32">
+    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32" suppressHydrationWarning>
       {/* Декоративные элементы (если включены) */}
       {decorativeElements && (
         <>
@@ -105,4 +119,24 @@ export default function HeroSection({
       </div>
     </section>
   );
+}
+
+// Основной экспортируемый компонент - переключается между скелетоном и реальным контентом
+export default function HeroSection(props: HeroSectionProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    // Установим короткую задержку для гарантии, что DOM будет готов
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  if (!isMounted) {
+    return <HeroSkeleton />;
+  }
+  
+  return <HeroContent {...props} />;
 }

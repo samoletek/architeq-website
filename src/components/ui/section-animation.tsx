@@ -54,7 +54,13 @@ export function SectionAnimation({
   // Проверяем, должна ли анимация быть включена
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
   
+  // Состояние для отслеживания клиентского рендеринга
+  const [isMounted, setIsMounted] = useState(false);
+  
   useEffect(() => {
+    // Отмечаем, что компонент смонтирован на клиенте
+    setIsMounted(true);
+    
     // Проверяем настройки пользователя для анимаций
     setAnimationsEnabled(shouldEnableAnimations());
     
@@ -107,8 +113,9 @@ export function SectionAnimation({
     }
   };
   
-  // Если анимации отключены, показываем содержимое без анимации
-  if (disabled || isLowPerformance || !animationsEnabled) {
+  // Если анимации отключены или это первый серверный рендер, 
+  // показываем содержимое без анимации
+  if (!isMounted || disabled || isLowPerformance || !animationsEnabled) {
     return <div className={className}>{children}</div>;
   }
 
@@ -132,6 +139,18 @@ export function AnimatedContainer({
   staggerTime = 0.1,
   ...props
 }: Omit<SectionAnimationProps, 'staggerChildren'> & { staggerTime?: number }) {
+  // Состояние для отслеживания клиентского рендеринга
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Если компонент не смонтирован, показываем статический контент
+  if (!isMounted) {
+    return <div className={className}>{children}</div>;
+  }
+  
   return (
     <SectionAnimation
       stagger={true}
@@ -156,6 +175,13 @@ export function AnimatedItem({
   direction?: AnimationDirection;
   duration?: number;
 }) {
+  // Состояние для отслеживания клиентского рендеринга
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
   // Определяем начальное смещение в зависимости от направления
   const getItemOffset = () => {
     const offset = 20;
@@ -183,6 +209,11 @@ export function AnimatedItem({
       }
     }
   };
+  
+  // Если компонент не смонтирован, показываем статический контент
+  if (!isMounted) {
+    return <div className={className}>{children}</div>;
+  }
   
   return (
     <motion.div 

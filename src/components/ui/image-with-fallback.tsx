@@ -38,6 +38,7 @@ export function ImageWithFallback({
   aspectRatio,
   quality,
   sizes,
+  fill,
   ...props
 }: ImageWithFallbackProps) {
   const [error, setError] = useState(false);
@@ -121,8 +122,9 @@ export function ImageWithFallback({
   // Дополнительные стили для контейнера
   const containerStyle: React.CSSProperties = {
     ...(aspectRatio && { aspectRatio }),
-    height: !aspectRatio ? (typeof height === 'number' ? `${height}px` : height) : undefined,
-    width: !aspectRatio ? (typeof width === 'number' ? `${width}px` : width) : undefined,
+    // Не устанавливаем размеры, если используется fill
+    height: !fill && !aspectRatio ? (typeof height === 'number' ? `${height}px` : height) : undefined,
+    width: !fill && !aspectRatio ? (typeof width === 'number' ? `${width}px` : width) : undefined,
   };
   
   if (shouldShowFallback) {
@@ -158,8 +160,11 @@ export function ImageWithFallback({
       <Image
         src={src}
         alt={alt}
-        width={width}
-        height={height}
+        // Условное применение width и height или fill
+        {...(fill 
+          ? { fill } 
+          : { width, height }
+        )}
         className={cn(
           "rounded-lg transition-opacity duration-300",
           objectFitClass,

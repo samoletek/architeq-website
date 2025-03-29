@@ -176,7 +176,8 @@ export default function CasesContent() {
       <section className="py-20 md:py-28 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <SectionAnimation>
+            {/* Отключаем анимацию при первом рендеринге и включаем ее через useEffect */}
+            <div data-animate="fade-up">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
               <p className="text-xl text-light-gray mb-6">
                 Explore how we have helped companies across various industries optimize their processes and achieve significant results.
@@ -184,7 +185,7 @@ export default function CasesContent() {
               <Button variant="primary" size="lg" href="/contacts">
                 Request a Similar Solution
               </Button>
-            </SectionAnimation>
+            </div>
           </div>
         </div>
       </section>
@@ -220,77 +221,72 @@ export default function CasesContent() {
             </div>
           )}
           
-          {/* Верхний блок с фильтрами и кейсами */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Фильтры (горизонтальные) */}
+          <div className={`${isMobile && !showFilterSection ? 'hidden' : 'mb-8'}`}>
+            <CaseFilters 
+              groups={filterGroups}
+              selectedOptions={selectedOptions}
+              searchQuery={searchQuery}
+              onFilterChange={handleFilterChange}
+              onSearchChange={handleSearchChange}
+              onClearFilters={clearAllFilters}
+              filterCount={filteredCases.length}
+              isCompact={isMobile}
+              layout="horizontal"
+            />
+          </div>
+          
+          {/* Основной контент с кейсами */}
+          <div>
+            {/* Недавно просмотренные кейсы */}
+            <RecentlyViewedCases 
+              allCases={allCases} 
+              className="mb-8" 
+            />
             
-            {/* Боковая панель с фильтрами */}
-            <div className={`lg:col-span-3 ${isMobile && !showFilterSection ? 'hidden' : ''}`}>
-              <CaseFilters 
-                groups={filterGroups}
-                selectedOptions={selectedOptions}
-                searchQuery={searchQuery}
-                onFilterChange={handleFilterChange}
-                onSearchChange={handleSearchChange}
-                onClearFilters={clearAllFilters}
-                filterCount={filteredCases.length}
-                isCompact={isMobile}
-                layout="vertical"
-              />
-            </div>
-            
-            {/* Основной контент с кейсами */}
-            <div className="lg:col-span-9">
-              
-              {/* Недавно просмотренные кейсы */}
-              <RecentlyViewedCases 
-                allCases={allCases} 
-                className="mb-10" 
-              />
-              
-              {/* Сетка с кейсами */}
-              {filteredCases.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <AnimatePresence>
-                    {filteredCases.map((caseItem, index) => (
-                      <motion.div
-                        key={caseItem.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        layout
-                      >
-                        <CaseCard 
-                          id={caseItem.id}
-                          title={caseItem.title}
-                          description={caseItem.description}
-                          industry={caseItem.industry}
-                          company={caseItem.company}
-                          location={caseItem.location}
-                          results={caseItem.results}
-                          image={caseItem.image}
-                          tags={[caseItem.solutionType, ...caseItem.technologies.slice(0, 2)]}
-                          href={`/cases/${caseItem.id}`}
-                        />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <div className="bg-dark-gray rounded-lg p-8 text-center max-w-2xl mx-auto">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
-                  <p className="text-light-gray mb-4">
-                    We could not find any cases that match your current filters.
-                  </p>
-                  <Button variant="secondary" onClick={clearAllFilters}>
-                    Clear All Filters
-                  </Button>
-                </div>
-              )}
-            </div>
+            {/* Сетка с кейсами */}
+            {filteredCases.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <AnimatePresence>
+                  {filteredCases.map((caseItem, index) => (
+                    <motion.div
+                      key={caseItem.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      layout
+                    >
+                      <CaseCard 
+                        id={caseItem.id}
+                        title={caseItem.title}
+                        description={caseItem.description}
+                        industry={caseItem.industry}
+                        company={caseItem.company}
+                        location={caseItem.location}
+                        results={caseItem.results}
+                        image={caseItem.image}
+                        tags={[caseItem.solutionType, ...caseItem.technologies.slice(0, 2)]}
+                        href={`/cases/${caseItem.id}`}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <div className="bg-dark-gray rounded-lg p-8 text-center max-w-2xl mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
+                <p className="text-light-gray mb-4">
+                  We could not find any cases that match your current filters.
+                </p>
+                <Button variant="secondary" onClick={clearAllFilters}>
+                  Clear All Filters
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -311,7 +307,7 @@ export default function CasesContent() {
   );
 }
 
-// Данные кейсов из документации - 20 кейсов
+// Данные кейсов - 20 кейсов
 const allCases: CaseData[] = [
   // Financial Automations
   {

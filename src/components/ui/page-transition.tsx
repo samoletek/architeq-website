@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEnableAnimations } from '@/lib/utils/animation'; // Использование нового хука вместо функции
@@ -13,8 +13,22 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const pathname = usePathname();
   const enableAnimations = useEnableAnimations(); // Используем хук вместо функции shouldEnableAnimations
   
-  // Если анимации отключены, просто отображаем содержимое без анимаций
-  if (!enableAnimations) {
+  // Добавляем состояние для отслеживания клиентского рендеринга
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Устанавливаем флаг монтирования после первого рендера
+  useEffect(() => {
+    // Небольшая задержка для уверенности, что все DOM элементы загружены
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Если анимации отключены или компонент не смонтирован на клиенте, 
+  // просто отображаем содержимое без анимаций
+  if (!enableAnimations || !isMounted) {
     return <>{children}</>;
   }
 
