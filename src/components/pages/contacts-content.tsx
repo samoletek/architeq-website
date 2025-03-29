@@ -405,7 +405,7 @@ export default function ContactsContent() {
               transition={{ duration: 0.3 }}
             >
               <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
-              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We'll provide a detailed timeline during our initial consultation.</p>
+              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We will provide a detailed timeline during our initial consultation.</p>
             </motion.div>
             
             <motion.div 

@@ -179,7 +179,7 @@ export default function CasesContent() {
             <SectionAnimation>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
               <p className="text-xl text-light-gray mb-6">
-                Explore how we've helped companies across various industries optimize their processes and achieve significant results.
+                Explore how we have helped companies across various industries optimize their processes and achieve significant results.
               </p>
               <Button variant="primary" size="lg" href="/contacts">
                 Request a Similar Solution
@@ -283,7 +283,7 @@ export default function CasesContent() {
                   </svg>
                   <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
                   <p className="text-light-gray mb-4">
-                    We couldn't find any cases that match your current filters.
+                    We could not find any cases that match your current filters.
                   </p>
                   <Button variant="secondary" onClick={clearAllFilters}>
                     Clear All Filters
