@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { storage } from '@/lib/utils/common';
 
 export interface CaseCardProps {
