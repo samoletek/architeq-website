@@ -114,6 +114,7 @@ export default function RootLayout({
         {/* Добавляем preconnect для внешних ресурсов */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         
         {/* Any additional third-party scripts or analytics */}
       </head>
