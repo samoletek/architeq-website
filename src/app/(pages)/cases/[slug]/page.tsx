@@ -18,9 +18,6 @@ interface CaseStudy {
   shortDescription: string;
   problem: string;
   solution: string[];
-  visualizationType: string;
-  visualizationDescription: string;
-  visualizationStyle: string;
   technologies: string[];
   results: string[];
   testimonial?: {
@@ -51,13 +48,6 @@ const caseStudies: CaseStudy[] = [
       'Reminder system for unpaid invoices',
       'Automatic generation of financial reports (Dashboards)'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of the complete financial document workflow:
-      1. Process of creating a new operation in BestPass (login, navigation, creation)
-      2. Automatic invoice generation in Stripe based on the data
-      3. Generation of a final invoice report in the CRM system
-      4. Tracking of invoice status in Monday with automatic updates`,
-    visualizationStyle: 'Real systems interface with animated transitions between stages. Confidential data is blurred.',
     technologies: ['Monday CRM', 'QuickBooks', 'Stripe', 'Make/Zapier/n8n', 'API integrations'],
     results: [
       '85% reduction in time spent on invoicing',
@@ -87,12 +77,6 @@ const caseStudies: CaseStudy[] = [
       'Automatic matching of payments with invoices',
       'Additional Telegram/Slack notifications'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of automated financial accounting process:
-      1. Automatic invoice creation triggered by CRM event
-      2. Automatic generation and sending of email to client
-      3. Real-time data synchronization between CRM and QuickBooks`,
-    visualizationStyle: 'Smooth transitions between systems with emphasis on automation without human intervention. Animation of data flows.',
     technologies: ['QuickBooks', 'Make', 'Monday/n8n', 'GoogleSheets'],
     results: [
       '75% reduction in time spent on financial reporting',
@@ -122,12 +106,6 @@ const caseStudies: CaseStudy[] = [
       'Integration with factoring platform for data transfer',
       'Sending status notifications to Telegram/Slack'
     ],
-    visualizationType: 'Interactive Animated Diagram',
-    visualizationDescription: `Visualization of the process of sending data to factoring company:
-      1. Transformation of cargo list into financial report (data transformation animation)
-      2. Data transfer to factoring company (data flow animation)
-      3. Generation and delivery of notifications in Slack and Telegram (message sending animation)`,
-    visualizationStyle: 'Schematic representation using brand colors, with animation of data flows between components. Emphasis on automated process.',
     technologies: ['GoogleDrive', 'GoogleSheets', 'Make/Zapier/n8n', 'Monday CRM', 'Telegram', 'Slack'],
     results: [
       'Reduction of process from several hours to several minutes',
@@ -159,12 +137,6 @@ const caseStudies: CaseStudy[] = [
       'Document version management system',
       'Automatic conversion to various formats (PDF, DOCX)'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of automatic document generation:
-      1. Filling in key fields in the CRM system
-      2. Changing status to trigger automation
-      3. Opening automatically generated document with data from CRM`,
-    visualizationStyle: 'Demonstration of user interface interaction and automation result. Emphasis on process speed and accuracy.',
     technologies: ['Monday CRM', 'Make', 'Google Docs API', 'PandaDoc/SignNow/DocuSign/eSignatures'],
     results: [
       'Document creation time reduced from 35 minutes to 2-3 minutes',
@@ -195,13 +167,6 @@ const caseStudies: CaseStudy[] = [
       'Automatic status update in CRM after receiving all signatures',
       'Archiving signed documents in cloud storage'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of the complete electronic document signing cycle:
-      1. Process of changing deal status to "Send for signature"
-      2. Automatic document sending through electronic signature system
-      3. Status update after receiving signature from client
-      4. Automatic uploading of signed document to CRM`,
-    visualizationStyle: 'Emphasis on automation and user convenience, demonstrating minimal actions required to launch a complex process.',
     technologies: ['DocuSign/PandaDoc', 'Monday/Pipedrive/HubSpot', 'Make/Zapier/n8n', 'GoogleDrive/Box/DropBox'],
     results: [
       '70% reduction in document signing cycle time',
@@ -232,12 +197,6 @@ const caseStudies: CaseStudy[] = [
       'Instant notifications to responsible persons',
       'Automatic creation of tasks and client cards in CRM'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of the process of creating and using web forms:
-      1. Process of creating and configuring a form in JotForm
-      2. Form completion by client (from user perspective)
-      3. Automatic appearance of data in CRM system with new record creation`,
-    visualizationStyle: 'Demonstration of setup simplicity and automation efficiency from both perspectives: administrator and user.',
     technologies: ['JotForm/Typeform/GoogleForms/Cognito', 'Make/Zapier/n8n', 'Monday/Hubspot/Zoho/Pipedrive'],
     results: [
       'Increase in form completion conversion to 60%',
@@ -271,12 +230,6 @@ const caseStudies: CaseStudy[] = [
       'Automation of task creation and status updates',
       'Creation of database (e.g. licensing)'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive visualization of convergence of various systems into a unified CRM:
-      1. Display of logos of all services used in circular arrangement
-      2. Animated movement of icons/data to the central CRM system (Monday)
-      3. Visualization of data flows between integrated components`,
-    visualizationStyle: 'Modern animation using brand colors and neon glow for data transmission lines.',
     technologies: ['Monday/Hubspot/Pipedrive/Zoho', 'Make/Zapier/n8n', 'Slack', 'Google Workspace API'],
     results: [
       'Single center for managing all business processes',
@@ -308,12 +261,6 @@ const caseStudies: CaseStudy[] = [
       'Personalization of notifications depending on recipient role',
       'Analytics of communication effectiveness through dashboard creation'
     ],
-    visualizationType: 'Animated Process with Branches (GIF/MP4)',
-    visualizationDescription: `Demonstration of complex automatic notification system:
-      1. Status change in CRM and appearance of corresponding notification
-      2. Group change and generation of another notification type
-      3. Demonstration of branched notification structure depending on events`,
-    visualizationStyle: 'Demonstration of simultaneous events in various communication channels (email, Slack, SMS, Telegram) with emphasis on speed and automation.',
     technologies: ['Monday/Hubspot/Pipedrive/Zoho', 'Make/Zapier/n8n', 'Twilio/OpenPhone/AirCall', 'Slack/Telegram', 'Email API'],
     results: [
       '75% reduction in reaction time to project changes',
@@ -344,12 +291,6 @@ const caseStudies: CaseStudy[] = [
       'Customizable filters and data slices',
       'Automatic scheduled report distribution'
     ],
-    visualizationType: 'Working Interface with Annotations',
-    visualizationDescription: `Demonstration of various dashboard types with explanations:
-      1. Demonstration of interactive dashboard elements
-      2. Visualization of data sources for various metrics
-      3. Examples of different dashboard types for different tasks`,
-    visualizationStyle: 'Emphasis on visual appeal, informativeness, and interactivity of dashboards with branding elements.',
     technologies: ['Monday/Hubspot', 'Google Data Studio', 'Make/Zapier/n8n', 'API integrations'],
     results: [
       '80% reduction in time spent on reporting',
@@ -384,13 +325,6 @@ const caseStudies: CaseStudy[] = [
       'Automatic creation and sending of invoices by triggers',
       'Slack/Telegram notifications about order and payment status'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive diagram of integration of specialized tools into a unified system:
-      1. Visualization of all system components (logos/icons) in industry grouping
-      2. Animated connection lines between tools
-      3. Demonstration of convergence of all tools into a unified CRM system
-      4. Pulsation and glow during important data exchange processes`,
-    visualizationStyle: 'Modern technological design with neon elements and smooth animation.',
     technologies: ['QuickBooks', 'Make/Zapier', 'Google Sheets', 'Monday/HubSpot', 'Stripe/PayPal', 'Telegram/Slack API', 'DocuSign/eSignature/SignNow'],
     results: [
       '60% reduction in order processing time',
@@ -424,13 +358,6 @@ const caseStudies: CaseStudy[] = [
       'Interactive dashboards for project status visualization',
       'Automated document flow (contracts, estimates, acts)'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive diagram of integration of specialized tools into a unified system:
-      1. Visualization of all system components (logos/icons) in industry grouping
-      2. Animated connection lines between tools
-      3. Demonstration of convergence of all tools into a unified CRM system
-      4. Pulsation and glow during important data exchange processes`,
-    visualizationStyle: 'Modern technological design with neon elements and smooth animation.',
     technologies: ['Monday', 'CabinetVision', 'Make/Zapier/n8n', 'GoogleSheets', 'QuickBooks/Stripe'],
     results: [
       '30% reduction in order fulfillment cycle',
@@ -464,13 +391,6 @@ const caseStudies: CaseStudy[] = [
       'Copyright control system',
       'End-to-end calculation of payments and rewards to vendors'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive diagram of integration of specialized tools into a unified system:
-      1. Visualization of all system components (logos/icons) in industry grouping
-      2. Animated connection lines between tools
-      3. Demonstration of convergence of all tools into a unified CRM system
-      4. Pulsation and glow during important data exchange processes`,
-    visualizationStyle: 'Modern technological design with neon elements and smooth animation.',
     technologies: ['Monday', 'AirTable', 'Zapier/Make/n8n', 'Music platform APIs', 'GoogleSheets', 'Stripe'],
     results: [
       'Aggregation of all tools used in one place',
@@ -502,13 +422,6 @@ const caseStudies: CaseStudy[] = [
       'Deal document flow management with electronic signatures',
       'Analytics of agent and property effectiveness (Dashboards)'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive diagram of integration of specialized tools into a unified system:
-      1. Visualization of all system components (logos/icons) in industry grouping
-      2. Animated connection lines between tools
-      3. Demonstration of convergence of all tools into a unified CRM system
-      4. Pulsation and glow during important data exchange processes`,
-    visualizationStyle: 'Modern technological design with neon elements and smooth animation.',
     technologies: ['Monday/Pipedrive/Zoho', 'Calendly', 'DocuSign', 'Make/Zapier/n8n', 'Google Workspace'],
     results: [
       '55% increase in number of leads processed',
@@ -540,13 +453,6 @@ const caseStudies: CaseStudy[] = [
       'Automatic client notifications about work progress',
       'Warranty service management system'
     ],
-    visualizationType: 'Applications Integration Animation',
-    visualizationDescription: `Interactive diagram of integration of specialized tools into a unified system:
-      1. Visualization of all system components (logos/icons) in industry grouping
-      2. Animated connection lines between tools
-      3. Demonstration of convergence of all tools into a unified CRM system
-      4. Special emphasis on AI components of the system, visualized with special glow`,
-    visualizationStyle: 'Modern technological design with neon elements and smooth animation.',
     technologies: ['Monday CRM', 'Make/Zapier/n8n', 'Google Workspace', 'Twilio', 'ElevenLabs', 'PlayHT'],
     results: [
       '40% increase in project cost estimation accuracy',
@@ -580,12 +486,6 @@ const caseStudies: CaseStudy[] = [
       'Booking appointments/showings without Salesperson participation',
       'Personalized recommendations based on client history'
     ],
-    visualizationType: 'Interactive Animated Diagram',
-    visualizationDescription: `Visualization of AI-bot working process:
-      1. Diagram of incoming call and its routing to the system
-      2. Animation of dialogue with client (speech waves, text recognition)
-      3. Process of lead creation in CRM and automatic meeting booking`,
-    visualizationStyle: 'Technological animation with elements of futuristic design, visualization of AI components with special glow.',
     technologies: ['OpenAI', 'ElevenLabs', 'Twilio', 'Monday'],
     results: [
       'Automation of 60-70% of incoming requests',
@@ -616,13 +516,6 @@ const caseStudies: CaseStudy[] = [
       'Smart search across all related records in CRM',
       'Automatic summarization of information from different sources'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of working with AI assistant in CRM interface:
-      1. Navigation to element in CRM system
-      2. Opening AI assistant widget
-      3. Requesting information in natural language
-      4. Receiving structured response from system`,
-    visualizationStyle: 'Demonstration of real interface with blurring of confidential information, emphasis on ease of use and speed of data retrieval.',
     technologies: ['OpenAI/Claude', 'Monday/Hubspot', 'Retool'],
     results: [
       '90% reduction in information search time',
@@ -654,13 +547,6 @@ const caseStudies: CaseStudy[] = [
       'Creating reports with main metrics and identified problems',
       'Integration with CRM for automatic saving of transcripts'
     ],
-    visualizationType: 'Interactive Animated Diagram',
-    visualizationDescription: `Schematic representation of communication analysis process:
-      1. Visualization of data source (call, meeting)
-      2. Animation of speech-to-text conversion process
-      3. Data analysis process and identification of key metrics
-      4. Integration of results into CRM system`,
-    visualizationStyle: 'Technological diagram with data flow animation elements, visualization of AI components with pulsating glow.',
     technologies: ['OpenAI Whisper', 'Google Speech-to-Text API', 'Make/Zapier', 'Monday'],
     results: [
       '90% automation of conversation analysis',
@@ -693,13 +579,6 @@ const caseStudies: CaseStudy[] = [
       'Generation of payroll and automatic sending to payment systems (QuickBooks, Bill)',
       'Reports and visualization of calculations for transparency and control (Dashboards)'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of automated financial calculation process:
-      1. Process of filling initial data in CRM
-      2. Automatic generation of calculation sheet
-      3. Visualization of complex calculations in table
-      4. Display of results in CRM system (main element and sub-elements)`,
-    visualizationStyle: 'Demonstration of real process with blurring of confidential data, emphasis on speed and accuracy of automated calculations.',
     technologies: ['Google Sheets', 'Make/Zapier/n8n', 'Monday/HubSpot', 'Stripe/PayPal/QuickBooks/Bill'],
     results: [
       '90% increase in calculation accuracy',
@@ -731,12 +610,6 @@ const caseStudies: CaseStudy[] = [
       'Integration with Google Sheets for event logging (+logging in Make)',
       'Sending SMS/Telegram alerts for especially important messages'
     ],
-    visualizationType: 'Animated Process with Branches (GIF/MP4)',
-    visualizationDescription: `Demonstration of complex automatic notification system in Slack:
-      1. Status change in CRM and appearance of corresponding notification in Slack
-      2. Change of responsible group and generation of notification to other team members
-      3. Demonstration of different notification types depending on triggers`,
-    visualizationStyle: 'Demonstration of real process with emphasis on diversity and flexibility of notification settings.',
     technologies: ['Slack', 'Make/Zapier/n8n', 'Monday', 'Google Workspace', 'Jira', 'Twilio/OpenPhone/AirCall'],
     results: [
       '80% reduction in missed notifications',
@@ -767,12 +640,6 @@ const caseStudies: CaseStudy[] = [
       'Client identification on incoming calls',
       'Recording and automatic transcription of conversations using AI'
     ],
-    visualizationType: 'Animated Process (GIF/MP4)',
-    visualizationDescription: `Demonstration of telephony integration process with CRM:
-      1. Registration of incoming call in AirCall system
-      2. Automatic creation of call record in Monday CRM
-      3. Quick filling of client data and call results`,
-    visualizationStyle: 'Demonstration of process speed and automation with emphasis on operator convenience.',
     technologies: ['Twilio/AirCall/OpenPhone', 'Monday/Hubspot/Zoho', 'Make/Zapier/n8n'],
     results: [
       '60% increase in call processing efficiency',
@@ -907,20 +774,6 @@ export default function CaseStudyPage() {
                 Book a Similar Solution
               </Button>
             </div>
-            
-            <div className="md:w-1/3 bg-medium-gray rounded-lg overflow-hidden">
-              {/* Placeholder for case visualization */}
-              <div className="bg-medium-gray h-64 flex items-center justify-center">
-                <div className="text-center px-6">
-                  <div className="text-light-gray mb-2">
-                    Visualization: {caseStudy?.visualizationType}
-                  </div>
-                  <div className="text-xs text-light-gray opacity-75">
-                    Animation of the workflow will be placed here
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -965,13 +818,6 @@ export default function CaseStudyPage() {
                     </li>
                   ))}
                 </ul>
-                
-                {/* Visualization details */}
-                <div className="bg-dark-gray rounded-lg p-6 mb-6">
-                  <h3 className="text-lg font-semibold mb-3">Visualization Details</h3>
-                  <p className="text-light-gray mb-4">{caseStudy?.visualizationDescription}</p>
-                  <p className="text-sm text-light-gray">{caseStudy?.visualizationStyle}</p>
-                </div>
                 
                 {/* Case Study Video */}
                 <div className="rounded-lg overflow-hidden border border-medium-gray">
