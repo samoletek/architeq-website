@@ -28,6 +28,7 @@ export interface MondayResponse {
 interface MondayApiResponse {
   data?: Record<string, unknown>;
   errors?: Array<{ message: string }>;
+  account_id?: string;
 }
 
 /**
@@ -70,12 +71,18 @@ function checkEnvironmentVariables(): { valid: boolean; missing: string[] } {
 async function sendMondayRequest(query: string, variables?: Record<string, unknown>): Promise<MondayApiResponse> {
   const apiKey = process.env.NEXT_PUBLIC_MONDAY_API_KEY;
   
+  if (!apiKey) {
+    throw new Error('Monday API key is not defined');
+  }
+  
   try {
+    console.log('Sending request to Monday API:', { query, variables });
+    
     const response = await fetch('https://api.monday.com/v2', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiKey as string
+        'Authorization': apiKey
       },
       body: JSON.stringify({ 
         query,
@@ -83,12 +90,32 @@ async function sendMondayRequest(query: string, variables?: Record<string, unkno
       })
     });
     
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP Error: ${response.status} ${response.statusText} - ${errorText}`);
+    const responseText = await response.text();
+    console.log('Monday API response text:', responseText);
+    
+    let responseData: MondayApiResponse;
+    try {
+      responseData = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('Failed to parse Monday API response:', parseError);
+      throw new Error(`Invalid JSON response: ${responseText}`);
     }
     
-    return await response.json();
+    if (!response.ok) {
+      console.error('Monday API HTTP error:', {
+        status: response.status,
+        statusText: response.statusText,
+        responseData
+      });
+      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+    }
+    
+    if (responseData.errors && responseData.errors.length > 0) {
+      console.error('Monday API returned errors:', responseData.errors);
+      throw new Error(`Monday API error: ${responseData.errors[0].message}`);
+    }
+    
+    return responseData;
   } catch (error) {
     console.error('Monday API request failed:', error);
     throw error;
@@ -105,7 +132,13 @@ async function checkExistingContact(email: string): Promise<string | null> {
     const emailColumnId = process.env.NEXT_PUBLIC_MONDAY_EMAIL_COLUMN_ID;
     
     // Если отсутствуют необходимые переменные окружения, пропускаем проверку
-    if (!boardId || !emailColumnId) return null;
+    if (!boardId || !emailColumnId) {
+      console.warn('Missing required environment variables for checking existing contacts:', {
+        boardId: !!boardId,
+        emailColumnId: !!emailColumnId
+      });
+      return null;
+    }
     
     const query = `
       query GetItemsByEmail($boardId: ID!, $columnId: String!, $email: String!) {
@@ -126,12 +159,18 @@ async function checkExistingContact(email: string): Promise<string | null> {
       email
     };
     
+    console.log('Checking for existing contact with email:', email);
     const response = await sendMondayRequest(query, variables);
     
-    if (response.data?.items_by_column_values && Array.isArray(response.data.items_by_column_values) && response.data.items_by_column_values.length > 0) {
-      return (response.data.items_by_column_values[0] as { id: string }).id;
+    if (response.data?.items_by_column_values && 
+        Array.isArray(response.data.items_by_column_values) && 
+        response.data.items_by_column_values.length > 0) {
+      const itemId = (response.data.items_by_column_values[0] as { id: string }).id;
+      console.log('Found existing contact with ID:', itemId);
+      return itemId;
     }
     
+    console.log('No existing contact found for email:', email);
     return null;
   } catch (error) {
     console.error('Error checking for existing contact:', error);
@@ -144,6 +183,15 @@ async function checkExistingContact(email: string): Promise<string | null> {
  */
 export async function submitToMonday(formData: FormData): Promise<MondayResponse> {
   try {
+    console.log('Starting submitToMonday with data:', {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company ? '(provided)' : '(empty)',
+      phone: formData.phone ? '(provided)' : '(empty)',
+      interest: formData.interest,
+      messageLength: formData.message?.length || 0
+    });
+    
     // Проверяем наличие необходимых переменных окружения
     const envCheck = checkEnvironmentVariables();
     if (!envCheck.valid) {
@@ -165,6 +213,16 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     const messageColumnId = process.env.NEXT_PUBLIC_MONDAY_MESSAGE_COLUMN_ID;
     const interestColumnId = process.env.NEXT_PUBLIC_MONDAY_INTEREST_COLUMN_ID;
     
+    console.log('Environment variables loaded:', {
+      boardId: !!boardId,
+      nameColumnId: !!nameColumnId,
+      emailColumnId: !!emailColumnId,
+      companyColumnId: !!companyColumnId,
+      phoneColumnId: !!phoneColumnId,
+      messageColumnId: !!messageColumnId,
+      interestColumnId: !!interestColumnId
+    });
+    
     // Проверяем обязательные поля формы
     if (!formData.name || !formData.email || !formData.message) {
       console.error('Missing required form fields');
@@ -181,43 +239,62 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     const columnValues: Record<string, unknown> = {};
     
     if (nameColumnId) columnValues[nameColumnId] = formData.name;
-    if (emailColumnId) columnValues[emailColumnId] = { email: formData.email, text: formData.email };
+    
+    if (emailColumnId) {
+      // Убедимся, что правильно форматируем email
+      try {
+        columnValues[emailColumnId] = { email: formData.email, text: formData.email };
+      } catch (e) {
+        console.warn('Failed to format email as object, using plain text:', e);
+        columnValues[emailColumnId] = formData.email;
+      }
+    }
+    
     if (companyColumnId && formData.company) columnValues[companyColumnId] = formData.company;
     
     if (phoneColumnId && formData.phone) {
-      // Определяем код страны для телефона (по умолчанию US)
-      const countryCode = formData.phone.startsWith('+') ? 
-        formData.phone.substring(1, 3) : 'US';
-      
-      columnValues[phoneColumnId] = { 
-        phone: formData.phone, 
-        countryShortName: countryCode === '1' ? 'US' : countryCode 
-      };
+      try {
+        // Определяем код страны для телефона (по умолчанию US)
+        const countryCode = formData.phone.startsWith('+') ? 
+          formData.phone.substring(1, 3) : 'US';
+          
+        columnValues[phoneColumnId] = { 
+          phone: formData.phone, 
+          countryShortName: countryCode === '1' ? 'US' : countryCode 
+        };
+      } catch (e) {
+        console.warn('Failed to format phone as object, using plain text:', e);
+        columnValues[phoneColumnId] = formData.phone;
+      }
     }
     
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     
     if (interestColumnId && formData.interest) {
       try {
+        // Пробуем использовать формат для labels, но если не поддерживается, 
+        // используем просто текст
         columnValues[interestColumnId] = { labels: [formData.interest] };
-      } catch {
-        // Если формат не поддерживается, используем простое текстовое поле
+      } catch (e) {
+        console.warn('Failed to format interest as labels, using plain text:', e);
         columnValues[interestColumnId] = formData.interest;
       }
     }
     
+    console.log('Prepared column values:', JSON.stringify(columnValues));
+    
     // Обрабатываем имя элемента для безопасного включения в запрос
-    const itemName = `${formData.name.replace(/["\\]/g, '')}`;
+    const itemName = `Lead: ${formData.name.replace(/["\\]/g, '')}`;
     
     let response;
     
     if (existingItemId) {
       // Обновляем существующий элемент
       const mutation = `
-        mutation UpdateItem($itemId: ID!, $columnValues: JSON!) {
+        mutation UpdateItem($itemId: ID!, $boardId: ID!, $columnValues: JSON!) {
           change_multiple_column_values (
             item_id: $itemId,
-            board_id: ${boardId},
+            board_id: $boardId,
             column_values: $columnValues
           ) {
             id
@@ -227,6 +304,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
       
       const variables = {
         itemId: existingItemId,
+        boardId: boardId,
         columnValues: JSON.stringify(columnValues)
       };
       
@@ -238,6 +316,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
       }
       
       if (response.data && response.data.change_multiple_column_values) {
+        console.log('Successfully updated item in Monday.com:', existingItemId);
         return {
           success: true,
           message: 'Thank you! Your information has been updated.',
@@ -264,7 +343,7 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
         columnValues: JSON.stringify(columnValues)
       };
       
-      console.log('Creating new item in Monday.com');
+      console.log('Creating new item in Monday.com with name:', itemName);
       response = await sendMondayRequest(mutation, variables);
       
       if (response.errors && response.errors.length > 0) {
@@ -272,10 +351,12 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
       }
       
       if (response.data && response.data.create_item && (response.data.create_item as { id: string }).id) {
+        const newItemId = (response.data.create_item as { id: string }).id;
+        console.log('Successfully created new item in Monday.com:', newItemId);
         return {
           success: true,
           message: 'Thank you! Your message has been submitted successfully.',
-          itemId: (response.data.create_item as { id: string }).id
+          itemId: newItemId
         };
       }
     }
@@ -291,11 +372,23 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     console.error('Error submitting to Monday.com:', error);
     
     // Проверяем, является ли ошибка сетевой
-    if (error instanceof Error && error.message.includes('network')) {
-      return {
-        success: false,
-        message: 'Network error. Please check your internet connection and try again.'
-      };
+    if (error instanceof Error) {
+      console.error('Error details:', error.message, error.stack);
+      
+      if (error.message.includes('network') || error.message.includes('fetch')) {
+        return {
+          success: false,
+          message: 'Network error. Please check your internet connection and try again.'
+        };
+      }
+      
+      // Если ошибка связана с API Monday, возвращаем более информативное сообщение
+      if (error.message.includes('Monday API') || error.message.includes('API')) {
+        return {
+          success: false,
+          message: `Monday API error: ${error.message}`
+        };
+      }
     }
     
     return {

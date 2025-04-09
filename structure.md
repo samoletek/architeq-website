@@ -51,6 +51,7 @@ s78-website/
 │   │   ├── api/
 │   │   │   └── contact/
 │   │   │       └── route.ts
+│   │   ├── favicon.ico
 │   │   ├── globals.css
 │   │   ├── layout.tsx
 │   │   └── page.tsx
@@ -82,11 +83,14 @@ s78-website/
 │   │       ├── benefit-card.tsx
 │   │       ├── button.tsx
 │   │       ├── calendly-widget.tsx
+│   │       ├── cloudinary-video.tsx
 │   │       ├── form-input.tsx
 │   │       ├── form-select.tsx
 │   │       ├── image-with-fallback.tsx
 │   │       ├── loading-button.tsx
 │   │       ├── page-transition.tsx
+│   │       ├── recently-viewed-cases.tsx
+│   │       ├── search-bar.tsx
 │   │       ├── section-animation.tsx
 │   │       └── solution-switcher.tsx
 │   └── lib/
@@ -98,18 +102,24 @@ s78-website/
 │       ├── services/
 │       │   └── monday-service.ts
 │       └── utils/
+│           ├── animation.ts
+│           ├── common.ts
 │           ├── device-detection.ts
-│           └── utils.ts
+│           ├── utils.ts
+│           └── validation.ts
 ├── .env.local
 ├── .gitignore
 ├── eslint.config.mjs
+├── next-env.d.ts
 ├── next.config.js
+├── package-lock.json
 ├── package.json
 ├── postcss.config.js
 ├── README.md
 ├── structure.md
 ├── tailwind.config.ts
 └── tsconfig.json
+
 
 
 
