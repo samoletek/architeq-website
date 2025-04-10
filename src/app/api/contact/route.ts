@@ -7,7 +7,7 @@ const validators = {
   name: (value: string) => value.trim().length > 0,
   email: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
   message: (value: string) => value.trim().length > 0,
-  phone: (value: string) => true, // Полностью необязательное поле - всегда проходит валидацию
+  phone: () => true, // Полностью необязательное поле - всегда проходит валидацию
   company: () => true, // Необязательное поле
   interest: () => true, // Необязательное поле
 };
@@ -27,9 +27,9 @@ function containsSpam(data: ContactFormData): boolean {
   // Простая проверка на наличие спам-ссылок
   const spamPatterns = [
     /\b(?:https?:\/\/|www\.)[^\s]+\b/i,  // URL
-    /\b(?:buy|cheap|free|offer|price|discount|order|sell)\b.*\b(?:viagra|cialis|pills|crypto|forex|casino|bet|xxx)\b/i, // Комбинации спам-слов
+    /\b(?:buy|cheap|free|offer|order|sell)\b.*\b(?:viagra|cialis|pills|crypto|forex|casino|bet|xxx)\b/i, // Комбинации спам-слов
     /\b(?:casino|poker|bet|gambling|lottery)\b/i, // Игорная тематика
-    /\b(?:bitcoin|crypto|forex|invest|earn money)\b.*\b(?:fast|quick|easy|guaranteed)\b/i, // Финансовые схемы
+    /\b(?:bitcoin|forex|invest|earn money)\b.*\b(?:fast|quick|easy|guaranteed)\b/i, // Финансовые схемы
   ];
 
   // Объединяем все текстовые поля для проверки
@@ -76,9 +76,9 @@ function validateForm(data: ContactFormData): { isValid: boolean; errors: Record
   // Проверяем каждое поле формы
   for (const [field, validator] of Object.entries(validators)) {
     // TypeScript требует явного приведения типа
-    const value = data[field as keyof ContactFormData] || '';
+    const fieldValue = data[field as keyof ContactFormData] || '';
     
-    if (!validator(value.toString())) {
+    if (!validator(fieldValue.toString())) {
       errors[field] = `The ${field} field is invalid`;
     }
   }

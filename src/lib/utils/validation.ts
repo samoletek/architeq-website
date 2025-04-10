@@ -1,5 +1,6 @@
 // src/lib/utils/validation.ts
 // Утилиты валидации форм
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
 /**
  * Типы ошибок валидации
@@ -62,9 +63,6 @@ export const isPhone = (errorMessage: string = 'Enter a valid phone number'): Va
     }
     
     try {
-      // Используем динамический импорт для работы на клиенте
-      const { parsePhoneNumberFromString } = require('libphonenumber-js');
-      
       // Пытаемся распарсить номер
       const phoneNumber = parsePhoneNumberFromString(value);
       
@@ -74,7 +72,7 @@ export const isPhone = (errorMessage: string = 'Enter a valid phone number'): Va
       }
       
       return errorMessage;
-    } catch (error) {
+    } catch (_) {
       // В случае ошибки библиотеки, используем запасной вариант
       // Убираем все нецифровые символы для проверки
       const digitsOnly = value.replace(/\D/g, '');
