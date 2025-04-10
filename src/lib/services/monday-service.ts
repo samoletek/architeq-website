@@ -254,18 +254,16 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     
     // Изменяем формат телефона - попробуем несколько вариантов
     if (phoneColumnId) {
-      // Вариант 1: Попробуем как текст внутри объекта text
-      columnValues[phoneColumnId] = JSON.stringify({ text: formData.phone || '' });
-      console.log('Added phone with object format:', columnValues[phoneColumnId]);
+      columnValues[phoneColumnId] = formData.phone || '';
+      console.log('Added phone with direct format:', columnValues[phoneColumnId]);
     }
     
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     
     // Изменяем формат интереса - попробуем несколько вариантов
     if (interestColumnId && formData.interest) {
-      // Вариант 1: Попробуем как текст внутри объекта text
-      columnValues[interestColumnId] = JSON.stringify({ text: formData.interest });
-      console.log('Added interest with object format:', columnValues[interestColumnId]);
+      columnValues[interestColumnId] = formData.interest;
+      console.log('Added interest with direct format:', columnValues[interestColumnId]);
     }
     
     console.log('Prepared column values:', JSON.stringify(columnValues));
