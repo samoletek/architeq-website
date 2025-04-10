@@ -13,6 +13,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.5.0",
     "gsap": "^3.12.7",
+    "libphonenumber-js": "^1.12.6",
     "next": "15.2.3",
     "next-cloudinary": "^6.16.0",
     "react": "^19.0.0",

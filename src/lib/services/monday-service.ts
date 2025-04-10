@@ -253,30 +253,21 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     if (companyColumnId && formData.company) columnValues[companyColumnId] = formData.company;
     
     if (phoneColumnId && formData.phone) {
-      try {
-        // Определяем код страны для телефона (по умолчанию US)
-        const countryCode = formData.phone.startsWith('+') ? 
-          formData.phone.substring(1, 3) : 'US';
-          
-        columnValues[phoneColumnId] = { 
-          phone: formData.phone, 
-          countryShortName: countryCode === '1' ? 'US' : countryCode 
-        };
-      } catch (e) {
-        console.warn('Failed to format phone as object, using plain text:', e);
-        columnValues[phoneColumnId] = formData.phone;
-      }
+      // Используем просто текст для телефонного номера, поскольку колонка теперь текстовая
+      columnValues[phoneColumnId] = formData.phone;
+      console.log('Added phone as plain text:', formData.phone);
     }
     
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     
     if (interestColumnId && formData.interest) {
+      // Для колонки типа dropdown в Monday используем { label: значение }
       try {
-        // Пробуем использовать формат для labels, но если не поддерживается, 
-        // используем просто текст
-        columnValues[interestColumnId] = { labels: [formData.interest] };
+        columnValues[interestColumnId] = { label: formData.interest };
+        console.log('Added interest as dropdown with label:', formData.interest);
       } catch (e) {
-        console.warn('Failed to format interest as labels, using plain text:', e);
+        console.warn('Failed to format interest for dropdown, using fallback:', e);
+        // Запасной вариант, если что-то пойдет не так
         columnValues[interestColumnId] = formData.interest;
       }
     }
