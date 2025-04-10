@@ -252,24 +252,19 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     
     if (companyColumnId && formData.company) columnValues[companyColumnId] = formData.company;
     
-    if (phoneColumnId && formData.phone) {
-      // Используем просто текст для телефонного номера, поскольку колонка теперь текстовая
-      columnValues[phoneColumnId] = formData.phone;
-      console.log('Added phone as plain text:', formData.phone);
+    if (phoneColumnId) {
+      // Всегда отправляем значение телефона, даже если оно пустое
+      // Это поможет избежать проблем с API Monday.com
+      columnValues[phoneColumnId] = formData.phone || '';
+      console.log('Added phone as plain text:', formData.phone || '(empty)');
     }
     
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     
     if (interestColumnId && formData.interest) {
-      // Для колонки типа dropdown в Monday используем { label: значение }
-      try {
-        columnValues[interestColumnId] = { label: formData.interest };
-        console.log('Added interest as dropdown with label:', formData.interest);
-      } catch (e) {
-        console.warn('Failed to format interest for dropdown, using fallback:', e);
-        // Запасной вариант, если что-то пойдет не так
-        columnValues[interestColumnId] = formData.interest;
-      }
+      // Используем простое текстовое значение для интереса
+      columnValues[interestColumnId] = formData.interest;
+      console.log('Added interest as plain text:', formData.interest);
     }
     
     console.log('Prepared column values:', JSON.stringify(columnValues));

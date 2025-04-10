@@ -6,6 +6,7 @@ import CalendlyWidget from '@/components/ui/calendly-widget';
 import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
 import { motion } from 'framer-motion';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
 
@@ -42,7 +43,7 @@ const formValidators = {
   name: [required('Enter your name')],
   email: [required('Enter your email'), isEmail('Enter a valid email')],
   message: [required('Message is required')],
-  phone: [isPhone('Enter a valid phone number')],
+  phone: [isPhone('Enter a valid phone number')], // Поле необязательное, валидатор допускает пустые значения
 };
 
 export default function ContactsContent() {
@@ -66,6 +67,23 @@ export default function ContactsContent() {
   
   // Обработчик изменения полей формы
   const handleChange = (name: string) => (value: string) => {
+    // Специальная обработка для телефона - форматирование по мере ввода
+    if (name === 'phone' && value) {
+      try {
+        // Попытка распарсить телефонный номер
+        const phoneNumber = parsePhoneNumberFromString(value);
+        
+        // Если номер валидный, используем его отформатированную версию
+        if (phoneNumber && phoneNumber.isValid()) {
+          // Форматируем номер в международном формате
+          value = phoneNumber.formatInternational();
+        }
+      } catch (err) {
+        // Если произошла ошибка при парсинге, просто используем исходное значение
+        console.log('Phone parsing error:', err);
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -87,6 +105,12 @@ export default function ContactsContent() {
   const validateContactForm = () => {
     const errors = validateForm(formData, formValidators);
     
+    // Если есть ошибка на телефоне, но поле пустое, удаляем ошибку
+    // Это дополнительная защита, чтобы поле точно считалось необязательным
+    if (errors.phone && (!formData.phone || formData.phone.trim() === '')) {
+      delete errors.phone;
+    }
+    
     setFormState(prev => ({
       ...prev,
       errors,
@@ -100,7 +124,8 @@ export default function ContactsContent() {
       }
     }));
     
-    return Object.keys(errors).length === 0;
+    // Проверяем только обязательные поля
+    return !errors.name && !errors.email && !errors.message;
   };
 
   // Обработчик отправки формы

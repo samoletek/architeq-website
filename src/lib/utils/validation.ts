@@ -51,13 +51,37 @@ export const isEmail = (errorMessage: string = 'Enter a valid email'): Validator
 
 /**
  * Проверяет, что строка является действительным телефонным номером
+ * Использует libphonenumber-js для валидации
+ * Разрешает пустое значение (необязательное поле)
  */
 export const isPhone = (errorMessage: string = 'Enter a valid phone number'): Validator => {
   return (value: string): ValidationError => {
-    // Убираем все нецифровые символы для проверки
-    const digitsOnly = value.replace(/\D/g, '');
-    // Проверяем, что осталось хотя бы 10 цифр (минимальная длина телефона)
-    return digitsOnly.length >= 10 ? null : errorMessage;
+    // Если поле пустое, считаем его валидным (необязательное поле)
+    if (!value || value.trim() === '') {
+      return null;
+    }
+    
+    try {
+      // Используем динамический импорт для работы на клиенте
+      const { parsePhoneNumberFromString } = require('libphonenumber-js');
+      
+      // Пытаемся распарсить номер
+      const phoneNumber = parsePhoneNumberFromString(value);
+      
+      // Если номер распарсился и валиден, возвращаем null (нет ошибки)
+      if (phoneNumber && phoneNumber.isValid()) {
+        return null;
+      }
+      
+      return errorMessage;
+    } catch (error) {
+      // В случае ошибки библиотеки, используем запасной вариант
+      // Убираем все нецифровые символы для проверки
+      const digitsOnly = value.replace(/\D/g, '');
+      
+      // Проверяем, что осталось хотя бы 7 цифр (минимальная длина телефона)
+      return digitsOnly.length >= 7 ? null : errorMessage;
+    }
   };
 };
 
