@@ -72,7 +72,7 @@ export const isPhone = (errorMessage: string = 'Enter a valid phone number'): Va
       }
       
       return errorMessage;
-    } catch (_) {
+    } catch {
       // В случае ошибки библиотеки, используем запасной вариант
       // Убираем все нецифровые символы для проверки
       const digitsOnly = value.replace(/\D/g, '');

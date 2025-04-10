@@ -7,7 +7,7 @@ const validators = {
   name: (value: string) => value.trim().length > 0,
   email: (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
   message: (value: string) => value.trim().length > 0,
-  phone: () => true, // Полностью необязательное поле - всегда проходит валидацию
+  phone: () => true, // Необязательное поле
   company: () => true, // Необязательное поле
   interest: () => true, // Необязательное поле
 };

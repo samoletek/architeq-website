@@ -42,6 +42,11 @@ export function CloudinaryVideo({
   
   // Используем Intersection Observer для ленивой загрузки
   useEffect(() => {
+    if (!videoRef.current) return;
+    
+    // Сохраняем ссылку на DOM элемент
+    const currentElement = videoRef.current;
+    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -52,14 +57,11 @@ export function CloudinaryVideo({
       { threshold: 0.1 }
     );
     
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
+    observer.observe(currentElement);
     
     return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
-      }
+      // Используем сохраненную ссылку в функции очистки
+      observer.unobserve(currentElement);
     };
   }, []);
 
