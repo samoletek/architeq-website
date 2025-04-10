@@ -252,19 +252,20 @@ export async function submitToMonday(formData: FormData): Promise<MondayResponse
     
     if (companyColumnId && formData.company) columnValues[companyColumnId] = formData.company;
     
+    // Изменяем формат телефона - попробуем несколько вариантов
     if (phoneColumnId) {
-      // Всегда отправляем значение телефона, даже если оно пустое
-      // Это поможет избежать проблем с API Monday.com
-      columnValues[phoneColumnId] = formData.phone || '';
-      console.log('Added phone as plain text:', formData.phone || '(empty)');
+      // Вариант 1: Попробуем как текст внутри объекта text
+      columnValues[phoneColumnId] = JSON.stringify({ text: formData.phone || '' });
+      console.log('Added phone with object format:', columnValues[phoneColumnId]);
     }
     
     if (messageColumnId) columnValues[messageColumnId] = formData.message;
     
+    // Изменяем формат интереса - попробуем несколько вариантов
     if (interestColumnId && formData.interest) {
-      // Используем простое текстовое значение для интереса
-      columnValues[interestColumnId] = formData.interest;
-      console.log('Added interest as plain text:', formData.interest);
+      // Вариант 1: Попробуем как текст внутри объекта text
+      columnValues[interestColumnId] = JSON.stringify({ text: formData.interest });
+      console.log('Added interest with object format:', columnValues[interestColumnId]);
     }
     
     console.log('Prepared column values:', JSON.stringify(columnValues));
