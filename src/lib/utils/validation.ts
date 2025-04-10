@@ -1,7 +1,4 @@
 // src/lib/utils/validation.ts
-// Утилиты валидации форм
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
-
 /**
  * Типы ошибок валидации
  */
