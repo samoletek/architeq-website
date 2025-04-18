@@ -56,8 +56,8 @@ const caseStudies: CaseStudy[] = [
       '25-30% improvement in cash flow'
     ],
     testimonial: {
-      quote: "The automation solution §78 implemented completely transformed our invoicing process. What used to take our accounting team several days each month now happens automatically. The integration between our CRM and financial systems has not only saved us time but has significantly improved our cash flow.",
-      author: "Sarah Johnson",
+      quote: "The automation solution Architeq implemented completely transformed our invoicing process. What used to take our accounting team several days each month now happens automatically. The integration between our CRM and financial systems has not only saved us time but has significantly improved our cash flow.",
+      author: "Uliana Pak",
       position: "CFO at EclipseGroup"
     },
     relatedCases: ['quickbooks-integration', 'financial-calculations', 'factoring-automation']
@@ -86,8 +86,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "After implementing this integration, our accounting department saved nearly 30 hours per month that was previously spent on manual data entry. The accuracy of our financial reporting has dramatically improved and we are able to make business decisions based on real-time financial data.",
-      author: "Michael Rodriguez",
-      position: "Operations Director at 485 Logistics"
+      author: "Ananai A.",
+      position: "Operations Lead at 485 Logistics"
     },
     relatedCases: ['stripe-invoicing', 'financial-calculations', 'factoring-automation']
   },
@@ -115,8 +115,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The factoring automation solution has been a game-changer for our cash flow management. What used to be a painful multi-hour process now happens automatically. We receive our financing faster and can focus on growing our business instead of paperwork.",
-      author: "David Williams",
-      position: "CEO at LaneWise"
+      author: "Alexandra Shafran",
+      position: "Co-CEO at LaneWise"
     },
     relatedCases: ['stripe-invoicing', 'quickbooks-integration', 'car-hauling-solution']
   },
@@ -146,7 +146,7 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "This automation has been transformative for our document management processes. Creating custom documents used to be a major bottleneck, especially when we needed to generate hundreds of documents for our medical supplies clients. Now it happens with just a few clicks.",
-      author: "Jennifer Murphy",
+      author: "Elena Pak",
       position: "Operations Manager at Affiliated Medical Supplies"
     },
     relatedCases: ['electronic-signatures', 'web-forms-integration']
@@ -176,8 +176,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The electronic signature integration has shortened our contract closing time dramatically. Our clients appreciate the streamlined process, and our team is no longer constantly checking whether documents have been signed. It all happens automatically with real-time updates in our CRM.",
-      author: "Robert Chen",
-      position: "Sales Director at 485 Logistics"
+      author: "Joseph S.",
+      position: "Head of Quality Control at 485 Logistics"
     },
     relatedCases: ['document-generation', 'web-forms-integration', 'quickbooks-integration']
   },
@@ -206,8 +206,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The web form integration has transformed how we collect information from clients. Before, we would chase documents and manually enter data. Now clients complete forms online, and all information automatically appears in our CRM. It is faster, more accurate, and provides a much better experience for our customers.",
-      author: "Jessica Thompson",
-      position: "Marketing Director at Ameriland Capital"
+      author: "Josh Willams",
+      position: "CEO at Ameriland Capital"
     },
     relatedCases: ['document-generation', 'electronic-signatures', 'real-estate-solution']
   },
@@ -239,9 +239,9 @@ const caseStudies: CaseStudy[] = [
       'Automation of up to 70% of routine operations'
     ],
     testimonial: {
-      quote: "§78 unified all our disparate tools into a seamless ecosystem with Monday.com at the center. Our team now has a single source of truth for all information, and automation handles the transfer of data between systems. This has completely changed how we operate as a business.",
-      author: "Alex Martinez",
-      position: "Operations Manager at New Age Cabinetry & Coatings"
+      quote: "Architeq unified all our disparate tools into a seamless ecosystem with Monday.com at the center. Our team now has a single source of truth for all information, and automation handles the transfer of data between systems. This has completely changed how we operate as a business.",
+      author: "Victor Martinez",
+      position: "CEO at New Age Cabinetry & Coatings"
     },
     relatedCases: ['notification-system', 'dashboards-creation', 'kitchen-cabinetry-solution']
   },
@@ -270,8 +270,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The notification system has transformed our team responsiveness. Before, important updates would get buried in emails or missed entirely. Now, critical information is automatically routed to the right people through their preferred channels. Our clients are impressed with how quickly we respond to their needs.",
-      author: "Thomas Wright",
-      position: "Project Manager at MC Keeper"
+      author: "K. Maers",
+      position: "PM at MC Keeper"
     },
     relatedCases: ['monday-integration', 'slack-notifications', 'dashboards-creation']
   },
@@ -299,8 +299,8 @@ const caseStudies: CaseStudy[] = [
       'Transparency of all business processes for management'
     ],
     testimonial: {
-      quote: "The custom dashboards created by §78 have revolutionized our decision-making process. Our management team now has instant access to key metrics and can drill down to identify trends or issues. Reports that used to take days to compile are now available at the click of a button.",
-      author: "Lisa Chen",
+      quote: "The custom dashboards created by Architeq have revolutionized our decision-making process. Our management team now has instant access to key metrics and can drill down to identify trends or issues. Reports that used to take days to compile are now available at the click of a button.",
+      author: "Roman S.",
       position: "CEO at DreamLine"
     },
     relatedCases: ['monday-integration', 'notification-system', 'financial-calculations']
@@ -335,7 +335,7 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We have eliminated the administrative bottlenecks that were holding back our growth.",
-      author: "Mark Johnson",
+      author: "Alex Marar",
       position: "Operations Director at LaneWise"
     },
     relatedCases: ['factoring-automation', 'telephony-integration', 'quickbooks-integration']
@@ -368,8 +368,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The cabinetry solution has transformed how we run our manufacturing operations. The integration between our design software and production scheduling is seamless. We have eliminated specification errors that used to cause costly rework, and our production timeline has become much more predictable.",
-      author: "Daniel Rodriguez",
-      position: "Owner at AllWood Design"
+      author: "Vody Pavluyk",
+      position: "Co-CEO at AllWood Design"
     },
     relatedCases: ['monday-integration', 'document-generation', 'dashboards-creation']
   },
@@ -399,9 +399,9 @@ const caseStudies: CaseStudy[] = [
       'Catalog expansion without increasing administrative personnel'
     ],
     testimonial: {
-      quote: "As a music label operating across two continents, our administrative challenges were significant. The boxed solution from §78 has centralized all our operations, from release management to royalty calculations. Our artists are happier with the timely and accurate reporting, and our team can focus on creative work instead of administrative tasks.",
-      author: "Emma Wilson",
-      position: "Label Manager at SUQEAK E CLEAN STUDIOS"
+      quote: "As a music label operating across two continents, our administrative challenges were significant. The boxed solution from Architeq has centralized all our operations, from release management to royalty calculations. Our artists are happier with the timely and accurate reporting, and our team can focus on creative work instead of administrative tasks.",
+      author: "Max Taylor and Angelina Phengpong",
+      position: "Lead Producers at SUQEAK E CLEAN STUDIOS"
     },
     relatedCases: ['ai-crm-assistant', 'financial-calculations', 'monday-integration']
   },
@@ -431,8 +431,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The real estate solution has transformed our agency operations. Our agents now spend more time with clients and less time on paperwork. The automated lead qualification and showing scheduling have increased our conversion rates, and the electronic signature integration has shortened our closing cycles dramatically.",
-      author: "Richard Morris",
-      position: "Broker at Ameriland Capital"
+      author: "Josh Willams",
+      position: "CEO Ameriland Capital"
     },
     relatedCases: ['electronic-signatures', 'web-forms-integration', 'dashboards-creation']
   },
@@ -462,7 +462,7 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The AI components in our roofing business solution have been a game-changer. The voice bot handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We have increased our capacity without adding administrative staff.",
-      author: "James Peterson",
+      author: "Alex A.",
       position: "Owner at Up-Struct LLC"
     },
     relatedCases: ['ai-voice-bot', 'notification-system', 'telephony-integration']
@@ -496,7 +496,7 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The AI voice bot has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we have been able to scale our operations without expanding our support team.",
-      author: "Sarah Wilson",
+      author: "Elena Wang",
       position: "Customer Service Manager at Up-Struct LLC"
     },
     relatedCases: ['roofing-business-solution', 'telephony-integration', 'speech-to-text-analysis']
@@ -525,8 +525,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The AI assistant for our CRM has made information retrieval incredibly efficient. Our team can ask questions in natural language and get comprehensive answers drawn from across our entire database. New team members get up to speed much faster, and everyone saves time that used to be spent digging through records.",
-      author: "Michael Cooper",
-      position: "Head of Production at SUQEAK E CLEAN STUDIOS"
+      author: "David Gaddie",
+      position: "CEO at SUQEAK E CLEAN STUDIOS"
     },
     relatedCases: ['music-label-solution', 'speech-to-text-analysis', 'dashboards-creation']
   },
@@ -556,8 +556,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The speech-to-text analysis system has transformed our quality control process. We are now able to analyze 100% of customer interactions rather than just a small sample. We have identified patterns in successful calls, coached our team based on data rather than intuition, and significantly improved our conversion rates.",
-      author: "Rebecca Mitchell",
-      position: "Call Center Director"
+      author: "NDA",
+      position: "NDA"
     },
     relatedCases: ['ai-voice-bot', 'telephony-integration', 'notification-system']
   },
@@ -588,7 +588,7 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The financial computation system has eliminated the errors and inconsistencies that used to plague our payment process. Calculations that used to take days now happen automatically, and we have been able to implement more complex payment structures without adding administrative burden.",
-      author: "Nathan Lewis",
+      author: "Jaqueline Gaddie",
       position: "Financial Director at SUQEAK E CLEAN STUDIOS"
     },
     relatedCases: ['quickbooks-integration', 'stripe-invoicing', 'dashboards-creation']
@@ -619,8 +619,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The Slack notification system has transformed our internal communications. Important messages now stand out, and team members receive exactly the information they need without the noise. We have eliminated the problem of not seeing important messages, and cross-departmental coordination has improved dramatically.",
-      author: "Jennifer Clark",
-      position: "Team Lead at MC Keeper"
+      author: "Michael Fox-Rabinovitz",
+      position: "Financial Consultant at MC Keeper"
     },
     relatedCases: ['notification-system', 'monday-integration', 'telephony-integration']
   },
@@ -649,8 +649,8 @@ const caseStudies: CaseStudy[] = [
     ],
     testimonial: {
       quote: "The telephony integration has given us a complete view of all client interactions. Our sales team no longer wastes time logging calls, and managers can see the full communication history with each client. The automatic transcription feature has been invaluable for training and quality assurance.",
-      author: "Robert Thompson",
-      position: "Sales Director at EclipseGroup"
+      author: "Eugene Gourevitch",
+      position: "SEO at EclipseGroup"
     },
     relatedCases: ['speech-to-text-analysis', 'ai-voice-bot', 'notification-system']
   }
@@ -695,7 +695,7 @@ export default function CaseStudyPage() {
       
       // Обновляем метаданные динамически
       if (foundCaseStudy) {
-        document.title = `${foundCaseStudy.title} | §78 Case Study`;
+        document.title = `${foundCaseStudy.title} | Architeq Case Study`;
       }
     }
   }, [slug]);

@@ -5,14 +5,14 @@ import { siteMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
   title: 'Cookie Policy',
-  description: 'Cookie policy for §78 website. Learn about how we use cookies and similar technologies on our website.',
+  description: 'Cookie policy for Architeq website. Learn about how we use cookies and similar technologies on our website.',
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'Cookie Policy | §78',
-    description: 'Cookie policy for §78 website. Learn about how we use cookies and similar technologies on our website.',
+    title: 'Cookie Policy | Architeq',
+    description: 'Cookie policy for Architeq website. Learn about how we use cookies and similar technologies on our website.',
     url: `${siteMetadata.siteUrl}/cookies`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.defaultLocale,
@@ -107,7 +107,7 @@ export default function CookiesPage() {
                 However, if you are still looking for more information, then you can contact us through one of our preferred contact methods:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>Email: privacy@78.com</li>
+                <li>Email: hi@architeq.io</li>
               </ul>
               
               <h2 className="text-2xl font-bold mt-10 mb-4">Disabling Cookies</h2>
@@ -122,7 +122,7 @@ export default function CookiesPage() {
               
               <h2 className="text-2xl font-bold mt-10 mb-4">Contact Us</h2>
               <p className="text-light-gray mb-4">
-                If you have any questions about our cookie policy, please do not hesitate to contact us at privacy@78.com.
+                If you have any questions about our cookie policy, please do not hesitate to contact us at hi@architeq.io.
               </p>
             </div>
           </div>

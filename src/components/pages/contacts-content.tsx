@@ -399,7 +399,7 @@ export default function ContactsContent() {
                 <div className="space-y-4">
                   <div>
                     <h4 className="font-medium mb-1">Email</h4>
-                    <p className="text-light-gray">hello@78.com</p>
+                    <p className="text-light-gray">hi@architeq.io</p>
                   </div>
                   
                   <div>

@@ -5,12 +5,12 @@ import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
-  title: 'About Us | §78',
-  description: 'Learn about §78, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
+  title: 'About Us | Architeq',
+  description: 'Learn about Architeq, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
   keywords: ['about us', 'company history', 'automation team', 'methodology', 'technology stack', 'business automation'],
   openGraph: {
-    title: 'About Us | §78',
-    description: 'Learn about §78, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
+    title: 'About Us | Architeq',
+    description: 'Learn about Architeq, our history, team, methodology, and technology stack. We help businesses streamline operations through intelligent automation solutions.',
     url: `${siteMetadata.siteUrl}/about`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.defaultLocale,
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Us | §78',
-    description: 'Learn about §78, our history, team, methodology, and technology stack.',
+    title: 'About Us | Architeq',
+    description: 'Learn about Architeq, our history, team, methodology, and technology stack.',
   },
   alternates: {
     canonical: `${siteMetadata.siteUrl}/about`,
@@ -116,7 +116,7 @@ export default function AboutPage() {
       <section className="py-20 md:py-28 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About §78</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">About Architeq</h1>
             <p className="text-xl text-light-gray mb-6">
               We help businesses streamline operations, improve efficiency, and focus on what truly matters through intelligent automation solutions.
             </p>
@@ -131,7 +131,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <p className="text-light-gray mb-4">
-                §78 was founded in 2020 with a clear mission: to make business process automation accessible to small and medium businesses.
+                Architeq was founded in 2020 with a clear mission: to make business process automation accessible to small and medium businesses.
               </p>
               <p className="text-light-gray mb-4">
                 Our founders noticed that while enterprise companies benefited from automation, smaller businesses often lacked the resources and expertise to implement these solutions.

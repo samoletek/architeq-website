@@ -5,14 +5,14 @@ import { siteMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy policy for §78 website. Learn how we collect, use, and protect your personal information.',
+  description: 'Privacy policy for Architeq website. Learn how we collect, use, and protect your personal information.',
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'Privacy Policy | §78',
-    description: 'Privacy policy for §78 website. Learn how we collect, use, and protect your personal information.',
+    title: 'Privacy Policy | Architeq',
+    description: 'Privacy policy for Architeq website. Learn how we collect, use, and protect your personal information.',
     url: `${siteMetadata.siteUrl}/privacy`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.defaultLocale,
@@ -48,10 +48,10 @@ export default function PrivacyPage() {
               
               <h2 className="text-2xl font-bold mt-10 mb-4">Introduction</h2>
               <p className="text-light-gray mb-4">
-                §78 (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+                Architeq (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
               </p>
               <p className="text-light-gray mb-4">
-                This privacy policy applies to all personal data we collect through our website at §78.com, as well as any associated services, sales, marketing, or events.
+                This privacy policy applies to all personal data we collect through our website at architeq.io, as well as any associated services, sales, marketing, or events.
               </p>
               
               <h2 className="text-2xl font-bold mt-10 mb-4">The Data We Collect</h2>
@@ -154,7 +154,7 @@ export default function PrivacyPage() {
                 If you have any questions about this privacy policy or our privacy practices, please contact us at:
               </p>
               <p className="text-light-gray mb-4">
-                Email: privacy@78.com
+                Email: hi@architeq.io
               </p>
               <p className="text-light-gray">
                 You have the right to make a complaint at any time to the supervisory authority for data protection issues in your country. We would, however, appreciate the chance to deal with your concerns before you approach the supervisory authority so please contact us in the first instance.

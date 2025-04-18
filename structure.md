@@ -1,4 +1,4 @@
-s78-website/
+architeq-website/
 ├── public/
 │   ├── favicon/
 │   │   ├── android-chrome-192x192.png
@@ -123,7 +123,7 @@ s78-website/
 
 
 
-# Структура проекта §78-website
+# Структура проекта architeq-website
 
 ## Корневые файлы
 - `.gitignore` - исключения для Git

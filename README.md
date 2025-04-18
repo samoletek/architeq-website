@@ -1,8 +1,8 @@
-# §78 - Corporate websitea
+# Architeq - Corporate websitea
 
 ## About the project
 
-§78 is a corporate website for a company that specializes in business process automation. The site showcases the company's services, case studies, and provides an opportunity to contact the team.
+Architeq is a corporate website for a company that specializes in business process automation. The site showcases the company's services, case studies, and provides an opportunity to contact the team.
 
 ## Technology
 

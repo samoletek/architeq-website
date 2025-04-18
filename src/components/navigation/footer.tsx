@@ -104,9 +104,9 @@ export default function Footer({
   linkGroups = defaultLinkGroups,
   socialLinks = defaultSocialLinks,
   contactInfo = {
-    email: "hello@78.com",
+    email: "hi@architeq.io",
   },
-  copyrightText = "© 2025 §78. All rights reserved.",
+  copyrightText = "© 2025 Architeq. All rights reserved.",
   legalLinks = defaultLegalLinks,
   ctaButton = {
     text: "Contact Us",
@@ -169,7 +169,7 @@ export default function Footer({
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <Link href="/" className="text-2xl font-bold">
-                {logo || "§78"}
+                {logo || "Architeq"}
               </Link>
             </div>
             
@@ -206,7 +206,7 @@ export default function Footer({
         <div className="container mx-auto px-4">
           <SectionAnimation className="text-center mb-12">
             <Link href="/" className="inline-block text-4xl font-bold mb-4">
-              {logo || "§78"}
+              {logo || "Architeq"}
             </Link>
             <p className="text-light-gray max-w-2xl mx-auto mb-6">
               {slogan}
@@ -264,7 +264,7 @@ export default function Footer({
           <div className="md:col-span-4">
             <SectionAnimation>
               <Link href="/" className="text-4xl font-bold inline-block">
-                {logo || "§78"}
+                {logo || "Architeq"}
               </Link>
               <p className="mt-4 text-light-gray">
                 {slogan}

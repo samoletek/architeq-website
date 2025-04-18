@@ -5,11 +5,11 @@ import { siteMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with our business automation experts. Contact §78 for a free consultation about CRM integration, AI solutions, document automation, and more.',
+  description: 'Get in touch with our business automation experts. Contact Architeq for a free consultation about CRM integration, AI solutions, document automation, and more.',
   keywords: ['contact us', 'business automation consultation', 'free consultation', 'automation services', 'book a call'],
   openGraph: {
-    title: 'Contact Us | §78',
-    description: 'Get in touch with our business automation experts. Contact §78 for a free consultation about CRM integration, AI solutions, document automation, and more.',
+    title: 'Contact Us | Architeq',
+    description: 'Get in touch with our business automation experts. Contact Architeq for a free consultation about CRM integration, AI solutions, document automation, and more.',
     url: `${siteMetadata.siteUrl}/contacts`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.defaultLocale,

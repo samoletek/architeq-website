@@ -35,14 +35,14 @@ export interface TestimonialsSectionProps {
 const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
-    quote: "§78 helped us automate our entire invoicing process. What used to take days now happens automatically, and we have seen a significant improvement in cash flow.",
+    quote: "Architeq helped us automate our entire invoicing process. What used to take days now happens automatically, and we have seen a significant improvement in cash flow.",
     author: "Uliana Pak",
     title: "CFO at EclipseGroup",
     image: "/images/testimonials/alex-johnson.jpg",
   },
   {
     id: 2,
-    quote: "The custom AI solution developed by §78 revolutionized our customer service. We now handle 70% more requests without adding staff, and customer satisfaction has improved dramatically.",
+    quote: "The custom AI solution developed by Architeq revolutionized our customer service. We now handle 70% more requests without adding staff, and customer satisfaction has improved dramatically.",
     author: "Alexandr Alexeyev",
     title: "CEO at Up-Struct LLC",
     image: "/images/testimonials/maria-rodriguez.jpg",

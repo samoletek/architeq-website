@@ -5,14 +5,14 @@ import { siteMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
-  description: 'Terms of service for §78 website. Learn about the rules and guidelines for using our website and services.',
+  description: 'Terms of service for Architeq website. Learn about the rules and guidelines for using our website and services.',
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: 'Terms of Service | §78',
-    description: 'Terms of service for §78 website. Learn about the rules and guidelines for using our website and services.',
+    title: 'Terms of Service | Architeq',
+    description: 'Terms of service for Architeq website. Learn about the rules and guidelines for using our website and services.',
     url: `${siteMetadata.siteUrl}/terms`,
     siteName: siteMetadata.siteName,
     locale: siteMetadata.defaultLocale,
@@ -37,7 +37,7 @@ export default function TermsPage() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">1. Introduction</h2>
             <p className="text-light-gray mb-4">
-              Welcome to §78 (&quot;Company&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;). These Terms of Service (&quot;Terms&quot;, &quot;Terms of Service&quot;) govern your use of our website located at <span className="text-white">example.com</span> (the &quot;Service&quot;) operated by §78.
+              Welcome to Architeq (&quot;Company&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;). These Terms of Service (&quot;Terms&quot;, &quot;Terms of Service&quot;) govern your use of our website located at <span className="text-white">architeq.io</span> (the &quot;Service&quot;) operated by Architeq team.
             </p>
             <p className="text-light-gray mb-4">
               By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
@@ -66,15 +66,15 @@ export default function TermsPage() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">5. Intellectual Property</h2>
             <p className="text-light-gray mb-4">
-              The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of §78 and its licensors. The Service is protected by copyright, trademark, and other laws of both the [Country] and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of §78.
+              The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of Architeq and its licensors. The Service is protected by copyright, trademark, and other laws of both the [Country] and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Architeq.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">6. Links To Other Web Sites</h2>
             <p className="text-light-gray mb-4">
-              Our Service may contain links to third party web sites or services that are not owned or controlled by §78.
+              Our Service may contain links to third party web sites or services that are not owned or controlled by Architeq.
             </p>
             <p className="text-light-gray mb-4">
-              §78 has no control over, and assumes no responsibility for the content, privacy policies, or practices of any third party web sites or services. We do not warrant the offerings of any of these entities/individuals or their websites.
+              Architeq has no control over, and assumes no responsibility for the content, privacy policies, or practices of any third party web sites or services. We do not warrant the offerings of any of these entities/individuals or their websites.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">7. Termination</h2>
@@ -87,7 +87,7 @@ export default function TermsPage() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">8. Limitation Of Liability</h2>
             <p className="text-light-gray mb-4">
-              In no event shall §78, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.
+              In no event shall Architeq, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service; (iii) any content obtained from the Service; and (iv) unauthorized access, use or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence) or any other legal theory, whether or not we have been informed of the possibility of such damage.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">9. Disclaimer</h2>

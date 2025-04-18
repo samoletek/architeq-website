@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Explore our successful business automation case studies across various industries. See real results of our CRM integration, AI solutions, and document automation.',
   keywords: ['case studies', 'business automation examples', 'success stories', 'automation results', 'automation projects'],
   openGraph: {
-    title: 'Case Studies | §78',
+    title: 'Case Studies | Architeq',
     description: 'Explore our successful business automation case studies across various industries. See real results of our CRM integration, AI solutions, and document automation.',
     url: `${siteMetadata.siteUrl}/cases`,
     siteName: siteMetadata.siteName,

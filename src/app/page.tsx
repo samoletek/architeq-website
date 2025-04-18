@@ -11,7 +11,7 @@ import { OrganizationSchema } from '@/lib/seo/schema';
 
 // Генерируем метаданные для главной страницы
 export const metadata = generateMetadata({
-  title: '§78 | Business Process Automation',
+  title: 'Architeq | Business Process Automation',
   description: 'Business process automation solutions for small and medium businesses. We specialize in CRM integration, document automation, and AI solutions to streamline your operations.',
   keywords: [
     'business automation', 
@@ -29,16 +29,16 @@ export default function Home() {
     <>
       {/* Schema.org разметка для организации */}
       <OrganizationSchema
-        name="§78"
+        name="Architeq"
         description="Business process automation solutions for small and medium businesses."
-        url="https://78.com"
-        foundingDate="2020"
+        url="https://architeq.io"
+        foundingDate="2023"
         founders={["Andrii Serhiienko"]}
         address={{
           addressCountry: "United States"
         }}
         contactPoint={{
-          email: "info@78.com",
+          email: "hi@architeq.io",
           contactType: "customer service"
         }}
       />

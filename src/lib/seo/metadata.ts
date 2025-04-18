@@ -12,9 +12,9 @@ export interface PageMetadata {
 
 // Основные метаданные для сайта
 export const siteMetadata = {
-  siteName: '§78',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://78.com',
-  defaultTitle: '§78 | Business Process Automation',
+  siteName: 'Architeq',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://architeq.io',
+  defaultTitle: 'Architeq | Business Process Automation',
   defaultDescription: 'Business process automation for small and medium businesses. Expertise in CRM integration, document and form creation, AI solutions.',
   defaultKeywords: ['business automation', 'CRM integration', 'document automation', 'AI solutions', 'business process'],
   defaultOgImage: '/images/og-image.jpg',

@@ -165,7 +165,7 @@ export default function Header({
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Логотип */}
         <Link href="/" className="text-2xl font-bold text-white z-10">
-          {logo || "§78"}
+          {logo || "Architeq"}
         </Link>
 
         {/* Десктопное меню */}

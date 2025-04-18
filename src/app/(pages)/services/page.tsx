@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Explore our full range of business automation services including CRM integration, document automation, AI solutions, and more.',
   keywords: ['business automation', 'CRM integration', 'document automation', 'AI solutions', 'business process', 'financial systems integration'],
   openGraph: {
-    title: 'Business Automation Services | §78',
+    title: 'Business Automation Services | Architeq',
     description: 'Explore our full range of business automation services including CRM integration, document automation, AI solutions, and more.',
     url: `${siteMetadata.siteUrl}/services`,
     siteName: siteMetadata.siteName,
@@ -26,14 +26,14 @@ const services = [
   {
     id: 'business-process',
     title: 'Business Process Automation',
-    description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows that save time and reduce errors.',
+    description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows that save time and reduce human errors.',
     icon: 'process',
     features: [
       'Process mapping and optimization',
-      'Workflow automation',
+      'Workflow rebuild and automation',
       'Integration between systems',
       'Data validation and error prevention',
-      'Dashboard creation for process monitoring'
+      'Dashboard creation for analytics'
     ],
     caseStudies: ['monday-integration', 'notification-system']
   },

@@ -71,7 +71,7 @@ export function generateFaviconMetadata({
     },
     manifest: '/favicon/site.webmanifest',
     appleWebApp: {
-      title: '§78',
+      title: 'Architeq',
       statusBarStyle: 'black-translucent',
     },
     other: {
