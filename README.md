@@ -1,4 +1,4 @@
-# Architeq - Corporate websitea
+# Architeq - Corporate website
 
 ## About the project
 
