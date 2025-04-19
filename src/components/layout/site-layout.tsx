@@ -12,7 +12,7 @@ export default function SiteLayout({
 }) {
   return (
     <>
-      <Header />
+      <Header showSearch={true} />
       <main className="pt-20">
         <PageTransition>
           {children}
