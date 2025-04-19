@@ -184,8 +184,8 @@ const caseStudies: CaseStudy[] = [
   {
     id: 'web-forms-integration',
     title: 'Creating and Integrating Web Forms',
-    company: 'Ameriland Capital',
-    location: 'Fayetteville, AR, USA',
+    company: 'New Age Cabinetry & Coatings',
+    location: 'Phoenix, AZ, USA',
     industry: 'Lead Generation',
     solutionType: 'Documents & Forms',
     shortDescription: 'Creation and integration of web forms with direct CRM integration for efficient data collection.',
@@ -205,9 +205,9 @@ const caseStudies: CaseStudy[] = [
       'Improvement of customer experience'
     ],
     testimonial: {
-      quote: "The web form integration has transformed how we collect information from clients. Before, we would chase documents and manually enter data. Now clients complete forms online, and all information automatically appears in our CRM. It is faster, more accurate, and provides a much better experience for our customers.",
-      author: "Josh Willams",
-      position: "CEO at Ameriland Capital"
+      quote: "The web form integration has transformed how we collect information from clients. Before, we would chase documents and manually enter data. Now clients complete JotForm online, and all information automatically appears in our CRM. Very cool!",
+      author: "Jonathan Martinez",
+      position: "Team Lead at New Age Cabinetry & Coatings"
     },
     relatedCases: ['document-generation', 'electronic-signatures', 'real-estate-solution']
   },
