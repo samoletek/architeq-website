@@ -36,8 +36,8 @@ function HeroSkeleton() {
 }
 
 function HeroContent({
-  title = "Business Process Automation for Real Business Growth",
-  description = "We help small and medium businesses optimize workflows, integrate systems, and automate routine tasks.",
+  title = "Architect your workflow. Scale with confidence.",
+  description = "We reimagine digital systems that flex, scale, and adapt — for companies across industries",
   primaryCta = {
     text: "Book a Consultation",
     href: "/contacts"
