@@ -262,7 +262,7 @@ export default function SearchPage() {
               </svg>
               <h3 className="text-xl font-semibold mb-2">No results found</h3>
               <p className="text-light-gray mb-6">
-                We could not find any content matching '{query}'. Please try a different search term or explore our services and case studies.
+                We could not find any content matching {query}. Please try a different search term or explore our services and case studies.
               </p>
               <div className="flex flex-wrap gap-3 justify-center mt-6">
                 <Link href="/services">
@@ -281,7 +281,7 @@ export default function SearchPage() {
             <div className="bg-dark-gray rounded-lg p-8 text-center">
               <h3 className="text-xl font-semibold mb-4">What are you looking for?</h3>
               <p className="text-light-gray mb-6">
-                Try searching for services, case studies, or specific technologies like 'CRM', 'Document Automation', or 'AI'.
+                Try searching for services, case studies, or specific technologies like CRM, Document Automation, or AI.
               </p>
               <div className="flex flex-wrap gap-3 justify-center mt-6">
                 <Link href="/search?q=CRM">

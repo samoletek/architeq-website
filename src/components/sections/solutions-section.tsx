@@ -178,9 +178,6 @@ export function SolutionsSection({
     icon: solution.icon
   }));
   
-  // Упрощаем анимацию, если устройство с низкой производительностью
-  const shouldAnimate = withAnimation && !isLowPerformance && isMounted;
-  
   // Определяем фон секции в зависимости от варианта
   const sectionBg = variant === 'default' ? 'bg-dark-gray' : 'bg-site-bg';
 

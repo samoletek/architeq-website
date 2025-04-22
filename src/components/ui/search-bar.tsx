@@ -66,7 +66,6 @@ export function SearchBar({
   className,
   placeholder = 'Search...',
   onSearch,
-  results = [],
   isLoading = false,
   isExpanded = false,
   onToggle,
