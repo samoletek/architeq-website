@@ -1,11 +1,10 @@
 "use client";
 
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { SectionAnimation } from '@/components/ui/section-animation';
 
 // Тип для параметров секции CTA
 export interface CTASectionProps {
@@ -43,9 +42,15 @@ export default function CTASection({
   variant = 'default'
 }: CTASectionProps) {
   const { isMobile, isLowPerformance } = useDeviceDetection();
+  const [isMounted, setIsMounted] = useState(false);
   
   // Отключаем сложные анимации на мобильных и низкопроизводительных устройствах
   const simplifiedMode = isMobile || isLowPerformance;
+  
+  // Эффект для отслеживания монтирования на клиенте
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   // Настройки для разных вариантов
   const variantClasses = {
@@ -63,36 +68,24 @@ export default function CTASection({
   
   return (
     <section className={sectionClasses}>
-      {/* Градиентный фон, если включен */}
+      {/* Градиентный фон, если включен - в обоих режимах */}
       {gradient && variant === 'default' && (
         <div className="absolute inset-0 bg-dark-gradient z-0"></div>
       )}
       
-      {/* Декоративные элементы, если включены */}
-      {particles && !simplifiedMode && (
+      {/* Декоративные элементы только для клиентского рендеринга */}
+      {particles && isMounted && !simplifiedMode && (
         <>
-          <motion.div 
+          <div 
             className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full opacity-5 blur-[100px]"
-            animate={{ 
-              x: [0, 50, 0],
-              y: [0, 30, 0],
-            }}
-            transition={{ 
-              duration: 20,
-              repeat: Infinity,
-              repeatType: "mirror"
+            style={{ 
+              transform: 'translate(0, 0)'
             }}
           />
-          <motion.div 
+          <div 
             className="absolute bottom-0 right-0 w-96 h-96 bg-neon-blue rounded-full opacity-5 blur-[100px]"
-            animate={{ 
-              x: [0, -50, 0],
-              y: [0, -30, 0],
-            }}
-            transition={{ 
-              duration: 15,
-              repeat: Infinity,
-              repeatType: "mirror"
+            style={{ 
+              transform: 'translate(0, 0)'
             }}
           />
         </>
@@ -105,25 +98,25 @@ export default function CTASection({
           compact ? "p-6" : "", 
           variant === 'highlight' ? "bg-dark-gray rounded-xl shadow-lg" : ""
         )}>
-          <SectionAnimation delay={0.1}>
+          <div className="animate-fadeIn">
             <h2 className={cn(
               "font-bold mb-6",
               compact ? "text-2xl" : "text-3xl md:text-4xl"
             )}>
               {title}
             </h2>
-          </SectionAnimation>
+          </div>
           
-          <SectionAnimation delay={0.2}>
+          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
             <p className={cn(
               "text-light-gray mb-8",
               compact ? "text-base" : "text-lg"
             )}>
               {description}
             </p>
-          </SectionAnimation>
+          </div>
           
-          <SectionAnimation delay={0.3}>
+          <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={primaryCta.href}>
                 <Button variant="primary" size={compact ? "default" : "lg"}>
@@ -139,21 +132,21 @@ export default function CTASection({
                 </Link>
               )}
             </div>
-          </SectionAnimation>
+          </div>
           
           {extraContent && (
-            <SectionAnimation delay={0.4} className="mt-6">
+            <div className="animate-fadeIn mt-6" style={{ animationDelay: '0.3s' }}>
               {extraContent}
-            </SectionAnimation>
+            </div>
           )}
           
           {/* Дополнительный маленький текст, если это не компактный режим */}
           {!compact && variant === 'default' && (
-            <SectionAnimation delay={0.5}>
-              <p className="mt-6 text-sm text-light-gray">
+            <div className="animate-fadeIn mt-6" style={{ animationDelay: '0.4s' }}>
+              <p className="text-sm text-light-gray">
                 No obligations. We will show you how automation can work for your specific business.
               </p>
-            </SectionAnimation>
+            </div>
           )}
         </div>
       </div>
@@ -194,23 +187,27 @@ export function FloatingCTA({
   show?: boolean;
 }) {
   const { isMobile } = useDeviceDetection();
+  const [isMounted, setIsMounted] = useState(false);
   
-  // Показываем только на мобильных устройствах
-  if (!isMobile || !show) return null;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Показываем только на мобильных устройствах и после монтирования
+  if (!isMounted || !isMobile || !show) return null;
   
   return (
-    <motion.div
+    <div
       className="fixed bottom-0 left-0 w-full z-50 p-4 bg-dark-gray/80 backdrop-blur-md border-t border-medium-gray"
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      exit={{ y: 100 }}
-      transition={{ duration: 0.3 }}
+      style={{ 
+        transform: 'translateY(0)' 
+      }}
     >
       <Link href={href} className="block">
         <Button variant="primary" className="w-full">
           {text}
         </Button>
       </Link>
-    </motion.div>
+    </div>
   );
 }
