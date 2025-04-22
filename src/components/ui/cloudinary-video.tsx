@@ -40,6 +40,14 @@ export function CloudinaryVideo({
   const videoRef = useRef<HTMLDivElement>(null);
   const { isMobile, isLowPerformance } = useDeviceDetection();
   
+  // Проверяем publicId
+  useEffect(() => {
+    if (!publicId) {
+      console.warn("CloudinaryVideo: Missing publicId");
+      setHasError(true);
+    }
+  }, [publicId]);
+  
   // Определим качество видео в зависимости от устройства
   const quality = isMobile || isLowPerformance ? 'auto:low' : 'auto:good';
   
@@ -70,6 +78,7 @@ export function CloudinaryVideo({
 
   // Обработчик события ошибки
   const handleError = () => {
+    console.log(`Failed to load video for case: ${publicId}`);
     setHasError(true);
     if (onError) onError();
   };
@@ -102,6 +111,7 @@ export function CloudinaryVideo({
 
   // Обработчик клика по видео
   const handlePlayClick = () => {
+    if (hasError) return; // Не открываем модальное окно, если есть ошибка
     setIsModalOpen(true);
   };
 
@@ -119,29 +129,32 @@ export function CloudinaryVideo({
         onMouseLeave={() => setIsHovered(false)}
         onClick={handlePlayClick}
       >
-          {hasError && (
+        {/* Состояние ошибки - показываем заглушку */}
+        {hasError && (
           <div className="absolute inset-0 flex items-center justify-center bg-dark-gray p-4">
-              <div className="text-center">
+            <div className="text-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               <p className="text-light-gray mb-2">Case study visualization is coming soon</p>
               <p className="text-light-gray/60 text-sm">Our motion designers are working on it!</p>
-              </div>
+              {publicId && <p className="text-light-gray/40 text-xs mt-2">ID: {publicId}</p>}
+            </div>
           </div>
-          )}
+        )}
         
+        {/* Пользовательский placeholder */}
         {!isLoaded && !hasError && placeholder ? placeholder : null}
         
         {/* Превью или заглушка */}
-        {!hasError && (
+        {!hasError && !isLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-dark-gray">
             <div className="text-center p-4">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-light-gray">Посмотреть демонстрацию</p>
+              <p className="text-light-gray">View Demo</p>
             </div>
           </div>
         )}
@@ -168,8 +181,12 @@ export function CloudinaryVideo({
           </div>
         )}
         
+        {/* Видео Cloudinary */}
         {isVisible && !hasError && (
-          <div className={cn(!isLoaded && "opacity-0", "transition-opacity duration-500 hidden")}>
+          <div className={cn(
+            "w-full h-full transition-opacity duration-500",
+            !isLoaded ? "opacity-0" : "opacity-100"
+          )}>
             <CldVideoPlayer
               width={width}
               height={height}
@@ -228,6 +245,7 @@ export function CloudinaryVideo({
                   loop={loop}
                   muted={muted}
                   controls={true}
+                  onError={handleError}
                   className="w-full h-full object-cover"
                   transformation={{
                     quality: 'auto:best',

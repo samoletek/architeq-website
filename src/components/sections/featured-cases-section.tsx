@@ -5,24 +5,13 @@ import { Button } from '@/components/ui/button';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { SectionAnimation, AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import { cn } from '@/lib/utils/utils';
-
-// Тип для представления кейса
-export interface FeaturedCase {
-  id: string;
-  title: string;
-  description: string;
-  industry: string;
-  company: string;
-  results: string[];
-  image?: string;
-  tags: string[];
-}
+import { getFeaturedCases, toCaseCardFormat, type CaseStudy } from '@/lib/data/case-studies';
 
 // Интерфейс для параметров секции
 export interface FeaturedCasesSectionProps {
   title?: string;
   subtitle?: string;
-  cases?: FeaturedCase[];
+  cases?: CaseStudy[];
   viewAllText?: string;
   viewAllUrl?: string;
   className?: string;
@@ -32,56 +21,10 @@ export interface FeaturedCasesSectionProps {
   caseCardVariant?: 'default' | 'compact';
 }
 
-// Примеры кейсов по умолчанию
-const defaultCases: FeaturedCase[] = [
-  {
-    id: 'stripe-invoicing',
-    title: 'Stripe Invoicing Automation',
-    description: 'Integration of CRM with financial systems for automatic invoice creation and payment tracking.',
-    industry: 'Financial Management',
-    company: 'EclipseGroup',
-    results: [
-      '85% reduction in time spent on invoicing',
-      '30% acceleration in receiving payments',
-      'Elimination of errors in data transfer'
-    ],
-    image: '/images/cases/stripe-invoicing.jpg',
-    tags: ['Finance', 'CRM', 'Automation']
-  },
-  {
-    id: 'document-generation',
-    title: 'Document Generation from CRM',
-    description: 'Automatic document generation system that creates documents based on CRM data.',
-    industry: 'Document Management',
-    company: 'Affiliated Medical Supplies',
-    results: [
-      'Document creation time reduced from 35 minutes to 2-3 minutes',
-      'Complete elimination of data errors',
-      'Standardization of all company documents'
-    ],
-    image: '/images/cases/document-generation.jpg',
-    tags: ['Documents', 'CRM', 'Automation']
-  },
-  {
-    id: 'ai-voice-bot',
-    title: 'AI-Voice Bot for Client Requests',
-    description: 'Multi-level interactive voice assistant for processing client requests without operator participation.',
-    industry: 'Customer Service',
-    company: 'Up-Struct LLC',
-    results: [
-      'Automation of 60-70% of incoming requests',
-      'Reduction of waiting time to minimum',
-      '24/7 operation mode without increasing staff'
-    ],
-    image: '/images/cases/ai-voice-bot.jpg',
-    tags: ['AI', 'Voice', 'Customer Service']
-  }
-];
-
 export default function FeaturedCasesSection({
   title = "Featured Case Studies",
   subtitle = "Explore how we've helped companies across various industries optimize their processes and achieve significant results.",
-  cases = defaultCases,
+  cases,
   viewAllText = "View All Case Studies",
   viewAllUrl = "/cases",
   className,
@@ -90,16 +33,19 @@ export default function FeaturedCasesSection({
   variant = 'default',
   caseCardVariant = 'default'
 }: FeaturedCasesSectionProps) {
+  // Если кейсы не переданы явно, получаем избранные кейсы
+  const featuredCases = cases || getFeaturedCases(maxCases);
+  
   // Ограничиваем количество отображаемых кейсов
-  const displayCases = cases.slice(0, maxCases);
+  const displayCases = featuredCases.slice(0, maxCases);
   
   // Определяем фон секции в зависимости от варианта
   const sectionBg = variant === 'default' ? 'bg-[#121212]' : 'bg-dark-gray';
   
   // Адаптируем количество колонок для разных размеров экрана
-  const gridCols = cases.length === 1 
+  const gridCols = displayCases.length === 1 
     ? 'grid-cols-1'
-    : cases.length === 2 
+    : displayCases.length === 2 
       ? 'grid-cols-1 md:grid-cols-2' 
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
@@ -136,22 +82,26 @@ export default function FeaturedCasesSection({
 
         {/* Сетка кейсов */}
         <AnimatedContainer staggerTime={0.15} className={cn("grid gap-8", gridCols)}>
-          {displayCases.map((caseItem, index) => (
-            <AnimatedItem key={index}>
-              <CaseCard 
-                id={caseItem.id}
-                title={caseItem.title}
-                description={caseItem.description}
-                industry={caseItem.industry}
-                company={caseItem.company}
-                results={caseItem.results}
-                image={caseItem.image}
-                tags={caseItem.tags}
-                href={`/cases/${caseItem.id}`}
-                isCompact={caseCardVariant === 'compact'}
-              />
-            </AnimatedItem>
-          ))}
+          {displayCases.map((caseItem, index) => {
+            const cardData = toCaseCardFormat(caseItem);
+            return (
+              <AnimatedItem key={index}>
+                <CaseCard 
+                  id={cardData.id}
+                  title={cardData.title}
+                  description={cardData.description}
+                  industry={cardData.industry}
+                  company={cardData.company}
+                  location={cardData.location}
+                  results={cardData.results}
+                  image={cardData.image}
+                  tags={cardData.tags}
+                  href={`/cases/${cardData.id}`}
+                  isCompact={caseCardVariant === 'compact'}
+                />
+              </AnimatedItem>
+            );
+          })}
         </AnimatedContainer>
 
         {/* Кнопка "Посмотреть все" только если не компактный режим */}
@@ -172,11 +122,13 @@ export default function FeaturedCasesSection({
 // Компактная версия с горизонтальным скроллом для мобильных устройств
 export function HorizontalCasesSection({
   title = "Recent Case Studies",
-  cases = defaultCases.slice(0, 6),
+  cases,
   viewAllText = "View All",
   viewAllUrl = "/cases",
   className,
 }: Omit<FeaturedCasesSectionProps, 'compact' | 'variant' | 'maxCases'>) {
+  const displayCases = cases || getFeaturedCases(6);
+  
   return (
     <div className={cn("py-10", className)}>
       <div className="container mx-auto px-4">
@@ -196,21 +148,24 @@ export function HorizontalCasesSection({
         {/* Горизонтальный скролл с кейсами */}
         <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
           <div className="flex space-x-4 pb-4" style={{ minWidth: 'max-content' }}>
-            {cases.map((caseItem, index) => (
-              <div 
-                key={index} 
-                className="w-[280px] flex-shrink-0"
-              >
-                <CaseCard 
-                  id={caseItem.id}
-                  title={caseItem.title}
-                  company={caseItem.company}
-                  tags={caseItem.tags}
-                  href={`/cases/${caseItem.id}`}
-                  isCompact={true}
-                />
-              </div>
-            ))}
+            {displayCases.map((caseItem, index) => {
+              const cardData = toCaseCardFormat(caseItem);
+              return (
+                <div 
+                  key={index} 
+                  className="w-[280px] flex-shrink-0"
+                >
+                  <CaseCard 
+                    id={cardData.id}
+                    title={cardData.title}
+                    company={cardData.company}
+                    tags={cardData.tags}
+                    href={`/cases/${cardData.id}`}
+                    isCompact={true}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
