@@ -147,9 +147,9 @@ function SearchResults({
         <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <h3 className="text-xl font-semibold mb-2">No results found</h3>
+        <h3 className="text-xl font-semibold mb-2">Sorry, no results found</h3>
         <p className="text-light-gray mb-6">
-          We could not find any content matching {query}. Please try a different search term or explore our services and case studies.
+          We could not find any content matching: {query}. Please try a different search term or explore our services and case studies.
         </p>
         <div className="flex flex-wrap gap-3 justify-center mt-6">
           <Link href="/services">
@@ -174,13 +174,13 @@ function SearchResults({
       </p>
       <div className="flex flex-wrap gap-3 justify-center mt-6">
         <Link href="/search?q=CRM">
-          <Button variant="secondary">CRM Integration</Button>
+          <Button variant="secondary">CRM</Button>
         </Link>
         <Link href="/search?q=Document">
-          <Button variant="secondary">Document Automation</Button>
+          <Button variant="secondary">Document</Button>
         </Link>
         <Link href="/search?q=AI">
-          <Button variant="secondary">AI Solutions</Button>
+          <Button variant="secondary">AI</Button>
         </Link>
       </div>
     </div>
@@ -305,17 +305,12 @@ function SearchPageContent() {
             </Link>
             <Link href="/search?q=Document">
               <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
-                Document Automation
+                Document
               </span>
             </Link>
             <Link href="/search?q=AI">
               <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
                 AI
-              </span>
-            </Link>
-            <Link href="/search?q=Finance">
-              <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
-                Finance
               </span>
             </Link>
           </div>
