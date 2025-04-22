@@ -145,8 +145,7 @@ export function SolutionsSection({
   className,
   defaultSolutionId,
   buttonText = "Learn More About",
-  variant = 'default',
-  withAnimation = true
+  variant = 'default'
 }: SolutionsSectionProps) {
   const [activeSolution, setActiveSolution] = useState<Solution>(
     defaultSolutionId ? 
@@ -155,7 +154,6 @@ export function SolutionsSection({
   );
   
   const [isMounted, setIsMounted] = useState(false);
-  const { isLowPerformance } = useDeviceDetection();
   
   // Устанавливаем состояние после монтирования
   useEffect(() => {

@@ -19,8 +19,14 @@ interface CloudinaryVideoProps {
   placeholder?: React.ReactNode;
 }
 
+// Определяем типизированный интерфейс для опций
+interface CloudinaryOptions {
+  quality?: string;
+  format?: string;
+}
+
 // Функция для создания URL видео из Cloudinary
-function getCloudinaryUrl(publicId: string, options: Record<string, any> = {}) {
+function getCloudinaryUrl(publicId: string, options: CloudinaryOptions = {}) {
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   
   if (!cloudName) {
@@ -115,6 +121,7 @@ export function CloudinaryVideo({
   useEffect(() => {
     if (!containerRef.current) return;
     
+    const currentContainer = containerRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -125,12 +132,10 @@ export function CloudinaryVideo({
       { threshold: 0.1 }
     );
     
-    observer.observe(containerRef.current);
+    observer.observe(currentContainer);
     
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      observer.unobserve(currentContainer);
     };
   }, []);
 
