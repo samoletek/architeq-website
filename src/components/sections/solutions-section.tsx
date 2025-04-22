@@ -6,7 +6,6 @@ import { SolutionSwitcher } from '@/components/ui/solution-switcher';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 
 // Тип для таба решения
