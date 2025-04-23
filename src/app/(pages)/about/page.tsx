@@ -36,19 +36,19 @@ export default function AboutPage() {
       image: '/images/team/alex-mercer.jpg'
     },
     {
-      name: 'Gennady Myazin',
+      name: 'Gennady M.',
       position: 'Lead Integration Engineer',
       bio: 'Expert in CRM systems and workflow optimization with background in enterprise solutions.',
       image: '/images/team/maria-chen.jpg'
     },
     {
-      name: 'Yakov Saveliev',
+      name: 'Yakov S.',
       position: 'AI Solutions Developer',
       bio: 'Specializes in artificial intelligence and machine learning solutions for business automation.',
       image: '/images/team/david-wilson.jpg'
     },
     {
-      name: 'Daniil Apanasov',
+      name: 'Daniil A.',
       position: 'Integration Engineer',
       bio: 'Experienced in connecting disparate systems and ensuring seamless data flow between platforms.',
       image: '/images/team/sophia-park.jpg'
