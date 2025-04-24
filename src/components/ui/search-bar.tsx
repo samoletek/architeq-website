@@ -1,12 +1,13 @@
 // src/components/ui/search-bar.tsx
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
 import { usePathname } from 'next/navigation';
+import { allCaseStudies } from '@/lib/data/case-studies';
 
 // Типы результатов поиска
 export interface SearchResult {
@@ -32,11 +33,39 @@ interface SearchBarProps {
   maxResults?: number;
 }
 
+// Предопределенные результаты поиска
+const SERVICES = [
+  { id: 'business-process', title: 'Business Process Automation', type: 'service' as const, url: '/services/business-process', description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows.' },
+  { id: 'crm-integration', title: 'CRM Integration', type: 'service' as const, url: '/services/crm-integration', description: 'Connect your CRM system with other business tools to create a unified information environment.' },
+  { id: 'boxed-solutions', title: 'Boxed Solutions', type: 'service' as const, url: '/services/boxed-solutions', description: 'Industry-specific automation packages that address unique challenges in various sectors.' },
+  { id: 'ai-solutions', title: 'AI Solutions', type: 'service' as const, url: '/services/ai-solutions', description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights.' },
+  { id: 'documentation', title: 'Documentation', type: 'service' as const, url: '/services/documentation', description: 'Automate document creation, processing, and management to reduce administrative burden.' },
+  { id: 'finance', title: 'Financial Systems', type: 'service' as const, url: '/services/finance', description: 'Streamline financial operations by automating invoicing, payment tracking, and reconciliation.' },
+];
+
+const PAGES = [
+  { id: 'home', title: 'Home', type: 'page' as const, url: '/' },
+  { id: 'about', title: 'About Us', type: 'page' as const, url: '/about', description: 'Learn about our team, mission, and technology stack.' },
+  { id: 'cases', title: 'Case Studies', type: 'page' as const, url: '/cases', description: 'Explore our successful client projects and solutions.' },
+  { id: 'contacts', title: 'Contact Us', type: 'page' as const, url: '/contacts', description: 'Get in touch with our team for a consultation.' },
+];
+
+// Функция для преобразования кейсов в результаты поиска
+function casesToSearchResults(): SearchResult[] {
+  return allCaseStudies.map(cs => ({
+    id: cs.id,
+    title: cs.title,
+    type: 'case',
+    url: `/cases/${cs.id}`,
+    description: cs.description,
+    tags: [cs.solutionType, ...cs.technologies.slice(0, 2)]
+  }));
+}
+
 export function SearchBar({
   className,
   placeholder = 'Search...',
   onSearch,
-  results = [],
   isLoading = false,
   isExpanded = false,
   onToggle,
@@ -46,14 +75,10 @@ export function SearchBar({
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
-  
-  // Фильтрация и ограничение результатов
-  const displayResults = results.slice(0, maxResults);
-  const hasResults = displayResults.length > 0;
-  const hasMoreResults = results.length > maxResults;
   
   // Обработка клика вне компонента
   useEffect(() => {
@@ -72,20 +97,64 @@ export function SearchBar({
   // Сброс поиска при изменении маршрута
   useEffect(() => {
     setSearchQuery('');
+    setSearchResults([]);
     setShowResults(false);
   }, [pathname]);
   
+  // Выполнение поиска при изменении запроса
+  useEffect(() => {
+    // Функция поиска
+    const performSearch = (query: string) => {
+      // Если запрос пустой, возвращаем пустой массив
+      if (!query.trim()) {
+        setSearchResults([]);
+        return;
+      }
+      
+      const lowerCaseQuery = query.toLowerCase();
+      
+      // Создаем массив всех доступных данных
+      const allCases = casesToSearchResults();
+      const allServices = [...SERVICES];
+      const allPages = [...PAGES];
+      
+      // Функция для проверки, соответствует ли элемент запросу
+      const matches = (item: SearchResult) => {
+        const titleMatch = item.title.toLowerCase().includes(lowerCaseQuery);
+        const descriptionMatch = item.description?.toLowerCase().includes(lowerCaseQuery) || false;
+        const tagsMatch = item.tags?.some(tag => tag.toLowerCase().includes(lowerCaseQuery)) || false;
+        
+        return titleMatch || descriptionMatch || tagsMatch;
+      };
+      
+      // Фильтруем и объединяем результаты
+      const matchingCases = allCases.filter(matches);
+      const matchingServices = allServices.filter(matches);
+      const matchingPages = allPages.filter(matches);
+      
+      // Объединяем все результаты, начиная с наиболее релевантных
+      const results = [
+        ...matchingServices,
+        ...matchingCases, 
+        ...matchingPages,
+      ].slice(0, 20); // Ограничиваем общее количество результатов
+      
+      setSearchResults(results);
+    };
+
+    performSearch(searchQuery);
+
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+  }, [searchQuery, onSearch]);
+  
   // Обработчик ввода
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-    
-    if (onSearch) {
-      onSearch(value);
-    }
-    
     setShowResults(value.length > 0);
-  }, [onSearch]);
+  };
   
   // Обработчик фокуса
   const handleFocus = () => {
@@ -109,6 +178,7 @@ export function SearchBar({
   // Функция для очистки поиска
   const clearSearch = () => {
     setSearchQuery('');
+    setSearchResults([]);
     setShowResults(false);
     if (onSearch) {
       onSearch('');
@@ -117,6 +187,17 @@ export function SearchBar({
       inputRef.current.focus();
     }
   };
+  
+  // Функция для установки заданного запроса
+  const setSearchTerm = (term: string) => {
+    // Создаем искусственное событие изменения
+    handleInputChange({ target: { value: term } } as React.ChangeEvent<HTMLInputElement>);
+  };
+  
+  // Фильтрация и ограничение результатов
+  const displayResults = searchResults.slice(0, maxResults);
+  const hasResults = displayResults.length > 0;
+  const hasMoreResults = searchResults.length > maxResults;
   
   // Отображение результатов поиска
   const renderResults = () => {
@@ -150,14 +231,7 @@ export function SearchBar({
                     onClick={() => setShowResults(false)}
                   >
                     <div className="flex items-start">
-                      {result.iconName && (
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-medium-gray flex items-center justify-center mr-3">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                          </svg>
-                        </span>
-                      )}
-                      <div>
+                      <div className="flex-grow">
                         <div className="font-medium">{result.title}</div>
                         {result.description && (
                           <p className="text-light-gray text-sm line-clamp-1">{result.description}</p>
@@ -194,7 +268,26 @@ export function SearchBar({
             </div>
           ) : searchQuery.length > 0 ? (
             <div className="p-4 text-center">
-              <p className="text-light-gray">Nothing was found &quot;{searchQuery}&quot;</p>
+              <p className="text-light-gray">Nothing was found for &quot;{searchQuery}&quot;</p>
+              <div className="mt-3">
+                <p className="text-sm text-light-gray mb-2">Try these popular searches:</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => setSearchTerm("CRM")}
+                  >
+                    CRM Integration
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => setSearchTerm("Document")}
+                  >
+                    Document Automation
+                  </Button>
+                </div>
+              </div>
             </div>
           ) : null}
         </motion.div>
@@ -310,13 +403,6 @@ export function SearchBar({
                         onClick={onToggle}
                       >
                         <div className="flex items-start">
-                          {result.iconName && (
-                            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-medium-gray flex items-center justify-center mr-3">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                              </svg>
-                            </span>
-                          )}
                           <div>
                             <div className="font-medium">{result.title}</div>
                             {result.description && (
@@ -347,14 +433,14 @@ export function SearchBar({
                         className="text-primary hover:underline"
                         onClick={onToggle}
                       >
-                        Show all results ({results.length})
+                        Show all results ({searchResults.length})
                       </Link>
                     </div>
                   )}
                 </div>
               ) : (
                 <div className="p-6 text-center">
-                  <p className="text-light-gray mb-4">Nothing was found &quot;{searchQuery}&quot;</p>
+                  <p className="text-light-gray mb-4">Nothing was found for &quot;{searchQuery}&quot;</p>
                   <p className="text-sm text-light-gray/70">
                     Try different keywords or check the correct spelling.
                   </p>
@@ -366,15 +452,27 @@ export function SearchBar({
           {!searchQuery && !isLoading && (
             <div className="p-6">
               <p className="text-light-gray text-center mb-4">Start typing your search query</p>
-              {/* Можно добавить популярные поисковые запросы или категории */}
+              {/* Популярные поисковые запросы */}
               <div className="flex flex-wrap gap-2 justify-center">
-                <Button variant="secondary" size="sm" onClick={() => handleInputChange({ target: { value: 'CRM' } } as React.ChangeEvent<HTMLInputElement>)}>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setSearchTerm("CRM")}
+                >
                   CRM Integration
                 </Button>
-                <Button variant="secondary" size="sm" onClick={() => handleInputChange({ target: { value: 'Document' } } as React.ChangeEvent<HTMLInputElement>)}>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setSearchTerm("Document")}
+                >
                   Document Automation
                 </Button>
-                <Button variant="secondary" size="sm" onClick={() => handleInputChange({ target: { value: 'AI' } } as React.ChangeEvent<HTMLInputElement>)}>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setSearchTerm("AI")}
+                >
                   AI Solutions
                 </Button>
               </div>

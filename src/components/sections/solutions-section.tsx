@@ -1,14 +1,11 @@
 "use client";
 
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { SolutionSwitcher } from '@/components/ui/solution-switcher';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { SectionAnimation } from '@/components/ui/section-animation';
 import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 
 // Тип для таба решения
@@ -147,8 +144,7 @@ export function SolutionsSection({
   className,
   defaultSolutionId,
   buttonText = "Learn More About",
-  variant = 'default',
-  withAnimation = true
+  variant = 'default'
 }: SolutionsSectionProps) {
   const [activeSolution, setActiveSolution] = useState<Solution>(
     defaultSolutionId ? 
@@ -156,7 +152,12 @@ export function SolutionsSection({
       solutions[0]
   );
   
-  const { isLowPerformance } = useDeviceDetection();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Устанавливаем состояние после монтирования
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   // Обработчик смены таба
   const handleSolutionChange = useCallback((tab: SolutionTab) => {
@@ -174,38 +175,30 @@ export function SolutionsSection({
     icon: solution.icon
   }));
   
-  // Упрощаем анимацию, если устройство с низкой производительностью
-  const shouldAnimate = withAnimation && !isLowPerformance;
-  
   // Определяем фон секции в зависимости от варианта
   const sectionBg = variant === 'default' ? 'bg-dark-gray' : 'bg-site-bg';
-  
-  return (
-    <section className={cn("py-20", sectionBg, className)}>
-      <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-light-gray max-w-2xl mx-auto">
-            {subtitle}
-          </p>
-        </SectionAnimation>
 
-        <SolutionSwitcher
-          tabs={solutionTabs}
-          defaultTab={activeSolution.id}
-          onTabChange={handleSolutionChange}
-        />
+  // Статическая версия без анимаций при серверном рендеринге
+  if (!isMounted) {
+    return (
+      <section className={cn("py-20", sectionBg, className)}>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+            <p className="text-light-gray max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          </div>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          {/* Левая колонка - информация о решении */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`info-${activeSolution.id}`}
-              initial={shouldAnimate ? { opacity: 0, x: -20 } : { opacity: 1 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={shouldAnimate ? { opacity: 0, x: 20 } : { opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            >
+          <SolutionSwitcher
+            tabs={solutionTabs}
+            defaultTab={activeSolution.id}
+            onTabChange={handleSolutionChange}
+          />
+
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            {/* Левая колонка - информация о решении */}
+            <div>
               <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
               <p className="text-light-gray mb-6">{activeSolution.description}</p>
               
@@ -260,18 +253,10 @@ export function SolutionsSection({
                   </div>
                 </div>
               )}
-            </motion.div>
-          </AnimatePresence>
-          
-          {/* Правая колонка - изображение или визуализация */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`image-${activeSolution.id}`}
-              initial={shouldAnimate ? { opacity: 0, x: 20 } : { opacity: 1 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="rounded-lg overflow-hidden h-80 relative"
-            >
+            </div>
+            
+            {/* Правая колонка - изображение или визуализация */}
+            <div className="rounded-lg overflow-hidden h-80 relative">
               {activeSolution.imageUrl ? (
                 <ImageWithFallback
                   src={activeSolution.imageUrl}
@@ -292,8 +277,112 @@ export function SolutionsSection({
                   </div>
                 </div>
               )}
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Клиентская версия с анимациями
+  return (
+    <section className={cn("py-20", sectionBg, className)}>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12 animate-fadeIn">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+          <p className="text-light-gray max-w-2xl mx-auto">
+            {subtitle}
+          </p>
+        </div>
+
+        <SolutionSwitcher
+          tabs={solutionTabs}
+          defaultTab={activeSolution.id}
+          onTabChange={handleSolutionChange}
+        />
+
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          {/* Левая колонка - информация о решении */}
+          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
+            <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
+            <p className="text-light-gray mb-6">{activeSolution.description}</p>
+            
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
+              <ul className="space-y-2">
+                {activeSolution.features.map((feature, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-primary mr-2">•</span>
+                    <span className="text-light-gray">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {activeSolution.href && (
+              <Link href={activeSolution.href}>
+                <Button>
+                  {buttonText} {activeSolution.label}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 ml-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Button>
+              </Link>
+            )}
+            
+            {/* Ссылки на кейсы, если есть */}
+            {activeSolution.caseStudies && activeSolution.caseStudies.length > 0 && (
+              <div className="mt-6">
+                <h4 className="text-sm font-medium text-light-gray mb-2">Related Case Studies:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {activeSolution.caseStudies.map((caseStudy) => (
+                    <Link 
+                      key={caseStudy.id}
+                      href={`/cases/${caseStudy.id}`}
+                      className="text-primary text-sm hover:underline"
+                    >
+                      {caseStudy.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Правая колонка - изображение или визуализация */}
+          <div className="animate-fadeIn rounded-lg overflow-hidden h-80 relative" style={{ animationDelay: '0.2s' }}>
+            {activeSolution.imageUrl ? (
+              <ImageWithFallback
+                src={activeSolution.imageUrl}
+                alt={`${activeSolution.label} solution visualization`}
+                fill
+                className="object-cover"
+                category="solution"
+              />
+            ) : (
+              <div className="absolute inset-0 p-8 flex items-center justify-center bg-medium-gray">
+                <div className="text-center">
+                  <div className={`text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-dark-gray`}>
+                    <Icon name={activeSolution.icon} className="h-8 w-8" />
+                  </div>
+                  <div className="text-light-gray text-sm">
+                    Visualization for {activeSolution.label} will be placed here
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

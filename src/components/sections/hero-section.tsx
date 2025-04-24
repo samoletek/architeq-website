@@ -2,11 +2,10 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import Link from 'next/link';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { useState, useEffect } from 'react';
 
 interface HeroSectionProps {
   title?: string;
@@ -22,20 +21,7 @@ interface HeroSectionProps {
   decorativeElements?: boolean;
 }
 
-// Создаем "пустой" компонент для первого серверного рендера
-function HeroSkeleton() {
-  return (
-    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl">
-          <div className="min-h-[200px]"></div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HeroContent({
+export default function HeroSection({
   title = "Architect your workflow. Scale with confidence.",
   description = "We reimagine digital systems that flex, scale, and adapt — for companies across industries",
   primaryCta = {
@@ -49,14 +35,50 @@ function HeroContent({
   decorativeElements = true
 }: HeroSectionProps) {  
   const { isMobile, isLowPerformance } = useDeviceDetection();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Устанавливаем флаг монтирования после первого рендера
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 50);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   // Упрощаем анимацию для мобильных или низкопроизводительных устройств
   const simplifiedAnimation = isMobile || isLowPerformance;
 
+  // Если компонент не смонтирован на клиенте, возвращаем статический контент
+  if (!isMounted) {
+    return (
+      <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              {title}
+            </h1>
+            <p className="mt-6 text-xl text-light-gray">
+              {description}
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link href={primaryCta.href}>
+                <Button size="lg">{primaryCta.text}</Button>
+              </Link>
+              <Link href={secondaryCta.href}>
+                <Button variant="secondary" size="lg">{secondaryCta.text}</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32" suppressHydrationWarning>
+    <section className="bg-[#121212] relative overflow-hidden py-20 md:py-32">
       {/* Декоративные элементы (если включены) */}
-      {decorativeElements && (
+      {decorativeElements && isMounted && (
         <>
           {/* Неоновый круг на заднем плане */}
           <motion.div 
@@ -91,52 +113,42 @@ function HeroContent({
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl">
-          <AnimatedContainer staggerTime={0.15}>
-            <AnimatedItem direction="up">
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                {title}
-              </h1>
-            </AnimatedItem>
-            
-            <AnimatedItem direction="up">
-              <p className="mt-6 text-xl text-light-gray">
-                {description}
-              </p>
-            </AnimatedItem>
-            
-            <AnimatedItem direction="up">
-              <div className="mt-10 flex flex-col sm:flex-row gap-4">
-                <Link href={primaryCta.href}>
-                  <Button size="lg">{primaryCta.text}</Button>
-                </Link>
-                <Link href={secondaryCta.href}>
-                  <Button variant="secondary" size="lg">{secondaryCta.text}</Button>
-                </Link>
-              </div>
-            </AnimatedItem>
-          </AnimatedContainer>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              {title}
+            </h1>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <p className="mt-6 text-xl text-light-gray">
+              {description}
+            </p>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link href={primaryCta.href}>
+                <Button size="lg">{primaryCta.text}</Button>
+              </Link>
+              <Link href={secondaryCta.href}>
+                <Button variant="secondary" size="lg">{secondaryCta.text}</Button>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
-}
-
-// Основной экспортируемый компонент - переключается между скелетоном и реальным контентом
-export default function HeroSection(props: HeroSectionProps) {
-  const [isMounted, setIsMounted] = useState(false);
-  
-  useEffect(() => {
-    // Установим короткую задержку для гарантии, что DOM будет готов
-    const timer = setTimeout(() => {
-      setIsMounted(true);
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  if (!isMounted) {
-    return <HeroSkeleton />;
-  }
-  
-  return <HeroContent {...props} />;
 }

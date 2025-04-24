@@ -36,19 +36,19 @@ export default function AboutPage() {
       image: '/images/team/alex-mercer.jpg'
     },
     {
-      name: 'Gennady Myazin',
+      name: 'Gennady M.',
       position: 'Lead Integration Engineer',
       bio: 'Builds logic-driven integrations between tools and CRMs, ensuring that every platform speaks the same language and that data flows without friction or loss.',
       image: '/images/team/maria-chen.jpg'
     },
     {
-      name: 'Yakov Saveliev',
+      name: 'Yakov S.',
       position: 'AI Solutions Developer',
       bio: 'Designs applied AI systems that go beyond hype—automating decisions, predicting behavior, and solving real problems for growing businesses.',
       image: '/images/team/david-wilson.jpg'
     },
     {
-      name: 'Daniil Apanasov',
+      name: 'Daniil A.',
       position: 'Integration Engineer',
       bio: 'Specializes in stitching together disconnected systems into unified workflows, eliminating manual tasks and ensuring reliable data flow across tools.',
       image: '/images/team/sophia-park.jpg'
