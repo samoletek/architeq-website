@@ -42,7 +42,7 @@ const defaultTestimonials: Testimonial[] = [
   },
   {
     id: 2,
-    quote: "With Architeq's custom AI bot, we now handle 70% more client requests — no new hires, no delays. Customer satisfaction? Way up.",
+    quote: "Thanks to Architeq's custom AI bot, we handle 70% more client inquiries without expanding our team — faster responses, happier customers.",
     author: "Alexandr Alexeyev",
     title: "CEO at Up-Struct LLC",
     image: "/images/testimonials/maria-rodriguez.jpg",
@@ -290,7 +290,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью
   return (
     <section 
-      className={cn("py-20 bg-[#121212]", className)}
+      className={cn("py-20 bg-dark-gray", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
