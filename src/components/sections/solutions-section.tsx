@@ -176,7 +176,7 @@ export function SolutionsSection({
   }));
   
   // Определяем фон секции в зависимости от варианта
-  const sectionBg = variant === 'default' ? 'bg-dark-gray' : 'bg-site-bg';
+  const sectionBg = variant === 'default' ? 'bg-[#121212]': 'bg-site-bg';
 
   // Статическая версия без анимаций при серверном рендеринге
   if (!isMounted) {

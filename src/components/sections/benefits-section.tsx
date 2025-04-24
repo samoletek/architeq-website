@@ -35,7 +35,7 @@ const defaultBenefits: Benefit[] = [
   },
     {
     title: 'Innovate Without Limits',
-    description: 'Scale operations with no proportional increase in admin headcount. Crafting growth-ready automation that drives continuous growth and transformation.',
+    description: 'Scale operations with no proportional increase in admin headcount by crafting growth-ready automation.',
     icon: 'growth',
   },
   {

@@ -50,12 +50,12 @@ export default function Home() {
         {/* Benefits section */}
         <BenefitsSection />
 
-         {/* Solutions section */}
+        {/* Solutions section */}
         <SolutionsSection />
-
+        
         {/* Featured Case Studies */}
         <FeaturedCasesSection />
-        
+
         {/* Testimonials section */}
         <TestimonialsSection />
         
