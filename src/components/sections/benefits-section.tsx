@@ -55,7 +55,7 @@ export default function BenefitsSection({
   // Определяем классы для секции в зависимости от варианта
   const sectionClasses = cn(
     "py-20",
-    variant === 'default' ? "bg-[#121212]": "bg-site-bg",
+    variant === 'default' ? 'bg-dark-gray': "bg-site-bg",
     className
   );
 
