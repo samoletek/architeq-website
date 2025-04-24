@@ -27,10 +27,10 @@ export interface CTASectionProps {
 }
 
 export default function CTASection({
-  title = "Ready to Transform Your Business Operations?",
-  description = "Book a free consultation to discover how we can help automate and streamline your business processes. Our experts will analyze your current workflow and suggest personalized solutions.",
+  title = "Ready to Streamline the Flow?",
+  description = "Trust our team to map your processes and uncover automation potential.",
   primaryCta = {
-    text: "Book a Free Consultation",
+    text: "See How It Works",
     href: "/contacts"
   },
   secondaryCta,
@@ -144,7 +144,7 @@ export default function CTASection({
           {!compact && variant === 'default' && (
             <div className="animate-fadeIn mt-6" style={{ animationDelay: '0.4s' }}>
               <p className="text-sm text-light-gray">
-                No obligations. We will show you how automation can work for your specific business.
+              Just clear insights into what automation can do for your business.
               </p>
             </div>
           )}
@@ -178,7 +178,7 @@ export function InlineCTA({
 
 // Плавающий CTA для мобильных устройств
 export function FloatingCTA({
-  text = "Book a Free Consultation",
+  text = "See How It Works",
   href = "/contacts",
   show = true
 }: {

@@ -24,30 +24,30 @@ export interface BenefitsSectionProps {
 // Данные о преимуществах по умолчанию
 const defaultBenefits: Benefit[] = [
   {
-    title: 'Time Efficiency',
-    description: 'Automate routine tasks and save up to 80% of time spent on manual operations.',
-    icon: 'clock',
-  },
-  {
-    title: 'Cost Reduction',
-    description: 'Reduce operational costs by eliminating human errors and optimizing processes.',
+    title: 'Optimize Costs, Maximize Impact',
+    description: 'Free up resources to drive what matters most. Cut costs by automating workflows and minimizing human error.',
     icon: 'chart',
   },
   {
-    title: 'Scalability',
-    description: 'Scale your business without proportionally increasing administrative staff.',
+    title: 'Save Time, Amplify Results',
+    description: 'Automate manual operations and improve the way your teams work. Grow your business, not your admin load.',
+    icon: 'clock',
+  },
+  {
+    title: 'Innovate Without Limits',
+    description: 'Scale operations with no proportional increase in admin headcount. Crafting growth-ready automation that drives continuous growth and transformation.',
     icon: 'growth',
   },
   {
-    title: 'Integration',
-    description: 'Connect all your business tools into a single unified ecosystem.',
+    title: 'Everything Fully in Sync',
+    description: 'Unify fragmented tools, teams, and platforms into one seamless automation landscape — from APIs to operations.',
     icon: 'connection',
   },
 ];
 
 export default function BenefitsSection({
-  title = "Why Choose Our Solutions",
-  subtitle = "Our approach to business process automation delivers measurable results and tangible benefits.",
+  title = "Why Architeq?",
+  subtitle = "We automate existing processes and build new, complex workflows — helping businesses keep growing with no limits.",
   benefits = defaultBenefits,
   className,
   variant = 'default'

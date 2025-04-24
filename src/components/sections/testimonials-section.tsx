@@ -35,21 +35,21 @@ export interface TestimonialsSectionProps {
 const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
-    quote: "Architeq helped us automate our entire invoicing process. What used to take days now happens automatically, and we have seen a significant improvement in cash flow.",
+    quote: "We automated our full invoicing cycle — what used to take days now runs seamlessly. The result? Faster cash flow and zero manual effort.",
     author: "Uliana Pak",
     title: "CFO at EclipseGroup",
     image: "/images/testimonials/alex-johnson.jpg",
   },
   {
     id: 2,
-    quote: "The custom AI solution developed by Architeq revolutionized our customer service. We now handle 70% more requests without adding staff, and customer satisfaction has improved dramatically.",
+    quote: "With Architeq's custom AI bot, we now handle 70% more client requests — no new hires, no delays. Customer satisfaction? Way up.",
     author: "Alexandr Alexeyev",
     title: "CEO at Up-Struct LLC",
     image: "/images/testimonials/maria-rodriguez.jpg",
   },
   {
     id: 3,
-    quote: "Implementing the boxed solution for our logistics business has eliminated errors in documents creation. Accelerating our document workflow has transformed our operations.",
+    quote: "Their industry-tailored automation eliminated document errors and sped up our entire logistics workflow. Total game changer.",
     author: "Anastasiia Trokhymchuk",
     title: "Legal Officer at LaneWise",
     image: "/images/testimonials/david-chen.jpg",
@@ -58,8 +58,8 @@ const defaultTestimonials: Testimonial[] = [
 
 export default function TestimonialsSection({
   testimonials = defaultTestimonials,
-  title = "What Our Clients Say",
-  subtitle = "Do not just take our word for it. Here is what our clients have to say about our automation solutions.",
+  title = "Hear from Teams We've Empowered",
+  subtitle = "Our clients share how automation reshaped their operations.",
   autoplay = true,
   autoplaySpeed = 5000,
   withQuotes = true,

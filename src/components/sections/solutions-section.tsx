@@ -47,15 +47,15 @@ export interface SolutionsSectionProps {
 const defaultSolutions: Solution[] = [
   {
     id: 'business-process',
-    label: 'Business Process',
+    label: 'Workflow Design & Automation',
     icon: 'process',
-    description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows that save time and reduce errors.',
+    description: 'Build smarter workflows, not workarounds. We automate core operations by syncing your tools, mapping logic, and removing manual effort — for faster, cleaner results.',
     features: [
-      'Process mapping and optimization',
-      'Workflow automation',
-      'Integration between systems',
-      'Data validation and error prevention',
-      'Dashboard creation for process monitoring'
+      'Clear roadmap for implementation',
+      'End-to-end workflow automation',
+      'System integration & error-proof data flow',
+      'Custom dashboards for live insights',
+      'Smart validation & fail-safes'
     ],
     imageUrl: '/images/solutions/business-process.jpg',
     href: '/services/business-process'
@@ -64,37 +64,37 @@ const defaultSolutions: Solution[] = [
     id: 'crm-integration',
     label: 'CRM Integration',
     icon: 'crm',
-    description: 'Connect your CRM system with other business tools to create a unified information environment that improves decision-making and customer service.',
+    description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
     features: [
-      'Bidirectional data synchronization',
-      'Email and messaging integration',
-      'Calendar and scheduling synchronization',
+      'Cross-platform consistency',
+      'Email & Communication automation',
+      'Calendar & Scheduling integrations',
       'Document management integration',
-      'Custom dashboard creation'
+      'Custom insight dashboards'
     ],
     imageUrl: '/images/solutions/crm-integration.jpg',
     href: '/services/crm-integration'
   },
   {
     id: 'boxed-solutions',
-    label: 'Boxed Solutions',
+    label: 'Industry-Specific Boxed Solutions',
     icon: 'industry',
-    description: 'Industry-specific automation packages that address unique challenges in various sectors like logistics, manufacturing, real estate, and more.',
+    description: 'Prebuilt for your industry. Tailored to your edge. Accelerate with ready-to-run automation kits designed for your field — and customized for your operations.',
     features: [
-      'Pre-configured workflows for your industry',
-      'Custom fields and data structure',
+      'Pre-configured workflows for key sectors',
+      'Custom fields & data structure',
       'Industry-specific integrations',
-      'Best practices implementation',
-      'Scalable architecture'
+      'Scalable & field-proven integrations',
+      'Fast deployment'
     ],
     imageUrl: '/images/solutions/boxed-solutions.jpg',
     href: '/services/boxed-solutions'
   },
   {
     id: 'ai-solutions',
-    label: 'AI Solutions',
+    label: 'AI-Powered Solutions',
     icon: 'ai',
-    description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights that drive business growth.',
+    description: 'Automate with intelligence. Operate with insight. Use AI to automate high-effort tasks, reveal patterns, and support decision-making with real-time insights.',
     features: [
       'Voice bots for client communication',
       'Natural language processing for information search',
@@ -107,30 +107,30 @@ const defaultSolutions: Solution[] = [
   },
   {
     id: 'documentation',
-    label: 'Documentation',
+    label: 'Automated Document Flow',
     icon: 'document',
-    description: 'Automate document creation, processing, and management to reduce administrative burden and ensure compliance with regulatory requirements.',
+    description: 'Documents that write themselves. Processes that follow through. We automate the full lifecycle of business documentation — from creation to compliance — with regulatory requirements.',
     features: [
-      'Automatic document generation from templates',
-      'Electronic signature integration',
-      'Form creation and data collection',
+      'Auto-generation from CRM templates',
+      'E-signature & approval flows',
+      'Smart forms & structured capture',
       'Document version control',
-      'Compliance monitoring'
+      'Regulatory compliance built-in'
     ],
     imageUrl: '/images/solutions/documentation.jpg',
     href: '/services/documentation'
   },
   {
     id: 'finance',
-    label: 'Financial Systems',
+    label: 'Finance Operations Automations',
     icon: 'finance',
-    description: 'Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting.',
+    description: 'Streamline the flow of money. Stay in control, always. From invoicing to reconciliation — we connect and automate every part of your financial stack for speed, accuracy, and visibility.',
     features: [
-      'Invoice automation',
-      'Payment tracking and reconciliation',
-      'Financial reporting and dashboards',
-      'Integration with accounting systems',
-      'Multi-currency support'
+      'Smart invoice generation',
+      'Real-time payment tracking & reconciliation',
+      'Financial dashboards & custom reports',
+      'Seamless accounting system integration',
+      'Multi-currency, multi-market, and multi-payment method support'
     ],
     imageUrl: '/images/solutions/finance.jpg',
     href: '/services/finance'
@@ -139,7 +139,7 @@ const defaultSolutions: Solution[] = [
 
 export function SolutionsSection({
   title = "Our Solutions",
-  subtitle = "We offer a comprehensive range of automation solutions tailored to your business needs. Explore our services below.",
+  subtitle = "We offer smart automation that adapts and scales — for faster, clearer, more connected workflows. Explore our services.",
   solutions = defaultSolutions,
   className,
   defaultSolutionId,

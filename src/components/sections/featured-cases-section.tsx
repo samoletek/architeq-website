@@ -23,7 +23,7 @@ export interface FeaturedCasesSectionProps {
 
 export default function FeaturedCasesSection({
   title = "Featured Case Studies",
-  subtitle = "Explore how we've helped companies across various industries optimize their processes and achieve significant results.",
+  subtitle = "We offer smart automation that adapts and scales — for faster, clearer, more connected workflows. Explore our services.",
   cases,
   viewAllText = "View All Case Studies",
   viewAllUrl = "/cases",

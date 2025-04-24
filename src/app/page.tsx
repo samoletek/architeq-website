@@ -49,12 +49,12 @@ export default function Home() {
         
         {/* Benefits section */}
         <BenefitsSection />
-        
+
+         {/* Solutions section */}
+        <SolutionsSection />
+
         {/* Featured Case Studies */}
         <FeaturedCasesSection />
-        
-        {/* Solutions section */}
-        <SolutionsSection />
         
         {/* Testimonials section */}
         <TestimonialsSection />
