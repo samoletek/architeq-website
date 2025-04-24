@@ -22,10 +22,10 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  title = "Architect your workflow. Scale with confidence.",
-  description = "We architect digital systems that flex, scale, and adapt — for companies across industries.",
+  title = "Architect your workflow. Scale with confidence",
+  description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
   primaryCta = {
-    text: "Schedule a call",
+    text: "Schedule a Call",
     href: "/contacts"
   },
   secondaryCta = {

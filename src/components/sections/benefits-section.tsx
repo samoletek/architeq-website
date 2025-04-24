@@ -33,7 +33,7 @@ const defaultBenefits: Benefit[] = [
     description: 'Automate manual operations and improve the way your teams work. Grow your business, not your admin load.',
     icon: 'clock',
   },
-  {
+    {
     title: 'Innovate Without Limits',
     description: 'Scale operations with no proportional increase in admin headcount. Crafting growth-ready automation that drives continuous growth and transformation.',
     icon: 'growth',

@@ -141,14 +141,14 @@ export default function AboutPage() {
               <div className="bg-dark-gray rounded-xl p-8 border border-medium-gray">
                 <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
                 <p className="text-light-gray mb-6">
-                We are on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most - strategic thinking and innovation. Our solutions do not just make today more efficient.
+                We&apos;re on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most - strategic thinking and innovation. Our solutions don&apos;t just make today more efficient.
                 </p>
                 <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
                 <p className="text-light-gray">
-                We are building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
+                We&apos;re building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
                 </p>
-                <p className="text-light-gray">
-                Architeq is not just implementing software - we are your strategic digital ally, creating living, breathing ecosystems that adapt and grow alongside your business. Because when operational friction disappears, there is no limit to how far your vision can take you.
+                <p className="text-light-gray mt-6">
+                Architeq isn&apos;t just implementing software - we&apos;re your strategic digital ally, creating living, breathing ecosystems that adapt and grow alongside your business. Because when operational friction disappears, there&apos;s no limit to how far your vision can take you.
                 </p>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Methodology</h2>
             <p className="text-light-gray max-w-2xl mx-auto">
-            We do not believe in cookie-cutter solutions or automation for automation&apos;s sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
+            We don&apos;t believe in cookie-cutter solutions or automation for automation&apos;s sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
             </p>
           </div>
 
