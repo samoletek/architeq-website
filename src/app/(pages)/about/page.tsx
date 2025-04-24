@@ -118,7 +118,7 @@ export default function AboutPage() {
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About Architeq</h1>
             <p className="text-xl text-light-gray mb-6">
-              We help businesses streamline operations, improve efficiency, and focus on what truly matters through intelligent automation solutions.
+            We architect digital systems that flex, scale, and adapt — for companies across industries.
             </p>
           </div>
         </div>
@@ -131,24 +131,24 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <p className="text-light-gray mb-4">
-                Architeq was founded in 2020 with a clear mission: to make business process automation accessible to small and medium businesses.
+                Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams drowning in day-to-day operations instead of charting their growth strategy. These scaling businesses were caught in a trap — spending up to 70% of their time firefighting operational issues while their strategic vision gathered dust.
               </p>
               <p className="text-light-gray mb-4">
-                Our founders noticed that while enterprise companies benefited from automation, smaller businesses often lacked the resources and expertise to implement these solutions.
-              </p>
-              <p className="text-light-gray">
-                We have since grown into a team of automation specialists serving clients across multiple industries in the US, Europe, Australia, and Japan.
+                We built Architeq to break this cycle. Before jumping into solutions, we first map every process in your business  an approach that delivers immediate clarity and efficiency gains. Our team becomes your digital architects, helping you avoid costly experiments with tools that don't fit your industry or growth stage. Instead of fragmented tech stacks and temporary fixes, we create cohesive digital ecosystems that evolve as you scale.
               </p>
             </div>
             <div>
               <div className="bg-dark-gray rounded-xl p-8 border border-medium-gray">
                 <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
                 <p className="text-light-gray mb-6">
-                  To democratize business process automation by creating tailored, accessible solutions that help small and medium businesses achieve operational excellence.
+                We're on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most - strategic thinking and innovation. Our solutions don't just make today more efficient; they build the digital foundation that lets you double or triple in size without doubling your team or operational headaches.
                 </p>
                 <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
                 <p className="text-light-gray">
-                  A world where businesses of all sizes can leverage automation to eliminate mundane tasks, reduce errors, and focus on innovation and growth.
+                We're building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes. Where a single trusted partner handles your entire technological backbone, letting you focus on your unique value proposition.
+                </p>
+                <p className="text-light-gray">
+                Architeq isn't just implementing software - we're your strategic digital ally, creating living, breathing ecosystems that adapt and grow alongside your business. Because when operational friction disappears, there's no limit to how far your vision can take you.
                 </p>
               </div>
             </div>
