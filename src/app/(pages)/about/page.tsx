@@ -31,26 +31,26 @@ export default function AboutPage() {
   const teamMembers = [
     {
       name: 'Andrew Serhiienko',
-      position: 'Founder & CEO',
-      bio: 'Over 10 years of experience in business process automation, project management and system integration.',
+      position: 'Founder & Business Analyst',
+      bio: 'Acts as the system architect between business needs and tech implementation, turning complex operational challenges into structured, scalable automation plans that engineers can execute without rework or ambiguity.',
       image: '/images/team/alex-mercer.jpg'
     },
     {
       name: 'Gennady Myazin',
       position: 'Lead Integration Engineer',
-      bio: 'Expert in CRM systems and workflow optimization with background in enterprise solutions.',
+      bio: 'Builds logic-driven integrations between tools and CRMs, ensuring that every platform speaks the same language and that data flows without friction or loss.',
       image: '/images/team/maria-chen.jpg'
     },
     {
       name: 'Yakov Saveliev',
       position: 'AI Solutions Developer',
-      bio: 'Specializes in artificial intelligence and machine learning solutions for business automation.',
+      bio: 'Designs applied AI systems that go beyond hype—automating decisions, predicting behavior, and solving real problems for growing businesses.',
       image: '/images/team/david-wilson.jpg'
     },
     {
       name: 'Daniil Apanasov',
       position: 'Integration Engineer',
-      bio: 'Experienced in connecting disparate systems and ensuring seamless data flow between platforms.',
+      bio: 'Specializes in stitching together disconnected systems into unified workflows, eliminating manual tasks and ensuring reliable data flow across tools.',
       image: '/images/team/sophia-park.jpg'
     }
   ];
@@ -141,11 +141,11 @@ export default function AboutPage() {
               <div className="bg-dark-gray rounded-xl p-8 border border-medium-gray">
                 <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
                 <p className="text-light-gray mb-6">
-                We're on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most - strategic thinking and innovation. Our solutions don't just make today more efficient; they build the digital foundation that lets you double or triple in size without doubling your team or operational headaches.
+                We're on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most - strategic thinking and innovation. Our solutions don't just make today more efficient.
                 </p>
                 <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
                 <p className="text-light-gray">
-                We're building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes. Where a single trusted partner handles your entire technological backbone, letting you focus on your unique value proposition.
+                We're building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
                 </p>
                 <p className="text-light-gray">
                 Architeq isn't just implementing software - we're your strategic digital ally, creating living, breathing ecosystems that adapt and grow alongside your business. Because when operational friction disappears, there's no limit to how far your vision can take you.
@@ -196,14 +196,14 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Methodology</h2>
             <p className="text-light-gray max-w-2xl mx-auto">
-              We follow a proven process to ensure every automation solution delivers optimal results for your business.
+            We don't believe in cookie-cutter solutions or automation for automation's sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-xl font-bold">1</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Discovery</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-4">Discovery & Alignment</h3>
               <p className="text-light-gray">
                 We begin by understanding your current processes, pain points, and objectives through detailed consultations and process mapping.
               </p>
@@ -211,25 +211,25 @@ export default function AboutPage() {
 
             <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-xl font-bold">2</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Solution Design</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-4">Solution Design & Planning</h3>
               <p className="text-light-gray">
-                Our team designs a custom automation solution tailored to your specific business needs, with a focus on scalability and user-friendliness.
+              We kick things off by aligning on objectives, expectations, and success criteria. Through stakeholder interviews, in-depth workshops, and data analysis, we map your current workflows, uncover inefficiencies, and identify automation opportunities.
               </p>
             </div>
 
             <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-xl font-bold">3</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Implementation</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-4">Implementation & Integration</h3>
               <p className="text-light-gray">
-                We implement the solution with minimal disruption to your operations, providing comprehensive testing and validation at each stage.
+              We deploy your solution in a phased approach, rigorously testing each component before going live. We ensure seamless integration with existing systems and workflows, handling data migration and system syncing with no disruption.
               </p>
             </div>
 
             <div className="bg-dark-gray rounded-xl p-6 border border-medium-gray relative">
               <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-xl font-bold">4</div>
-              <h3 className="text-xl font-semibold mb-3 mt-4">Continuous Improvement</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-4">Training, Support & Optimization</h3>
               <p className="text-light-gray">
-                We provide ongoing support and regularly review the solutions performance, making adjustments to optimize efficiency and adapt to changing needs.
+              Once live, we provide comprehensive training to your team and offer ongoing support. We continuously optimize the system, adapting to your evolving business needs and ensuring long-term success.
               </p>
             </div>
           </div>
@@ -242,7 +242,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Technology Stack</h2>
             <p className="text-light-gray max-w-2xl mx-auto">
-              We leverage industry-leading tools and platforms to create powerful, reliable automation solutions.
+            We build scalable automations on trusted, industry-leading platforms—tailored to your workflows and tech stack—and continuously explore new tools, adopting only those that prove their reliability, performance, and real business value through rigorous testing.
             </p>
           </div>
 
@@ -276,9 +276,9 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="py-16 bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Work With Us?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Streamline the Flow?</h2>
           <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Lets discuss how our team can help automate and optimize your business processes.
+          Trust our team to map your processes and uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/contacts">
