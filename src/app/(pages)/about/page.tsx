@@ -134,7 +134,7 @@ export default function AboutPage() {
                 Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams drowning in day-to-day operations instead of charting their growth strategy. These scaling businesses were caught in a trap — spending up to 70% of their time firefighting operational issues while their strategic vision gathered dust.
               </p>
               <p className="text-light-gray mb-4">
-                We built Architeq to break this cycle. Before jumping into solutions, we first map every process in your business  an approach that delivers immediate clarity and efficiency gains. Our team becomes your digital architects, helping you avoid costly experiments with tools that do not fit your industry or growth stage. Instead of fragmented tech stacks and temporary fixes, we create cohesive digital ecosystems that evolve as you scale.
+                We built Architeq to break this cycle. Before jumping into solutions, we first map every process in your business an approach that delivers immediate clarity and efficiency gains. Our team becomes your digital architects, helping you avoid costly experiments with tools that do not fit your industry or growth stage. Instead of fragmented tech stacks and temporary fixes, we create cohesive digital ecosystems that evolve as you scale.
               </p>
             </div>
             <div>
@@ -196,7 +196,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Methodology</h2>
             <p className="text-light-gray max-w-2xl mx-auto">
-            We do not believe in cookie-cutter solutions or automation for automation's sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
+            We do not believe in cookie-cutter solutions or automation for automation&apos;s sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
             </p>
           </div>
 
