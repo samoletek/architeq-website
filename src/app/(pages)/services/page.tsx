@@ -54,28 +54,28 @@ const services = [
   {
     id: 'boxed-solutions',
     title: 'Industry-Specific Boxed Solutions',
-    description: 'Ready-to-implement automation packages tailored for specific industries like logistics, manufacturing, real estate, and more.',
+    description: 'Ready-to-run automation kits tailored to your industry — deployed fast, scaled smart, and of course fully customized for your edge.',
     icon: 'industry',
     features: [
-      'Pre-configured workflows for your industry',
-      'Custom fields and data structure',
+      'Pre-configured workflows for key sectors',
+      'Custom fields & data structure',
       'Industry-specific integrations',
-      'Best practices implementation',
-      'Scalable architecture'
+      'Scalable & field-proven automations',
+      'Fast deployment'
     ],
     caseStudies: ['car-hauling-solution', 'music-label-solution']
   },
   {
     id: 'ai-solutions',
     title: 'AI-Powered Solutions',
-    description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights that drive business growth.',
+    description: 'Use AI to automate high-effort tasks, surface insight, and automate high-effort tasks — from client comms to operations logic. Use AI to automate what truly matters — from client comms to operations logic, only where it drives real value.',
     icon: 'ai',
     features: [
-      'Voice bots for client communication',
-      'Natural language processing for information search',
-      'Speech-to-text conversion and analysis',
-      'Data pattern recognition',
-      'Predictive analytics'
+      'AI-driven voice assistants',
+      'CRM-integrated assistant',
+      'Real-time conversation transcription',
+      'Scalable and customizable solutions',
+      'Quick and efficient deployment'
     ],
     caseStudies: ['ai-voice-bot', 'ai-crm-assistant']
   },
@@ -85,11 +85,11 @@ const services = [
     description: 'We automate your entire document flow — creation, approval, compliance — all in sync with your CRM, tools and teams, using our pre-built document generation tools.',
     icon: 'document',
     features: [
-      'Automatic document generation from templates',
-      'Electronic signature integration',
-      'Form creation and data collection',
+      'Auto-generation from CRM templates',
+      'E-signature & approval flows',
+      'Smart forms & structured capture',
       'Document version control',
-      'Compliance monitoring'
+      'Regulatory compliance built-in'
     ],
     caseStudies: ['document-generation', 'electronic-signatures']
   },
@@ -99,11 +99,11 @@ const services = [
     description: 'Connect and automate your full financial stack — from invoicing to reconciliation — for faster, cleaner, and error-free money flow.',
     icon: 'finance',
     features: [
-      'Invoice automation',
-      'Payment tracking and reconciliation',
-      'Financial reporting and dashboards',
-      'Integration with accounting systems',
-      'Multi-currency support'
+      'Smart invoice generation',
+      'Real-time payment tracking & reconciliation',
+      'Seamless accounting system integration',
+      'Financial dashboards & custom reports',
+      'Multi-currency, multi-market, and multi-payment method support'
     ],
     caseStudies: ['stripe-invoicing', 'quickbooks-integration']
   }
