@@ -219,9 +219,9 @@ export default function ServicesPage() {
                   <span className="font-bold">1</span>
                 </div>
                 <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Discovery and Analysis</h3>
+                  <h3 className="text-xl font-bold mb-2">Align on Scope. Kick Things Off</h3>
                   <p className="text-light-gray">
-                    We start by understanding your business processes, challenges, and objectives. Our team analyzes your current workflows and identifies opportunities for automation and optimization.
+                  We start by signing an NDA and holding a kickoff meeting to clarify your objectives and expectations. This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning.
                   </p>
                 </div>
               </div>
@@ -232,9 +232,9 @@ export default function ServicesPage() {
                   <span className="font-bold">2</span>
                 </div>
                 <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Solution Design</h3>
+                  <h3 className="text-xl font-bold mb-2">Understand Your Reality</h3>
                   <p className="text-light-gray">
-                    Based on our analysis, we design a custom automation solution tailored to your specific needs, integrating the right tools and technologies for your business.
+                  We dive deep into understanding your business operations through stakeholder interviews and process discovery. We observe your current workflows, uncover inefficiencies, and identify where automation can add the most value.
                   </p>
                 </div>
               </div>
@@ -245,9 +245,9 @@ export default function ServicesPage() {
                   <span className="font-bold">3</span>
                 </div>
                 <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Implementation and Testing</h3>
+                  <h3 className="text-xl font-bold mb-2">Map the Process. Spot the Gaps</h3>
                   <p className="text-light-gray">
-                    We implement the solution with a focus on minimal disruption to your operations, thoroughly testing each component to ensure smooth functionality and integration.
+                  We document your existing business processes in detail, mapping every step, role, and decision point. This step helps us highlight pain points, overlaps, and areas where automation can be implemented effectively.
                   </p>
                 </div>
               </div>
@@ -258,15 +258,64 @@ export default function ServicesPage() {
                   <span className="font-bold">4</span>
                 </div>
                 <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Training and Support</h3>
+                  <h3 className="text-xl font-bold mb-2">Design the Future Flow</h3>
                   <p className="text-light-gray">
-                    We provide comprehensive training to your team and ongoing support to ensure successful adoption and maximize the benefits of your new automation solution.
+                  Based on our analysis, we design a custom solution that will optimize your processes. We define what your future workflows should look like and ensure that the solution is tailored to meet your specific needs, with an emphasis on improving efficiency and reducing complexity.
                   </p>
+                </div>
+              </div>
+              {/* Step 5 */}
+              <div className="relative flex">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
+                  <span className="font-bold">5</span>
+                </div>
+                <div className="ml-6">
+                  <h3 className="text-xl font-bold mb-2">Plan the Rollout. Set the Timeline</h3>
+                  <p className="text-light-gray">
+                  We create a detailed implementation plan, including the specific steps, timelines, and resources required to get the solution up and running. Our team sets clear milestones to ensure timely delivery and success at each stage of the project.
+                  </p>
+                </div>
+              </div>
+              {/* Step 6 */}
+              <div className="relative flex">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
+                  <span className="font-bold">6</span>
+                </div>
+                <div className="ml-6">
+                  <h3 className="text-xl font-bold mb-2">Implement, Test, Iterate</h3>
+                  <p className="text-light-gray">
+                  We deploy the solution, ensuring minimal disruption to your daily operations. During this phase, we rigorously test the system to ensure everything functions as expected. If necessary, we make adjustments and improvements before the full-scale launch.
+                  </p>
+                </div>
+              </div>
+              {/* Step 7 */}
+              <div className="relative flex">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
+                  <span className="font-bold">7</span>
+                </div>
+                <div className="ml-6">
+                  <h3 className="text-xl font-bold mb-2">Data Migration & System Integration</h3>
+                  <p className="text-light-gray">
+                  After the solution has been tested and confirmed, we migrate your existing data and integrate the new system with your other tools. This ensures smooth data transfer, seamless workflows, and full compatibility with your existing infrastructure.
+                  </p>
+                </div>
+              </div>
+              {/* Step 8 */}
+              <div className="relative flex">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
+                  <span className="font-bold">8</span>
+                </div>
+                <div className="ml-6">
+                  <h3 className="text-xl font-bold mb-2">Train the Team. Support the Growth</h3>
+                  <p className="text-light-gray">
+                  Once the solution is live, we provide comprehensive training to ensure your team can fully leverage the new system. We offer ongoing support to address any challenges and make adjustments as your business continues to evolve.
+                </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
       </section>
 
       {/* Technologies section */}
@@ -275,7 +324,7 @@ export default function ServicesPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tech Stack</h2>
             <p className="text-light-gray max-w-3xl mx-auto">
-              WWe plug into the tools you already use and build automations on proven, scalable tech — no hacks, no guesswork.
+              We plug into the tools you already use and build automations on proven, scalable tech — no hacks, no guesswork.
             </p>
           </div>
 
