@@ -55,22 +55,22 @@ const defaultLinkGroups: FooterLinkGroup[] = [
   {
     title: 'Services',
     links: [
-      { name: 'Business Process Automation', href: '/services/business-process' },
-      { name: 'CRM System Integration', href: '/services/crm-integration' },
+      { name: 'Workflow Automation', href: '/services/business-process' },
+      { name: 'CRM Integration', href: '/services/crm-integration' },
       { name: 'Boxed Solutions', href: '/services/boxed-solutions' },
-      { name: 'AI Solutions', href: '/services/ai-solutions' },
-      { name: 'Documentation & Forms', href: '/services/documentation' },
-      { name: 'Financial Systems', href: '/services/finance' },
+      { name: 'AI-Powered Solutions', href: '/services/ai-solutions' },
+      { name: 'Automated Document Flow', href: '/services/documentation' },
+      { name: 'Finance Automations', href: '/services/finance' },
     ]
   },
   {
     title: 'Case Studies',
     links: [
-      { name: 'Financial Automation', href: '/cases/finance' },
-      { name: 'Documents & Forms', href: '/cases/documents' },
+      { name: 'Stripe Invoicing', href: '/cases/finance' },
+      { name: 'Documents Generation', href: '/cases/documents' },
       { name: 'CRM Integration', href: '/cases/crm' },
-      { name: 'Industry Solutions', href: '/cases/industry' },
-      { name: 'AI Solutions', href: '/cases/ai' },
+      { name: 'Boxed Solution', href: '/cases/industry' },
+      { name: 'AI-Voice Bot', href: '/cases/ai' },
     ]
   },
   {
@@ -100,7 +100,7 @@ const defaultSocialLinks: SocialLink[] = [
 
 export default function Footer({
   logo,
-  slogan = "Business process automation to optimize your company's operations",
+  slogan = "Architect your workflow. Scale with confidence.",
   linkGroups = defaultLinkGroups,
   socialLinks = defaultSocialLinks,
   contactInfo = {

@@ -42,7 +42,7 @@ export default function Header({
   logo,
   navigation = defaultNavigation,
   ctaButton = {
-    text: 'Book a Consultation',
+    text: 'Schedule a Call',
     href: '/contacts'
   },
   showSearch = false,

@@ -68,7 +68,7 @@ const services = [
   {
     id: 'ai-solutions',
     title: 'AI-Powered Solutions',
-    description: 'Use AI to automate high-effort tasks, surface insight, and automate high-effort tasks — from client comms to operations logic. Use AI to automate what truly matters — from client comms to operations logic, only where it drives real value.',
+    description: 'Use AI to surface insight and automate high-effort tasks — from client comms to operations logic. Use AI to automate what truly matters — from client comms to operations logic, only where it drives real value.',
     icon: 'ai',
     features: [
       'AI-driven voice assistants',
