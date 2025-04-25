@@ -67,7 +67,7 @@ const defaultSolutions: Solution[] = [
     description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
     features: [
       'Centralized CRM built from scratch — fully tailored to your workflows',
-      'Calendars & Emails integrations',
+      'Cross-platform consistency',
       'Document management automation',
       'Wide integration capabilities',
       'Customizable insight dashboards'

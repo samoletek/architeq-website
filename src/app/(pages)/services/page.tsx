@@ -25,29 +25,29 @@ export const metadata: Metadata = {
 const services = [
   {
     id: 'business-process',
-    title: 'Business Process Automation',
-    description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows that save time and reduce human errors.',
+    title: 'Workflow Design & Automation',
+    description: 'We reengineer core business processes by removing manual steps, syncing tools, and building flexible, intelligent workflows.',
     icon: 'process',
     features: [
-      'Process mapping and optimization',
-      'Workflow rebuild and automation',
-      'Integration between systems',
-      'Data validation and error prevention',
-      'Dashboard creation for analytics'
+      'Workflow mapping and optimizing',
+      'Clear roadmap for implementation',
+      'End-to-end workflow automation',
+      'System integration & error-proof data flow',
+      'Custom dashboards for live insights'
     ],
     caseStudies: ['monday-integration', 'notification-system']
   },
   {
     id: 'crm-integration',
-    title: 'CRM System Integration',
-    description: 'Connect your CRM system with other business tools to create a unified information environment that improves decision-making and customer service.',
+    title: 'CRM Integration',
+    description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
     icon: 'crm',
     features: [
-      'Bidirectional data synchronization',
-      'Email and messaging integration',
-      'Calendar and scheduling synchronization',
-      'Document management integration',
-      'Custom dashboard creation'
+      'Centralized CRM built from scratch — fully tailored to your workflows',
+      'Wide integration capabilities',
+      'Cross-platform consistency',
+      'Document management automation',
+      'Customizable insight dashboards'
     ],
     caseStudies: ['monday-integration', 'dashboards-creation']
   },
@@ -81,8 +81,8 @@ const services = [
   },
   {
     id: 'documentation',
-    title: 'Documentation & Forms',
-    description: 'Automate document creation, processing, and management to reduce administrative burden and ensure compliance with regulatory requirements.',
+    title: 'Automated Document Flow',
+    description: 'We automate your entire document flow — creation, approval, compliance — all in sync with your CRM, tools and teams, using our pre-built document generation tools.',
     icon: 'document',
     features: [
       'Automatic document generation from templates',
@@ -95,8 +95,8 @@ const services = [
   },
   {
     id: 'finance',
-    title: 'Financial Systems Integration',
-    description: 'Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting.',
+    title: 'Finance Operations Automation',
+    description: 'Connect and automate your full financial stack — from invoicing to reconciliation — for faster, cleaner, and error-free money flow.',
     icon: 'finance',
     features: [
       'Invoice automation',
@@ -116,13 +116,13 @@ export default function ServicesPage() {
       <section className="py-20 md:py-28 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Services</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">How We Architect</h1>
             <p className="text-xl text-light-gray mb-10 max-w-3xl">
-              We offer a comprehensive range of business process automation solutions to help streamline your operations, increase efficiency, and drive growth.
+                We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="primary" size="lg" href="/contacts">
-                Book a Free Consultation
+                See How It Works 
               </Button>
               <Button variant="secondary" size="lg" href="/cases">
                 View Case Studies
@@ -136,7 +136,7 @@ export default function ServicesPage() {
       <section className="py-20 bg-site-bg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Automation Solutions We Offer</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Solutions We Offer</h2>
             <p className="text-light-gray max-w-3xl mx-auto">
               From CRM integration to AI-powered automation, we provide solutions to address all aspects of your business operations.
             </p>
@@ -159,7 +159,7 @@ export default function ServicesPage() {
                 
                 {/* Features */}
                 <div className="mb-6">
-                  <h4 className="text-sm font-medium mb-2 text-primary">Key Features:</h4>
+                  <h4 className="text-sm font-medium mb-2 text-primary">Core Capabilities:</h4>
                   <ul className="space-y-1">
                     {service.features.slice(0, 3).map((feature, fIndex) => (
                       <li key={fIndex} className="flex items-start">
@@ -202,9 +202,9 @@ export default function ServicesPage() {
       <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Implementation Process</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Automation Flow: From Discovery to Deployment</h2>
             <p className="text-light-gray max-w-3xl mx-auto">
-              We follow a proven methodology to ensure successful implementation of automation solutions tailored to your business needs.
+            A sharp, proven framework — designed to deliver fast and integrate deep into your ops.
             </p>
           </div>
 
@@ -273,9 +273,9 @@ export default function ServicesPage() {
       <section className="py-20 bg-site-bg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Technologies We Work With</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tech Stack</h2>
             <p className="text-light-gray max-w-3xl mx-auto">
-              We leverage a wide range of modern technologies and platforms to create powerful, efficient automation solutions.
+              WWe plug into the tools you already use and build automations on proven, scalable tech — no hacks, no guesswork.
             </p>
           </div>
 
@@ -330,13 +330,13 @@ export default function ServicesPage() {
       {/* CTA section */}
       <section className="py-16 bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Automate Your Business Processes?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Streamline the Flow?</h2>
           <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Book a free consultation to discuss how our automation solutions can help your business save time, reduce errors, and improve efficiency.
+          Trust our team to map your processes and uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button variant="primary" size="lg" href="/contacts">
-              Book a Free Consultation
+              See How It Works
             </Button>
             <Button variant="secondary" size="lg" href="/cases">
               View Our Case Studies
