@@ -66,11 +66,11 @@ const defaultSolutions: Solution[] = [
     icon: 'crm',
     description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
     features: [
-      'Cross-platform consistency',
-      'Email & Communication automation',
-      'Calendar & Scheduling integrations',
-      'Document management integration',
-      'Custom insight dashboards'
+      'Centralized CRM built from scratch — fully tailored to your workflows',
+      'Calendars & Emails integrations',
+      'Document management automation',
+      'Wide integration capabilities',
+      'Customizable insight dashboards'
     ],
     imageUrl: '/images/solutions/crm-integration.jpg',
     href: '/services/crm-integration'
@@ -84,7 +84,7 @@ const defaultSolutions: Solution[] = [
       'Pre-configured workflows for key sectors',
       'Custom fields & data structure',
       'Industry-specific integrations',
-      'Scalable & field-proven integrations',
+      'Scalable & field-proven automations',
       'Fast deployment'
     ],
     imageUrl: '/images/solutions/boxed-solutions.jpg',
@@ -96,11 +96,11 @@ const defaultSolutions: Solution[] = [
     icon: 'ai',
     description: 'Automate with intelligence. Operate with insight. Use AI to automate high-effort tasks, reveal patterns, and support decision-making with real-time insights.',
     features: [
-      'Voice bots for client communication',
-      'Natural language processing for information search',
-      'Speech-to-text conversion and analysis',
-      'Data pattern recognition',
-      'Predictive analytics'
+      'AI-driven voice assistant',
+      'CRM-integrated assistant',
+      'Real-time conversation transcription',
+      'Scalable and customizable solutions',
+      'Quick and efficient deployment'
     ],
     imageUrl: '/images/solutions/ai-solutions.jpg',
     href: '/services/ai-solutions'

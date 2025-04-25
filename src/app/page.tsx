@@ -30,7 +30,7 @@ export default function Home() {
       {/* Schema.org разметка для организации */}
       <OrganizationSchema
         name="Architeq"
-        description="Business process automation solutions for small and medium businesses."
+        description="Architect your workflow. Scale with confidence"
         url="https://architeq.io"
         foundingDate="2023"
         founders={["Andrii Serhiienko"]}
