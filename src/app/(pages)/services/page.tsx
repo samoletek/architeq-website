@@ -334,7 +334,6 @@ export default function ServicesPage() {
               <ul className="text-light-gray space-y-2">
                 <li>Monday.com</li>
                 <li>HubSpot</li>
-                <li>Salesforce</li>
                 <li>Zoho CRM</li>
                 <li>Pipedrive</li>
               </ul>
@@ -343,11 +342,9 @@ export default function ServicesPage() {
             <div className="bg-dark-gray rounded-lg p-6 text-center">
               <h3 className="text-xl font-semibold mb-4 text-primary">Automation Tools</h3>
               <ul className="text-light-gray space-y-2">
-                <li>Make (Integromat)</li>
+                <li>Make</li>
                 <li>Zapier</li>
                 <li>n8n</li>
-                <li>Power Automate</li>
-                <li>Workato</li>
               </ul>
             </div>
 
@@ -355,7 +352,6 @@ export default function ServicesPage() {
               <h3 className="text-xl font-semibold mb-4 text-primary">Financial Systems</h3>
               <ul className="text-light-gray space-y-2">
                 <li>QuickBooks</li>
-                <li>Xero</li>
                 <li>Stripe</li>
                 <li>PayPal</li>
                 <li>Bill.com</li>
@@ -365,7 +361,8 @@ export default function ServicesPage() {
             <div className="bg-dark-gray rounded-lg p-6 text-center">
               <h3 className="text-xl font-semibold mb-4 text-primary">AI & Document Tools</h3>
               <ul className="text-light-gray space-y-2">
-                <li>OpenAI</li>
+                <li>ChatGPT</li>
+                <li>Claude</li>
                 <li>DocuSign</li>
                 <li>PandaDoc</li>
                 <li>JotForm</li>
