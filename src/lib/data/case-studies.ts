@@ -34,6 +34,45 @@ export interface CaseStudy {
   export const allCaseStudies: CaseStudy[] = [
     // Financial Automations
     {
+      id: 'broker-calculator',
+      title: 'Interactive Vehicle Transport Price Calculator',
+      company: 'Car Haul Direct',
+      location: 'West Chester, OH, USA',
+      industry: 'Logistics & Transportation',
+      solutionType: 'Custom Calculator',
+      description: 'Development of a comprehensive transport pricing calculator with real-time route visualization, weather analysis, and detailed price breakdown.',
+      shortDescription: 'Interactive vehicle shipping calculator with dynamic pricing factors, route visualization, and automated quote delivery.',
+      problem: 'Vehicle transport brokers spend significant time manually calculating shipping quotes. Each quote requires consideration of multiple factors: distance, vehicle type, transport mode, weather conditions, traffic, and additional services. This manual process is time-consuming, error-prone, and lacks transparency for customers.',
+      solution: [
+        'Creation of an interactive calculator with Google Maps integration for visual route planning',
+        'Dynamic pricing system accounting for vehicle value, transport type, and distance',
+        'Real-time weather analysis along the route with price adjustments for adverse conditions',
+        'Traffic congestion analysis and impact calculation on delivery time and cost',
+        'Auto show event detection near pickup/delivery locations with dynamic pricing',
+        'Toll road cost estimation with regional segmentation',
+        'Additional services selection with automatic price adjustment',
+        'Detailed price breakdown with visualization of all cost components',
+        'Email quote delivery system with unique quote tracking',
+        'Adaptive, optimized web application for different types of devices'
+      ],
+      technologies: ['Next.js', 'React', 'TypeScript', 'Google Maps API', 'Weather API', 'Tailwind CSS', 'EmailJS', 'Iron Session', 'React Select'],
+      results: [
+        '68% reduction in time spent creating quotes',
+        '34% increase in quote request conversion rate',
+        'Complete elimination of calculation errors',
+        'Improved customer experience with transparent pricing',
+        '27% increase in service add-ons selection due to clear visualization'
+      ],
+      testimonial: {
+        quote: 'The calculator has transformed our quoting process. What used to take our team 15-20 minutes per quote now happens in seconds. Customers love the transparency of seeing exactly what factors influence their shipping cost, and our team appreciates the accuracy and consistency. The visual route mapping and weather analysis gives us a major advantage over competitors.',
+        author: 'Eugene Gourevitch',
+        position: 'CFO at Car Haul Direct'
+      },
+      relatedCases: ['car-hauling-solution', 'telephony-integration', 'document-generation'],
+      featured: true,
+      image: '/images/cases/broker-calculator.jpg'
+    },
+    {
       id: 'stripe-invoicing',
       title: 'Stripe Invoicing and Financial Control Automation',
       company: 'EclipseGroup',
