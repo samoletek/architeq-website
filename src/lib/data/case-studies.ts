@@ -64,7 +64,7 @@ export interface CaseStudy {
         '27% increase in service add-ons selection due to clear visualization'
       ],
       testimonial: {
-        quote: 'The calculator has transformed our quoting process. What used to take our team 15-20 minutes per quote now happens in seconds. Customers love the transparency of seeing exactly what factors influence their shipping cost, and our team appreciates the accuracy and consistency. The visual route mapping and weather analysis gives us a major advantage over competitors.',
+        quote: 'The calculator has transformed our quoting process. What used to take our team 15-20 minutes per quote now happens in seconds. Customers love the transparency of seeing exactly what factors influence their shipping cost, and our team appreciates the accuracy and consistency. The visual route mapping and weather analysis gives us a major advantage over competitors. Really amazing app',
         author: 'Eugene Gourevitch',
         position: 'CFO at Car Haul Direct'
       },
