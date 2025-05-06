@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://architeq.io/</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/about</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/contacts</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/business-process</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/broker-calculator</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/stripe-invoicing</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/quickbooks-integration</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/crm-integration</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/boxed-solutions</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/ai-solutions</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/documentation</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/services/finance</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/finance</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/documents</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/crm</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/industry</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/ai</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/privacy</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cookies</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/terms</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/factoring-automation</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/document-generation</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/electronic-signatures</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/web-forms-integration</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/monday-integration</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/notification-system</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/dashboards-creation</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/car-hauling-solution</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/kitchen-cabinetry-solution</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/music-label-solution</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/real-estate-solution</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/roofing-business-solution</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/ai-voice-bot</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/ai-crm-assistant</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/speech-to-text-analysis</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/financial-calculations</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/slack-notifications</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://architeq.io/cases/telephony-integration</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
