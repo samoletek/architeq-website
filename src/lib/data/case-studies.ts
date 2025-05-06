@@ -39,7 +39,7 @@ export interface CaseStudy {
       company: 'Car Haul Direct',
       location: 'West Chester, OH, USA',
       industry: 'Logistics & Transportation',
-      solutionType: 'Custom Calculator',
+      solutionType: 'Web-application',
       description: 'Development of a comprehensive transport pricing calculator with real-time route visualization, weather analysis, and detailed price breakdown.',
       shortDescription: 'Interactive vehicle shipping calculator with dynamic pricing factors, route visualization, and automated quote delivery.',
       problem: 'Vehicle transport brokers spend significant time manually calculating shipping quotes. Each quote requires consideration of multiple factors: distance, vehicle type, transport mode, weather conditions, traffic, and additional services. This manual process is time-consuming, error-prone, and lacks transparency for customers.',
