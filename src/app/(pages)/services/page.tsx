@@ -315,62 +315,6 @@ export default function ServicesPage() {
             </div>
           </div>
         </div>
-        
-      </section>
-
-      {/* Technologies section */}
-      <section className="py-20 bg-site-bg">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Tech Stack</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-              We plug into the tools you already use and build automations on proven, scalable tech — no hacks, no guesswork.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-dark-gray rounded-lg p-6 text-center">
-              <h3 className="text-xl font-semibold mb-4 text-primary">CRM Systems</h3>
-              <ul className="text-light-gray space-y-2">
-                <li>Monday.com</li>
-                <li>HubSpot</li>
-                <li>Zoho CRM</li>
-                <li>Pipedrive</li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gray rounded-lg p-6 text-center">
-              <h3 className="text-xl font-semibold mb-4 text-primary">Automation Tools</h3>
-              <ul className="text-light-gray space-y-2">
-                <li>Make</li>
-                <li>Zapier</li>
-                <li>n8n</li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gray rounded-lg p-6 text-center">
-              <h3 className="text-xl font-semibold mb-4 text-primary">Financial Systems</h3>
-              <ul className="text-light-gray space-y-2">
-                <li>QuickBooks</li>
-                <li>Stripe</li>
-                <li>PayPal</li>
-                <li>Bill.com</li>
-              </ul>
-            </div>
-
-            <div className="bg-dark-gray rounded-lg p-6 text-center">
-              <h3 className="text-xl font-semibold mb-4 text-primary">AI & Document Tools</h3>
-              <ul className="text-light-gray space-y-2">
-                <li>ChatGPT</li>
-                <li>Claude</li>
-                <li>DocuSign</li>
-                <li>PandaDoc</li>
-                <li>JotForm</li>
-                <li>Google Workspace</li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </section>
       
       {/* CTA section */}
