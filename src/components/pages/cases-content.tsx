@@ -11,7 +11,6 @@ import { Icon } from '@/components/ui/icons/icon';
 import { 
   allCaseStudies, 
   getUniqueValues, 
-  getUniqueTechnologies, 
   filterCases,
   toCaseCardFormat
 } from '@/lib/data/case-studies';
@@ -22,7 +21,6 @@ export default function CasesContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   const [selectedSolutionTypes, setSelectedSolutionTypes] = useState<string[]>([]);
-  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
   
   // Состояние для мобильного представления
   const [showFilterSection, setShowFilterSection] = useState<boolean>(false);
@@ -31,7 +29,6 @@ export default function CasesContent() {
   // Данные для фильтрации
   const allIndustries = useMemo(() => getUniqueValues('industry'), []);
   const allSolutionTypes = useMemo(() => getUniqueValues('solutionType'), []);
-  const allTechnologies = useMemo(() => getUniqueTechnologies(), []);
   
   // Формируем группы для фильтров
   const filterGroups: FilterGroup[] = [
@@ -56,25 +53,13 @@ export default function CasesContent() {
       })),
       icon: <Icon name="process" className="w-5 h-5" />,
       initialOpen: isMobile ? false : true
-    },
-    {
-      id: 'technology',
-      label: 'By Technology',
-      options: allTechnologies.map(tech => ({ 
-        id: tech, 
-        label: tech,
-        count: allCaseStudies.filter(c => c.technologies.includes(tech)).length
-      })),
-      icon: <Icon name="connection" className="w-5 h-5" />,
-      initialOpen: isMobile ? false : true
     }
   ];
   
   // Состояние для выбранных фильтров
   const selectedOptions = {
     industry: selectedIndustries,
-    solutionType: selectedSolutionTypes,
-    technology: selectedTechnologies
+    solutionType: selectedSolutionTypes
   };
   
   // Фильтрация кейсов
@@ -82,14 +67,12 @@ export default function CasesContent() {
     return filterCases({
       searchQuery,
       industries: selectedIndustries,
-      solutionTypes: selectedSolutionTypes,
-      technologies: selectedTechnologies
+      solutionTypes: selectedSolutionTypes
     });
   }, [
     searchQuery, 
     selectedIndustries, 
-    selectedSolutionTypes, 
-    selectedTechnologies
+    selectedSolutionTypes
   ]);
   
   // Обработчик для выбора фильтра
@@ -105,11 +88,6 @@ export default function CasesContent() {
           prev.includes(optionId) ? prev.filter(t => t !== optionId) : [...prev, optionId]
         );
         break;
-      case 'technology':
-        setSelectedTechnologies(prev => 
-          prev.includes(optionId) ? prev.filter(t => t !== optionId) : [...prev, optionId]
-        );
-        break;
     }
   };
   
@@ -122,7 +100,6 @@ export default function CasesContent() {
   const clearAllFilters = () => {
     setSelectedIndustries([]);
     setSelectedSolutionTypes([]);
-    setSelectedTechnologies([]);
     setSearchQuery('');
   };
 

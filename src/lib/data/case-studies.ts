@@ -869,35 +869,16 @@ return Array.from(values);
 }
 
 /**
-* Получает все уникальные технологии
-*/
-export function getUniqueTechnologies(): string[] {
-const technologies = new Set<string>();
-
-// Добавляем основные и альтернативные технологии
-allCaseStudies.forEach(cs => {
-  cs.technologies.forEach(tech => technologies.add(tech));
-  if (cs.alternativeTechnologies) {
-    cs.alternativeTechnologies.forEach(tech => technologies.add(tech));
-  }
-});
-
-return Array.from(technologies);
-}
-
-/**
 * Расширенная функция фильтрации кейсов с учетом альтернативных технологий
 */
 export function filterCases({
 searchQuery = '',
 industries = [],
-solutionTypes = [],
-technologies = []
+solutionTypes = []
 }: {
 searchQuery?: string;
 industries?: string[];
 solutionTypes?: string[];
-technologies?: string[];
 }): CaseStudy[] {
 return allCaseStudies.filter(caseStudy => {
   // Поиск по строке
@@ -919,13 +900,6 @@ return allCaseStudies.filter(caseStudy => {
   // Фильтр по типам решений
   const matchesSolutionType = solutionTypes.length === 0 || solutionTypes.includes(caseStudy.solutionType);
   
-  // Фильтр по технологиям (с учетом альтернативных)
-  const matchesTechnology = technologies.length === 0 || 
-    technologies.some(tech => 
-      caseStudy.technologies.includes(tech) || 
-      (caseStudy.alternativeTechnologies && caseStudy.alternativeTechnologies.includes(tech))
-    );
-  
-  return matchesSearch && matchesIndustry && matchesSolutionType && matchesTechnology;
+  return matchesSearch && matchesIndustry && matchesSolutionType;
 });
 }
