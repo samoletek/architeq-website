@@ -11,14 +11,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Main colors
-        'site-bg': '#121212',
-        'dark-gray': '#1E1E1E',
+        // Основные цвета
+        'site-bg': '#121212',                // Основной фон (графитовый)
+        'site-bg-deep': '#180033',           // Глубокий фиолетовый фон
+        'footer-bg': '#1A0040',              // Темно-синий для футера
+        'dark-purple': '#200040',            // Темно-пурпурный
         'medium-gray': '#333333',
         'light-gray': '#AAAAAA',
-        primary: '#FF4500', // Lava orange
-        'neon-blue': '#00C8FF',
-        'neon-purple': '#FF00FF',
+        
+        // Акцентные цвета - обновленные
+        primary: '#7747CF',                 // Обновленный фиолетовый как на кнопке Get Started
+        secondary: '#B0FF74',               // Неоново-зеленый
+        
+        // Дополнительные акценты
+        'accent-blue': '#4DADFF',
+        'accent-coral': '#B0FF74',          // Заменен с #FF6B8B на зеленый
+        'accent-teal': '#00F5D4',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'sans-serif'],
@@ -26,28 +34,52 @@ const config: Config = {
         heading: ['var(--font-inter)', 'sans-serif'],
       },
       boxShadow: {
-        'neon-glow': '0 0 5px rgba(255, 69, 0, 0.5), 0 0 20px rgba(255, 69, 0, 0.3)',
-        'neon-blue-glow': '0 0 5px rgba(0, 200, 255, 0.5), 0 0 20px rgba(0, 200, 255, 0.3)',
-        'neon-purple-glow': '0 0 5px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3)',
+        // Улучшенные тени с более сильным свечением
+        'neon-glow': '0 0 10px rgba(119, 71, 207, 0.6), 0 0 30px rgba(119, 71, 207, 0.4)',
+        'neon-glow-intense': '0 0 15px rgba(119, 71, 207, 0.7), 0 0 40px rgba(119, 71, 207, 0.5), 0 0 80px rgba(119, 71, 207, 0.2)',
+        'neon-green-glow': '0 0 10px rgba(176, 255, 116, 0.6), 0 0 30px rgba(176, 255, 116, 0.4)',
+        'neon-green-glow-intense': '0 0 15px rgba(176, 255, 116, 0.7), 0 0 40px rgba(176, 255, 116, 0.5), 0 0 80px rgba(176, 255, 116, 0.2)',
+        'white-glow': '0 0 10px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4)',
+        'white-glow-intense': '0 0 15px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.2)',
+        'accent-glow': '0 0 10px rgba(77, 173, 255, 0.6), 0 0 30px rgba(77, 173, 255, 0.4)',
+      },
+      // Добавляем текстовые тени для эффекта свечения текста
+      textShadow: {
+        'white': '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4)',
+        'white-soft': '0 0 5px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 45px rgba(255, 255, 255, 0.2)',
+        'green': '0 0 10px rgba(176, 255, 116, 0.8), 0 0 20px rgba(176, 255, 116, 0.6), 0 0 30px rgba(176, 255, 116, 0.4)',
+        'green-soft': '0 0 5px rgba(176, 255, 116, 0.5), 0 0 15px rgba(176, 255, 116, 0.4), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 45px rgba(176, 255, 116, 0.2)',
       },
       backgroundImage: {
-        'main-gradient': 'linear-gradient(135deg, #FF4500 0%, #FF8C00 100%)',
-        'secondary-gradient': 'linear-gradient(135deg, #00C8FF 0%, #FF00FF 100%)',
-        'dark-gradient': 'linear-gradient(180deg, #1E1E1E 0%, #121212 100%)',
-      },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'fadeIn': 'fadeIn 0.5s ease-in-out forwards',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
+        // Фоновые градиенты
+        'main-gradient': 'linear-gradient(135deg, #121212 0%, #180033 100%)',
+        'footer-gradient': 'linear-gradient(180deg, #180033 0%, #1A0040 100%)',
+        
+        // Акцентные градиенты - обновленные
+        'primary-gradient': 'linear-gradient(135deg, #7747CF 0%, #4DADFF 100%)',
+        'secondary-gradient': 'linear-gradient(135deg, #B0FF74 0%, #00F5D4 100%)',
+        
+        // Текстовые градиенты
+        'green-white-gradient': 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
+        'text-primary': 'linear-gradient(90deg, #7747CF 0%, #4DADFF 100%)',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Добавляем плагин для поддержки text-shadow
+    function({ addUtilities, theme }) {
+      const textShadows = theme('textShadow');
+      const utilities = {};
+      
+      Object.entries(textShadows).forEach(([key, value]) => {
+        utilities[`.text-shadow-${key}`] = {
+          textShadow: value,
+        };
+      });
+      
+      addUtilities(utilities);
+    },
+  ],
 }
 
 export default config

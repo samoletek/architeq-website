@@ -1,0 +1,105 @@
+/* Анимации свечения */
+@keyframes glow-pulse {
+    0% {
+      box-shadow: 0 0 5px var(--color-primary);
+    }
+    50% {
+      box-shadow: 0 0 20px var(--color-primary), 0 0 30px rgba(178, 75, 243, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 5px var(--color-primary);
+    }
+  }
+  
+  .animate-glow {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+  
+  /* Анимация для следования за курсором */
+  .cursor-follower {
+    pointer-events: none;
+    position: fixed;
+    z-index: 9999;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Анимация появления при скролле */
+  .scroll-reveal {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  
+  .scroll-reveal.visible {
+    opacity: 1;
+  }
+  
+  .scroll-reveal.fade-up {
+    transform: translateY(30px);
+  }
+  
+  .scroll-reveal.fade-up.visible {
+    transform: translateY(0);
+  }
+  
+  .scroll-reveal.fade-left {
+    transform: translateX(-30px);
+  }
+  
+  .scroll-reveal.fade-left.visible {
+    transform: translateX(0);
+  }
+  
+  .scroll-reveal.fade-right {
+    transform: translateX(30px);
+  }
+  
+  .scroll-reveal.fade-right.visible {
+    transform: translateX(0);
+  }
+  
+  /* Дополнительные анимации для scroll-reveal */
+  .scroll-reveal.fade-down {
+    transform: translateY(-30px);
+  }
+  
+  .scroll-reveal.fade-down.visible {
+    transform: translateY(0);
+  }
+  
+  .scroll-reveal.zoom-in {
+    transform: scale(0.9);
+  }
+  
+  .scroll-reveal.zoom-in.visible {
+    transform: scale(1);
+  }
+  
+  /* Анимация для элементов с параллаксом */
+  .parallax {
+    transition: transform 0.1s linear;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  
+  /* Staggered animation for multiple items */
+  .animate-fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+  .animate-fade-in-up:nth-child(2) { animation-delay: 0.2s; }
+  .animate-fade-in-up:nth-child(3) { animation-delay: 0.3s; }
+  .animate-fade-in-up:nth-child(4) { animation-delay: 0.4s; }
+  .animate-fade-in-up:nth-child(5) { animation-delay: 0.5s; }
+  .animate-fade-in-up:nth-child(6) { animation-delay: 0.6s; }

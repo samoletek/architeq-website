@@ -1,0 +1,66 @@
+/* Градиентные кнопки */
+.gradient-btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-blue-accent));
+    transition: all 0.3s ease;
+  }
+  
+  .gradient-btn-primary:hover {
+    background: linear-gradient(135deg, var(--color-blue-accent), var(--color-primary));
+    transform: translateY(-2px);
+  }
+  
+  .gradient-btn-secondary {
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-blue-accent));
+    transition: all 0.3s ease;
+  }
+  
+  .gradient-btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(176, 255, 116, 0.4);
+  }
+  
+  /* Градиентный текст */
+  .gradient-text-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-blue-accent));
+    background-size: 200% auto;
+    animation: gradient-shift 8s ease infinite;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  .gradient-text-secondary {
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-blue-accent));
+    background-size: 200% auto;
+    animation: gradient-shift 8s ease infinite;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  .gradient-text-accent {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    background-size: 200% auto;
+    animation: gradient-shift 8s ease infinite;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  /* Градиентные фоны */
+  .gradient-bg-subtle {
+    background: linear-gradient(
+      135deg,
+      var(--color-dark) 0%,
+      rgba(180, 33, 0, 0.1) 50%,
+      var(--color-dark) 100%
+    );
+  }
+  
+  .gradient-bg-deep {
+    background: linear-gradient(
+      135deg,
+      var(--color-dark-deeper) 0%,
+      var(--color-dark) 100%
+    );
+  }
