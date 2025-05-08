@@ -215,10 +215,28 @@ const headerBgClasses = cn(
   return (
     <header className={cn("fixed w-full z-50", headerBgClasses, className)}>
       <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* Логотип */}
-        <Link href="/" className="text-2xl font-bold text-white z-10">
-          {logo || "Architeq"}
-        </Link>
+{/* Логотип с анимацией градиента, фиксирующегося с зеленым цветом слева */}
+<Link 
+  href="/" 
+  className="text-2xl font-bold"
+>
+  <span 
+    className="inline-block text-transparent bg-clip-text transition-all duration-500 ease-out"
+    style={{ 
+      backgroundImage: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 50%, #B0FF74 100%)',
+      backgroundSize: '200% auto',
+      backgroundPosition: '0% center',
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundPosition = '100% center';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundPosition = '0% center';
+    }}
+  >
+    {logo || "Architeq"}
+  </span>
+</Link>
 
         {/* Десктопное меню */}
         <nav className="hidden md:flex items-center space-x-8">
