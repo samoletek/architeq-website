@@ -250,10 +250,10 @@ const headerBgClasses = cn(
               {item.children ? (
   <button
     className={cn(
-      "transition-colors duration-300 focus:outline-none",
+      "transition-all duration-300 focus:outline-none",
       isActive(item.href) 
         ? "text-secondary text-shadow-green-soft" 
-        : "text-white hover:text-secondary"
+        : "text-white/70 hover:text-white hover:text-shadow-white-soft"
     )}
     onClick={() => handleDropdownToggle(item.name)}
     aria-expanded={activeDropdown === item.name}
@@ -262,16 +262,16 @@ const headerBgClasses = cn(
                 </button>
               ) : (
                 <Link
-                  href={item.href}
-                  className={cn(
-                    "transition-colors duration-300",
-                    isActive(item.href) 
-                      ? "text-secondary text-shadow-green-soft" 
-                      : "text-white hover:text-secondary"
-                  )}
-                  target={item.isExternal ? "_blank" : undefined}
-                  rel={item.isExternal ? "noopener noreferrer" : undefined}
-                >
+  href={item.href}
+  className={cn(
+    "transition-all duration-300",
+    isActive(item.href) 
+      ? "text-secondary text-shadow-green-soft" 
+      : "text-white/70 hover:text-white hover:text-shadow-white-soft"
+  )}
+  target={item.isExternal ? "_blank" : undefined}
+  rel={item.isExternal ? "noopener noreferrer" : undefined}
+>
                   {item.name}
                 </Link>
               )}
