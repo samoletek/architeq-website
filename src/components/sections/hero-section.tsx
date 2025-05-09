@@ -2,8 +2,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { GlowingTextButton } from '@/components/ui/buttons/glowing-text-button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
@@ -15,29 +14,24 @@ interface HeroSectionProps {
     text: string;
     href: string;
   };
-  secondaryCta?: {
-    text: string;
-    href: string;
-  };
-  decorativeElements?: boolean;
 }
 
 export default function HeroSection({
-  title = "Architect your workflow.",
+  title = "Architect your workflow",
   subtitle = "Scale with confidence",
   description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
   primaryCta = {
-    text: "Schedule a Call",
-    href: "/contacts"
-  },
-  secondaryCta = {
     text: "Explore Solutions",
     href: "/services"
-  },
-  decorativeElements = true
+  }
 }: HeroSectionProps) {  
   const { isMobile, isLowPerformance } = useDeviceDetection();
   const [isMounted, setIsMounted] = useState(false);
+  const [isArchitectHovered, setIsArchitectHovered] = useState(false);
+  const [isScaleHovered, setIsScaleHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const architectRef = useRef<HTMLSpanElement>(null);
+  const scaleRef = useRef<HTMLSpanElement>(null);
   
   // Устанавливаем флаг монтирования после первого рендера
   useEffect(() => {
@@ -47,153 +41,159 @@ export default function HeroSection({
     
     return () => clearTimeout(timer);
   }, []);
-  
-  // Упрощаем анимацию для мобильных или низкопроизводительных устройств
-  const simplifiedAnimation = isMobile || isLowPerformance;
+
+  // Обработчик движения мыши над словом "Architect"
+  const handleArchitectMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (architectRef.current) {
+      const rect = architectRef.current.getBoundingClientRect();
+      // Вычисляем позицию мыши относительно элемента в процентах
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setMousePosition({ x, y });
+    }
+  };
+
+  // Обработчик движения мыши над словом "Scale"
+  const handleScaleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (scaleRef.current) {
+      const rect = scaleRef.current.getBoundingClientRect();
+      // Вычисляем позицию мыши относительно элемента в процентах
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setMousePosition({ x, y });
+    }
+  };
+
+  // Разбиваем описание на две строки примерно поровну по словам
+  const descriptionParts = [
+    "We build digital systems that flex, scale,",
+    "and adapt — for companies across industries."
+  ];
 
   // Если компонент не смонтирован на клиенте, возвращаем статический контент
   if (!isMounted) {
     return (
-      <section className="relative overflow-hidden py-20 md:py-32">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-              <span className="accent-text">Architect</span> your workflow.
-              <br />
-              <span className="accent-text">Scale</span> with confidence
-            </h1>
-            <p className="text-xl text-white/70">
-              {description}
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <GlowingTextButton href={primaryCta.href} size="lg" variant="hero">
-  {primaryCta.text}
-</GlowingTextButton>
-              <Button variant="secondary" size="lg" href={secondaryCta.href}>
-                {secondaryCta.text}
-              </Button>
-            </div>
+      <section className="py-16 md:py-24">
+        <div className="container px-6 mx-auto">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+            <span className="accent-text">Architect</span> your workflow
+            <br />
+            <span className="accent-text">Scale</span> with confidence
+          </h1>
+          <div className="text-base md:text-lg text-white/70 mt-10 font-sans">
+            <p>{descriptionParts[0]}</p>
+            <p>{descriptionParts[1]}</p>
+          </div>
+          <div className="mt-10">
+            <Button variant="secondary" size="md" href={primaryCta.href} className="shadow-neon-green-glow px-6 py-2 text-sm">
+              {primaryCta.text}
+            </Button>
           </div>
         </div>
       </section>
     );
   }
 
+  // Стиль градиента, следующего за курсором для слова "Architect"
+  const architectGradientStyle = isArchitectHovered ? {
+    background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(176, 255, 116, 1) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(176, 255, 116, 0.5) 70%)`,
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+  } : {
+    background: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+  };
+
+  // Стиль градиента, следующего за курсором для слова "Scale"
+  const scaleGradientStyle = isScaleHovered ? {
+    background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(176, 255, 116, 1) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(176, 255, 116, 0.5) 70%)`,
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+  } : {
+    background: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+  };
+
   return (
-    <section className="relative overflow-hidden py-20 md:py-32">
-      {/* Декоративные элементы (если включены) */}
-      {decorativeElements && isMounted && (
-        <>
-          {/* Неоновый круг на заднем плане */}
-          <motion.div 
-            className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-primary opacity-5 blur-[120px] -translate-y-1/2 translate-x-1/2"
-            animate={{ 
-              scale: [1, 1.05, 1],
-              opacity: [0.05, 0.07, 0.05] 
-            }}
-            transition={{ 
-              duration: simplifiedAnimation ? 12 : 8, 
-              repeat: Infinity,
-              repeatType: "reverse" 
-            }}
-          />
-          
-          {/* Неоновые линии внизу */}
-          <div className="absolute bottom-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          <motion.div 
-            className="absolute bottom-2 right-0 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-secondary/20 to-transparent"
-            animate={{ 
-              width: ['80%', '70%', '80%'], 
-              opacity: [0.2, 0.3, 0.2] 
-            }}
-            transition={{ 
-              duration: simplifiedAnimation ? 15 : 10, 
-              repeat: Infinity,
-              repeatType: "reverse" 
-            }}
-          />
-          
-          {/* Дополнительные графические элементы */}
-          <motion.div 
-            className="absolute top-[30%] left-[5%] w-2 h-2 rounded-full bg-secondary"
-            animate={{ 
-              scale: [1, 1.5, 1],
-              opacity: [0.7, 1, 0.7] 
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              repeatType: "reverse" 
-            }}
-          />
-          <motion.div 
-            className="absolute bottom-[20%] right-[15%] w-3 h-3 rounded-full bg-accent-blue"
-            animate={{ 
-              scale: [1, 1.3, 1],
-              opacity: [0.7, 1, 0.7] 
-            }}
-            transition={{ 
-              duration: 3, 
-              repeat: Infinity,
-              repeatType: "reverse",
-              delay: 0.5
-            }}
-          />
-          
-          {/* Добавим синюю точку, как на скриншоте */}
-          <motion.div 
-            className="absolute bottom-[15%] right-[5%] w-2 h-2 rounded-full bg-accent-blue"
-            animate={{ 
-              opacity: [0.7, 1, 0.7] 
-            }}
-            transition={{ 
-              duration: 4, 
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          />
-        </>
-      )}
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-              <span className="accent-text">Architect</span> your workflow.
-              <br />
-              <span className="accent-text">Scale</span> with confidence
-            </h1>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <p className="text-xl text-white/70">
-              {description}
-            </p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <GlowingTextButton href={primaryCta.href} size="lg">
-                {primaryCta.text}
-              </GlowingTextButton>
-              <Button variant="secondary" size="lg" href={secondaryCta.href}>
-                {secondaryCta.text}
-              </Button>
-            </div>
-          </motion.div>
-        </div>
+    <section className="py-16 md:py-24">
+      <div className="container px-6 mx-auto">
+        {/* Первая строка заголовка - анимация справа налево */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }} // Начинается справа (положительное x)
+          animate={{ opacity: 1, x: 0 }} // Анимируется влево
+          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          className="overflow-hidden"
+        >
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+            <span 
+              ref={architectRef}
+              className="transition-all duration-300 ease-out"
+              style={architectGradientStyle}
+              onMouseEnter={() => setIsArchitectHovered(true)}
+              onMouseLeave={() => setIsArchitectHovered(false)}
+              onMouseMove={handleArchitectMouseMove}
+            >
+              Architect
+            </span> your workflow
+          </h1>
+        </motion.div>
+        
+        {/* Вторая строка заголовка - анимация справа налево с небольшой задержкой */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }} // Начинается справа (положительное x)
+          animate={{ opacity: 1, x: 0 }} // Анимируется влево
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+          className="overflow-hidden"
+        >
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+            <span 
+              ref={scaleRef}
+              className="transition-all duration-300 ease-out"
+              style={scaleGradientStyle}
+              onMouseEnter={() => setIsScaleHovered(true)}
+              onMouseLeave={() => setIsScaleHovered(false)}
+              onMouseMove={handleScaleMouseMove}
+            >
+              Scale
+            </span> with confidence
+          </h1>
+        </motion.div>
+        
+        {/* Описание - также с анимацией справа налево */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+        >
+          <div className="text-base md:text-lg text-white/80 mt-10 font-sans leading-relaxed">
+            <p>{descriptionParts[0]}</p>
+            <p>{descriptionParts[1]}</p>
+          </div>
+        </motion.div>
+        
+        {/* Кнопка - также с анимацией справа налево */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+        >
+          <div className="mt-10">
+            <Button 
+              variant="secondary" 
+              size="md" 
+              href={primaryCta.href} 
+              className="shadow-neon-green-glow px-6 py-2 text-sm"
+            >
+              {primaryCta.text}
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

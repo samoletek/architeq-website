@@ -19,8 +19,7 @@ const config: Config = {
         'medium-gray': '#333333',
         'light-gray': '#AAAAAA',
         
-        // Акцентные цвета - обновленные
-        primary: '#7747CF',                 // Обновленный фиолетовый как на кнопке Get Started
+        primary: '#7747CF',                 // Фиолетовый
         secondary: '#B0FF74',               // Неоново-зеленый
         
         // Дополнительные акценты
