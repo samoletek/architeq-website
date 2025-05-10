@@ -1,5 +1,6 @@
 // tailwind.config.ts
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: [
@@ -65,19 +66,19 @@ const config: Config = {
     },
   },
   plugins: [
-    // Добавляем плагин для поддержки text-shadow
-    function({ addUtilities, theme }) {
-      const textShadows = theme('textShadow');
-      const utilities = {};
+    plugin(({ addUtilities, theme }) => {
+      // Добавляем явную типизацию для textShadows
+      const textShadows = theme('textShadow') as Record<string, string>;
+      const utilities: Record<string, { textShadow: string }> = {};
       
       Object.entries(textShadows).forEach(([key, value]) => {
-        utilities[`.text-shadow-${key}`] = {
-          textShadow: value,
+        utilities[`text-shadow-${key}`] = {
+          textShadow: value as string,
         };
       });
       
       addUtilities(utilities);
-    },
+    }),
   ],
 }
 
