@@ -40,8 +40,16 @@ export function SolutionSwitcher({
   const [animationComplete, setAnimationComplete] = useState(false);
   const { isMobile, isTablet } = useDeviceDetection();
   
-  // Адаптивный интерфейс
-  const isMobileView = isMobile || isTablet;
+  // Добавляем состояние для отслеживания завершения клиентского монтирования
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // После монтирования компонента устанавливаем флаг в true
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Адаптивный интерфейс - определяем только после монтирования на клиенте
+  const isMobileView = isMounted && (isMobile || isTablet);
   
   // Получение активного таба
   const getActiveTab = useCallback(() => {
@@ -97,6 +105,60 @@ export function SolutionSwitcher({
       </AnimatePresence>
     );
   };
+
+  // Если компонент не смонтирован на клиенте, рендерим только десктопную версию для согласованности с сервером
+  if (!isMounted) {
+    return (
+      <div className={cn("flex flex-col", className)}>
+        <div className={cn(
+          tabsScrollable ? "flex overflow-x-auto space-x-1 pb-2 scrollbar-hide" : "flex flex-wrap",
+          variant === 'default' && "border-b border-medium-gray",
+          variant === 'pills' && "bg-dark-gray rounded-lg p-1",
+          variant === 'minimal' && "mb-4"
+        )}>
+          {tabs.map((tab) => {
+            const tabClasses = cn(
+              "flex items-center px-6 py-4 transition-all duration-300 focus:outline-none whitespace-nowrap",
+              variant === 'default' && cn(
+                activeTab === tab.id
+                  ? "text-primary border-b-2 border-primary -mb-[2px]"
+                  : "text-light-gray hover:text-white"
+              ),
+              variant === 'pills' && cn(
+                "rounded-lg mx-1 first:ml-0 last:mr-0",
+                activeTab === tab.id
+                  ? "bg-primary/10 text-primary"
+                  : "text-light-gray hover:bg-medium-gray/30 hover:text-white"
+              ),
+              variant === 'minimal' && cn(
+                activeTab === tab.id
+                  ? "text-primary font-medium"
+                  : "text-light-gray hover:text-white"
+              ),
+              tab.disabled && "opacity-50 cursor-not-allowed hover:text-light-gray"
+            );
+            
+            return (
+              <button
+                key={tab.id}
+                onClick={() => handleTabChange(tab)}
+                className={tabClasses}
+                disabled={tab.disabled}
+                aria-selected={activeTab === tab.id}
+                role="tab"
+              >
+                <Icon name={tab.icon} className={cn("mr-2", iconSizeClass)} />
+                <span className="font-medium">{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-4">
+          {renderTabContent(getActiveTab())}
+        </div>
+      </div>
+    );
+  }
 
   // Выбор мобильной или десктопной версии в зависимости от размера экрана
   if (isMobileView) {
