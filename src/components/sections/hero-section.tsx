@@ -58,7 +58,7 @@ export default function HeroSection({
             <p>{descriptionParts[1]}</p>
           </div>
           <div className="mt-10">
-            <Button variant="secondary" size="md" href={primaryCta.href} className="shadow-neon-green-glow px-6 py-2 text-sm">
+            <Button variant="secondary" size="sm" href={primaryCta.href} className="shadow-neon-green-glow px-6 py-2 text-sm">
               {primaryCta.text}
             </Button>
           </div>
@@ -133,7 +133,7 @@ export default function HeroSection({
           <div className="mt-10">
             <Button 
               variant="secondary" 
-              size="md" 
+              size="sm" 
               href={primaryCta.href} 
               className="shadow-neon-green-glow px-6 py-2 text-sm"
             >
