@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
@@ -27,11 +27,6 @@ export default function HeroSection({
 }: HeroSectionProps) {  
   const { isMobile, isLowPerformance } = useDeviceDetection();
   const [isMounted, setIsMounted] = useState(false);
-  const [isArchitectHovered, setIsArchitectHovered] = useState(false);
-  const [isScaleHovered, setIsScaleHovered] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const architectRef = useRef<HTMLSpanElement>(null);
-  const scaleRef = useRef<HTMLSpanElement>(null);
   
   // Устанавливаем флаг монтирования после первого рендера
   useEffect(() => {
@@ -41,28 +36,6 @@ export default function HeroSection({
     
     return () => clearTimeout(timer);
   }, []);
-
-  // Обработчик движения мыши над словом "Architect"
-  const handleArchitectMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (architectRef.current) {
-      const rect = architectRef.current.getBoundingClientRect();
-      // Вычисляем позицию мыши относительно элемента в процентах
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setMousePosition({ x, y });
-    }
-  };
-
-  // Обработчик движения мыши над словом "Scale"
-  const handleScaleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (scaleRef.current) {
-      const rect = scaleRef.current.getBoundingClientRect();
-      // Вычисляем позицию мыши относительно элемента в процентах
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setMousePosition({ x, y });
-    }
-  };
 
   // Разбиваем описание на две строки примерно поровну по словам
   const descriptionParts = [
@@ -94,26 +67,8 @@ export default function HeroSection({
     );
   }
 
-  // Стиль градиента, следующего за курсором для слова "Architect"
-  const architectGradientStyle = isArchitectHovered ? {
-    background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(176, 255, 116, 1) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(176, 255, 116, 0.5) 70%)`,
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-  } : {
-    background: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-  };
-
-  // Стиль градиента, следующего за курсором для слова "Scale"
-  const scaleGradientStyle = isScaleHovered ? {
-    background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(176, 255, 116, 1) 0%, rgba(255, 255, 255, 0.9) 40%, rgba(176, 255, 116, 0.5) 70%)`,
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text',
-    color: 'transparent',
-  } : {
+  // Фиксированный статический градиент для слов
+  const staticGradientStyle = {
     background: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
@@ -125,19 +80,15 @@ export default function HeroSection({
       <div className="container px-6 mx-auto">
         {/* Первая строка заголовка - анимация справа налево */}
         <motion.div
-          initial={{ opacity: 0, x: 50 }} // Начинается справа (положительное x)
-          animate={{ opacity: 1, x: 0 }} // Анимируется влево
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           className="overflow-hidden"
         >
           <h1 className="text-3xl md:text-5xl font-bold leading-tight">
             <span 
-              ref={architectRef}
               className="transition-all duration-300 ease-out"
-              style={architectGradientStyle}
-              onMouseEnter={() => setIsArchitectHovered(true)}
-              onMouseLeave={() => setIsArchitectHovered(false)}
-              onMouseMove={handleArchitectMouseMove}
+              style={staticGradientStyle}
             >
               Architect
             </span> your workflow
@@ -146,19 +97,15 @@ export default function HeroSection({
         
         {/* Вторая строка заголовка - анимация справа налево с небольшой задержкой */}
         <motion.div
-          initial={{ opacity: 0, x: 50 }} // Начинается справа (положительное x)
-          animate={{ opacity: 1, x: 0 }} // Анимируется влево
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           className="overflow-hidden"
         >
           <h1 className="text-3xl md:text-5xl font-bold leading-tight">
             <span 
-              ref={scaleRef}
               className="transition-all duration-300 ease-out"
-              style={scaleGradientStyle}
-              onMouseEnter={() => setIsScaleHovered(true)}
-              onMouseLeave={() => setIsScaleHovered(false)}
-              onMouseMove={handleScaleMouseMove}
+              style={staticGradientStyle}
             >
               Scale
             </span> with confidence
