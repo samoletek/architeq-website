@@ -129,7 +129,7 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
       <label 
         htmlFor={id} 
         className={cn(
-          "block text-sm font-medium mb-2 flex items-center gap-1",
+          "text-sm font-medium mb-2 flex items-center gap-1",
           labelClassName
         )}
       >

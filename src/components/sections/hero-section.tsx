@@ -17,9 +17,9 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  title = "Architect your workflow",
-  subtitle = "Scale with confidence",
-  description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
+  _title = "Architect your workflow",
+  _subtitle = "Scale with confidence",
+  _description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
   primaryCta = {
     text: "Explore Solutions",
     href: "/services"

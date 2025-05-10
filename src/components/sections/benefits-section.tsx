@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
@@ -46,53 +44,6 @@ const defaultBenefits: Benefit[] = [
   },
 ];
 
-// Компонент неоновой карточки преимуществ с 3D эффектами
-function NeonBenefitCard({ title, description, icon, index }: Benefit & { index: number }) {
-  const [isHovered, setIsHovered] = useState(false);
-  
-  // Анимация "дыхания" для неонового свечения
-  const breathingAnimation = {
-    scale: [1, 1.05, 1],
-    opacity: [0.5, 0.8, 0.5],
-    transition: {
-      duration: 6,
-      ease: "easeInOut",
-      repeat: Infinity,
-      repeatType: "reverse" as const
-    }
-  };
-  
-  return (
-    <motion.div
-      className="relative p-8 rounded-xl backdrop-blur-lg overflow-hidden transition-all duration-500 group"
-      style={{
-        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
-        backgroundImage: 'linear-gradient(170deg, rgba(46, 16, 100, 0.9) 0%, rgba(15, 0, 40, 1) 100%)',
-        borderRadius: '12px',
-        border: '1px solid rgba(119, 71, 207, 0.2)'
-      }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
-    >
-      {/* Внутреннее содержимое */}
-      <div className="relative z-10">
-        <div className="rounded-full w-16 h-16 flex items-center justify-center mb-6 relative overflow-hidden bg-gray-800">
-          {/* Иконка с цветами как на первом скриншоте */}
-          <div className="relative z-10">
-            <Icon name={icon} className="h-7 w-7 text-orange-500" />
-          </div>
-        </div>
-        
-        <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
-        <p className="text-light-gray leading-relaxed text-sm">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
 // Основной компонент секции преимуществ
 export default function BenefitsSection({
   title = "Why Architeq?",
@@ -109,40 +60,7 @@ export default function BenefitsSection({
     "bg-site-bg",
     className
   );
-
-  // Современный вариант с анимированными свечениями и 3D эффектами
-  if (variant === 'modern') {
-    return (
-      <section className={sectionClasses}>
-        <div className="container mx-auto px-4 relative z-10">
-          <AnimatedContainer className="text-center mb-16">
-            <AnimatedItem>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-            </AnimatedItem>
-            
-            <AnimatedItem>
-              <p className="text-light-gray max-w-3xl mx-auto">
-                {subtitle}
-              </p>
-            </AnimatedItem>
-          </AnimatedContainer>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-            {benefits.map((benefit, index) => (
-              <NeonBenefitCard 
-                key={index}
-                title={benefit.title} 
-                description={benefit.description}
-                icon={benefit.icon}
-                index={index}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+  
   // Оригинальное отображение для вариантов default и alternate
   return (
     <section className={sectionClasses}>
