@@ -1,4 +1,5 @@
 // src/components/sections/hero-section.tsx
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,8 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  _title = "Architect your workflow",
-  _subtitle = "Scale with confidence",
-  _description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
+  title = "Architect your workflow Scale with confidence",
+  description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
   primaryCta = {
     text: "Explore Solutions",
     href: "/services"

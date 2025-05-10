@@ -129,7 +129,7 @@ export default function ComponentExplorer() {
     <div className="min-h-screen bg-gray-50 p-8">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Component Explorer</h1>
-        <p className="text-gray-600 mt-2">Explore your project's component structure</p>
+        <p className="text-gray-600 mt-2">Explore your project&apos;s component structure</p>
         <div className="mt-4">
           <Link href="/" className="text-blue-500 hover:underline">
             ← Back to Home
