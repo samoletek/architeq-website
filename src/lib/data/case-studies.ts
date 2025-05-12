@@ -495,41 +495,41 @@ export const allCaseStudies: CaseStudy[] = [
   featured: false,
   image: '/images/cases/music-label-solution.jpg'
 },
-{
-  id: 'real-estate-solution',
-  title: 'Boxed Solution for Real Estate Companies',
-  company: 'Ameriland Capital',
-  location: 'Fayetteville, AR, USA',
-  industry: 'Real Estate',
-  solutionType: 'Industry Solution',
-  description: 'Automation solution for real estate agencies to coordinate showings, prepare documents, and track deals.',
-  shortDescription: 'Automation solution for real estate agencies to coordinate showings, prepare documents, and track deals.',
-  problem: 'Real estate agencies spend significant time coordinating showings, preparing documents, tracking deals, and communicating with clients.',
-  solution: [
-    'Automation of lead capture and qualification from different channels',
-    'CRM setup with custom template specifically for this industry (columns, boards, connects)',
-    'Calendar integration for planning showings',
-    'Automatic reminder system for clients',
-    'Deal document flow management with electronic signatures',
-    'Analytics of agent and property effectiveness (Dashboards)'
-  ],
-  technologies: ['Monday', 'Calendly', 'DocuSign', 'Make', 'Google Workspace'],
-  alternativeTechnologies: ['Pipedrive', 'Zoho', 'Hubspot', 'Zapier', 'n8n', 'PandaDoc', 'SignNow', 'eSignatures'],
-  results: [
-    '55% increase in number of leads processed',
-    '40% reduction in deal closing time',
-    'Increase in successful deal indicator to 35%',
-    'Automation of up to 60% of administrative work'
-  ],
-  testimonial: {
-    quote: 'The real estate solution has transformed our agency operations. Our agents now spend more time with clients and less time on paperwork. The automated lead qualification and showing scheduling have increased our conversion rates, and the electronic signature integration has shortened our closing cycles dramatically.',
-    author: 'Josh Willams',
-    position: 'CEO Ameriland Capital'
-  },
-  relatedCases: ['electronic-signatures', 'web-forms-integration', 'dashboards-creation'],
-  featured: false,
-  image: '/images/cases/real-estate-solution.jpg'
-},
+// {
+//   id: 'real-estate-solution',
+//   title: 'Boxed Solution for Real Estate Companies',
+//   company: 'Ameriland Capital',
+//   location: 'Fayetteville, AR, USA',
+//   industry: 'Real Estate',
+//   solutionType: 'Industry Solution',
+//   description: 'Automation solution for real estate agencies to coordinate showings, prepare documents, and track deals.',
+//   shortDescription: 'Automation solution for real estate agencies to coordinate showings, prepare documents, and track deals.',
+//   problem: 'Real estate agencies spend significant time coordinating showings, preparing documents, tracking deals, and communicating with clients.',
+//   solution: [
+//     'Automation of lead capture and qualification from different channels',
+//     'CRM setup with custom template specifically for this industry (columns, boards, connects)',
+//     'Calendar integration for planning showings',
+//     'Automatic reminder system for clients',
+//     'Deal document flow management with electronic signatures',
+//     'Analytics of agent and property effectiveness (Dashboards)'
+//   ],
+//   technologies: ['Monday', 'Calendly', 'DocuSign', 'Make', 'Google Workspace'],
+//   alternativeTechnologies: ['Pipedrive', 'Zoho', 'Hubspot', 'Zapier', 'n8n', 'PandaDoc', 'SignNow', 'eSignatures'],
+//   results: [
+//     '55% increase in number of leads processed',
+//     '40% reduction in deal closing time',
+//     'Increase in successful deal indicator to 35%',
+//     'Automation of up to 60% of administrative work'
+//   ],
+//   testimonial: {
+//     quote: 'The real estate solution has transformed our agency operations. Our agents now spend more time with clients and less time on paperwork. The automated lead qualification and showing scheduling have increased our conversion rates, and the electronic signature integration has shortened our closing cycles dramatically.',
+//     author: 'Josh Willams',
+//     position: 'CEO Ameriland Capital'
+//   },
+//   relatedCases: ['electronic-signatures', 'web-forms-integration', 'dashboards-creation'],
+//   featured: false,
+//   image: '/images/cases/real-estate-solution.jpg'
+// },
 {
   id: 'roofing-business-solution',
   title: 'Boxed Solution for Roofing Business with AI Components',
