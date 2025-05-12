@@ -83,33 +83,39 @@ const GradientFollow: React.FC<GradientFollowProps> = ({
         setPosition({ x, y });
       } else if (!animationRef.current) {
         // Запуск анимации плавного перемещения
-        animateGradientMovement();
+        const animate = () => {
+          setPosition(prev => {
+            // Расчет нового положения с эффектом плавности
+            const dx = (targetPosition.current.x - prev.x) * followSpeed;
+            const dy = (targetPosition.current.y - prev.y) * followSpeed;
+            
+            const newX = prev.x + dx;
+            const newY = prev.y + dy;
+            
+            // Если мы почти достигли цели, останавливаем анимацию
+            const isCloseEnough = Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1;
+            
+            if (isCloseEnough && !continuousMovement) {
+              animationRef.current = null;
+              return { x: targetPosition.current.x, y: targetPosition.current.y };
+            }
+            
+            animationRef.current = requestAnimationFrame(animate);
+            return { x: newX, y: newY };
+          });
+        };
+        
+        animationRef.current = requestAnimationFrame(animate);
       }
     }
   };
 
   // Анимация непрерывного движения
   useEffect(() => {
-    if (continuousMovement && !isLowPerformance && !isMobile) {
-      const interval = setInterval(() => {
-        const x = 50 + Math.sin(Date.now() / 3000) * 30;
-        const y = 50 + Math.cos(Date.now() / 4000) * 30;
-        
-        targetPosition.current = { x, y };
-        if (!animationRef.current) {
-          animateGradientMovement();
-        }
-      }, 50);
-      
-      return () => clearInterval(interval);
-    }
-  }, [continuousMovement, isLowPerformance, isMobile]);
-
-  // Функция для плавной анимации движения градиента
-  const animateGradientMovement = () => {
-    if (!containerRef.current || isLowPerformance) return;
+    if (!continuousMovement || isLowPerformance || isMobile) return;
     
-    const animate = () => {
+    // Функция плавной анимации движения градиента внутри useEffect для правильных зависимостей
+    const animateGradient = () => {
       setPosition(prev => {
         // Расчет нового положения с эффектом плавности
         const dx = (targetPosition.current.x - prev.x) * followSpeed;
@@ -118,27 +124,45 @@ const GradientFollow: React.FC<GradientFollowProps> = ({
         const newX = prev.x + dx;
         const newY = prev.y + dy;
         
-        // Если мы почти достигли цели, останавливаем анимацию
+        // Если мы почти достигли цели, сохраняем анимацию для непрерывного движения
         const isCloseEnough = Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1;
         
-        if (isCloseEnough && !continuousMovement) {
-          animationRef.current = null;
+        if (isCloseEnough) {
           return { x: targetPosition.current.x, y: targetPosition.current.y };
         }
         
-        animationRef.current = requestAnimationFrame(animate);
         return { x: newX, y: newY };
       });
+      
+      animationRef.current = requestAnimationFrame(animateGradient);
     };
+
+    const interval = setInterval(() => {
+      const x = 50 + Math.sin(Date.now() / 3000) * 30;
+      const y = 50 + Math.cos(Date.now() / 4000) * 30;
+      
+      targetPosition.current = { x, y };
+      
+      if (!animationRef.current) {
+        animationRef.current = requestAnimationFrame(animateGradient);
+      }
+    }, 50);
     
-    animationRef.current = requestAnimationFrame(animate);
-  };
+    return () => {
+      clearInterval(interval);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+    };
+  }, [continuousMovement, isLowPerformance, isMobile, followSpeed]);
 
   // Очистка анимации при размонтировании
   useEffect(() => {
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
   }, []);
@@ -151,7 +175,7 @@ const GradientFollow: React.FC<GradientFollowProps> = ({
   }, [isMobile, isLowPerformance]);
 
   // Генерируем радиальный градиент на основе текущего положения
-  const gradientBackground = () => {
+  const gradientBackground = (): React.CSSProperties => {
     const colors = getGradientColors();
     const blurFilter = blur ? `blur(${blurSize}px)` : '';
     
@@ -165,7 +189,7 @@ const GradientFollow: React.FC<GradientFollowProps> = ({
       background: `radial-gradient(circle at ${position.x}% ${position.y}%, ${colors[0]} 0%, ${colors[1]} ${gradientSize}%, transparent 100%)`,
       filter: blurFilter,
       opacity: isLowPerformance ? 0.3 : 1,
-      mixBlendMode: 'screen',
+      mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
       zIndex: 0,
     };
   };

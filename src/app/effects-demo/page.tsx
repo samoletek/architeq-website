@@ -3,7 +3,7 @@
 import React from 'react';
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
-import Icon from '@/components/ui/icons/icon'; 
+import { Icon } from '@/components/ui/icons/icon';
 import HoverElement from '@/components/ui/effects/hover-element';
 import DepthCard from '@/components/ui/effects/depth-card';
 import GradientFollow from '@/components/ui/effects/gradient-follow';
@@ -280,107 +280,121 @@ export default function EffectsDemo() {
 
       {/* Секция с параллакс-эффектами */}
       <section className="py-20 bg-medium-gray">
-        <div className="container">
-          <ScrollAnimate animationType="fadeInUp">
-            <h2 className="text-center mb-12">Параллакс-эффекты</h2>
-          </ScrollAnimate>
+  <div className="container">
+    <ScrollAnimate animationType="fadeInUp">
+      <h2 className="text-center mb-12">Параллакс-эффекты</h2>
+    </ScrollAnimate>
 
-          <div className="relative min-h-[600px] overflow-hidden rounded-xl bg-dark-purple mb-20">
-            <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
-              <ScrollAnimate animationType="fadeIn">
-                <div className="text-center max-w-lg">
-                  <h3 className="text-3xl mb-4">Многослойный параллакс</h3>
-                  <p className="text-light-gray mb-6">
-                    Различные элементы движутся с разной скоростью при прокрутке, 
-                    создавая ощущение глубины и объема.
-                  </p>
-                  <Button variant="primary">Исследовать</Button>
-                </div>
-              </ScrollAnimate>
-            </div>
+    <div className="relative min-h-[600px] overflow-hidden rounded-xl bg-dark-purple mb-20">
+      <div className="absolute inset-0 z-10 flex items-center justify-center p-8">
+        <ScrollAnimate animationType="fadeIn">
+          <div className="text-center max-w-lg">
+            <h3 className="text-3xl mb-4">Многослойный параллакс</h3>
+            <p className="text-light-gray mb-6">
+              Различные элементы движутся с разной скоростью при прокрутке, 
+              создавая ощущение глубины и объема.
+            </p>
+            <Button variant="primary">Исследовать</Button>
+          </div>
+        </ScrollAnimate>
+      </div>
 
             {/* Параллакс-слои */}
             <ParallaxElement 
-              speed={-0.2} 
-              direction="vertical" 
-              maxOffset={50}
-              className="absolute top-0 left-[10%] w-20 h-20 bg-primary/20 rounded-full backdrop-blur-md"
-            />
-            
-            <ParallaxElement 
-              speed={0.3} 
-              direction="vertical" 
-              maxOffset={70}
-              className="absolute top-[30%] right-[15%] w-40 h-40 bg-secondary/20 rounded-full backdrop-blur-md"
-            />
-            
-            <ParallaxElement 
-              speed={-0.4} 
-              direction="vertical" 
-              maxOffset={90}
-              className="absolute bottom-[10%] left-[20%] w-32 h-32 bg-accent-blue/20 rounded-full backdrop-blur-md"
-            />
-            
-            <ParallaxElement 
-              speed={0.25} 
-              direction="horizontal" 
-              maxOffset={60}
-              className="absolute top-[20%] left-[30%] w-16 h-16 bg-primary/30 rounded-full backdrop-blur-md"
-            />
-            
-            <ParallaxElement 
-              speed={-0.35} 
-              direction="horizontal" 
-              maxOffset={80}
-              className="absolute bottom-[30%] right-[25%] w-24 h-24 bg-secondary/30 rounded-full backdrop-blur-md"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <ScrollAnimate animationType="fadeInLeft" delay={0.1}>
-              <div className="relative overflow-hidden rounded-xl bg-dark-purple p-8 min-h-[300px]">
-                <ParallaxElement 
-                  speed={-0.2} 
-                  direction="vertical" 
-                  continuous 
-                  continuousSpeed={0.5}
-                  className="absolute right-[-5%] top-[-5%] w-40 h-40 bg-primary/20 rounded-full blur-2xl"
-                />
-                
-                <div className="relative z-10">
-                  <h3 className="text-2xl mb-4">Непрерывное движение</h3>
-                  <p className="text-light-gray mb-4">
-                    Элементы могут двигаться непрерывно, независимо от прокрутки, 
-                    создавая динамичный фон для содержимого.
-                  </p>
-                  <Button variant="ghost">Подробнее</Button>
-                </div>
-              </div>
-            </ScrollAnimate>
-
-            <ScrollAnimate animationType="fadeInRight" delay={0.2}>
-              <div className="relative overflow-hidden rounded-xl bg-dark-purple p-8 min-h-[300px]">
-                <ParallaxElement 
-                  speed={0.3} 
-                  direction="horizontal" 
-                  continuous 
-                  continuousSpeed={0.7}
-                  className="absolute left-[-10%] bottom-[-10%] w-60 h-60 bg-secondary/20 rounded-full blur-2xl"
-                />
-                
-                <div className="relative z-10">
-                  <h3 className="text-2xl mb-4">Горизонтальный параллакс</h3>
-                  <p className="text-light-gray mb-4">
-                    Параллакс-эффект может применяться не только вертикально, 
-                    но и горизонтально, расширяя возможности дизайна.
-                  </p>
-                  <Button variant="ghost">Изучить</Button>
-                </div>
-              </div>
-            </ScrollAnimate>
+        speed={-0.2} 
+        direction="vertical" 
+        maxOffset={50}
+        className="absolute top-0 left-[10%] w-20 h-20 bg-primary/20 rounded-full backdrop-blur-md"
+      >
+        <div className="w-full h-full"></div>
+      </ParallaxElement>
+      
+      <ParallaxElement 
+        speed={0.3} 
+        direction="vertical" 
+        maxOffset={70}
+        className="absolute top-[30%] right-[15%] w-40 h-40 bg-secondary/20 rounded-full backdrop-blur-md"
+      >
+        <div className="w-full h-full"></div>
+      </ParallaxElement>
+      
+      <ParallaxElement 
+        speed={-0.4} 
+        direction="vertical" 
+        maxOffset={90}
+        className="absolute bottom-[10%] left-[20%] w-32 h-32 bg-accent-blue/20 rounded-full backdrop-blur-md"
+      >
+        <div className="w-full h-full"></div>
+      </ParallaxElement>
+      
+      <ParallaxElement 
+        speed={0.25} 
+        direction="horizontal" 
+        maxOffset={60}
+        className="absolute top-[20%] left-[30%] w-16 h-16 bg-primary/30 rounded-full backdrop-blur-md"
+      >
+        <div className="w-full h-full"></div>
+      </ParallaxElement>
+      
+      <ParallaxElement 
+        speed={-0.35} 
+        direction="horizontal" 
+        maxOffset={80}
+        className="absolute bottom-[30%] right-[25%] w-24 h-24 bg-secondary/30 rounded-full backdrop-blur-md"
+      >
+        <div className="w-full h-full"></div>
+      </ParallaxElement>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <ScrollAnimate animationType="fadeInLeft" delay={0.1}>
+        <div className="relative overflow-hidden rounded-xl bg-dark-purple p-8 min-h-[300px]">
+          <ParallaxElement 
+            speed={-0.2} 
+            direction="vertical" 
+            continuous 
+            continuousSpeed={0.5}
+            className="absolute right-[-5%] top-[-5%] w-40 h-40 bg-primary/20 rounded-full blur-2xl"
+          >
+            <div className="w-full h-full"></div>
+          </ParallaxElement>
+          
+          <div className="relative z-10">
+            <h3 className="text-2xl mb-4">Непрерывное движение</h3>
+            <p className="text-light-gray mb-4">
+              Элементы могут двигаться непрерывно, независимо от прокрутки, 
+              создавая динамичный фон для содержимого.
+            </p>
+            <Button variant="ghost">Подробнее</Button>
           </div>
         </div>
-      </section>
+      </ScrollAnimate>
+
+      <ScrollAnimate animationType="fadeInRight" delay={0.2}>
+        <div className="relative overflow-hidden rounded-xl bg-dark-purple p-8 min-h-[300px]">
+          <ParallaxElement 
+            speed={0.3} 
+            direction="horizontal" 
+            continuous 
+            continuousSpeed={0.7}
+            className="absolute left-[-10%] bottom-[-10%] w-60 h-60 bg-secondary/20 rounded-full blur-2xl"
+          >
+            <div className="w-full h-full"></div>
+          </ParallaxElement>
+          
+          <div className="relative z-10">
+            <h3 className="text-2xl mb-4">Горизонтальный параллакс</h3>
+            <p className="text-light-gray mb-4">
+              Параллакс-эффект может применяться не только вертикально, 
+              но и горизонтально, расширяя возможности дизайна.
+            </p>
+            <Button variant="ghost">Изучить</Button>
+          </div>
+        </div>
+      </ScrollAnimate>
+    </div>
+  </div>
+</section>
 
       {/* Завершающая CTA секция */}
       <section className="py-20">

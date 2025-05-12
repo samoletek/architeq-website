@@ -97,15 +97,78 @@ const ParallaxElement: React.FC<ParallaxElementProps> = ({
     }
   }, [continuous, continuousSpeed, maxOffset, isLowPerformance]);
 
+  // Добавляем использование scrollSync
+  useEffect(() => {
+    if (!scrollSync || isLowPerformance) return;
+    
+    // Синхронизация с позицией скролла страницы
+    const handleScroll = () => {
+      if (!elementRef.current) return;
+      
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      
+      // Получаем положение элемента относительно видимой области
+      const rect = elementRef.current.getBoundingClientRect();
+      
+      // Вычисляем относительную позицию элемента (0 - вверху экрана, 1 - внизу)
+      const viewportPosition = rect.top / windowHeight;
+      
+      // Создаем смещение, зависящее от положения скролла и элемента
+      let offset;
+      
+      if (direction === 'vertical') {
+        // Вертикальное смещение в зависимости от скролла
+        offset = (scrollPosition * speed * 0.05) + (viewportPosition * maxOffset * speed);
+        elementRef.current.style.transform = `translateY(${offset}px)`;
+      } else {
+        // Горизонтальное смещение в зависимости от скролла
+        offset = (scrollPosition * speed * 0.02) + (viewportPosition * maxOffset * speed);
+        elementRef.current.style.transform = `translateX(${offset}px)`;
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    // Вызываем однократно для установки начального положения
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollSync, direction, speed, maxOffset, isLowPerformance]);
+
+  // Определяем, какие смещения использовать в зависимости от параметров
+  const getMotionStyle = () => {
+    // Если используется scrollSync, смещение будет управляться через DOM API
+    if (scrollSync) {
+      return {};
+    }
+    
+    // Если устройство с низкой производительностью, отключаем эффекты
+    if (isLowPerformance) {
+      return {};
+    }
+    
+    // Если используется непрерывное движение, применяем соответствующее смещение
+    if (continuous) {
+      return {
+        y: direction === 'vertical' ? continuousOffset : 0,
+        x: direction === 'horizontal' ? continuousOffset : 0,
+        transition: `transform ${delay}s cubic-bezier(0.17, 0.67, 0.83, 0.67)`,
+      };
+    }
+    
+    // В остальных случаях используем стандартные смещения на основе прокрутки
+    return {
+      y: direction === 'vertical' ? yOffset : 0,
+      x: direction === 'horizontal' ? xOffset : 0,
+      transition: `transform ${delay}s cubic-bezier(0.17, 0.67, 0.83, 0.67)`,
+    };
+  };
+
   return (
     <motion.div
       ref={elementRef}
       className={cn('will-change-transform', className)}
-      style={{
-        y: isLowPerformance ? 0 : (continuous ? continuousOffset : yOffset),
-        x: isLowPerformance ? 0 : (continuous && direction === 'horizontal' ? continuousOffset : xOffset),
-        transition: `transform ${delay}s cubic-bezier(0.17, 0.67, 0.83, 0.67)`,
-      }}
+      style={getMotionStyle()}
     >
       {children}
     </motion.div>

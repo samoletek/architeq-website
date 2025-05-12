@@ -23,8 +23,8 @@ interface ScrollAnimateProps {
   delay?: number;
   // Продолжительность анимации (в секундах)
   duration?: number;
-  // Отступ до активации (в пикселях)
-  threshold?: number;
+  // Отступ до активации (в пикселях) - НЕ ИСПОЛЬЗУЕТСЯ (используется rootMargin)
+  // threshold?: number;
   // Пересечение (в диапазоне от 0 до 1)
   intersectionThreshold?: number;
   // Повторять анимацию при каждом появлении
@@ -45,7 +45,7 @@ const ScrollAnimate: React.FC<ScrollAnimateProps> = ({
   animationType = 'fadeIn',
   delay = 0,
   duration = 0.6,
-  threshold = 100,
+  // threshold = 100, // удаляем неиспользуемый параметр
   intersectionThreshold = 0.1,
   repeatOnVisible = false,
   reactToScroll = false,
