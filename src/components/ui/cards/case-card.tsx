@@ -89,9 +89,9 @@ export function CaseCard({
   const cardContent = (
     <motion.div
       className={cn(
-        'bg-dark-gray rounded-xl overflow-hidden border border-transparent',
+        'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
-        isHovered ? 'border-primary/30 shadow-neon-glow' : 'shadow-sm',
+        isHovered ? 'border-primary/50 shadow-neon-glow' : 'border-primary/30',
         cardHeight,
         className
       )}
@@ -200,7 +200,7 @@ export function CaseCard({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               )}
             </svg>
