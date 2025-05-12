@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import SiteLayout from '@/components/layout/site-layout';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { CloudinaryVideo } from '@/components/ui/cloudinary-video';
+import { GCSVideo } from '@/components/ui/gcs-video';
 import { getCaseStudyById, getRelatedCases, type CaseStudy } from '@/lib/data/case-studies';
 
 export default function CaseStudyPage() {
@@ -161,41 +161,25 @@ export default function CaseStudyPage() {
                 </ul>
                 
                 {/* Case Study Video */}
-                <div className="rounded-lg overflow-hidden border border-medium-gray">
-                  <div className="bg-dark-gray px-4 py-2 flex items-center border-b border-medium-gray">
-                    <div className="flex space-x-2">
-                      <span className="w-3 h-3 rounded-full bg-red-500"></span>
-                      <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-                      <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                    </div>
-                    <div className="flex-1 text-center text-sm text-light-gray">
-                      Automation Process
-                    </div>
-                  </div>
-                  <div className="bg-medium-gray overflow-hidden">
-                    <CloudinaryVideo 
-                      publicId={caseStudy?.id || ''} 
-                      autoPlay={true}
-                      loop={true}
-                      muted={true}
-                      controls={false}
-                      width={800}
-                      height={450}
-                      placeholder={
-                        <div className="h-64 flex items-center justify-center">
-                          <div className="text-center p-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p className="text-light-gray">Loading case study visualization...</p>
-                          </div>
+                <GCSVideo 
+                    caseId={caseStudy?.id || ''} 
+                    autoPlay={true}
+                    loop={true}
+                    muted={true}
+                    controls={false}
+                    placeholder={
+                      <div className="h-64 flex items-center justify-center">
+                        <div className="text-center p-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <p className="text-light-gray">Loading case study visualization...</p>
                         </div>
-                      }
-                      onError={() => console.log(`Failed to load video for case: ${caseStudy?.id}`)}
-                    />
-                  </div>
-                </div>
+                      </div>
+                    }
+                    onError={() => console.log(`Failed to load video for case: ${caseStudy?.id}`)}
+                  />
               </div>
               
               {/* Results section */}
