@@ -92,6 +92,33 @@
   .neon-green-glow {
     filter: drop-shadow(0 0 8px rgba(176, 255, 116, 0.4));
   }
+  
+  /* СТИЛИ ДЛЯ СТРАНИЦЫ КЕЙСА */
+  
+  /* Фиолетовое свечение для видео (как у кнопки) */
+  .video-purple-glow {
+    @apply relative;
+    box-shadow: 0 0 15px rgba(178, 75, 243, 0.3);
+  }
+  
+  .video-purple-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 0.5rem;
+    padding: 2px;
+    background: linear-gradient(
+      to bottom right, 
+      rgba(178, 75, 243, 0.6), 
+      rgba(77, 173, 255, 0.6)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.6;
+  }
 }
 
 @layer utilities {
@@ -164,12 +191,33 @@
     100% { text-shadow: 0 0 15px rgba(176, 255, 116, 0.5), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 60px rgba(176, 255, 116, 0.2), 0 0 90px rgba(176, 255, 116, 0.1); }
   }
   
-  
   .animate-wave-glow-white {
     animation: waveGlowWhite 15s ease-in-out infinite;
   }
   
   .animate-wave-glow-green {
     animation: waveGlowGreen 15s ease-in-out infinite;
+  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+  .case-video-container {
+    height: 250px;
+    min-height: 250px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .case-video-container {
+    height: 400px;
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .case-video-container {
+    height: 600px;
+    min-height: 600px;
   }
 }
