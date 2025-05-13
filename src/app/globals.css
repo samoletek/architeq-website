@@ -92,6 +92,45 @@
   .neon-green-glow {
     filter: drop-shadow(0 0 8px rgba(176, 255, 116, 0.4));
   }
+  
+  /* СТИЛИ ДЛЯ СТРАНИЦЫ КЕЙСА */
+  
+  /* Постоянное интенсивное фиолетовое свечение для видео (как у primary кнопки при наведении) */
+  .video-button-glow {
+    @apply relative;
+    box-shadow: 
+      0 0 15px rgba(119, 71, 207, 0.7), 
+      0 0 40px rgba(119, 71, 207, 0.5), 
+      0 0 80px rgba(119, 71, 207, 0.2);
+  }
+  
+  .video-purple-intense-glow::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 0.5rem;
+    padding: 3px;
+    background: linear-gradient(
+      to bottom right, 
+      rgba(178, 75, 243, 0.8), 
+      rgba(77, 173, 255, 0.6)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.9;
+  }
+  
+  /* Определяем shadow-neon-glow-intense */
+  .shadow-neon-glow-intense {
+    box-shadow: 
+      0 0 20px rgba(178, 75, 243, 0.6),
+      0 0 40px rgba(178, 75, 243, 0.4),
+      0 0 60px rgba(178, 75, 243, 0.3),
+      0 0 80px rgba(119, 71, 207, 0.2);
+  }
 }
 
 @layer utilities {
@@ -164,12 +203,33 @@
     100% { text-shadow: 0 0 15px rgba(176, 255, 116, 0.5), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 60px rgba(176, 255, 116, 0.2), 0 0 90px rgba(176, 255, 116, 0.1); }
   }
   
-  
   .animate-wave-glow-white {
     animation: waveGlowWhite 15s ease-in-out infinite;
   }
   
   .animate-wave-glow-green {
     animation: waveGlowGreen 15s ease-in-out infinite;
+  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+  .case-video-container {
+    height: 250px;
+    min-height: 250px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .case-video-container {
+    height: 400px;
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .case-video-container {
+    height: 600px;
+    min-height: 600px;
   }
 }

@@ -28,17 +28,15 @@ export function GCSVideo({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   
   // Формируем URL для видео в Google Cloud Storage
   const bucketName = process.env.NEXT_PUBLIC_GCS_BUCKET_NAME || 'architeq-videos';
   const videoUrl = `https://storage.googleapis.com/${bucketName}/case-studies/${caseId}.mp4`;
   
-  // Стили с бордером из Benefits Section и свечением как у case-card
+  // Стили с постоянным бордером и свечением
   const containerStyles = cn(
-    "bg-dark-purple/40 backdrop-blur-sm rounded-lg overflow-hidden border transition-all duration-300",
-    isHovered ? "border-primary/50 shadow-neon-glow" : "border-primary/30",
+    "bg-dark-purple/40 backdrop-blur-sm rounded-lg overflow-hidden border border-primary/30",
     className
   );
 
@@ -82,8 +80,6 @@ export function GCSVideo({
           !isLoaded && "animate-pulse"
         )}
         style={{ aspectRatio: '16/9' }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Загрузка */}
         {!isLoaded && !hasError && (placeholder || (
