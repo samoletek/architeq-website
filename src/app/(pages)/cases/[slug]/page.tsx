@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import SiteLayout from '@/components/layout/site-layout';
 import Link from 'next/link';
