@@ -43,9 +43,9 @@ export default function CaseStudyPage() {
   
   // Функция для открытия видео в полноэкранном режиме
   const handleFullscreen = () => {
-    const videoElement = document.querySelector('video');
-    if (videoElement && videoElement.requestFullscreen) {
-      videoElement.requestFullscreen();
+    const expandButton = document.querySelector('[aria-label="Expand to fullscreen"]') as HTMLButtonElement;
+    if (expandButton) {
+      expandButton.click();
     }
   };
   
@@ -83,13 +83,6 @@ export default function CaseStudyPage() {
       <section className="py-20 md:py-28 bg-dark-gray relative">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Тип решения сверху */}
-            <div className="mb-4">
-              <span className="px-3 py-1 bg-primary/20 text-primary text-sm rounded-full">
-                {caseStudy?.solutionType}
-              </span>
-            </div>
-            
             {/* Главный заголовок */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               {caseStudy?.title}
@@ -126,12 +119,12 @@ export default function CaseStudyPage() {
         </div>
       </section>
 
-      {/* Центральная видео секция с фиолетовым свечением */}
+      {/* Центральная видео секция с постоянным фиолетовым свечением */}
       <section className="py-12 bg-site-bg" id="video-section">
         <div className="container mx-auto px-4">
           {/* Видео плеер - центрированный и большой */}
           <div className="max-w-6xl mx-auto">
-            <div className="aspect-video rounded-lg overflow-hidden shadow-2xl bg-dark-gray/50 video-purple-glow">
+            <div className="aspect-video rounded-lg overflow-hidden video-button-glow">
               <GCSVideo 
                 caseId={caseStudy?.id || ''} 
                 autoPlay={true}
@@ -176,32 +169,34 @@ export default function CaseStudyPage() {
             </div>
           </div>
           
-          {/* Solution (80%) и Technologies (20%) */}
+          {/* Solution (80%) и Technologies (20%) с бордерами */}
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
             {/* Solution section - 80% */}
             <div className="lg:col-span-4">
-              <div className="flex items-center mb-6">
-                <div className="w-10 h-10 rounded-full bg-neon-blue/20 flex items-center justify-center text-neon-blue mr-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+              <div className="bg-dark-gray rounded-lg p-8 border border-medium-gray">
+                <div className="flex items-center mb-6">
+                  <div className="w-10 h-10 rounded-full bg-neon-blue/20 flex items-center justify-center text-neon-blue mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold">Solution</h2>
                 </div>
-                <h2 className="text-2xl font-bold">Solution</h2>
+                
+                <ul className="space-y-4">
+                  {caseStudy?.solution?.map((item, index) => (
+                    <li key={index} className="flex">
+                      <span className="text-primary mr-2">•</span>
+                      <span className="text-light-gray">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              
-              <ul className="space-y-4">
-                {caseStudy?.solution?.map((item, index) => (
-                  <li key={index} className="flex">
-                    <span className="text-primary mr-2">•</span>
-                    <span className="text-light-gray">{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
             
             {/* Technologies - 20% */}
             <div className="lg:col-span-1">
-              <div className="bg-dark-gray rounded-lg p-6">
+              <div className="bg-dark-gray rounded-lg p-6 border border-medium-gray h-full">
                 <h3 className="text-lg font-semibold mb-4">Technologies</h3>
                 <div className="space-y-3">
                   {caseStudy?.technologies.map((tech, index) => (
@@ -212,6 +207,19 @@ export default function CaseStudyPage() {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+          
+          {/* CTA Block - по центру */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <div className="bg-dark-gradient rounded-lg p-8 border border-medium-gray text-center">
+              <h3 className="text-2xl font-bold mb-4">Need a Similar Solution?</h3>
+              <p className="text-light-gray mb-6">
+                Let us discuss how we can implement a similar automation solution tailored to your business needs.
+              </p>
+              <Button variant="primary" size="lg" href="/contacts">
+                Book a Free Consultation
+              </Button>
             </div>
           </div>
           
@@ -232,86 +240,68 @@ export default function CaseStudyPage() {
                   key={index} 
                   className="bg-dark-gray rounded-lg p-5 border border-medium-gray hover:border-secondary transition-colors"
                 >
-                  <p className="text-light-gray" dangerouslySetInnerHTML={{
-                    __html: result.replace(/(\d+%|\d+x|\d+\s*hours?|\d+\s*minutes?|\d+\s*days?)/g, '<span class="text-secondary font-semibold">$1</span>')
-                  }} />
+                  <p className="text-light-gray">{result}</p>
                 </div>
               ))}
             </div>
           </div>
           
-          {/* Testimonial и CTA справа */}
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Пустое пространство слева */}
-            <div className="lg:w-2/3"></div>
-            
-            {/* Правая колонка с Testimonial и CTA */}
-            <div className="lg:w-1/3">
-              {/* Testimonial */}
-              {caseStudy?.testimonial && (
-                <div className="bg-dark-gradient rounded-lg p-8 relative mb-8">
-                  <div className="absolute top-4 left-4 text-4xl text-primary opacity-20"></div>
-                  <div className="relative z-10">
-                    <p className="text-base mb-6 italic text-light-gray">
-                      {caseStudy.testimonial.quote}
-                    </p>
-                    <div>
-                      <p className="font-bold">{caseStudy.testimonial.author}</p>
-                      <p className="text-light-gray text-sm">{caseStudy.testimonial.position}</p>
-                    </div>
+          {/* Testimonial с кавычками */}
+          {caseStudy?.testimonial && (
+            <div className="max-w-4xl mx-auto mb-12">
+              <div className="bg-dark-gradient rounded-lg p-8 relative">
+                <div className="absolute top-4 left-4 text-5xl text-primary opacity-20"></div>
+                <div className="relative z-10">
+                  <p className="text-lg mb-6 italic text-light-gray">
+                    {caseStudy.testimonial.quote}
+                  </p>
+                  <div>
+                    <p className="font-bold">{caseStudy.testimonial.author}</p>
+                    <p className="text-light-gray text-sm">{caseStudy.testimonial.position}</p>
                   </div>
-                  <div className="absolute bottom-4 right-4 text-4xl text-primary opacity-20"></div>
                 </div>
-              )}
-              
-              {/* CTA Block */}
-              <div className="bg-dark-gradient rounded-lg p-6 border border-medium-gray">
-                <h3 className="text-lg font-semibold mb-3">Need a Similar Solution?</h3>
-                <p className="text-light-gray mb-4">
-                  Let us discuss how we can implement a similar automation solution tailored to your business needs.
-                </p>
-                <Button variant="primary" className="w-full" href="/contacts">
-                  Book a Free Consultation
-                </Button>
+                <div className="absolute bottom-4 right-4 text-5xl text-primary opacity-20"></div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
       
-      {/* Related Cases - на всю ширину */}
+      {/* Related Cases - с бордером вместо фона */}
       {relatedCases.length > 0 && (
-        <section className="py-16 bg-dark-gray">
+        <section className="py-16 bg-site-bg">
           <div className="container mx-auto px-4">
-            <h3 className="text-2xl font-bold mb-8 text-center">Related Case Studies</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedCases.map((relatedCase) => (
-                <Link 
-                  key={relatedCase.id}
-                  href={`/cases/${relatedCase.id}`}
-                  className="block p-6 bg-medium-gray rounded-lg hover:bg-medium-gray/80 transition-colors"
-                >
-                  <h4 className="font-medium text-lg mb-2">{relatedCase.title}</h4>
-                  <p className="text-light-gray text-sm mb-1">{relatedCase.company}</p>
-                  <div className="flex items-center text-primary text-sm">
-                    <span>Read Case Study</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </Link>
-              ))}
+            <div className="border border-medium-gray rounded-lg p-8">
+              <h3 className="text-2xl font-bold mb-8 text-center">Related Case Studies</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedCases.map((relatedCase) => (
+                  <Link 
+                    key={relatedCase.id}
+                    href={`/cases/${relatedCase.id}`}
+                    className="block p-6 bg-dark-gray rounded-lg hover:bg-dark-gray/80 transition-colors"
+                  >
+                    <h4 className="font-medium text-lg mb-2">{relatedCase.title}</h4>
+                    <p className="text-light-gray text-sm mb-1">{relatedCase.company}</p>
+                    <div className="flex items-center text-primary text-sm">
+                      <span>Read Case Study</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 ml-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </section>
