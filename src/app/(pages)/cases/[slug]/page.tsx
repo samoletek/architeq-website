@@ -18,7 +18,6 @@ export default function CaseStudyPage() {
   const [relatedCases, setRelatedCases] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   
   // Загрузка данных кейса при монтировании компонента
   useEffect(() => {
