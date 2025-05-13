@@ -251,7 +251,7 @@ export default function CaseStudyPage() {
               {/* Testimonial */}
               {caseStudy?.testimonial && (
                 <div className="bg-dark-gradient rounded-lg p-8 relative mb-8">
-                  <div className="absolute top-4 left-4 text-4xl text-primary opacity-20">"</div>
+                  <div className="absolute top-4 left-4 text-4xl text-primary opacity-20"></div>
                   <div className="relative z-10">
                     <p className="text-base mb-6 italic text-light-gray">
                       {caseStudy.testimonial.quote}
@@ -261,7 +261,7 @@ export default function CaseStudyPage() {
                       <p className="text-light-gray text-sm">{caseStudy.testimonial.position}</p>
                     </div>
                   </div>
-                  <div className="absolute bottom-4 right-4 text-4xl text-primary opacity-20">"</div>
+                  <div className="absolute bottom-4 right-4 text-4xl text-primary opacity-20"></div>
                 </div>
               )}
               
