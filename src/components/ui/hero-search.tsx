@@ -85,10 +85,11 @@ export default function HeroSearch() {
   // Обработчик ухода с поисковой иконки
   const handleSearchLeave = () => {
     if (!isSearchMode) {
-      // Добавляем задержку для предотвращения мигания
+      // Добавляем небольшую задержку, чтобы меню не закрывалось слишком быстро
+      // и пользователь успел переместить курсор на выпадающее меню
       setTimeout(() => {
         setIsExpanded(false);
-      }, 50);
+      }, 150);
     }
   };
 
@@ -293,7 +294,7 @@ export default function HeroSearch() {
               duration: 0.2,
               delay: 0.05
             }}
-            className="absolute top-full left-0 mt-1 bg-dark-gray/80 backdrop-blur-md border border-primary/20 rounded-md overflow-hidden shadow-depth-3 z-50"
+            className="absolute top-full left-0 mt-0 bg-dark-gray/80 backdrop-blur-md border border-primary/20 rounded-md overflow-hidden shadow-depth-3 z-50 search-dropdown-area"
             style={{ 
               width: "400px",
               position: 'absolute'
@@ -316,7 +317,7 @@ export default function HeroSearch() {
                     href={tag.href}
                     className={cn(
                       "block px-2 py-2 text-center text-sm font-medium rounded-md truncate",
-                      "bg-secondary text-black shadow-sm hover:shadow-neon-green-glow transition-all",
+                      "bg-secondary text-black hover:shadow-[0_0_15px_rgba(176,255,116,0.7),_0_0_30px_rgba(176,255,116,0.4)] transition-all duration-300",
                       "h-8 flex items-center justify-center"
                     )}
                   >
@@ -340,7 +341,7 @@ export default function HeroSearch() {
               duration: 0.2,
               delay: 0.05
             }}
-            className="absolute top-full left-0 mt-1 bg-black/90 backdrop-blur-md border border-primary/10 rounded-md overflow-hidden shadow-depth-3 z-50"
+            className="absolute top-full left-0 mt-0 bg-black/90 backdrop-blur-md border border-primary/10 rounded-md overflow-hidden shadow-depth-3 z-50 search-dropdown-area"
             style={{ 
               width: "400px",
               position: 'absolute',
