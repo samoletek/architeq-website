@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils/utils';
 import { usePathname } from 'next/navigation';
 import { allCaseStudies } from '@/lib/data/case-studies';
 
-// Типы результатов поиска
+// Типы результатов поиска остаются без изменений
 export interface SearchResult {
   id: string;
   title: string;
@@ -20,7 +20,7 @@ export interface SearchResult {
   iconName?: string;
 }
 
-// Интерфейс для параметров
+// Интерфейс для параметров (без изменений)
 interface SearchBarProps {
   className?: string;
   placeholder?: string;
@@ -33,7 +33,7 @@ interface SearchBarProps {
   maxResults?: number;
 }
 
-// Предопределенные результаты поиска
+// Предопределенные результаты поиска (без изменений)
 const SERVICES = [
   { id: 'business-process', title: 'Business Process Automation', type: 'service' as const, url: '/services/business-process', description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows.' },
   { id: 'crm-integration', title: 'CRM Integration', type: 'service' as const, url: '/services/crm-integration', description: 'Connect your CRM system with other business tools to create a unified information environment.' },
@@ -50,7 +50,7 @@ const PAGES = [
   { id: 'contacts', title: 'Contact Us', type: 'page' as const, url: '/contacts', description: 'Get in touch with our team for a consultation.' },
 ];
 
-// Функция для преобразования кейсов в результаты поиска
+// Функция для преобразования кейсов в результаты поиска (без изменений)
 function casesToSearchResults(): SearchResult[] {
   return allCaseStudies.map(cs => ({
     id: cs.id,
@@ -64,7 +64,7 @@ function casesToSearchResults(): SearchResult[] {
 
 export function SearchBar({
   className,
-  placeholder = 'Search...',
+  placeholder = 'Start typing...', // Изменен текст плейсхолдера
   onSearch,
   isLoading = false,
   isExpanded = false,
@@ -80,11 +80,15 @@ export function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   
-  // Обработка клика вне компонента
+  // Обработка клика вне компонента - обновлено для закрытия окна поиска
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowResults(false);
+        // Добавляем закрытие всего поискового оверлея при клике вне
+        if (variant === 'overlay' && isExpanded && onToggle) {
+          onToggle();
+        }
       }
     };
     
@@ -92,16 +96,16 @@ export function SearchBar({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [variant, isExpanded, onToggle]);
   
-  // Сброс поиска при изменении маршрута
+  // Сброс поиска при изменении маршрута (без изменений)
   useEffect(() => {
     setSearchQuery('');
     setSearchResults([]);
     setShowResults(false);
   }, [pathname]);
   
-  // Выполнение поиска при изменении запроса
+  // Выполнение поиска при изменении запроса (без изменений)
   useEffect(() => {
     // Функция поиска
     const performSearch = (query: string) => {
@@ -149,14 +153,14 @@ export function SearchBar({
     }
   }, [searchQuery, onSearch]);
   
-  // Обработчик ввода
+  // Обработчик ввода (без изменений)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
     setShowResults(value.length > 0);
   };
   
-  // Обработчик фокуса
+  // Обработчик фокуса (без изменений)
   const handleFocus = () => {
     setInputFocused(true);
     if (searchQuery.length > 0) {
@@ -164,7 +168,7 @@ export function SearchBar({
     }
   };
   
-  // Обработчик потери фокуса
+  // Обработчик потери фокуса (без изменений)
   const handleBlur = () => {
     setInputFocused(false);
     // Не скрываем результаты сразу, так как пользователь может кликнуть по результату
@@ -175,7 +179,7 @@ export function SearchBar({
     }, 200);
   };
   
-  // Функция для очистки поиска
+  // Функция для очистки поиска (без изменений)
   const clearSearch = () => {
     setSearchQuery('');
     setSearchResults([]);
@@ -188,18 +192,18 @@ export function SearchBar({
     }
   };
   
-  // Функция для установки заданного запроса
+  // Функция для установки заданного запроса (без изменений)
   const setSearchTerm = (term: string) => {
     // Создаем искусственное событие изменения
     handleInputChange({ target: { value: term } } as React.ChangeEvent<HTMLInputElement>);
   };
   
-  // Фильтрация и ограничение результатов
+  // Фильтрация и ограничение результатов (без изменений)
   const displayResults = searchResults.slice(0, maxResults);
   const hasResults = displayResults.length > 0;
   const hasMoreResults = searchResults.length > maxResults;
   
-  // Отображение результатов поиска
+  // Отображение результатов поиска (без изменений)
   const renderResults = () => {
     if (!showResults) return null;
     
@@ -211,7 +215,7 @@ export function SearchBar({
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.2 }}
           className={cn(
-            "absolute top-full mt-2 left-0 right-0 bg-dark-gray border border-medium-gray rounded-lg shadow-lg z-50 overflow-hidden",
+            "absolute top-full mt-2 left-0 right-0 search-dropdown border border-medium-gray rounded-lg shadow-lg z-50 overflow-hidden",
             variant === 'overlay' ? "max-h-[70vh] overflow-y-auto" : "max-h-80 overflow-y-auto"
           )}
         >
@@ -332,19 +336,23 @@ export function SearchBar({
   if (variant === 'overlay' && isExpanded) {
     return (
       <motion.div 
-        className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center"
+        className="fixed inset-0 z-[9990] flex items-start justify-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onToggle}
       >
+        {/* Фоновое затемнение с размытием */}
+        <div className="search-backdrop" />
+        
+        {/* Контейнер модального окна */}
         <motion.div
-          className="w-full max-w-2xl mt-20 mx-4 bg-dark-gray rounded-lg shadow-xl overflow-hidden"
+          className="w-full max-w-2xl mt-20 mx-4 rounded-lg shadow-xl overflow-hidden border border-primary/20 search-content"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -50, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          onClick={e => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           ref={searchRef}
         >
           <div className="p-4 flex items-center border-b border-medium-gray">
@@ -362,17 +370,6 @@ export function SearchBar({
               onBlur={handleBlur}
               autoFocus
             />
-            {searchQuery && (
-              <button
-                onClick={clearSearch}
-                className="text-light-gray hover:text-white p-1 rounded-full focus:outline-none"
-                aria-label="Clear search"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            )}
             <button
               onClick={onToggle}
               className="ml-2 text-light-gray hover:text-white p-1 rounded-full focus:outline-none"
@@ -451,7 +448,7 @@ export function SearchBar({
           
           {!searchQuery && !isLoading && (
             <div className="p-6">
-              <p className="text-light-gray text-center mb-4">Start typing your search query</p>
+              {/* Удалена строка "Start typing your search query" */}
               {/* Популярные поисковые запросы */}
               <div className="flex flex-wrap gap-2 justify-center">
                 <Button 
