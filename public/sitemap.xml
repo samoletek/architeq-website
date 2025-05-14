@@ -76,31 +76,6 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://architeq.io/cases/finance</loc>
-  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://architeq.io/cases/documents</loc>
-  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://architeq.io/cases/crm</loc>
-  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://architeq.io/cases/industry</loc>
-  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://architeq.io/cases/ai</loc>
-  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
   <loc>https://architeq.io/privacy</loc>
   <lastmod>2025-05-06T09:46:43+00:00</lastmod>
   <priority>0.80</priority>
@@ -205,6 +180,9 @@
   <lastmod>2025-05-06T09:46:43+00:00</lastmod>
   <priority>0.64</priority>
 </url>
-
-
+<url>
+  <loc>https://architeq.io/search</loc>
+  <lastmod>2025-05-06T09:46:43+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
 </urlset>
