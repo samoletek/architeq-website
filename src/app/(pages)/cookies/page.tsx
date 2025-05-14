@@ -43,87 +43,128 @@ export default function CookiesPage() {
             
             <div className="prose prose-invert prose-lg max-w-none">
               <p className="text-light-gray">
-                Last Updated: March 1st, 2025
+                Last Updated: March 15, 2025
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">What Are Cookies</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">1. Introduction</h2>
               <p className="text-light-gray mb-4">
-                Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the website owners.
-              </p>
-              <p className="text-light-gray mb-4">
-                Cookies help us provide you with a better website experience by enabling us to monitor which pages you find useful and which you do not. A cookie does not give us access to your computer or any information about you, other than the data you choose to share with us.
+                This Cookie Policy explains how Architeq (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) uses cookies and similar tracking technologies on our website architeq.io. By using our website, you consent to our use of cookies in accordance with this policy.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">How We Use Cookies</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">2. What Are Cookies</h2>
               <p className="text-light-gray mb-4">
-                We use cookies for a variety of reasons detailed below. Unfortunately, in most cases, there are no industry standard options for disabling cookies without completely disabling the functionality and features they add to the site. It is recommended that you leave all cookies if you are not sure whether you need them or not, in case they are used to provide a service that you use.
+                Cookies are small text files that are placed on your device when you visit a website. They help websites function properly, improve user experience, and provide information to website owners about how their site is being used.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">The Cookies We Set</h2>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Account Related Cookies</h3>
+              <h2 className="text-2xl font-bold mt-10 mb-4">3. How We Use Cookies</h2>
               <p className="text-light-gray mb-4">
-                If you create an account with us, we will use cookies for the management of the signup process and general administration. These cookies will usually be deleted when you log out, however in some cases they may remain afterward to remember your site preferences when logged out.
-              </p>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Login Related Cookies</h3>
-              <p className="text-light-gray mb-4">
-                We use cookies when you are logged in so that we can remember this fact. This prevents you from having to log in every single time you visit a new page. These cookies are typically removed or cleared when you log out to ensure that you can only access restricted features and areas when logged in.
-              </p>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Forms Related Cookies</h3>
-              <p className="text-light-gray mb-4">
-                When you submit data through a form such as those found on contact pages or comment forms, cookies may be set to remember your user details for future correspondence.
-              </p>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Site Preferences Cookies</h3>
-              <p className="text-light-gray mb-4">
-                In order to provide you with a great experience on this site, we provide the functionality to set your preferences for how this site runs when you use it. In order to remember your preferences, we need to set cookies so that this information can be called whenever you interact with a page is affected by your preferences.
-              </p>
-              
-              <h2 className="text-2xl font-bold mt-10 mb-4">Third-Party Cookies</h2>
-              <p className="text-light-gray mb-4">
-                In some special cases, we also use cookies provided by trusted third parties. The following section details which third-party cookies you might encounter through this site.
-              </p>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Analytics Cookies</h3>
-              <p className="text-light-gray mb-4">
-                This site uses Google Analytics, which is one of the most widespread and trusted analytics solutions on the web, to help us understand how you use the site and ways that we can improve your experience. These cookies may track things such as how long you spend on the site and the pages that you visit so we can continue to produce engaging content.
-              </p>
-              <p className="text-light-gray mb-4">
-                For more information on Google Analytics cookies, see the official Google Analytics page.
-              </p>
-              
-              <h3 className="text-xl font-semibold mt-6 mb-2">Marketing Cookies</h3>
-              <p className="text-light-gray mb-4">
-                We use marketing cookies to help us improve the relevancy of advertising campaigns you receive.
-              </p>
-              
-              <h2 className="text-2xl font-bold mt-10 mb-4">More Information</h2>
-              <p className="text-light-gray mb-4">
-                Hopefully, the above has clarified things for you. As was previously mentioned, if there is something that you are not sure whether you need or not, it is usually safer to leave cookies enabled in case it does interact with one of the features you use on our site.
-              </p>
-              <p className="text-light-gray mb-4">
-                However, if you are still looking for more information, then you can contact us through one of our preferred contact methods:
+                We use cookies to:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>Email: hi@architeq.io</li>
+                <li>Improve website performance and user experience</li>
+                <li>Analyze website traffic and user behavior</li>
+                <li>Remember your preferences and settings</li>
+                <li>Provide relevant content and features</li>
               </ul>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Disabling Cookies</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">4. Types of Cookies We Use</h2>
+              
+              <h3 className="text-xl font-semibold mt-6 mb-2">Essential Cookies</h3>
               <p className="text-light-gray mb-4">
-                You can prevent the setting of cookies by adjusting the settings on your browser (see your browser Help for how to do this). Be aware that disabling cookies will affect the functionality of this and many other websites that you visit. Disabling cookies will usually result in also disabling certain functionality and features of this site. Therefore it is recommended that you do not disable cookies.
+                These cookies are necessary for the website to function properly. They enable basic features like page navigation and access to secure areas of the website. The website cannot function without these cookies.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Changes to This Cookie Policy</h2>
+              <h3 className="text-xl font-semibold mt-6 mb-2">Functionality Cookies</h3>
               <p className="text-light-gray mb-4">
-                We keep our cookie policy under regular review and will place any updates on this web page. This cookie policy was last updated on March 15, 2025.
+                These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third-party providers whose services we have added to our pages.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Contact Us</h2>
+              <h3 className="text-xl font-semibold mt-6 mb-2">Analytical/Performance Cookies</h3>
               <p className="text-light-gray mb-4">
-                If you have any questions about our cookie policy, please do not hesitate to contact us at hi@architeq.io.
+                These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. Currently, we use Google Analytics for this purpose. These cookies help us understand which pages are the most and least popular and see how visitors move around the site.
               </p>
+              
+              <h3 className="text-xl font-semibold mt-6 mb-2">Marketing Cookies (Future Implementation)</h3>
+              <p className="text-light-gray mb-4">
+                While we do not currently use marketing cookies, we may implement them in the future to deliver more relevant advertising and track the effectiveness of our marketing campaigns. We will update this policy and obtain appropriate consent before implementing such cookies.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">5. Third-Party Cookies</h2>
+              
+              <h3 className="text-xl font-semibold mt-6 mb-2">Google Analytics</h3>
+              <p className="text-light-gray mb-4">
+                We use Google Analytics to help us understand how visitors use our website. Google Analytics uses cookies to collect information about:
+              </p>
+              <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
+                <li>Number of visitors to our website</li>
+                <li>Pages visited and time spent on each page</li>
+                <li>How visitors arrived at our website</li>
+                <li>General geographic location of visitors</li>
+              </ul>
+              <p className="text-light-gray mb-4">
+                This information is aggregated and anonymous. For more information about Google Analytics cookies, please visit the <a href="https://support.google.com/analytics/answer/6004245" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">official Google Analytics page</a>.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">6. Future Cookie Implementation</h2>
+              <p className="text-light-gray mb-4">
+                We plan to implement additional cookies and tracking technologies in the future, which may include:
+              </p>
+              <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
+                <li>Marketing and advertising cookies</li>
+                <li>Social media tracking pixels</li>
+                <li>Additional analytics tools</li>
+              </ul>
+              <p className="text-light-gray mb-4">
+                When we implement these technologies, we will update this Cookie Policy and ensure we obtain appropriate consent where required by law.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">7. Managing Cookies</h2>
+              <p className="text-light-gray mb-4">
+                You can control and manage cookies in various ways:
+              </p>
+              
+              <h3 className="text-xl font-semibold mt-6 mb-2">Browser Settings</h3>
+              <p className="text-light-gray mb-4">
+                Most web browsers allow you to control cookies through their settings. You can typically find these controls in the &quot;Options&quot; or &quot;Preferences&quot; menu of your browser. You can set your browser to:
+              </p>
+              <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
+                <li>Block all cookies</li>
+                <li>Block only third-party cookies</li>
+                <li>Clear cookies when you close your browser</li>
+                <li>Accept cookies from specific websites only</li>
+              </ul>
+              
+              <h3 className="text-xl font-semibold mt-6 mb-2">Google Analytics Opt-out</h3>
+              <p className="text-light-gray mb-4">
+                You can prevent Google Analytics from recognizing you on return visits by installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Analytics Opt-out Browser Add-on</a>.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">8. Impact of Disabling Cookies</h2>
+              <p className="text-light-gray mb-4">
+                Please note that disabling cookies may impact your experience on our website. Some features may not function properly, and you may not be able to access certain areas or features of the site.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">9. Changes to This Cookie Policy</h2>
+              <p className="text-light-gray mb-4">
+                We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will post any changes on this page and update the &quot;Last Updated&quot; date at the top of this policy.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">10. Contact Us</h2>
+              <p className="text-light-gray mb-4">
+                If you have any questions about our Cookie Policy or how we use cookies, please contact us at:
+              </p>
+              <p className="text-light-gray mb-4">
+                Email: hi@architeq.io
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">11. More Information About Cookies</h2>
+              <p className="text-light-gray mb-4">
+                For more general information about cookies, including how to manage and delete them, visit:
+              </p>
+              <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
+                <li><a href="https://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.allaboutcookies.org</a></li>
+                <li><a href="https://www.youronlinechoices.eu" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.youronlinechoices.eu</a> (EU)</li>
+              </ul>
             </div>
           </div>
         </div>
