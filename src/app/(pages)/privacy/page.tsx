@@ -46,118 +46,114 @@ export default function PrivacyPage() {
                 Last Updated: March 15, 2025
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Introduction</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">1. Introduction</h2>
               <p className="text-light-gray mb-4">
-                Architeq (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+                Architeq (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, and safeguard your information when you visit our website at architeq.io and use our business process automation services.
               </p>
               <p className="text-light-gray mb-4">
-                This privacy policy applies to all personal data we collect through our website at architeq.io, as well as any associated services, sales, marketing, or events.
+                This privacy policy applies to all information collected through our website, email communications, and other interactions with our services.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">The Data We Collect</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">2. Information We Collect</h2>
               <p className="text-light-gray mb-4">
-                We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:
+                We collect information you provide directly to us through our contact form and other communications:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>
-                  <strong className="text-white">Identity Data</strong> includes first name, last name, username or similar identifier, title.
-                </li>
-                <li>
-                  <strong className="text-white">Contact Data</strong> includes email address, telephone numbers, and address.
-                </li>
-                <li>
-                  <strong className="text-white">Technical Data</strong> includes internet protocol (IP) address, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform, and other technology on the devices you use to access this website.
-                </li>
-                <li>
-                  <strong className="text-white">Usage Data</strong> includes information about how you use our website and services.
-                </li>
-                <li>
-                  <strong className="text-white">Marketing and Communications Data</strong> includes your preferences in receiving marketing from us and our third parties and your communication preferences.
-                </li>
+                <li><strong className="text-white">Contact Information:</strong> Name, email address, and any other information you choose to provide in your messages</li>
+                <li><strong className="text-white">Technical Data:</strong> IP address, browser type and version, time zone setting, browser plug-in types and versions, operating system and platform</li>
+                <li><strong className="text-white">Usage Data:</strong> Information about how you use our website, including pages visited and links clicked</li>
               </ul>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">How We Collect Your Data</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">3. How We Use Your Information</h2>
               <p className="text-light-gray mb-4">
-                We use different methods to collect data from and about you including through:
+                We use the information we collect for the following purposes:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>
-                  <strong className="text-white">Direct interactions.</strong> You may give us your Identity and Contact Data by filling in forms or by corresponding with us by post, phone, email or otherwise.
-                </li>
-                <li>
-                  <strong className="text-white">Automated technologies or interactions.</strong> As you interact with our website, we may automatically collect Technical Data about your equipment, browsing actions and patterns.
-                </li>
-                <li>
-                  <strong className="text-white">Third parties or publicly available sources.</strong> We may receive personal data about you from various third parties as set out below:
-                  <ul className="list-circle pl-6 mt-2 space-y-1">
-                    <li>Technical Data from analytics providers such as Google Analytics;</li>
-                    <li>Contact, Financial and Transaction Data from providers of technical, payment and delivery services.</li>
-                  </ul>
-                </li>
+                <li>To respond to your inquiries and provide customer support</li>
+                <li>To communicate with you about our services and projects</li>
+                <li>To improve our website and services</li>
+                <li>To comply with legal obligations</li>
+                <li>To protect our rights and prevent fraud</li>
               </ul>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">How We Use Your Data</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">4. Legal Basis for Processing</h2>
               <p className="text-light-gray mb-4">
-                We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
+                We process your personal data under the following legal bases:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>Where we need to perform the contract we are about to enter into or have entered into with you.</li>
-                <li>Where it is necessary for our legitimate interests (or those of a third party) and your interests and fundamental rights do not override those interests.</li>
-                <li>Where we need to comply with a legal obligation.</li>
+                <li><strong className="text-white">Consent:</strong> When you submit information through our contact form</li>
+                <li><strong className="text-white">Contract:</strong> To perform services you have requested</li>
+                <li><strong className="text-white">Legitimate Interests:</strong> To improve our services and communicate with potential clients</li>
+                <li><strong className="text-white">Legal Obligations:</strong> To comply with applicable laws and regulations</li>
               </ul>
-              <p className="text-light-gray mb-4">
-                Generally, we do not rely on consent as a legal basis for processing your personal data although we will get your consent before sending third party direct marketing communications to you via email or text message. You have the right to withdraw consent to marketing at any time by contacting us.
-              </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Data Security</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">5. Data Sharing</h2>
               <p className="text-light-gray mb-4">
-                We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way, altered or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors and other third parties who have a business need to know. They will only process your personal data on our instructions and they are subject to a duty of confidentiality.
-              </p>
-              <p className="text-light-gray mb-4">
-                We have put in place procedures to deal with any suspected personal data breach and will notify you and any applicable regulator of a breach where we are legally required to do so.
-              </p>
-              
-              <h2 className="text-2xl font-bold mt-10 mb-4">Your Legal Rights</h2>
-              <p className="text-light-gray mb-4">
-                Under certain circumstances, you have rights under data protection laws in relation to your personal data. These include the right to:
+                We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:
               </p>
               <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
-                <li>Request access to your personal data.</li>
-                <li>Request correction of your personal data.</li>
-                <li>Request erasure of your personal data.</li>
-                <li>Object to processing of your personal data.</li>
-                <li>Request restriction of processing your personal data.</li>
-                <li>Request transfer of your personal data.</li>
-                <li>Right to withdraw consent.</li>
+                <li>With service providers who assist us in operating our website and conducting our business</li>
+                <li>To comply with legal obligations or respond to lawful requests</li>
+                <li>To protect our rights, privacy, safety, or property</li>
+                <li>In connection with a business transaction, such as a merger or acquisition</li>
+              </ul>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">6. Data Security</h2>
+              <p className="text-light-gray mb-4">
+                We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">7. Data Retention</h2>
+              <p className="text-light-gray mb-4">
+                We retain your personal information only for as long as necessary to fulfill the purposes for which it was collected, including to satisfy any legal, accounting, or reporting requirements. Contact form submissions are typically retained for the duration of our business relationship and a reasonable period thereafter.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">8. Your Rights</h2>
+              <p className="text-light-gray mb-4">
+                Under data protection laws, you have the following rights:
+              </p>
+              <ul className="list-disc pl-6 text-light-gray mb-4 space-y-2">
+                <li><strong className="text-white">Access:</strong> Request a copy of your personal data</li>
+                <li><strong className="text-white">Rectification:</strong> Request correction of inaccurate data</li>
+                <li><strong className="text-white">Erasure:</strong> Request deletion of your data</li>
+                <li><strong className="text-white">Restriction:</strong> Request limitation of processing</li>
+                <li><strong className="text-white">Portability:</strong> Request transfer of your data</li>
+                <li><strong className="text-white">Object:</strong> Object to certain processing activities</li>
+                <li><strong className="text-white">Withdraw consent:</strong> Where processing is based on consent</li>
               </ul>
               <p className="text-light-gray mb-4">
-                If you wish to exercise any of the rights set out above, please contact us.
+                To exercise any of these rights, please contact us at hi@architeq.io.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Third-Party Links</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">9. International Data Transfers</h2>
               <p className="text-light-gray mb-4">
-                This website may include links to third-party websites, plug-ins and applications. Clicking on those links or enabling those connections may allow third parties to collect or share data about you. We do not control these third-party websites and are not responsible for their privacy statements. When you leave our website, we encourage you to read the privacy policy of every website you visit.
+                Your information may be transferred to and processed in countries other than your country of residence. We ensure appropriate safeguards are in place to protect your data in accordance with this privacy policy.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Cookies</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">10. Cookies</h2>
               <p className="text-light-gray mb-4">
-                You can set your browser to refuse all or some browser cookies, or to alert you when websites set or access cookies. If you disable or refuse cookies, please note that some parts of this website may become inaccessible or not function properly. For more information about the cookies we use, please see our <Link href="/cookies" className="text-primary hover:underline">Cookie Policy</Link>.
+                We use cookies and similar tracking technologies to enhance your experience on our website. For detailed information about our use of cookies, please see our <Link href="/cookies" className="text-primary hover:underline">Cookie Policy</Link>.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Changes to the Privacy Policy</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">11. Third-Party Links</h2>
               <p className="text-light-gray mb-4">
-                We keep our privacy policy under regular review and will place any updates on this web page. This privacy policy was last updated on March 15, 2025.
+                Our website may contain links to third-party websites. We are not responsible for the privacy practices of these external sites. We encourage you to review their privacy policies before providing any personal information.
               </p>
               
-              <h2 className="text-2xl font-bold mt-10 mb-4">Contact Us</h2>
+              <h2 className="text-2xl font-bold mt-10 mb-4">12. Updates to This Policy</h2>
               <p className="text-light-gray mb-4">
-                If you have any questions about this privacy policy or our privacy practices, please contact us at:
+                We may update this privacy policy periodically to reflect changes in our practices or legal requirements. We will notify you of any material changes by posting the updated policy on this page and updating the &quot;Last Updated&quot; date.
+              </p>
+              
+              <h2 className="text-2xl font-bold mt-10 mb-4">13. Contact Us</h2>
+              <p className="text-light-gray mb-4">
+                If you have any questions, concerns, or requests regarding this privacy policy or our data practices, please contact us at:
               </p>
               <p className="text-light-gray mb-4">
                 Email: hi@architeq.io
               </p>
-              <p className="text-light-gray">
-                You have the right to make a complaint at any time to the supervisory authority for data protection issues in your country. We would, however, appreciate the chance to deal with your concerns before you approach the supervisory authority so please contact us in the first instance.
+              <p className="text-light-gray mb-4">
+                You have the right to lodge a complaint with a supervisory authority if you believe we have not handled your personal data in accordance with applicable data protection laws.
               </p>
             </div>
           </div>
