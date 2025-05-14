@@ -153,14 +153,14 @@ export default function TestimonialsSection({
   // Выбираем вариант отображения
   if (variant === 'compact') {
     return (
-      <section className={cn("py-12 bg-site-bg", className)}>
+      <section className={cn("pt-20 pb-12 bg-site-bg", className)}>
         <div className="container mx-auto px-4">
-          <SectionAnimation className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
-            {subtitle && (
-              <p className="text-light-gray">{subtitle}</p>
-            )}
-          </SectionAnimation>
+        <SectionAnimation className="text-center mb-10">
+  <h2 className="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
+  {subtitle && (
+    <p className="text-light-gray">{subtitle}</p>
+  )}
+</SectionAnimation>
           
           <div className="flex items-center justify-center space-x-6 md:space-x-10">
             {testimonials.map((testimonial, index) => (
@@ -217,16 +217,16 @@ export default function TestimonialsSection({
   
   if (variant === 'cards') {
     return (
-      <section className={cn("py-16 bg-dark-gray", className)}>
+      <section className={cn("pt-28 pb-16 bg-dark-gray", className)}>
         <div className="container mx-auto px-4">
-          <SectionAnimation className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-            {subtitle && (
-              <p className="text-light-gray max-w-2xl mx-auto">
-                {subtitle}
-              </p>
-            )}
-          </SectionAnimation>
+        <SectionAnimation className="text-center mb-16">
+  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+  {subtitle && (
+    <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
+      {subtitle}
+    </p>
+  )}
+</SectionAnimation>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
@@ -290,7 +290,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью
   return (
     <section 
-      className={cn("py-20 bg-dark-gray", className)}
+      className={cn("pt-28 pb-20 bg-dark-gray", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -299,14 +299,14 @@ export default function TestimonialsSection({
       onTouchEnd={handleTouchEnd}
     >
       <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-          {subtitle && (
-            <p className="text-light-gray max-w-2xl mx-auto">
-              {subtitle}
-            </p>
-          )}
-        </SectionAnimation>
+      <SectionAnimation className="text-center mb-16">
+  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+  {subtitle && (
+    <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
+      {subtitle}
+    </p>
+  )}
+</SectionAnimation>
 
         <div className={cn("relative mx-auto", maxWidthClass)}>
           {/* Большие кавычки, если включено */}

@@ -248,19 +248,35 @@ const headerBgClasses = cn(
               onMouseLeave={handleMouseLeave}
             >
               {item.children ? (
-  <button
-    className={cn(
-      "transition-all duration-300 focus:outline-none",
-      isActive(item.href) 
-        ? "text-secondary text-shadow-green-soft" 
-        : "text-white/70 hover:text-white hover:text-shadow-white-soft"
-    )}
-    onClick={() => handleDropdownToggle(item.name)}
-    aria-expanded={activeDropdown === item.name}
-  >
-                  {item.name}
-                </button>
-              ) : (
+  <div className="flex items-center">
+    <Link
+      href={item.href}
+      className={cn(
+        "transition-all duration-300",
+        isActive(item.href) 
+          ? "text-secondary text-shadow-green-soft" 
+          : "text-white/70 hover:text-white hover:text-shadow-white-soft"
+      )}
+    >
+      {item.name}
+    </Link>
+    <button
+      className="ml-1 focus:outline-none text-white/70 hover:text-white"
+      onClick={() => handleDropdownToggle(item.name)}
+      aria-expanded={activeDropdown === item.name}
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-4 w-4" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+  </div>
+) : (
                 <Link
   href={item.href}
   className={cn(
@@ -356,16 +372,23 @@ const headerBgClasses = cn(
                 <div key={item.name} className="border-b border-primary/20 pb-4">
                   {item.children ? (
                     <div>
-                      <button
+                    <div className="flex items-center justify-between w-full py-2">
+                      <Link
+                        href={item.href}
                         className={cn(
-                          "flex items-center justify-between w-full py-2 font-medium",
+                          "font-medium transition-colors",
                           isActive(item.href) 
                             ? "text-secondary text-shadow-green-soft" 
-                            : "text-white"
+                            : "text-white hover:text-secondary"
                         )}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                      <button
+                        className="text-white"
                         onClick={() => handleDropdownToggle(item.name)}
                       >
-                        <span>{item.name}</span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className={`h-5 w-5 transition-transform ${activeDropdown === item.name ? 'rotate-180' : ''}`}
@@ -376,6 +399,7 @@ const headerBgClasses = cn(
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
+                      </div>
                       <AnimatePresence>
                         {activeDropdown === item.name && (
                           <motion.div

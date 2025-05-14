@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils/utils'
 
 // Defining style variants for the button
 const buttonVariants = cva(
-  'inline-flex items-center justify-center font-medium transition-all duration-300 ease-in-out focus:outline-none disabled:opacity-50 disabled:pointer-events-none',
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus:outline-none focus:ring-0 active:outline-none ...",
   {
     variants: {
       variant: {

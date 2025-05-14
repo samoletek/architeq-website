@@ -1,12 +1,12 @@
+// src/components/sections/solutions-section.tsx
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react'; // Убираем неиспользуемый useRef
 import { Button } from '@/components/ui/button';
-import { SolutionSwitcher } from '@/components/ui/solution-switcher';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { ImageWithFallback } from '@/components/ui/image-with-fallback';
+import { motion } from 'framer-motion'; // Убираем неиспользуемый AnimatePresence
 
 // Тип для таба решения
 export interface SolutionTab {
@@ -40,7 +40,6 @@ export interface SolutionsSectionProps {
   defaultSolutionId?: string;
   buttonText?: string;
   variant?: 'default' | 'alternate';
-  withAnimation?: boolean;
 }
 
 // Данные о решениях по умолчанию
@@ -137,251 +136,238 @@ const defaultSolutions: Solution[] = [
   }
 ];
 
-export function SolutionsSection({
-  title = "Our Solutions",
-  subtitle = "We offer smart automation that adapts and scales — for faster, clearer, more connected workflows. Explore our services.",
-  solutions = defaultSolutions,
-  className,
-  defaultSolutionId,
-  buttonText = "Learn More About",
-  variant = 'default'
-}: SolutionsSectionProps) {
-  const [activeSolution, setActiveSolution] = useState<Solution>(
-    defaultSolutionId ? 
-      solutions.find(s => s.id === defaultSolutionId) || solutions[0] : 
-      solutions[0]
-  );
-  
-  const [isMounted, setIsMounted] = useState(false);
-  
-  // Устанавливаем состояние после монтирования
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  
-  // Обработчик смены таба
-  const handleSolutionChange = useCallback((tab: SolutionTab) => {
-    const solution = solutions.find(s => s.id === tab.id);
-    if (solution) {
-      setActiveSolution(solution);
-    }
-  }, [solutions]);
-  
-  // Преобразуем данные решений в формат, ожидаемый компонентом SolutionSwitcher
-  const solutionTabs: SolutionTab[] = solutions.map(solution => ({
-    id: solution.id,
-    label: solution.label,
-    description: solution.description,
-    icon: solution.icon
-  }));
-  
-  // Определяем фон секции в зависимости от варианта
-  const sectionBg = variant === 'default' ? 'bg-dark-gradient': 'bg-site-bg';
-
-  // Статическая версия без анимаций при серверном рендеринге
-  if (!isMounted) {
-    return (
-      <section className={cn("py-20", sectionBg, className)}>
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-            <p className="text-light-gray max-w-2xl mx-auto">
-              {subtitle}
-            </p>
-          </div>
-
-          <SolutionSwitcher
-            tabs={solutionTabs}
-            defaultTab={activeSolution.id}
-            onTabChange={handleSolutionChange}
-          />
-
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            {/* Левая колонка - информация о решении */}
-            <div>
-              <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
-              <p className="text-light-gray mb-6">{activeSolution.description}</p>
-              
-              <div className="mb-6">
-                <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
-                <ul className="space-y-2">
-                  {activeSolution.features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-primary mr-2">•</span>
-                      <span className="text-light-gray">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              {activeSolution.href && (
-                <Link href={activeSolution.href}>
-                  <Button>
-                    {buttonText} {activeSolution.label}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Button>
-                </Link>
-              )}
-              
-              {/* Ссылки на кейсы, если есть */}
-              {activeSolution.caseStudies && activeSolution.caseStudies.length > 0 && (
-                <div className="mt-6">
-                  <h4 className="text-sm font-medium text-light-gray mb-2">Related Case Studies:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {activeSolution.caseStudies.map((caseStudy) => (
-                      <Link 
-                        key={caseStudy.id}
-                        href={`/cases/${caseStudy.id}`}
-                        className="text-primary text-sm hover:underline"
-                      >
-                        {caseStudy.title}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Правая колонка - изображение или визуализация */}
-            <div className="rounded-lg overflow-hidden h-80 relative">
-              {activeSolution.imageUrl ? (
-                <ImageWithFallback
-                  src={activeSolution.imageUrl}
-                  alt={`${activeSolution.label} solution visualization`}
-                  fill
-                  className="object-cover"
-                  category="solution"
-                />
-              ) : (
-                <div className="absolute inset-0 p-8 flex items-center justify-center bg-medium-gray">
-                  <div className="text-center">
-                    <div className={`text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-dark-gray`}>
-                      <Icon name={activeSolution.icon} className="h-8 w-8" />
-                    </div>
-                    <div className="text-light-gray text-sm">
-                      Visualization for {activeSolution.label} will be placed here
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Клиентская версия с анимациями
+// Компонент для отдельного элемента меню
+const SolutionMenuItem = ({ 
+  solution, 
+  isActive, 
+  onClick
+}: { 
+  solution: Solution; 
+  isActive: boolean; 
+  onClick: () => void;
+}) => {
   return (
-    <section className={cn("py-20", sectionBg, className)}>
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 animate-fadeIn">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-light-gray max-w-2xl mx-auto">
-            {subtitle}
-          </p>
-        </div>
+    <motion.button
+  className={cn(
+    "w-full text-left py-5 px-6 rounded-lg mb-5 flex items-center group transition-all duration-300 relative overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none",
+    isActive 
+      ? "bg-dark-purple/70 shadow-neon-glow text-white opacity-100" 
+      : "bg-dark-purple/20 hover:bg-dark-purple/40 text-white/70 hover:opacity-90"
+  )}
+  onClick={onClick}
+  whileHover={{ x: 4 }}
+  whileFocus={{ outline: "none" }}
+  whileTap={{ outline: "none" }}
+  transition={{ duration: 0.2 }}
+>
+      {/* Добавляем свечение в виде абсолютно позиционированного элемента */}
+      {isActive && (
+        <div className="absolute inset-0 bg-primary/10 rounded-lg filter blur-md opacity-60 -z-10"></div>
+      )}
+      <div className="w-14 flex justify-center items-center mr-4 flex-shrink-0">
+        <Icon name={solution.icon} className={`h-7 w-7 ${isActive ? 'text-white' : 'text-white/70 group-hover:text-white transition-colors duration-300'}`} />
+      </div>
+      <div className="font-medium text-xl transition-all duration-300 group-hover:text-shadow-white-soft group-hover:text-white">{solution.label}</div>
+    </motion.button>
+  );
+};
 
-        <SolutionSwitcher
-          tabs={solutionTabs}
-          defaultTab={activeSolution.id}
-          onTabChange={handleSolutionChange}
-        />
+// Компонент для отдельного решения
+const SolutionContent = ({ 
+  solution, 
+  isActive = false 
+}: { 
+  solution: Solution;
+  isActive: boolean;
+}) => {
+  // Улучшенные анимационные варианты
+  const contentVariants = {
+    initial: { 
+      opacity: 0,
+      x: -20,
+    },
+    animate: { 
+      opacity: 1,
+      x: 0,
+      transition: { 
+        type: "tween", // Более предсказуемая анимация
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1], // Плавная кривая анимации
+      }
+    },
+    exit: { 
+      opacity: 0,
+      x: -10,
+      transition: { 
+        type: "tween",
+        duration: 0.2,
+        ease: [0.25, 0.1, 0.25, 1],
+      }
+    }
+  };
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          {/* Левая колонка - информация о решении */}
-          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
-            <h3 className="text-2xl font-bold mb-4">{activeSolution.label} Automation</h3>
-            <p className="text-light-gray mb-6">{activeSolution.description}</p>
+  return (
+    <div 
+      className="w-full h-full" 
+      style={{ display: isActive ? 'block' : 'none' }}
+    >
+      <motion.div
+        key={solution.id}
+        variants={contentVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="w-full rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] bg-dark-purple/20 backdrop-blur-sm p-12 h-full"
+      >
+        <div className="flex flex-col justify-between h-full">
+          <div className="space-y-10 px-2">
+            {/* Заголовок */}
+            <h3 className="text-3xl font-bold mb-10">
+              {solution.label} Automation
+            </h3>
             
-            <div className="mb-6">
-              <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
-              <ul className="space-y-2">
-                {activeSolution.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <span className="text-primary mr-2">•</span>
+            {/* Описание */}
+            <p className="text-xl text-light-gray leading-relaxed">
+              {solution.description}
+            </p>
+            
+            <div className="mt-10">
+              {/* Подзаголовок */}
+              <h4 className="text-2xl font-semibold mb-10">Key Features:</h4>
+              <ul className="space-y-3">
+                {solution.features.map((feature, index) => (
+                  <li 
+                    key={index} 
+                    className="flex items-start text-lg"
+                  >
+                    <span className="text-primary text-xl mr-3">•</span>
                     <span className="text-light-gray">{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            
-            {activeSolution.href && (
-              <Link href={activeSolution.href}>
-                <Button>
-                  {buttonText} {activeSolution.label}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 ml-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Button>
-              </Link>
+          </div>
+          
+          <div className="mt-auto pt-12 flex justify-end px-2">
+            {solution.href && (
+              <Link href={solution.href}>
+             <Button size="lg" className="px-8 py-5 text-lg focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none">
+              Learn More
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-6 ml-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Button>
+            </Link>
             )}
-            
-            {/* Ссылки на кейсы, если есть */}
-            {activeSolution.caseStudies && activeSolution.caseStudies.length > 0 && (
-              <div className="mt-6">
-                <h4 className="text-sm font-medium text-light-gray mb-2">Related Case Studies:</h4>
-                <div className="flex flex-wrap gap-2">
-                  {activeSolution.caseStudies.map((caseStudy) => (
-                    <Link 
-                      key={caseStudy.id}
-                      href={`/cases/${caseStudy.id}`}
-                      className="text-primary text-sm hover:underline"
-                    >
-                      {caseStudy.title}
-                    </Link>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export function SolutionsSection({
+  title = "Our Solutions",
+  subtitle = "We offer smart automation that adapts and scales — for faster, \nclearer, more connected workflows. Explore our services.",
+  solutions = defaultSolutions,
+  className,
+  defaultSolutionId,
+}: SolutionsSectionProps) { // Убрали неиспользуемый параметр buttonText
+  // Состояние для отслеживания активного решения
+  const [activeSolutionId, setActiveSolutionId] = useState<string>(
+    defaultSolutionId || solutions[0].id
+  );
+
+  // Функция для переключения активного решения
+  const setActiveSolution = (id: string) => {
+    setActiveSolutionId(id);
+  };
+
+  // Функция определения высоты экрана для полноэкранной секции
+  const [screenHeight, setScreenHeight] = useState('100vh');
+  
+  useEffect(() => {
+    const updateScreenHeight = () => {
+      setScreenHeight(`${window.innerHeight}px`);
+    };
+    
+    // Установить высоту при загрузке
+    updateScreenHeight();
+    
+    // Обновлять высоту при изменении размера окна
+    window.addEventListener('resize', updateScreenHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateScreenHeight);
+    };
+  }, []);
+  
+  return (
+    <section 
+      className={cn("relative overflow-hidden flex items-center", className)}
+      style={{ minHeight: screenHeight }}
+    >
+      <div className="absolute inset-0 bg-dark-purple/5">
+        {/* Декоративные элементы фона */}
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 bg-secondary/5 rounded-full blur-3xl opacity-20"></div>
+      </div>
+
+      <div className="relative z-10 w-full py-8">
+        <div className="container mx-auto px-4 mb-12">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">{title}</h2>
+            <p className="text-lg md:text-xl text-light-gray max-w-4xl mx-auto whitespace-pre-line">
+              {subtitle}
+            </p>
+          </div>
+        </div>
+
+        {/* Основной контент */}
+        <div className="container mx-auto px-4 mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Навигационное меню */}
+            <div className="lg:col-span-4">
+              <div className="bg-dark-purple/30 p-6 rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] overflow-hidden relative">
+                {/* Эффект свечения для всего блока */}
+                <div className="absolute -inset-5 bg-primary/5 rounded-full blur-3xl opacity-20 -z-10 animate-pulse-slow"></div>
+                
+                <div className="space-y-3">
+                  {solutions.map((solution) => (
+                    <SolutionMenuItem 
+                      key={solution.id}
+                      solution={solution}
+                      isActive={activeSolutionId === solution.id}
+                      onClick={() => setActiveSolution(solution.id)}
+                    />
                   ))}
                 </div>
               </div>
-            )}
-          </div>
-          
-          {/* Правая колонка - изображение или визуализация */}
-          <div className="animate-fadeIn rounded-lg overflow-hidden h-80 relative" style={{ animationDelay: '0.2s' }}>
-            {activeSolution.imageUrl ? (
-              <ImageWithFallback
-                src={activeSolution.imageUrl}
-                alt={`${activeSolution.label} solution visualization`}
-                fill
-                className="object-cover"
-                category="solution"
-              />
-            ) : (
-              <div className="absolute inset-0 p-8 flex items-center justify-center bg-medium-gray">
-                <div className="text-center">
-                  <div className={`text-primary mx-auto mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-dark-gray`}>
-                    <Icon name={activeSolution.icon} className="h-8 w-8" />
-                  </div>
-                  <div className="text-light-gray text-sm">
-                    Visualization for {activeSolution.label} will be placed here
-                  </div>
-                </div>
+            </div>
+            
+            {/* Правая колонка с фиксированной высотой для предотвращения скачков */}
+            <div className="lg:col-span-8 relative">
+              <div className="min-h-[650px]"> {/* Фиксированная минимальная высота для стабильности */}
+                {solutions.map((solution) => (
+                  <SolutionContent
+                    key={solution.id}
+                    solution={solution}
+                    isActive={activeSolutionId === solution.id}
+                  />
+                ))}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -402,9 +388,9 @@ export function CompactSolutionsSection({
   viewAllHref?: string;
 }) {
   return (
-    <div className={cn("py-10", className)}>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{title}</h2>
+    <div className={cn("py-8", className)}>
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-xl font-bold">{title}</h2>
         {viewAllHref && (
           <Link href={viewAllHref} className="text-primary hover:underline text-sm font-medium flex items-center">
             View All
@@ -415,18 +401,18 @@ export function CompactSolutionsSection({
         )}
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
         {solutions.map((solution) => (
           <Link 
             key={solution.id}
             href={solution.href || `/services/${solution.id}`}
-            className="bg-dark-gray hover:bg-dark-gray/80 rounded-lg p-5 transition-colors border border-transparent hover:border-primary/20"
+            className="bg-dark-gray hover:bg-dark-gray/80 rounded-lg p-4 transition-colors border border-transparent hover:border-primary/20"
           >
-            <div className="flex items-center mb-3">
-              <div className="w-10 h-10 rounded-full bg-medium-gray flex items-center justify-center text-primary mr-3">
-                <Icon name={solution.icon} className="h-5 w-5" />
+            <div className="flex items-center mb-2">
+              <div className="mr-2 text-primary">
+                <Icon name={solution.icon} className="h-4 w-4" />
               </div>
-              <h3 className="font-medium">{solution.label}</h3>
+              <h3 className="font-medium text-base">{solution.label}</h3>
             </div>
             <p className="text-light-gray text-sm line-clamp-3">
               {solution.description}
