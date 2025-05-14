@@ -1,15 +1,11 @@
 // src/components/sections/hero-section.tsx
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { Button } from '@/components/ui/button';
+import HeroSearch from '@/components/ui/hero-search';
 
 interface HeroSectionProps {
-  title?: string;
-  subtitle?: string;
   description?: string;
   primaryCta?: {
     text: string;
@@ -18,55 +14,12 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({
-  title = "Architect your workflow Scale with confidence",
   description = "We build digital systems that flex, scale, and adapt — for companies across industries.",
   primaryCta = {
     text: "Explore Solutions",
     href: "/services"
   }
 }: HeroSectionProps) {  
-  const { isMobile, isLowPerformance } = useDeviceDetection();
-  const [isMounted, setIsMounted] = useState(false);
-  
-  // Устанавливаем флаг монтирования после первого рендера
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsMounted(true);
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Разбиваем описание на две строки примерно поровну по словам
-  const descriptionParts = [
-    "We build digital systems that flex, scale,",
-    "and adapt — for companies across industries."
-  ];
-
-  // Если компонент не смонтирован на клиенте, возвращаем статический контент
-  if (!isMounted) {
-    return (
-      <section className="py-16 md:py-24">
-        <div className="container px-6 mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-            <span className="accent-text">Architect</span> your workflow
-            <br />
-            <span className="accent-text">Scale</span> with confidence
-          </h1>
-          <div className="text-base md:text-lg text-white/70 mt-10 font-sans">
-            <p>{descriptionParts[0]}</p>
-            <p>{descriptionParts[1]}</p>
-          </div>
-          <div className="mt-10">
-            <Button variant="secondary" size="sm" href={primaryCta.href} className="shadow-neon-green-glow px-6 py-2 text-sm">
-              {primaryCta.text}
-            </Button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   // Фиксированный статический градиент для слов
   const staticGradientStyle = {
     background: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%)',
@@ -75,72 +28,126 @@ export default function HeroSection({
     color: 'transparent',
   };
 
+  // Варианты анимации для различных элементов
+  const titleVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { 
+        duration: 0.8, 
+        ease: [0.16, 1, 0.3, 1] // cubic-bezier с эффектом "ease-out-expo"
+      }
+    }
+  };
+
+  const descriptionVariants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1, 
+      x: 0,
+      transition: { 
+        duration: 0.6, 
+        delay: 0.3,
+        ease: "easeOut" 
+      }
+    }
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.6, 
+        delay: 0.6,
+        ease: "easeOut" 
+      }
+    }
+  };
+
+  const searchVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        duration: 0.5, 
+        delay: 0.8,
+        ease: "easeOut" 
+      }
+    }
+  };
+
   return (
-    <section className="py-16 md:py-24">
-      <div className="container px-6 mx-auto">
-        {/* Первая строка заголовка - анимация справа налево */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="overflow-hidden"
-        >
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-            <span 
-              className="transition-all duration-300 ease-out"
-              style={staticGradientStyle}
+    <section className="pt-52 pb-52 relative overflow-hidden">
+      {/* Эффекты фона */}
+      <div className="absolute right-0 top-[20%] opacity-20 w-[30vw] h-[30vw] rounded-full bg-primary/30 blur-[100px]" />
+      <div className="absolute left-10 bottom-[10%] opacity-20 w-[20vw] h-[20vw] rounded-full bg-secondary/20 blur-[80px]" />
+      
+      <div className="container px-6 mx-auto relative z-10">
+        <div className="max-w-3xl">
+          {/* Заголовок с анимацией */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <motion.div
+              variants={titleVariants}
+              initial="hidden"
+              animate="visible"
+              className="mb-2 whitespace-nowrap"
             >
-              Architect
-            </span> your workflow
+              <span style={staticGradientStyle} className="mr-2">Architect</span>
+              <span>your workflow</span>
+            </motion.div>
+            
+            <motion.div
+              variants={titleVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.05 }}
+              className="whitespace-nowrap"
+            >
+              <span style={staticGradientStyle} className="mr-2">Scale</span>
+              <span>with confidence</span>
+            </motion.div>
           </h1>
-        </motion.div>
-        
-        {/* Вторая строка заголовка - анимация справа налево с небольшой задержкой */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="overflow-hidden"
-        >
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-            <span 
-              className="transition-all duration-300 ease-out"
-              style={staticGradientStyle}
+          
+          {/* Описание - с анимацией справа налево */}
+          <motion.div
+            variants={descriptionVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-xl md:text-2xl lg:text-3xl text-white/80 mb-8 font-sans leading-relaxed"
+          >
+            <p>{description}</p>
+          </motion.div>
+          
+          {/* Кнопка и поиск рядом - с анимацией появления */}
+          <div className="flex flex-wrap items-center gap-6">
+            <motion.div
+              variants={buttonVariants}
+              initial="hidden"
+              animate="visible"
             >
-              Scale
-            </span> with confidence
-          </h1>
-        </motion.div>
-        
-        {/* Описание - также с анимацией справа налево */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-        >
-          <div className="text-base md:text-lg text-white/80 mt-10 font-sans leading-relaxed">
-            <p>{descriptionParts[0]}</p>
-            <p>{descriptionParts[1]}</p>
-          </div>
-        </motion.div>
-        
-        {/* Кнопка - также с анимацией справа налево */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-        >
-          <div className="mt-10">
-            <Button 
-              variant="secondary" 
-              size="sm" 
-              href={primaryCta.href} 
-              className="shadow-neon-green-glow px-6 py-2 text-sm"
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                href={primaryCta.href} 
+                className="shadow-neon-green-glow px-8 py-4 text-lg"
+              >
+                {primaryCta.text}
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              variants={searchVariants}
+              initial="hidden"
+              animate="visible"
             >
-              {primaryCta.text}
-            </Button>
+              <HeroSearch />
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

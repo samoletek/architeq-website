@@ -1,3 +1,4 @@
+// src/components/sections/featured-cases-section.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -23,7 +24,7 @@ export interface FeaturedCasesSectionProps {
 
 export default function FeaturedCasesSection({
   title = "Featured Case Studies",
-  subtitle = "See how smart automation reshapes operations and unlocks measurable results.",
+  subtitle = "See how smart automation reshapes operations <br />and unlocks measurable results.",
   cases,
   viewAllText = "View All Case Studies",
   viewAllUrl = "/cases",
@@ -58,7 +59,7 @@ export default function FeaturedCasesSection({
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
   // Адаптируем размер для компактного режима
-  const sectionPadding = compact ? 'py-10' : 'py-20';
+  const sectionPadding = compact ? 'py-10' : 'pt-28 pb-20';
 
   // Если компонент не смонтирован на клиенте, возвращаем упрощенную версию
   if (!isMounted) {
@@ -67,11 +68,9 @@ export default function FeaturedCasesSection({
         <div className="container mx-auto px-4">
           {/* Заголовок и подзаголовок, если не компактный режим */}
           {!compact && (
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-              <p className="text-light-gray max-w-2xl mx-auto">
-                {subtitle}
-              </p>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+              <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
           
@@ -135,11 +134,9 @@ export default function FeaturedCasesSection({
       <div className="container mx-auto px-4">
         {/* Заголовок и подзаголовок, если не компактный режим */}
         {!compact && (
-          <div className="text-center mb-12 animate-fadeIn">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-            <p className="text-light-gray max-w-2xl mx-auto">
-              {subtitle}
-            </p>
+          <div className="text-center mb-16 animate-fadeIn">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </div>
         )}
         

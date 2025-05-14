@@ -177,7 +177,7 @@ export default function ServiceTemplate({
                   key={index}
                   className={`bg-dark-gradient rounded-xl p-6 border border-transparent hover:border-${primaryColor}/20 transition-all duration-300 hover:shadow-neon-glow`}
                 >
-                  <div className={`rounded-full w-16 h-16 flex items-center justify-center mb-4 bg-medium-gray ${accentColorClass}`}>
+                  <div className={`w-16 h-16 flex items-center justify-center mb-4 bg-medium-gray ${accentColorClass}`}>
                     {renderIcon(benefit.icon)}
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
@@ -208,7 +208,7 @@ export default function ServiceTemplate({
                 >
                   <div className="flex items-start">
                     {feature.icon && (
-                      <div className={`rounded-full w-16 h-16 flex items-center justify-center mr-6 bg-medium-gray ${accentColorClass}`}>
+                      <div className={`w-16 h-16 flex items-center justify-center mr-6 bg-medium-gray ${accentColorClass}`}>
                         {renderIcon(feature.icon)}
                       </div>
                     )}
@@ -276,7 +276,7 @@ export default function ServiceTemplate({
                 
                 {processes.map((process) => (
                   <div key={process.step} className="relative flex">
-                    <div className={`flex-shrink-0 w-10 h-10 rounded-full bg-${primaryColor} flex items-center justify-center z-10`}>
+                    <div className={`flex-shrink-0 w-10 h-10 bg-${primaryColor} flex items-center justify-center z-10`}>
                       <span className="font-bold">{process.step}</span>
                     </div>
                     <div className="ml-6">

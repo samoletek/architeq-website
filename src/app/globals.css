@@ -212,6 +212,19 @@
   }
 }
 
+.no-focus-outline {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.no-focus-outline:focus, 
+.no-focus-outline:active, 
+.no-focus-outline:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
 /* Медиа-запросы для адаптивности */
 @media (max-width: 768px) {
   .case-video-container {

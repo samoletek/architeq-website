@@ -46,7 +46,7 @@ export default function Home() {
       <SiteLayout>
         {/* Hero section */}
         <HeroSection />
-        
+
         {/* Benefits section */}
         <BenefitsSection />
 
