@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 
 export default function Footer() {
   const [showSocialTooltip, setShowSocialTooltip] = useState<string | null>(null);
