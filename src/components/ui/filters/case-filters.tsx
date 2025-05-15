@@ -222,11 +222,11 @@ export function CaseFilters({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-medium-gray border border-medium-gray rounded-lg py-2 pl-3 pr-10 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+              className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
               placeholder={searchPlaceholder}
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray group-hover:text-white transition-all duration-300 group-hover:text-shadow-white-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -353,10 +353,10 @@ export function CaseFilters({
                                 key={option.id}
                                 onClick={(e) => handleFilterOptionChange(group.id, option.id, e)}
                                 className={cn(
-                                  "px-3 py-2 rounded-lg text-sm filter-option-checkbox",
+                                  "px-3 py-2 rounded-lg text-sm filter-option-checkbox transition-all duration-300",
                                   selectedOptions[group.id]?.includes(option.id) 
-                                    ? cn(getGroupColor(group.id))
-                                    : "bg-medium-gray text-light-gray hover:bg-dark-gray hover:text-white"
+                                    ? "bg-secondary text-gray-900 text-shadow-green-soft shadow-neon-green-glow"
+                                    : "bg-medium-gray/50 backdrop-blur-md text-light-gray hover:bg-dark-gray hover:text-white"
                                 )}
                               >
                                 {option.label}
@@ -398,11 +398,11 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-2 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
                 placeholder={searchPlaceholder}
               />
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray group-hover:text-white transition-all duration-300 group-hover:text-shadow-white-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -412,10 +412,10 @@ export function CaseFilters({
             <button
               onClick={onClearFilters}
               className={cn(
-                "py-2 px-4 rounded-lg transition-colors text-sm font-medium whitespace-nowrap",
+                "py-2.5 px-4 rounded-lg transition-colors text-sm font-medium whitespace-nowrap",
                 hasActiveFilters 
-                  ? "bg-primary hover:bg-primary/90 text-white" 
-                  : "bg-medium-gray text-light-gray cursor-not-allowed"
+                  ? "bg-secondary text-gray-900 hover:bg-secondary/90 shadow-neon-green-glow" 
+                  : "bg-medium-gray/50 backdrop-blur-md text-light-gray cursor-not-allowed"
               )}
               disabled={!hasActiveFilters}
             >
@@ -431,8 +431,10 @@ export function CaseFilters({
                   onClick={() => toggleGroup(group.id)}
                   data-filter-toggle={group.id}
                   className={cn(
-                    "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-colors",
-                    openGroups[group.id] ? "bg-medium-gray text-white" : "bg-dark-gray border border-medium-gray text-light-gray hover:text-white"
+                    "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-all duration-300",
+                    openGroups[group.id] 
+                      ? "bg-[#12071A]/95 backdrop-blur-md text-white shadow-lg border border-primary/30" 
+                      : "bg-[#12071A]/70 backdrop-blur-sm border border-medium-gray/50 text-light-gray hover:text-white hover:bg-[#12071A]/80"
                   )}
                 >
                   <div className="flex items-center">
@@ -441,7 +443,7 @@ export function CaseFilters({
                   </div>
                   <div className="flex items-center">
                     {selectedOptions[group.id]?.length > 0 && (
-                      <span className="mr-2 bg-primary w-5 h-5 flex items-center justify-center rounded-full text-xs">
+                      <span className="mr-2 bg-secondary w-5 h-5 flex items-center justify-center rounded-full text-xs text-gray-900 font-medium">
                         {selectedOptions[group.id].length}
                       </span>
                     )}
@@ -460,7 +462,7 @@ export function CaseFilters({
                   </div>
                 </button>
                 
-                {/* Выпадающая панель с опциями */}
+                {/* Выпадающая панель с опциями - стиль стекла */}
                 <AnimatePresence>
                   {openGroups[group.id] && (
                     <motion.div
@@ -468,7 +470,7 @@ export function CaseFilters({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute z-20 left-0 right-0 mt-2 w-full bg-dark-gray border border-medium-gray rounded-lg shadow-lg p-3"
+                      className="absolute z-20 left-0 right-0 mt-2 w-full bg-dark-gray/95 backdrop-blur-md border border-medium-gray/50 rounded-lg shadow-xl p-3"
                       data-filter-dropdown={group.id}
                       onMouseLeave={() => handleMouseLeave(group.id)}
                       ref={(el) => { dropdownRefs.current[group.id] = el; }}
@@ -478,24 +480,25 @@ export function CaseFilters({
                           <button 
                             key={option.id} 
                             className={cn(
-                              "flex items-center hover:bg-medium-gray/30 p-2 rounded-lg cursor-pointer transition-colors w-full text-left",
-                              "filter-option-checkbox"
+                              "flex items-center hover:bg-medium-gray/30 p-2 rounded-lg cursor-pointer transition-all duration-300 w-full text-left",
+                              "filter-option-checkbox",
+                              selectedOptions[group.id]?.includes(option.id) && "text-secondary text-shadow-green-soft"
                             )}
                             onClick={(e) => handleFilterOptionChange(group.id, option.id, e)}
                           >
                             <div className="relative flex items-center justify-center">
                               <div 
                                 className={cn(
-                                  "w-4 h-4 rounded border flex items-center justify-center transition-colors",
+                                  "w-4 h-4 rounded border flex items-center justify-center transition-all duration-300",
                                   selectedOptions[group.id]?.includes(option.id)
-                                    ? "bg-primary border-primary" // Оранжевый фон для выбранного
-                                    : "bg-medium-gray border-medium-gray/70"
+                                    ? "bg-secondary border-secondary shadow-neon-green-glow"
+                                    : "bg-medium-gray/50 backdrop-blur-sm border-medium-gray/70"
                                 )}
                               >
                                 {selectedOptions[group.id]?.includes(option.id) && (
                                   <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
-                                    className="h-3 w-3 text-white" 
+                                    className="h-3 w-3 text-gray-900" 
                                     viewBox="0 0 20 20" 
                                     fill="currentColor"
                                   >
@@ -508,7 +511,12 @@ export function CaseFilters({
                                 )}
                               </div>
                             </div>
-                            <span className="ml-2 text-light-gray">
+                            <span className={cn(
+                              "ml-2 transition-colors duration-300",
+                              selectedOptions[group.id]?.includes(option.id) 
+                                ? "text-secondary" 
+                                : "text-light-gray"
+                            )}>
                               {option.label}
                             </span>
                             {option.count !== undefined && (
@@ -531,7 +539,7 @@ export function CaseFilters({
                 <span className="text-sm text-light-gray mr-2">{activeFiltersTitle}</span>
                 
                 {searchQuery.trim() && (
-                  <span className="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs flex items-center">
+                  <span className="bg-secondary/20 text-secondary rounded-full px-3 py-1 text-xs flex items-center shadow-neon-green-glow">
                     Search: {searchQuery.trim()}
                     <button 
                       onClick={() => onSearchChange('')}
@@ -547,7 +555,7 @@ export function CaseFilters({
                 {getActiveFilters().map(filter => (
                   <span 
                     key={`${filter.groupId}-${filter.id}`}
-                    className={cn(getGroupColor(filter.groupId), "rounded-full px-3 py-1 text-xs flex items-center")}
+                    className={cn(getGroupColor(filter.groupId), "rounded-full px-3 py-1 text-xs flex items-center shadow-sm")}
                   >
                     {filter.label}
                     <button 
@@ -590,11 +598,11 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-4 pr-10 text-white placeholder-light-gray focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
                 placeholder={searchPlaceholder}
               />
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray group-hover:text-white transition-all duration-300 group-hover:text-shadow-white-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -638,22 +646,22 @@ export function CaseFilters({
                       {group.options.map((option) => (
                         <button 
                           key={option.id} 
-                          className="flex items-center w-full hover:bg-medium-gray/30 p-2 rounded-lg cursor-pointer transition-colors filter-option-checkbox text-left"
+                          className="flex items-center w-full hover:bg-medium-gray/30 p-2 rounded-lg cursor-pointer transition-all duration-300 filter-option-checkbox text-left"
                           onClick={(e) => handleFilterOptionChange(group.id, option.id, e)}
                         >
                           <div className="relative flex items-center justify-center">
                             <div 
                               className={cn(
-                                "w-4 h-4 rounded border flex items-center justify-center transition-colors",
+                                "w-4 h-4 rounded border flex items-center justify-center transition-all duration-300",
                                 selectedOptions[group.id]?.includes(option.id)
-                                  ? "bg-primary border-primary" // Оранжевый фон для выбранного
-                                  : "bg-medium-gray border-medium-gray/70"
+                                  ? "bg-secondary border-secondary shadow-neon-green-glow"
+                                  : "bg-medium-gray/50 backdrop-blur-sm border-medium-gray/70"
                               )}
                             >
                               {selectedOptions[group.id]?.includes(option.id) && (
                                 <svg 
                                   xmlns="http://www.w3.org/2000/svg" 
-                                  className="h-3 w-3 text-white" 
+                                  className="h-3 w-3 text-gray-900" 
                                   viewBox="0 0 20 20" 
                                   fill="currentColor"
                                 >
@@ -666,7 +674,12 @@ export function CaseFilters({
                               )}
                             </div>
                           </div>
-                          <span className="ml-2 text-light-gray">
+                          <span className={cn(
+                            "ml-2 transition-colors duration-300",
+                            selectedOptions[group.id]?.includes(option.id) 
+                              ? "text-secondary text-shadow-green-soft" 
+                              : "text-light-gray"
+                          )}>
                             {option.label}
                           </span>
                           {option.count !== undefined && (
@@ -685,10 +698,10 @@ export function CaseFilters({
           <button
             onClick={onClearFilters}
             className={cn(
-              "w-full mt-6 py-2 px-4 rounded-lg transition-colors text-sm font-medium",
+              "w-full mt-6 py-2 px-4 rounded-lg transition-all duration-300 text-sm font-medium",
               hasActiveFilters 
-                ? "bg-primary hover:bg-primary/90 text-white" 
-                : "bg-medium-gray text-light-gray cursor-not-allowed"
+                ? "bg-secondary text-gray-900 hover:bg-secondary/90 shadow-neon-green-glow" 
+                : "bg-medium-gray/50 backdrop-blur-md text-light-gray cursor-not-allowed"
             )}
             disabled={!hasActiveFilters}
           >
@@ -706,12 +719,12 @@ export function CaseFilters({
       
       {/* Активные фильтры и счетчик результатов */}
       {hasActiveFilters && (
-        <div className="bg-dark-gray rounded-xl p-4 mt-4">
+        <div className="bg-dark-gray/95 backdrop-blur-md rounded-xl p-4 mt-4">
           <div className="flex flex-wrap gap-2 items-center">
             <span className="text-sm text-light-gray mr-2">{activeFiltersTitle}</span>
             
             {searchQuery.trim() && (
-              <span className="bg-primary/20 text-primary rounded-full px-3 py-1 text-xs flex items-center">
+              <span className="bg-secondary/20 text-secondary rounded-full px-3 py-1 text-xs flex items-center shadow-neon-green-glow">
                 Search: {searchQuery.trim()}
                 <button 
                   onClick={() => onSearchChange('')}
