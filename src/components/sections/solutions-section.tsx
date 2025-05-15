@@ -148,29 +148,42 @@ const SolutionMenuItem = ({
 }) => {
   return (
     <motion.button
-  className={cn(
-    "w-full text-left py-5 px-6 rounded-lg mb-5 flex items-center group transition-all duration-300 relative overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none",
-    isActive 
-      ? "bg-dark-purple/70 shadow-neon-glow text-white opacity-100" 
-      : "bg-dark-purple/20 hover:bg-dark-purple/40 text-white/70 hover:opacity-90"
-  )}
-  onClick={onClick}
-  whileHover={{ x: 4 }}
-  whileFocus={{ outline: "none" }}
-  whileTap={{ outline: "none" }}
-  transition={{ duration: 0.2 }}
->
+      className={cn(
+        "w-full text-left py-5 px-6 rounded-lg mb-5 flex items-center group transition-colors duration-300 relative overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none",
+        isActive 
+          ? "bg-dark-purple/20 shadow-neon-glow text-white opacity-100" 
+          : "bg-dark-purple/20 hover:bg-dark-purple/40 text-light-gray hover:opacity-90"
+      )}
+      onClick={onClick}
+      whileHover={{ 
+        x: 4,
+        transition: {
+          x: {
+            type: "spring",
+            stiffness: 500,
+            damping: 25,
+            mass: 0.5,
+            duration: 0.15
+          }
+        }
+      }}
+      whileFocus={{ outline: "none" }}
+      whileTap={{ outline: "none" }}
+    >
       {/* Добавляем свечение в виде абсолютно позиционированного элемента */}
       {isActive && (
         <div className="absolute inset-0 bg-primary/10 rounded-lg filter blur-md opacity-60 -z-10"></div>
       )}
       <div className="w-14 flex justify-center items-center mr-4 flex-shrink-0">
-        <Icon name={solution.icon} className={`h-7 w-7 ${isActive ? 'text-white' : 'text-white/70 group-hover:text-white transition-colors duration-300'}`} />
+        <Icon name={solution.icon} className={`h-7 w-7 ${isActive ? 'text-white' : 'text-light-gray group-hover:text-white transition-colors duration-100'}`} />
       </div>
-      <div className="font-medium text-xl transition-all duration-300 group-hover:text-shadow-white-soft group-hover:text-white">{solution.label}</div>
+      <div className={`font-medium text-xl group-hover:text-shadow-white-soft group-hover:text-white ${isActive ? 'text-white' : 'text-light-gray'} transition-colors duration-100`}>
+        {solution.label}
+      </div>
     </motion.button>
   );
 };
+
 
 // Компонент для отдельного решения
 const SolutionContent = ({ 
@@ -300,8 +313,10 @@ export function SolutionsSection({
   useEffect(() => {
     const updateScreenHeight = () => {
       setScreenHeight(`${window.innerHeight}px`);
+
+      
     };
-    
+  
     // Установить высоту при загрузке
     updateScreenHeight();
     
@@ -327,8 +342,8 @@ export function SolutionsSection({
       <div className="relative z-10 w-full py-8">
         <div className="container mx-auto px-4 mb-12">
           <div className="text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">{title}</h2>
-            <p className="text-lg md:text-xl text-light-gray max-w-4xl mx-auto whitespace-pre-line">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12">{title}</h2>
+            <p className="text-lg md:text-base text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
           </div>
@@ -339,7 +354,7 @@ export function SolutionsSection({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Навигационное меню */}
             <div className="lg:col-span-4">
-              <div className="bg-dark-purple/30 p-6 rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] overflow-hidden relative">
+              <div className="bg-dark-purple/30 p-6 rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] overflow-hidden relative" style={{ height: "562px" }}>
                 {/* Эффект свечения для всего блока */}
                 <div className="absolute -inset-5 bg-primary/5 rounded-full blur-3xl opacity-20 -z-10 animate-pulse-slow"></div>
                 

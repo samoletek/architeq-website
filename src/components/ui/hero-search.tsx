@@ -66,29 +66,57 @@ export default function HeroSearch() {
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [isDropdownHovered, setIsDropdownHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isReady, setIsReady] = useState(false);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Инициализируем состояние после монтирования
   useEffect(() => {
     setIsReady(true);
   }, []);
 
-  // Обработчик наведения на поисковую иконку
+  // Обработчик наведения на поисковую иконку или контейнер
   const handleSearchHover = () => {
-    if (isReady && !isSearchMode) {
+    if (isReady) {
+      // Очищаем любой таймаут закрытия
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
       setIsExpanded(true);
     }
   };
 
-  // Обработчик ухода с поисковой иконки
+  // Обработчик ухода с поисковой иконки или контейнера
   const handleSearchLeave = () => {
-    if (!isSearchMode) {
-      // Добавляем задержку для предотвращения мигания
-      setTimeout(() => {
+    // Если не в режиме поиска и выпадающее меню не под ховером, закрываем с задержкой
+    if (!isSearchMode && !isDropdownHovered) {
+      closeTimeoutRef.current = setTimeout(() => {
         setIsExpanded(false);
-      }, 50);
+      }, 350); // Увеличенная задержка для лучшего UX
+    }
+  };
+
+  // Обработчик наведения на выпадающее меню
+  const handleDropdownHover = () => {
+    setIsDropdownHovered(true);
+    // Когда пользователь наводит на выпадающее меню, отменяем любой запланированный таймаут закрытия
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  // Обработчик ухода с выпадающего меню
+  const handleDropdownLeave = () => {
+    setIsDropdownHovered(false);
+    // Если не в режиме поиска, запускаем таймаут закрытия
+    if (!isSearchMode) {
+      closeTimeoutRef.current = setTimeout(() => {
+        setIsExpanded(false);
+      }, 350);
     }
   };
 
@@ -185,6 +213,15 @@ export default function HeroSearch() {
     };
   }, []);
 
+  // Очистка таймаутов при размонтировании
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (!isReady) {
     return (
       <div className="relative h-11 w-11">
@@ -212,7 +249,7 @@ export default function HeroSearch() {
     <div 
       ref={containerRef}
       className="relative"
-      style={{ minWidth: '44px', minHeight: '44px' }}
+      style={{ minWidth: '44px', minHeight: '44px', zIndex: 50 }}
       onMouseEnter={handleSearchHover}
       onMouseLeave={handleSearchLeave}
     >
@@ -282,6 +319,18 @@ export default function HeroSearch() {
         )}
       </motion.div>
 
+      {/* Невидимая соединительная область между поисковой строкой и выпадающим меню */}
+      {isExpanded && (
+        <div 
+          className="absolute left-0 w-full h-5" 
+          style={{ 
+            top: '100%', 
+            zIndex: 49
+          }}
+          onMouseEnter={handleSearchHover}
+        />
+      )}
+
       {/* Выпадающие подсказки - режим быстрого доступа */}
       <AnimatePresence>
         {isExpanded && !isSearchMode && (
@@ -293,11 +342,13 @@ export default function HeroSearch() {
               duration: 0.2,
               delay: 0.05
             }}
-            className="absolute top-full left-0 mt-1 bg-dark-gray/80 backdrop-blur-md border border-primary/20 rounded-md overflow-hidden shadow-depth-3 z-50"
+            className="absolute top-full left-0 mt-4 bg-dark-gray/80 backdrop-blur-md border border-primary/20 rounded-md overflow-hidden shadow-depth-3 z-50 search-dropdown-area"
             style={{ 
               width: "400px",
               position: 'absolute'
             }}
+            onMouseEnter={handleDropdownHover}
+            onMouseLeave={handleDropdownLeave}
           >
             {/* Поисковые теги */}
             <div className="p-3 grid grid-cols-2 gap-2">
@@ -316,7 +367,7 @@ export default function HeroSearch() {
                     href={tag.href}
                     className={cn(
                       "block px-2 py-2 text-center text-sm font-medium rounded-md truncate",
-                      "bg-secondary text-black shadow-sm hover:shadow-neon-green-glow transition-all",
+                      "bg-secondary text-black hover:shadow-[0_0_15px_rgba(176,255,116,0.7),_0_0_30px_rgba(176,255,116,0.4)] transition-all duration-300",
                       "h-8 flex items-center justify-center"
                     )}
                   >
@@ -340,12 +391,14 @@ export default function HeroSearch() {
               duration: 0.2,
               delay: 0.05
             }}
-            className="absolute top-full left-0 mt-1 bg-black/90 backdrop-blur-md border border-primary/10 rounded-md overflow-hidden shadow-depth-3 z-50"
+            className="absolute top-full left-0 mt-4 bg-black/90 backdrop-blur-md border border-primary/10 rounded-md overflow-hidden shadow-depth-3 z-50 search-dropdown-area"
             style={{ 
               width: "400px",
               position: 'absolute',
               backgroundColor: 'rgba(16, 10, 32, 0.95)'
             }}
+            onMouseEnter={handleDropdownHover}
+            onMouseLeave={handleDropdownLeave}
           >
             {/* Результаты поиска в сетке 3x3 */}
             <div className="p-2">

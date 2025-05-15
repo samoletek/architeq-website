@@ -246,3 +246,29 @@
     min-height: 600px;
   }
 }
+
+/* Добавь этот код в конец файла src/app/globals.css */
+
+/* Стили для поискового оверлея */
+.search-backdrop {
+  @apply fixed inset-0 bg-[#12071A]/80 backdrop-blur-sm z-[9990];
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+/* Класс для блокировки прокрутки при открытом поиске */
+body.search-overlay-active {
+  @apply overflow-hidden;
+}
+
+/* Стили для контента поиска */
+.search-content {
+  @apply bg-[#12071A]/95 backdrop-blur-md z-[9991];
+}
+
+/* Стили для выпадающего меню результатов поиска */
+.search-dropdown {
+  @apply bg-[#12071A]/95 backdrop-blur-md;
+}

@@ -1,3 +1,5 @@
+// Обновленный файл src/app/search/page.tsx
+
 "use client";
 
 import React, { useState, useEffect, Suspense } from 'react';
@@ -60,6 +62,8 @@ function LoadingState() {
 }
 
 // Компонент с результатами поиска
+// Замените функцию SearchResults, чтобы избежать дублирования props:
+
 function SearchResults({ 
   query, 
   searchResults, 
@@ -77,14 +81,42 @@ function SearchResults({
     return (
       <div className="space-y-6">
         {searchResults.map((result, index) => (
-          <motion.div 
+          <Link 
             key={`${result.type}-${result.id}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="bg-dark-gray rounded-lg p-6 hover:border-primary/30 border border-medium-gray transition-colors"
+            href={result.url}
+            className="block"
           >
-            <Link href={result.url} className="block">
+            <motion.div 
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ 
+    duration: 0.5,
+    delay: index * 0.08,
+    ease: [0.25, 0.1, 0.25, 1.0]
+  }}
+  // Ключевое изменение для мгновенной реакции:
+  whileHover={{ 
+    y: -10,
+    scale: 1.03, 
+    boxShadow: "0 0 20px rgba(119, 71, 207, 0.5)",
+    transition: {
+      // Практически нулевая задержка для мгновенной реакции
+      duration: 0.25,  // Быстрее, но сохраняет плавность
+      // Специальная кривая с очень быстрым началом
+      ease: [0.05, 0.7, 0.1, 1.0],
+      // Индивидуальные настройки для каждого свойства
+      y: {
+        duration: 0.15,  // Ещё быстрее для вертикального движения
+        ease: [0, 0.7, 0.2, 1.0]  // Максимально быстрый старт (0)
+      },
+      scale: {
+        duration: 0.2,
+        ease: [0, 0.6, 0.1, 1.0]
+      }
+    }
+  }}
+  className="bg-[#12071A]/90 rounded-lg p-6 border border-medium-gray hover:border-primary/50 cursor-pointer hover:shadow-neon-glow"
+>
               <div className="flex flex-col">
                 <div className="mb-1 flex items-center">
                   <span className={cn(
@@ -94,7 +126,7 @@ function SearchResults({
                     'bg-neon-purple/10 text-neon-purple'
                   )}>
                     {result.type === 'case' ? 'Case Study' : 
-                     result.type === 'service' ? 'Service' : 'Page'}
+                    result.type === 'service' ? 'Service' : 'Page'}
                   </span>
                   <h2 className="text-xl font-semibold">{result.title}</h2>
                 </div>
@@ -116,11 +148,11 @@ function SearchResults({
                   </div>
                 )}
                 
-                <div className="mt-4 text-primary text-sm flex items-center">
-                  <span>View details</span>
+                <div className="mt-4 text-primary text-sm flex items-center group">
+                  <span className="group-hover:text-secondary transition-colors duration-300">View details</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 ml-1"
+                    className="h-4 w-4 ml-1 group-hover:text-secondary transition-colors duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -134,8 +166,8 @@ function SearchResults({
                   </svg>
                 </div>
               </div>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </Link>
         ))}
       </div>
     );
@@ -143,7 +175,7 @@ function SearchResults({
   
   if (query) {
     return (
-      <div className="bg-dark-gray rounded-lg p-8 text-center">
+      <div className="bg-[#12071A]/90 rounded-lg p-8 text-center">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
@@ -167,7 +199,7 @@ function SearchResults({
   }
   
   return (
-    <div className="bg-dark-gray rounded-lg p-8 text-center">
+    <div className="bg-[#12071A]/90 rounded-lg p-8 text-center">
       <h3 className="text-xl font-semibold mb-4">What are you looking for?</h3>
       <p className="text-light-gray mb-6">
         Try searching for services, case studies, or specific technologies like CRM, Document Automation, or AI.
@@ -254,11 +286,39 @@ function SearchPageContent() {
     }
   };
 
+  // Анимация для кнопки "Back to Home" (как в heroSection)
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 1.0, 
+        delay: 0.3,
+        ease: "easeOut" 
+      }
+    },
+    hover: {
+      y: -5,
+      transition: {
+        duration: 0.7,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatType: "reverse" as const
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-5xl mx-auto">
         {/* Заголовок страницы */}
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             {query ? `Search results for "${query}"` : 'Search'}
           </h1>
@@ -267,70 +327,111 @@ function SearchPageContent() {
               {searchResults.length} results found
             </p>
           )}
-        </div>
+        </motion.div>
         
-        {/* Поисковая строка */}
-        <div className="mb-8">
+        {/* Поисковая строка с обновленными стилями */}
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <form onSubmit={handleSubmit} className="relative">
             <div className="relative flex items-center">
+              {/* 1. Изменен цвет поисковой строки на [#12071A]/80 
+                  3. Добавлено свечение поисковой строке в зеленом акцентном цвете */}
               <input
                 type="text"
-                className="w-full bg-dark-gray border border-medium-gray rounded-lg py-3 pl-10 pr-20 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Search for services, case studies, or technologies..."
+                className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-20 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+                placeholder="Search for services, case studies, or technologies"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* 4. Иконка поиска со свечением белого цвета */}
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray group-hover:text-white transition-all duration-300 group-hover:text-shadow-white-soft" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
+              {/* 2. Кнопка Search с анимацией как в hero-section */}
               <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-                <Button type="submit" variant="primary" className="h-9">
-                  Search
-                </Button>
+              <button
+                 type="submit"
+                 className="bg-secondary text-gray-900 px-4 py-2 rounded-full font-medium h-9 flex items-center justify-center focus:outline-none focus:ring-0 shadow-neon-green-glow hover:shadow-neon-green-glow-intense transition-all duration-300"
+                >
+                Search
+               </button>
               </div>
             </div>
           </form>
-        </div>
+        </motion.div>
         
         {/* Популярные теги для поиска */}
-        <div className="mb-8">
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <p className="text-sm text-light-gray mb-2">Popular searches:</p>
           <div className="flex flex-wrap gap-2">
             <Link href="/search?q=CRM">
-              <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
+              <motion.span 
+                className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer"
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(119, 71, 207, 0.2)" }}
+              >
                 CRM
-              </span>
+              </motion.span>
             </Link>
             <Link href="/search?q=Document">
-              <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
+              <motion.span 
+                className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer"
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(119, 71, 207, 0.2)" }}
+              >
                 Document
-              </span>
+              </motion.span>
             </Link>
             <Link href="/search?q=AI">
-              <span className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer">
+              <motion.span 
+                className="px-3 py-1 bg-medium-gray hover:bg-medium-gray/80 transition-colors rounded-full text-sm cursor-pointer"
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(119, 71, 207, 0.2)" }}
+              >
                 AI
-              </span>
+              </motion.span>
             </Link>
           </div>
-        </div>
+        </motion.div>
 
         {/* Результаты поиска */}
-        <SearchResults 
-          query={query} 
-          searchResults={searchResults} 
-          isLoading={isLoading} 
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <SearchResults 
+            query={query} 
+            searchResults={searchResults} 
+            isLoading={isLoading} 
+          />
+        </motion.div>
         
-        {/* Кнопка возврата */}
-        <div className="mt-8 text-center">
+        {/* 7. и 8. Кнопка "Back to Home" с анимацией и эффектом плавающей кнопки */}
+        <motion.div 
+          className="fixed bottom-20 right-20 z-50"
+          initial="hidden"
+          animate="visible"
+          variants={buttonVariants}
+          whileHover="hover"
+        >
           <Link href="/">
-            <Button variant="secondary">
+            <Button 
+              variant="secondary" 
+              className="shadow-neon-green-glow px-6 py-3 text-base font-medium transition-all hover:shadow-neon-green-glow-intense focus:outline-none focus:ring-0"
+              >
               Back to Home
             </Button>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
