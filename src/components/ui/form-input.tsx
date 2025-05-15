@@ -46,7 +46,6 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
   onValidate,
   ...props
 }, ref) => {
-  const [isFocused, setIsFocused] = useState(false);
   const [localError, setLocalError] = useState<ValidationError>(error || null);
   const [isTouched, setIsTouched] = useState(touched);
   const [innerValue, setInnerValue] = useState(value);
@@ -70,10 +69,11 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
   const showError = Boolean(localError && isTouched);
   
   // Обработчики фокуса
-  const handleFocus = () => setIsFocused(true);
+  const handleFocus = () => {
+    // Можем просто оставить пустым или добавить другую логику в будущем
+  };
   
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setIsFocused(false);
     setIsTouched(true);
     
     // Валидация при потере фокуса, если есть валидаторы
@@ -115,12 +115,12 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
     }
   };
   
-  // Общие классы для input и textarea
+  // Стили с фиолетовым свечением
   const inputClasses = cn(
-    "w-full bg-dark-gray border rounded-lg py-3 px-4 text-white placeholder-light-gray/50",
+    "w-full bg-[#12071A]/80 border rounded-lg py-3 px-4 text-white placeholder-light-gray/50",
     "transition-all duration-300 focus:outline-none",
-    isFocused ? "border-primary ring-1 ring-primary/30" : showError ? "border-red-500" : "border-medium-gray",
-    "hover:border-light-gray focus:border-primary",
+    showError ? "border-red-500" : "border-medium-gray",
+    "hover:shadow-neon-glow focus:shadow-neon-glow-intense",
     inputClassName
   );
   

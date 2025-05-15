@@ -139,10 +139,10 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={cn(
-            "w-full bg-dark-gray border rounded-lg py-3 px-4 text-white appearance-none",
+            "w-full bg-[#12071A]/80 border rounded-lg py-3 px-4 text-white appearance-none",
             "transition-all duration-300 focus:outline-none",
-            isFocused ? "border-primary ring-1 ring-primary/30" : showError ? "border-red-500" : "border-medium-gray",
-            "hover:border-light-gray focus:border-primary",
+            showError ? "border-red-500" : "border-medium-gray",
+            "hover:shadow-neon-glow focus:shadow-neon-glow-intense",
             selectClassName
           )}
           required={required}
@@ -156,6 +156,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(({
               key={option.value} 
               value={option.value}
               disabled={option.disabled}
+              className="bg-[#12071A] text-white"
             >
               {option.label}
             </option>

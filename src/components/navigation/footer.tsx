@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+// import { NeonButton } from '@/components/ui/neon-button';
 
 export default function Footer() {
   const [showSocialTooltip, setShowSocialTooltip] = useState<string | null>(null);
@@ -204,7 +205,6 @@ export default function Footer() {
               <p className="text-xl font-medium">Architect your workflow.</p>
               <p className="text-xl font-medium">Scale with confidence.</p>
             </div>
-
             {/* Контакты */}
             <div className="space-y-3">
               {/* Email и кнопка на одной линии */}
