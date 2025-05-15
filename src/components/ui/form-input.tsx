@@ -46,7 +46,6 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
   onValidate,
   ...props
 }, ref) => {
-  const [isFocused, setIsFocused] = useState(false);
   const [localError, setLocalError] = useState<ValidationError>(error || null);
   const [isTouched, setIsTouched] = useState(touched);
   const [innerValue, setInnerValue] = useState(value);
@@ -70,10 +69,11 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
   const showError = Boolean(localError && isTouched);
   
   // Обработчики фокуса
-  const handleFocus = () => setIsFocused(true);
+  const handleFocus = () => {
+    // Можем просто оставить пустым или добавить другую логику в будущем
+  };
   
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setIsFocused(false);
     setIsTouched(true);
     
     // Валидация при потере фокуса, если есть валидаторы
