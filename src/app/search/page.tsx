@@ -62,6 +62,8 @@ function LoadingState() {
 }
 
 // Компонент с результатами поиска
+// Замените функцию SearchResults, чтобы избежать дублирования props:
+
 function SearchResults({ 
   query, 
   searchResults, 
@@ -79,16 +81,42 @@ function SearchResults({
     return (
       <div className="space-y-6">
         {searchResults.map((result, index) => (
-          <motion.div 
+          <Link 
             key={`${result.type}-${result.id}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            // 5. При наведении курсора на результаты выдачи, карточка должна подсвечиваться фиолетовым свечением
-            className="bg-[#12071A]/90 rounded-lg p-6 hover:border-primary/50 border border-medium-gray transition-all duration-300 hover:shadow-neon-glow"
-            whileHover={{ scale: 1.02 }}
+            href={result.url}
+            className="block"
           >
-            <Link href={result.url} className="block">
+            <motion.div 
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ 
+    duration: 0.5,
+    delay: index * 0.08,
+    ease: [0.25, 0.1, 0.25, 1.0]
+  }}
+  // Ключевое изменение для мгновенной реакции:
+  whileHover={{ 
+    y: -10,
+    scale: 1.03, 
+    boxShadow: "0 0 20px rgba(119, 71, 207, 0.5)",
+    transition: {
+      // Практически нулевая задержка для мгновенной реакции
+      duration: 0.25,  // Быстрее, но сохраняет плавность
+      // Специальная кривая с очень быстрым началом
+      ease: [0.05, 0.7, 0.1, 1.0],
+      // Индивидуальные настройки для каждого свойства
+      y: {
+        duration: 0.15,  // Ещё быстрее для вертикального движения
+        ease: [0, 0.7, 0.2, 1.0]  // Максимально быстрый старт (0)
+      },
+      scale: {
+        duration: 0.2,
+        ease: [0, 0.6, 0.1, 1.0]
+      }
+    }
+  }}
+  className="bg-[#12071A]/90 rounded-lg p-6 border border-medium-gray hover:border-primary/50 cursor-pointer hover:shadow-neon-glow"
+>
               <div className="flex flex-col">
                 <div className="mb-1 flex items-center">
                   <span className={cn(
@@ -98,7 +126,7 @@ function SearchResults({
                     'bg-neon-purple/10 text-neon-purple'
                   )}>
                     {result.type === 'case' ? 'Case Study' : 
-                     result.type === 'service' ? 'Service' : 'Page'}
+                    result.type === 'service' ? 'Service' : 'Page'}
                   </span>
                   <h2 className="text-xl font-semibold">{result.title}</h2>
                 </div>
@@ -120,20 +148,14 @@ function SearchResults({
                   </div>
                 )}
                 
-                {/* 6. При наведении на View details текст должен быть анимирован и цвет сменяться на акцентный зеленый */}
-                <motion.div 
-                  className="mt-4 text-primary text-sm flex items-center group"
-                  whileHover={{ x: 5 }}
-                >
+                <div className="mt-4 text-primary text-sm flex items-center group">
                   <span className="group-hover:text-secondary transition-colors duration-300">View details</span>
-                  <motion.svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4 ml-1 group-hover:text-secondary transition-colors duration-300"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    whileHover={{ x: 3 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
                     <path
                       strokeLinecap="round"
@@ -141,11 +163,11 @@ function SearchResults({
                       strokeWidth={2}
                       d="M9 5l7 7-7 7"
                     />
-                  </motion.svg>
-                </motion.div>
+                  </svg>
+                </div>
               </div>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </Link>
         ))}
       </div>
     );
