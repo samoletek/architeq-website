@@ -115,12 +115,12 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
     }
   };
   
-  // Общие классы для input и textarea
+  // Стили с фиолетовым свечением
   const inputClasses = cn(
-    "w-full bg-dark-gray border rounded-lg py-3 px-4 text-white placeholder-light-gray/50",
+    "w-full bg-[#12071A]/80 border rounded-lg py-3 px-4 text-white placeholder-light-gray/50",
     "transition-all duration-300 focus:outline-none",
-    isFocused ? "border-primary ring-1 ring-primary/30" : showError ? "border-red-500" : "border-medium-gray",
-    "hover:border-light-gray focus:border-primary",
+    showError ? "border-red-500" : "border-medium-gray",
+    "hover:shadow-neon-glow focus:shadow-neon-glow-intense",
     inputClassName
   );
   

@@ -243,13 +243,13 @@ export default function ContactsContent() {
         </div>
       </section>
       
-      {/* Contact Form and Info */}
-      <section className="py-20 bg-site-bg">
+      {/* Contact Form and Calendly */}
+      <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
+            {/* Contact Form & Info */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Send Message</h2>
+              <h2 className="text-2xl font-bold mb-6">Send message</h2>
               
               {/* Form status message */}
               {formState.submitMessage && (
@@ -363,40 +363,12 @@ export default function ContactsContent() {
                   Send Message
                 </LoadingButton>
               </form>
-            </div>
-            
-            {/* Calendly Integration */}
-            <div>
-              {/* Embedded Calendly */}
-              <div className="bg-dark-gray rounded-lg p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4">Free Consultation</h3>
-                <p className="text-light-gray mb-4">
-                  Schedule a 30-minute call with our automation expert to discuss your needs and how we can help optimize your business processes.
-                </p>
-                <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
-                  <CalendlyWidget 
-                    url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
-                    styles={{
-                      height: "650px",
-                      width: "100%"
-                    }}
-                    prefill={{
-                      name: formData.name,
-                      email: formData.email
-                    }}
-                  />
-                </div>
-                
-                <p className="text-xs text-light-gray mt-2 text-center">
-                  Powered by Calendly
-                </p>
-              </div>
               
-              {/* Additional Contact Information */}
-              <div className="bg-dark-gray rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+              {/* Contact Information */}
+              <div className="mt-12">
+                <h3 className="text-2xl font-bold mb-6">Or just text us</h3>
                 
-                <div className="space-y-4">
+                <div className="bg-[#12071A]/80 rounded-lg p-6 space-y-4">
                   <div>
                     <h4 className="font-medium mb-1">Email</h4>
                     <p className="text-light-gray">hi@architeq.io</p>
@@ -414,51 +386,90 @@ export default function ContactsContent() {
                 </div>
               </div>
             </div>
+            
+            {/* Calendly Widget - увеличен размер */}
+            <div>
+              <div className="bg-[#12071A]/80 rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4">Free Consultation</h3>
+                <p className="text-light-gray mb-4">
+                  Schedule a 30-minute call with our founder to discuss how we can help optimize your business processes.
+                </p>
+                <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
+                  <CalendlyWidget 
+                    url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                    styles={{
+                      height: "750px", // Увеличена высота для лучшей видимости
+                      width: "100%"
+                    }}
+                    prefill={{
+                      name: formData.name,
+                      email: formData.email
+                    }}
+                  />
+                </div>
+                
+                <p className="text-xs text-light-gray mt-2 text-center">
+                  Powered by Calendly
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
       
-      {/* FAQ Section */}
-      <section className="py-16 bg-dark-gray">
+      {/* FAQ Section with updated styling */}
+      <section className="py-16 bg-site-bg">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">FAQ</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <motion.div 
-              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+            <div 
+              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
+                         border border-primary/20 
+                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
+                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                         hover:border-primary/40 
+                         transition-all duration-300"
             >
               <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
               <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We will provide a detailed timeline during our initial consultation.</p>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+            <div 
+              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
+                         border border-primary/20 
+                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
+                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                         hover:border-primary/40 
+                         transition-all duration-300"
             >
               <h3 className="text-xl font-semibold mb-2">Which countries are your clients from?</h3>
               <p className="text-light-gray">We work with clients from the USA, Europe, Australia, and Japan. Our team operates across different time zones to provide convenient support for your business.</p>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+            <div 
+              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
+                         border border-primary/20 
+                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
+                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                         hover:border-primary/40 
+                         transition-all duration-300"
             >
               <h3 className="text-xl font-semibold mb-2">What is your pricing model?</h3>
               <p className="text-light-gray">Our pricing depends on the scope and complexity of your project. We offer both fixed-price projects and monthly payments for ongoing support and maintenance.</p>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="bg-medium-gray rounded-lg p-6 hover:bg-medium-gray/80 transition-colors"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+            <div 
+              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
+                         border border-primary/20 
+                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
+                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                         hover:border-primary/40 
+                         transition-all duration-300"
             >
               <h3 className="text-xl font-semibold mb-2">Do you provide training for our team?</h3>
               <p className="text-light-gray">Absolutely! We provide comprehensive training to ensure your team can effectively use and maintain the automated systems we implement.</p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
