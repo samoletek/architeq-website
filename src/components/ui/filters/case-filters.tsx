@@ -201,10 +201,10 @@ export function CaseFilters({
   // Определяем цвет для группы фильтров
   const getGroupColor = (groupId: string) => {
     switch (groupId) {
-      case 'industry': return 'bg-primary/20 text-primary';
-      case 'solutionType': return 'bg-neon-blue/20 text-neon-blue';
-      case 'technology': return 'bg-neon-purple/20 text-neon-purple';
-      default: return 'bg-gray-500/20 text-gray-300';
+      case 'industry': return 'bg-medium-gray/20 text-light-gray';
+      case 'solutionType': return 'bg-medium-gray/20 text-light-gray';
+      case 'technology': return 'bg-medium-gray/20 text-light-gray';
+      default: return 'bg-medium-gray/20 text-light-gray';
     }
   };
   
@@ -222,7 +222,7 @@ export function CaseFilters({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+              className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
               placeholder={searchPlaceholder}
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
@@ -398,7 +398,7 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
                 placeholder={searchPlaceholder}
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
@@ -433,8 +433,8 @@ export function CaseFilters({
                   className={cn(
                     "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-all duration-300",
                     openGroups[group.id] 
-                      ? "bg-[#12071A]/95 backdrop-blur-md text-white shadow-lg border border-primary/30" 
-                      : "bg-[#12071A]/70 backdrop-blur-sm border border-medium-gray/50 text-light-gray hover:text-white hover:bg-[#12071A]/80"
+                      ? "bg-dark-gray/95 backdrop-blur-md text-white shadow-lg border border-medium-gray/50" 
+                      : "bg-dark-gray/70 backdrop-blur-sm border border-medium-gray/50 text-light-gray hover:text-white hover:bg-dark-gray/80"
                   )}
                 >
                   <div className="flex items-center">
@@ -598,7 +598,7 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-[#12071A]/80 border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
                 placeholder={searchPlaceholder}
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
