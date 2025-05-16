@@ -312,3 +312,25 @@ body.search-overlay-active {
     opacity: 0.5;
   }
 }
+
+/* Переопределение стилей для инпутов */
+input.dark-input {
+  background-color: #121212 !important;
+  color: white !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input.dark-input:focus {
+  background-color: #121212 !important;
+}
+
+/* Для исправления авто-заполнения в Chrome */
+input.dark-input:-webkit-autofill,
+input.dark-input:-webkit-autofill:hover,
+input.dark-input:-webkit-autofill:focus,
+input.dark-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #121212 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
