@@ -249,7 +249,7 @@ export default function ContactsContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form & Info */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Send message</h2>
+              <h2 className="text-2xl font-bold mb-6">Send Message</h2>
               
               {/* Form status message */}
               {formState.submitMessage && (
@@ -366,8 +366,6 @@ export default function ContactsContent() {
               
               {/* Contact Information */}
               <div className="mt-12">
-                <h3 className="text-2xl font-bold mb-6">Or just text us</h3>
-                
                 <div className="bg-[#12071A]/80 rounded-lg p-6 space-y-4">
                   <div>
                     <h4 className="font-medium mb-1">Email</h4>
@@ -390,9 +388,9 @@ export default function ContactsContent() {
             {/* Calendly Widget - увеличен размер */}
             <div>
               <div className="bg-[#12071A]/80 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">Free Consultation</h3>
+                <h3 className="text-xl font-semibold mb-4">Schedule a Call</h3>
                 <p className="text-light-gray mb-4">
-                  Schedule a 30-minute call with our founder to discuss how we can help optimize your business processes.
+                  Schedule a 30-minute call with our founder.
                 </p>
                 <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
                   <CalendlyWidget 
