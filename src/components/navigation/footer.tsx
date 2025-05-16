@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-// import { NeonButton } from '@/components/ui/neon-button';
 
 export default function Footer() {
   const [showSocialTooltip, setShowSocialTooltip] = useState<string | null>(null);
@@ -15,13 +14,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-dark-gray pt-20 pb-12 relative overflow-hidden">
-      {/* Градиентный фон для красоты */}
+    <footer className="bg-dark-gray pt-20 pb-6 relative overflow-hidden">
+      {/* Градиентный фон */}
       <div className="absolute inset-0 bg-gradient-to-b from-site-bg via-dark-gray to-dark-purple opacity-50" />
       
       <div className="container mx-auto px-4 relative">
         {/* Верхняя часть с колонками */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-20">
           {/* Our Services */}
           <div>
             <Link href="/services" className="text-lg font-bold mb-4 block hover:text-primary transition-colors">
@@ -124,34 +123,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal docs */}
-          <div>
-            <div className="text-lg font-bold mb-4">
-              Legal docs
-            </div>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/privacy" className="text-light-gray hover:text-white transition-colors text-sm">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/cookies" className="text-light-gray hover:text-white transition-colors text-sm">
-                  Cookies
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-light-gray hover:text-white transition-colors text-sm">
-                  Terms of Use
-                </Link>
-              </li>
-            </ul>
-          </div>
-
           {/* Contact us */}
           <div>
             <Link href="/contacts" className="text-lg font-bold mb-4 block hover:text-primary transition-colors">
-              Contact us
+              Contact Us
             </Link>
             <ul className="space-y-3">
               <li>
@@ -173,10 +148,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Нижняя часть - без разделительной линии */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
-          {/* Левая часть - среднего размера логотип */}
-          <div className="pb-12">
+        {/* Основная часть */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end mb-12">
+          {/* Левая часть - логотип */}
+          <div>
             <Link 
               href="/" 
               className="block"
@@ -198,16 +173,16 @@ export default function Footer() {
             </Link>
           </div>
 
-          {/* Правая часть - с улучшенным UX/UI */}
+          {/* Правая часть */}
           <div className="space-y-6 text-left lg:text-right">
             {/* Слоган */}
             <div>
-              <p className="text-xl font-medium">Architect your workflow.</p>
-              <p className="text-xl font-medium">Scale with confidence.</p>
+              <p className="text-base font-medium">Architect your workflow.</p>
+              <p className="text-base font-medium">Scale with confidence.</p>
             </div>
             {/* Контакты */}
             <div className="space-y-3">
-              {/* Email и кнопка на одной линии */}
+              {/* Email */}
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-end gap-3">
                 <a 
                   href="mailto:hi@architeq.io" 
@@ -263,7 +238,7 @@ export default function Footer() {
                   </button>
                 </div>
 
-                {/* Tooltip для неактивных соцсетей */}
+                {/* Tooltip-заглушка для неактивных соцсетей */}
                 {showSocialTooltip && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -275,13 +250,35 @@ export default function Footer() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Копирайт - справа в самом низу */}
-            <div className="pt-4">
-              <p className="text-light-gray text-sm">
-                © 2025 Architeq. All rights reserved.
-              </p>
-            </div>
+        {/* Линия-разделитель */}
+        <div className="border-t-[0.5px] border-light-gray/30 mb-4"></div>
+        
+        {/* Нижняя часть футера в стиле Apple */}
+        <div className="flex flex-col md:flex-row items-center py-2 text-sm text-light-gray">
+          {/* Копирайт слева */}
+          <div className="mb-4 md:mb-0 md:w-1/4 text-left">
+            <p>© 2025 Architeq. All rights reserved.</p>
+          </div>
+          
+          {/* Ссылки на Legal документы по центру */}
+          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-4 md:mb-0 md:w-2/4 mx-auto">
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms of Use
+            </Link>
+            <Link href="/cookies" className="hover:text-white transition-colors">
+              Cookies
+            </Link>
+          </div>
+          
+          {/* Worldwide справа */}
+          <div className="md:w-1/4 text-right">
+            <span>Worldwide</span>
           </div>
         </div>
       </div>
