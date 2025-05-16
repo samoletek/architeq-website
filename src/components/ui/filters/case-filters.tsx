@@ -1,3 +1,4 @@
+// Исправленный фильтр для кейсов
 // src/components/ui/filters/case-filters.tsx
 "use client";
 
@@ -222,7 +223,8 @@ export function CaseFilters({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+              style={{backgroundColor: '#121212'}}
+              className="w-full bg-[#121212] border border-primary/30 rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300"
               placeholder={searchPlaceholder}
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
@@ -235,7 +237,7 @@ export function CaseFilters({
           {/* Мобильная кнопка фильтров */}
           <button
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-            className="mt-3 w-full flex items-center justify-between bg-medium-gray hover:bg-medium-gray/80 text-white py-2 px-4 rounded-lg transition-colors"
+            className="mt-3 w-full flex items-center justify-between bg-dark-gray border border-primary/30 hover:bg-dark-gray/70 text-white py-3 px-4 rounded-lg transition-colors"
           >
             <span className="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -398,7 +400,8 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+                style={{backgroundColor: '#121212'}}
+                className="w-full bg-[#121212] border border-primary/30 rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300"
                 placeholder={searchPlaceholder}
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
@@ -412,10 +415,10 @@ export function CaseFilters({
             <button
               onClick={onClearFilters}
               className={cn(
-                "py-2.5 px-4 rounded-lg transition-colors text-sm font-medium whitespace-nowrap",
+                "py-3 px-4 rounded-lg transition-colors text-sm font-medium whitespace-nowrap",
                 hasActiveFilters 
                   ? "bg-secondary text-gray-900 hover:bg-secondary/90 shadow-neon-green-glow" 
-                  : "bg-medium-gray/50 backdrop-blur-md text-light-gray cursor-not-allowed"
+                  : "bg-dark-gray border border-primary/30 backdrop-blur-sm text-light-gray cursor-not-allowed"
               )}
               disabled={!hasActiveFilters}
             >
@@ -433,8 +436,8 @@ export function CaseFilters({
                   className={cn(
                     "flex items-center justify-between w-full py-3 px-4 rounded-lg transition-all duration-300",
                     openGroups[group.id] 
-                      ? "bg-dark-gray/95 backdrop-blur-md text-white shadow-lg border border-medium-gray/50" 
-                      : "bg-dark-gray/70 backdrop-blur-sm border border-medium-gray/50 text-light-gray hover:text-white hover:bg-dark-gray/80"
+                      ? "bg-dark-gray/95 backdrop-blur-md text-white shadow-lg border border-primary/30" 
+                      : "bg-dark-gray backdrop-blur-sm border border-primary/30 text-light-gray hover:text-white hover:bg-dark-gray/70"
                   )}
                 >
                   <div className="flex items-center">
@@ -598,7 +601,8 @@ export function CaseFilters({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-medium-gray border border-medium-gray rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300 hover:shadow-neon-green-glow focus:shadow-neon-green-glow"
+                style={{backgroundColor: '#121212'}}
+                className="w-full bg-[#121212] border border-primary/30 rounded-lg py-3 pl-10 pr-4 text-white placeholder-light-gray/50 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300"
                 placeholder={searchPlaceholder}
               />
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none group">
@@ -698,10 +702,10 @@ export function CaseFilters({
           <button
             onClick={onClearFilters}
             className={cn(
-              "w-full mt-6 py-2 px-4 rounded-lg transition-all duration-300 text-sm font-medium",
+              "w-full mt-6 py-3 px-4 rounded-lg transition-all duration-300 text-sm font-medium",
               hasActiveFilters 
                 ? "bg-secondary text-gray-900 hover:bg-secondary/90 shadow-neon-green-glow" 
-                : "bg-medium-gray/50 backdrop-blur-md text-light-gray cursor-not-allowed"
+                : "bg-dark-gray border border-primary/30 backdrop-blur-sm text-light-gray cursor-not-allowed"
             )}
             disabled={!hasActiveFilters}
           >
