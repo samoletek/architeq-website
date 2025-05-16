@@ -220,7 +220,7 @@ export default function Footer() {
 
             {/* Социальные сети */}
             <div className="space-y-3">
-              <div className="flex items-center gap-4 justify-start lg:justify-end relative items-center">
+              <div className="flex items-center gap-4 justify-start lg:justify-end relative">
                 {/* Twitter/X (неактивный) */}
                 <div className="relative">
                   <button

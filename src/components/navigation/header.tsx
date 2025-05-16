@@ -124,7 +124,7 @@ export default function Header({
 
   // Фоновые стили в зависимости от прокрутки и варианта
 const headerBgClasses = cn(
-  'transition-all duration-300 backdrop-blur-sm',
+  'transition-all duration-300 backdrop-blur-4xl',
   variant === 'default' ? (
     isScrolled ? 'bg-[#12071A]/90 py-3 shadow-md' : 'py-5 bg-[#12071A]/80'
   ) : 
@@ -164,7 +164,7 @@ const headerBgClasses = cn(
       <AnimatePresence>
         {activeDropdown === item.name && (
           <motion.div
-          className="absolute top-full left-0 mt-2 py-3 px-4 bg-[#12071A]/90 backdrop-blur-md rounded-lg shadow-md border border-primary/10 z-50 min-w-[180px]"
+          className="absolute top-full left-0 mt-2 py-3 px-4 bg-[#12071A]/90 backdrop-blur-4xl rounded-lg shadow-md border border-primary/10 z-50 min-w-[180px]"
           variants={menuVariants}
             initial="hidden"
             animate="visible"
@@ -300,7 +300,7 @@ const headerBgClasses = cn(
             <div className="relative">
               <button
                 onClick={toggleSearch}
-                className="text-white hover:text-secondary transition-colors"
+                className="text-white hover:text-secondary transition-colors -mt-1 flex items-center"
                 aria-label="Search"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -361,7 +361,7 @@ const headerBgClasses = cn(
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 bg-[#12071A]/95 backdrop-blur-md z-40 pt-20"
+            className="md:hidden fixed inset-0 bg-[#12071A]/95 backdrop-blur-4xl z-40 pt-20"
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}

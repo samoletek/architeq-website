@@ -58,18 +58,19 @@ export default function FeaturedCasesSection({
       ? 'grid-cols-1 md:grid-cols-2' 
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
-  // Адаптируем размер для компактного режима
-  const sectionPadding = compact ? 'py-10' : 'pt-28 pb-20';
+  // Используем увеличенные отступы для секции
+  const sectionPadding = compact ? 'py-10' : 'pt-72 pb-72';
 
   // Если компонент не смонтирован на клиенте, возвращаем упрощенную версию
   if (!isMounted) {
     return (
       <section className={cn(sectionPadding, sectionBg, className)}>
-        <div className="container mx-auto px-4">
+        {/* Используем max-w-[90rem] вместо контейнера по умолчанию, чтобы увеличить ширину */}
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Заголовок и подзаголовок, если не компактный режим */}
           {!compact && (
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
               <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
@@ -89,8 +90,8 @@ export default function FeaturedCasesSection({
             </div>
           )}
 
-          {/* Сетка кейсов */}
-          <div className={cn("grid gap-8", gridCols)}>
+          {/* Сетка кейсов с еще более увеличенным промежутком между карточками в 1.5 раза (gap-16 -> gap-24) */}
+          <div className={cn("grid gap-24", gridCols)}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
@@ -107,15 +108,16 @@ export default function FeaturedCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
+                    className="case-card-enhanced" // Добавляем класс для стилизации карточек
                   />
                 </div>
               );
             })}
           </div>
 
-          {/* Кнопка "Посмотреть все" только если не компактный режим */}
+          {/* Кнопка "Посмотреть все" с увеличенным отступом сверху */}
           {!compact && viewAllUrl && (
-            <div className="mt-12 text-center">
+            <div className="mt-29 text-center">
               <Link href={viewAllUrl}>
                 <Button variant="secondary" size="lg">
                   {viewAllText}
@@ -131,11 +133,12 @@ export default function FeaturedCasesSection({
   // Полная версия с анимациями для клиентского рендеринга
   return (
     <section className={cn(sectionPadding, sectionBg, className)}>
-      <div className="container mx-auto px-4">
+      {/* Используем max-w-[90rem] вместо контейнера по умолчанию, чтобы увеличить ширину */}
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Заголовок и подзаголовок, если не компактный режим */}
         {!compact && (
-          <div className="text-center mb-16 animate-fadeIn">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
             <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </div>
         )}
@@ -155,8 +158,8 @@ export default function FeaturedCasesSection({
           </div>
         )}
 
-        {/* Сетка кейсов */}
-        <div className={cn("grid gap-8", gridCols)}>
+        {/* Сетка кейсов с еще более увеличенным промежутком между карточками в 1.5 раза (gap-16 -> gap-24) */}
+        <div className={cn("grid gap-24", gridCols)}>
           {displayCases.map((caseItem, index) => {
             const cardData = toCaseCardFormat(caseItem);
             return (
@@ -177,15 +180,16 @@ export default function FeaturedCasesSection({
                   tags={cardData.tags}
                   href={`/cases/${cardData.id}`}
                   isCompact={caseCardVariant === 'compact'}
+                  className="case-card-enhanced" // Добавляем класс для стилизации карточек
                 />
               </div>
             );
           })}
         </div>
 
-        {/* Кнопка "Посмотреть все" только если не компактный режим */}
+        {/* Кнопка "Посмотреть все" с увеличенным отступом сверху */}
         {!compact && viewAllUrl && (
-          <div className="mt-12 text-center animate-fadeIn" style={{ animationDelay: "0.3s" }}>
+          <div className="mt-29 text-center animate-fadeIn" style={{ animationDelay: "0.3s" }}>
             <Link href={viewAllUrl}>
               <Button variant="secondary" size="lg">
                 {viewAllText}
@@ -214,10 +218,11 @@ export function HorizontalCasesSection({
 
   const displayCases = cases || getFeaturedCases(6);
   
+  // Остальной код оставляем без изменений...
   if (!isMounted) {
     return (
       <div className={cn("py-10", className)}>
-        <div className="container mx-auto px-4">
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Заголовок с ссылкой "Посмотреть все" */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">{title}</h2>
@@ -231,13 +236,13 @@ export function HorizontalCasesSection({
             )}
           </div>
           
-          {/* Плейсхолдер для горизонтального скролла */}
+          {/* Плейсхолдер для горизонтального скролла - увеличиваем промежуток между карточками */}
           <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <div className="flex space-x-4 pb-4" style={{ minWidth: 'max-content' }}>
+            <div className="flex space-x-8 pb-4" style={{ minWidth: 'max-content' }}>
               {displayCases.map((_, index) => (
                 <div 
                   key={index} 
-                  className="w-[280px] h-[180px] bg-dark-gray rounded-lg flex-shrink-0"
+                  className="w-[320px] h-[180px] bg-dark-gray rounded-lg flex-shrink-0" // Увеличиваем ширину с 280px до 320px
                 />
               ))}
             </div>
@@ -249,7 +254,7 @@ export function HorizontalCasesSection({
 
   return (
     <div className={cn("py-10", className)}>
-      <div className="container mx-auto px-4">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Заголовок с ссылкой "Посмотреть все" */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">{title}</h2>
@@ -263,15 +268,15 @@ export function HorizontalCasesSection({
           )}
         </div>
         
-        {/* Горизонтальный скролл с кейсами */}
+        {/* Горизонтальный скролл с кейсами - увеличиваем промежуток между карточками и ширину карточек */}
         <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-          <div className="flex space-x-4 pb-4" style={{ minWidth: 'max-content' }}>
+          <div className="flex space-x-12 pb-4" style={{ minWidth: 'max-content' }}> {/* Увеличиваем отступ с space-x-8 до space-x-12 */}
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
                 <div 
                   key={index} 
-                  className="w-[280px] flex-shrink-0"
+                  className="w-[320px] flex-shrink-0" // Увеличиваем ширину с 280px до 320px
                 >
                   <CaseCard 
                     id={cardData.id}
@@ -280,6 +285,7 @@ export function HorizontalCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={true}
+                    className="case-card-enhanced" // Добавляем класс для стилизации карточек
                   />
                 </div>
               );

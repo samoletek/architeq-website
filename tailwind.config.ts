@@ -88,6 +88,10 @@ const config: Config = {
         'radial-glow-blue': 'radial-gradient(circle, rgba(77, 173, 255, 0.7) 0%, rgba(77, 173, 255, 0) 70%)',
         'radial-glow-white': 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%)',
       },
+      // Добавить в файл tailwind.config.ts в раздел theme.extend.spacing
+         spacing: {
+         '29': '7.25rem', // 1.8 * 16px (в Tailwind mt-16 = 4rem = 16 * 4px = 64px, поэтому 64px * 1.8 = 115.2px ≈ 7.25rem)
+         },
       // Анимации для парения
       keyframes: {
         float: {
