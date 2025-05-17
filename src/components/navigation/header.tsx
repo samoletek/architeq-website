@@ -58,7 +58,8 @@ export default function Header({
     href: '/contacts'
   },
   showSearch = false,
-  className
+  className,
+  variant = 'default'
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -87,10 +88,13 @@ export default function Header({
     // Закрываем мобильное меню при изменении маршрута
     setIsMobileMenuOpen(false);
     
-    // Анимация появления хедера с задержкой
+    // Анимация появления хедера - с задержкой только для домашней страницы
+    const isHomePage = pathname === '/';
+    const delay = isHomePage ? 800 : 50; // 800мс для главной, 50мс для других страниц
+    
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 800); // Задержка 800мс
+    }, delay);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -179,7 +183,7 @@ export default function Header({
       <motion.header 
         className={cn(
           "mx-auto rounded-xl transition-all duration-300 py-4", 
-          isScrolled ? "bg-[#12071A]/90 backdrop-blur-sm shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
+          isScrolled ? "backdrop-blur-md shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
           "max-w-[1400px]", 
           className
         )}
@@ -485,7 +489,7 @@ export default function Header({
       <AnimatePresence>
         {activeDropdown && dropdownPosition && (
           <motion.div
-            className="fixed py-3 px-4 bg-[#12071A]/70 backdrop-blur-sm rounded-lg shadow-[0_0_15px_rgba(119,71,207,0.2)] border border-primary/10 z-30 min-w-[200px]"
+            className="fixed py-3 px-4 backdrop-blur-md rounded-lg shadow-[0_0_15px_rgba(119,71,207,0.2)] border border-primary/10 z-30 min-w-[200px]"
             style={{
               left: `${dropdownPosition.left}px`,
               top: `${dropdownPosition.top}px`,
