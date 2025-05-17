@@ -305,44 +305,10 @@ body.search-overlay-active {
          drop-shadow(0 0 30px rgba(176, 255, 116, 0.5));
 }
 
-/* Добавить в src/app/globals.css */
 
 /* Плавный скролл для всей страницы */
 html {
   scroll-behavior: smooth;
-}
-
-/* Улучшенная анимация прокрутки */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Скрытие полос прокрутки на некоторых браузерах */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Стили для эффекта прилипания секций */
-.sticky-section {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-
-/* Плавные переходы для всех элементов */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 /* Стили для карточек кейсов */
