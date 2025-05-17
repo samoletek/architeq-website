@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils/utils'
 
 // Defining style variants for the button
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus:outline-none focus:ring-0 active:outline-none ...",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-all duration-300 focus-visible:outline-none focus:outline-none focus:ring-0 active:outline-none ...",
   {
     variants: {
       variant: {
@@ -15,7 +15,7 @@ const buttonVariants = cva(
         ghost: 'bg-transparent text-white border border-white rounded-lg hover:bg-white hover:bg-opacity-10 active:bg-opacity-20 active:scale-[0.98] focus:ring-2 focus:ring-offset-2',
         accent: 'bg-secondary-gradient text-site-bg rounded-lg hover:opacity-90 active:opacity-95 active:scale-[0.98] shadow-neon-green-glow hover:shadow-neon-green-glow-intense focus:ring-2 focus:ring-offset-2',
         // Обновленный вариант для кнопки Schedule a Call с эффектом свечения только текста
-        headerCta: 'bg-transparent text-white hover:text-secondary active:scale-[0.98] transition-all duration-300',
+        headerCta: 'bg-transparent text-white hover:text-secondary active:scale-[0.98]',
       },
       size: {
         default: 'py-3 px-6 text-base',
@@ -38,11 +38,21 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, href, ...props }, ref) => {
-    // Специальный класс для текста кнопки headerCta
-    const isHeaderCta = variant === 'headerCta';
-    const textClass = isHeaderCta 
-      ? 'text-shadow-white hover:text-shadow-green transition-all duration-300' 
-      : '';
+    // Улучшенный класс для текста всех кнопок с плавными переходами
+    const getTextClass = () => {
+      if (variant === 'headerCta') {
+        return 'text-shadow-white hover:text-shadow-green transition-all duration-300';
+      } else if (variant === 'ghost') {
+        return 'transition-all duration-300'; // Плавность для ghost кнопки
+      } else if (variant === 'primary') {
+        return 'transition-all duration-300'; // Плавность для primary кнопки
+      } else if (variant === 'secondary' || variant === 'accent') {
+        return 'transition-all duration-300'; // Плавность для secondary/accent кнопки
+      }
+      return '';
+    };
+    
+    const textClass = getTextClass();
     
     if (href) {
       return (
@@ -61,7 +71,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        {isHeaderCta ? (
+        {textClass ? (
           <span className={textClass}>{props.children}</span>
         ) : (
           props.children

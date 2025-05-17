@@ -28,10 +28,10 @@ export const GlowingTextButton: React.FC<GlowingTextButtonProps> = ({
   
   // Базовые стили контейнера
   const containerStyles = cn(
-    'inline-flex items-center justify-center font-medium transition-all duration-500',
+    'inline-flex items-center justify-center font-medium',
     'focus:outline-none disabled:opacity-50 disabled:pointer-events-none',
     // Только для header добавляем стили кнопки
-    variant === 'header' && 'rounded-lg py-2 px-4',
+    variant === 'header' && 'rounded-lg py-2 px-4 transition-all duration-300',
     variant === 'header' && isHovered && 'bg-secondary shadow-neon-green-glow-intense',
     // Для hero убираем любые стили кнопки, только inline
     variant === 'hero' && 'bg-transparent',
@@ -39,20 +39,20 @@ export const GlowingTextButton: React.FC<GlowingTextButtonProps> = ({
     className
   );
   
-  // Стили для текста
+  // Стили для текста с плавными переходами
   const textStyles = cn(
-    'transition-all duration-500',
+    'transition-all duration-300',
     // Для header варианта: белый светящийся текст -> графитовый текст на зеленом фоне
     variant === 'header' && (
       isHovered
         ? 'text-site-bg font-medium' // Графитовый текст при наведении (на зеленом фоне)
-        : 'text-white animate-wave-glow-white font-medium' // Белое свечение в обычном состоянии
+        : 'text-white text-shadow-white font-medium' // Белое свечение в обычном состоянии
     ),
     // Для hero варианта: белый светящийся текст -> зеленый светящийся текст
     variant === 'hero' && (
       isHovered
-        ? 'text-secondary animate-wave-glow-green font-medium' // Зеленый текст с зеленым свечением при наведении
-        : 'text-white animate-wave-glow-white font-medium' // Белое свечение в обычном состоянии
+        ? 'text-secondary text-shadow-green font-medium' // Зеленый текст с зеленым свечением при наведении
+        : 'text-white text-shadow-white font-medium' // Белое свечение в обычном состоянии
     )
   );
   
