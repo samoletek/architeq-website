@@ -96,7 +96,7 @@ export default function HeroSection({
               animate="visible"
               className="mb-2 whitespace-nowrap"
             >
-              <span style={staticGradientStyle} className="mr-2">Architect</span>
+              <span style={staticGradientStyle} className="mr-2">Architect </span>
               <span>your workflow</span>
             </motion.div>
             
@@ -107,7 +107,7 @@ export default function HeroSection({
               transition={{ delay: 0.05 }}
               className="whitespace-nowrap"
             >
-              <span style={staticGradientStyle} className="mr-2">Scale</span>
+              <span style={staticGradientStyle} className="mr-2">Scale </span>
               <span>with confidence</span>
             </motion.div>
           </h1>

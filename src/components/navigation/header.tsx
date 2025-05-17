@@ -183,7 +183,7 @@ export default function Header({
       <motion.header 
         className={cn(
           "mx-auto rounded-xl transition-all duration-300 py-4", 
-          isScrolled ? "backdrop-blur-md shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
+          isScrolled ? "bg-[#12071A]/90 backdrop-blur-sm shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
           "max-w-[1400px]", 
           className
         )}
@@ -195,21 +195,7 @@ export default function Header({
             className="text-2xl font-bold"
           >
             <span 
-              className={cn(
-                "inline-block text-transparent bg-clip-text transition-all duration-500 ease-out",
-                isActive('/') && "text-shadow-green-soft" // Зеленое свечение для домашней страницы
-              )}
-              style={{ 
-                backgroundImage: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 50%, #B0FF74 100%)',
-                backgroundSize: '200% auto',
-                backgroundPosition: '0% center',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundPosition = '100% center';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundPosition = '0% center';
-              }}
+              className="inline-block text-white text-shadow-white transition-all duration-300 hover:text-secondary hover:text-shadow-green"
             >
               {logo || "Architeq"}
             </span>
@@ -289,10 +275,10 @@ export default function Header({
             
             {/* Поиск на десктопе, если включен */}
             {showSearch && (
-              <div className="relative">
+              <div className="relative flex items-center">
                 <button
                   onClick={toggleSearch}
-                  className="text-white hover:text-secondary transition-colors"
+                  className="text-white hover:text-secondary transition-colors mt-0.5" 
                   aria-label="Search"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -489,7 +475,7 @@ export default function Header({
       <AnimatePresence>
         {activeDropdown && dropdownPosition && (
           <motion.div
-            className="fixed py-3 px-4 backdrop-blur-md rounded-lg shadow-[0_0_15px_rgba(119,71,207,0.2)] border border-primary/10 z-30 min-w-[200px]"
+            className="fixed py-3 px-4 bg-[#12071A]/70 backdrop-blur-sm rounded-lg shadow-md border border-primary/10 z-30 min-w-[200px]"
             style={{
               left: `${dropdownPosition.left}px`,
               top: `${dropdownPosition.top}px`,
