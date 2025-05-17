@@ -58,8 +58,7 @@ export default function Header({
     href: '/contacts'
   },
   showSearch = false,
-  className,
-  variant = 'default'
+  className
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
