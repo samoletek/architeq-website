@@ -66,12 +66,11 @@ export default function Header({
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false); // Состояние для анимации появления
-  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false); // Для отслеживания наведения на дропдаун
   const { isMobile } = useDeviceDetection();
   const pathname = usePathname();
   
   // Рефы для позиционирования дропдауна
-  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const navItemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [dropdownPosition, setDropdownPosition] = useState<{ left: number; top: number } | null>(null);
 
   // Эффект для отслеживания скролла и анимации появления
@@ -106,39 +105,31 @@ export default function Header({
     return pathname.startsWith(href);
   }, [pathname]);
   
+  // Вычисление позиции для выпадающего меню
+  const updateDropdownPosition = (name: string) => {
+    const navItem = navItemRefs.current[name];
+    if (navItem) {
+      const rect = navItem.getBoundingClientRect();
+      setDropdownPosition({
+        left: rect.left,
+        top: rect.bottom
+      });
+    }
+  };
+
   // Обработчик наведения на элемент с выпадающим меню
   const handleMouseEnter = (name: string) => {
     if (!isMobile) {
+      updateDropdownPosition(name);
       setActiveDropdown(name);
-      // Вычисляем позицию для дропдауна
-      const ref = dropdownRefs.current[name];
-      if (ref) {
-        const rect = ref.getBoundingClientRect();
-        setDropdownPosition({
-          left: rect.left,
-          top: rect.bottom + 8 // небольшой отступ от кнопки
-        });
-      }
     }
   };
   
   // Обработчик ухода с элемента с выпадающим меню
   const handleMouseLeave = () => {
-    if (!isMobile && !isHoveringDropdown) {
+    if (!isMobile) {
       setActiveDropdown(null);
-      setDropdownPosition(null);
     }
-  };
-  
-  // Обработчики для дропдауна
-  const handleDropdownMouseEnter = () => {
-    setIsHoveringDropdown(true);
-  };
-  
-  const handleDropdownMouseLeave = () => {
-    setIsHoveringDropdown(false);
-    setActiveDropdown(null);
-    setDropdownPosition(null);
   };
   
   // Обработчик клика на элемент с выпадающим меню на мобильных
@@ -177,67 +168,6 @@ export default function Header({
       }
     }),
     exit: { opacity: 0, y: 8, transition: { duration: 0.1 } }
-  };
-  
-  // Рендерим выпадающее меню с fixed позиционированием
-  const renderDropdown = (item: NavigationItem) => {
-    if (!item.children || activeDropdown !== item.name || !dropdownPosition) return null;
-    
-    return (
-      <motion.div
-        key={`dropdown-${item.name}`}
-        className="fixed py-3 px-4 bg-[#12071A]/70 backdrop-blur-sm rounded-lg shadow-md border border-primary/10 z-50 min-w-[200px]"
-        style={{
-          left: dropdownPosition.left,
-          top: dropdownPosition.top,
-        }}
-        variants={menuVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        onMouseEnter={handleDropdownMouseEnter}
-        onMouseLeave={handleDropdownMouseLeave}
-      >
-        <div className="flex flex-col space-y-2">
-          {item.children.map((childItem, index) => (
-            <motion.div
-              key={childItem.name}
-              custom={index}
-              variants={itemVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <Link
-                href={childItem.href}
-                className={cn(
-                  "block py-1.5 px-2 transition-colors duration-300 relative overflow-hidden",
-                  isActive(childItem.href) 
-                    ? "text-secondary text-shadow-green-soft" 
-                    : "text-white hover:text-secondary"
-                )}
-                onClick={() => {
-                  setActiveDropdown(null);
-                  setDropdownPosition(null);
-                  setIsHoveringDropdown(false);
-                  setIsMobileMenuOpen(false);
-                }}
-                target={childItem.isExternal ? "_blank" : undefined}
-                rel={childItem.isExternal ? "noopener noreferrer" : undefined}
-              >
-                <span className="relative z-10">{childItem.name}</span>
-                <motion.span 
-                  className="absolute inset-0 bg-primary/10 -z-0"
-                  initial={{ x: '100%', opacity: 0 }}
-                  whileHover={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                />
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    );
   };
 
   return (
@@ -289,36 +219,34 @@ export default function Header({
                 key={item.name}
                 className="relative"
                 ref={ref => {
-                  dropdownRefs.current[item.name] = ref;
+                  navItemRefs.current[item.name] = ref;
                 }}
-                onMouseEnter={() => handleMouseEnter(item.name)}
-                onMouseLeave={handleMouseLeave}
               >
                 {item.children ? (
                   <div 
-                    className="flex items-center cursor-pointer" 
+                    className="group cursor-pointer"
                     onMouseEnter={() => handleMouseEnter(item.name)}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    {/* Текст и стрелка как единый блок */}
-                    <div className="flex items-center">
+                    <div className="flex items-center py-1">
                       <Link
                         href={item.href}
                         className={cn(
                           "transition-all duration-300",
                           isActive(item.href) 
                             ? "text-secondary text-shadow-green-soft" 
-                            : "text-white/70 hover:text-white hover:text-shadow-white-soft"
+                            : "text-white/70 group-hover:text-white group-hover:text-shadow-white-soft"
                         )}
-                        onClick={(e) => {
-                          // Не останавливаем переход по ссылке
-                          setActiveDropdown(null);
-                        }}
                       >
                         {item.name}
                       </Link>
                       <span
-                        className="ml-1 text-white/70 hover:text-white"
-                        onClick={() => handleDropdownToggle(item.name)}
+                        className={cn(
+                          "ml-1",
+                          isActive(item.href) 
+                            ? "text-secondary" 
+                            : "text-white/70 group-hover:text-white"
+                        )}
                       >
                         <svg 
                           xmlns="http://www.w3.org/2000/svg" 
@@ -331,6 +259,12 @@ export default function Header({
                         </svg>
                       </span>
                     </div>
+                    
+                    {/* Невидимый мост, соединяющий кнопку и выпадающее меню */}
+                    <div 
+                      className="absolute w-full h-3 bottom-0 left-0 transform translate-y-full" 
+                      onMouseEnter={() => handleMouseEnter(item.name)}
+                    />
                   </div>
                 ) : (
                   <Link
@@ -548,13 +482,59 @@ export default function Header({
         </AnimatePresence>
       </motion.header>
       
-      {/* Рендерим дропдаун */}
+      {/* Выпадающее меню как отдельный слой */}
       <AnimatePresence>
-        {activeDropdown && navigation.map(item => (
-          <React.Fragment key={`dropdown-fragment-${item.name}`}>
-            {renderDropdown(item)}
-          </React.Fragment>
-        ))}
+        {activeDropdown && dropdownPosition && (
+          <motion.div
+            className="fixed py-3 px-4 bg-[#12071A]/70 backdrop-blur-sm rounded-lg shadow-[0_0_15px_rgba(119,71,207,0.2)] border border-primary/10 z-30 min-w-[200px]"
+            style={{
+              left: `${dropdownPosition.left}px`,
+              top: `${dropdownPosition.top}px`,
+            }}
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onMouseEnter={() => setActiveDropdown(activeDropdown)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="flex flex-col space-y-2">
+              {navigation.find(item => item.name === activeDropdown)?.children?.map((childItem, index) => (
+                <motion.div
+                  key={childItem.name}
+                  custom={index}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <Link
+                    href={childItem.href}
+                    className={cn(
+                      "block py-1.5 px-2 transition-colors duration-300 relative overflow-hidden",
+                      isActive(childItem.href) 
+                        ? "text-secondary text-shadow-green-soft" 
+                        : "text-white hover:text-secondary"
+                    )}
+                    onClick={() => {
+                      setActiveDropdown(null);
+                    }}
+                    target={childItem.isExternal ? "_blank" : undefined}
+                    rel={childItem.isExternal ? "noopener noreferrer" : undefined}
+                  >
+                    <span className="relative z-10">{childItem.name}</span>
+                    <motion.span 
+                      className="absolute inset-0 bg-primary/10 -z-0"
+                      initial={{ x: '100%', opacity: 0 }}
+                      whileHover={{ x: 0, opacity: 1 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
     </motion.div>
   );
