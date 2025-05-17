@@ -254,17 +254,17 @@ export default function Footer() {
         </div>
 
         {/* Линия-разделитель */}
-        <div className="border-t-[0.5px] border-light-gray/30 mt-16 mb-8"></div>
-        
+        <div className="border-t-[0.5px] border-light-gray/30 mt-16 mb-6"></div>
+                
         {/* Нижняя часть футера в стиле Apple */}
-        <div className="flex flex-col md:flex-row items-center py-2 text-sm text-light-gray">
+        <div className="flex flex-col md:flex-row items-center py-0 text-sm text-light-gray">
           {/* Копирайт слева */}
-          <div className="mb-4 md:mb-0 md:w-1/4 text-left">
+          <div className="mb-1 md:mb-0 md:w-1/4 text-left">
             <p className="text-sm">© 2025 Architeq. All rights reserved.</p>
           </div>
           
           {/* Ссылки на Legal документы по центру */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-4 md:mb-0 md:w-2/4 mx-auto">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-6 mb-1 md:mb-0 md:w-2/4 mx-auto">
             <Link href="/privacy" className="hover:text-white transition-colors text-sm">
               Privacy Policy
             </Link>
