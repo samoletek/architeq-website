@@ -58,8 +58,8 @@ export default function FeaturedCasesSection({
       ? 'grid-cols-1 md:grid-cols-2' 
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
-  // Адаптируем размер для компактного режима
-  const sectionPadding = compact ? 'py-10' : 'pt-28 pb-20';
+  // Используем увеличенные отступы для секции
+  const sectionPadding = compact ? 'py-10' : 'pt-72 pb-72';
 
   // Если компонент не смонтирован на клиенте, возвращаем упрощенную версию
   if (!isMounted) {
@@ -68,8 +68,8 @@ export default function FeaturedCasesSection({
         <div className="container mx-auto px-4">
           {/* Заголовок и подзаголовок, если не компактный режим */}
           {!compact && (
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
               <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
@@ -89,7 +89,7 @@ export default function FeaturedCasesSection({
             </div>
           )}
 
-          {/* Сетка кейсов */}
+          {/* Сетка кейсов с увеличенным промежутком между карточками */}
           <div className={cn("grid gap-8", gridCols)}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
@@ -107,6 +107,7 @@ export default function FeaturedCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
+                    className="case-card-enhanced" // Добавляем класс для стилизации карточек
                   />
                 </div>
               );
@@ -115,7 +116,7 @@ export default function FeaturedCasesSection({
 
           {/* Кнопка "Посмотреть все" только если не компактный режим */}
           {!compact && viewAllUrl && (
-            <div className="mt-12 text-center">
+            <div className="mt-16 text-center">
               <Link href={viewAllUrl}>
                 <Button variant="secondary" size="lg">
                   {viewAllText}
@@ -134,8 +135,8 @@ export default function FeaturedCasesSection({
       <div className="container mx-auto px-4">
         {/* Заголовок и подзаголовок, если не компактный режим */}
         {!compact && (
-          <div className="text-center mb-16 animate-fadeIn">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
             <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </div>
         )}
@@ -177,6 +178,7 @@ export default function FeaturedCasesSection({
                   tags={cardData.tags}
                   href={`/cases/${cardData.id}`}
                   isCompact={caseCardVariant === 'compact'}
+                  className="case-card-enhanced" // Добавляем класс для стилизации карточек
                 />
               </div>
             );
@@ -185,7 +187,7 @@ export default function FeaturedCasesSection({
 
         {/* Кнопка "Посмотреть все" только если не компактный режим */}
         {!compact && viewAllUrl && (
-          <div className="mt-12 text-center animate-fadeIn" style={{ animationDelay: "0.3s" }}>
+          <div className="mt-16 text-center animate-fadeIn" style={{ animationDelay: "0.3s" }}>
             <Link href={viewAllUrl}>
               <Button variant="secondary" size="lg">
                 {viewAllText}
@@ -280,6 +282,7 @@ export function HorizontalCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={true}
+                    className="case-card-enhanced" // Добавляем класс для стилизации карточек
                   />
                 </div>
               );

@@ -1,3 +1,4 @@
+// src/components/ui/cards/case-card.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -23,18 +24,19 @@ export interface CaseCardProps {
   onClick?: () => void;
 }
 
-const warmPalette = ['#FF4500', '#FF0000', '#FF5E13', '#FF1493', '#FFA500', '#FF4C00', '#FF2400'];
+// Меняем теплую палитру на акцентную зеленую палитру
+const greenPalette = ['#B0FF74', '#9AFF6D', '#8BFF50', '#7CFF33', '#6DFF16', '#5EFF00', '#50E000'];
 
 const getHash = (str: string) =>
   str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
 const getTwoColors = (key: string) => {
   const hash = getHash(key);
-  const index1 = hash % warmPalette.length;
-  const index2 = (hash * 7) % warmPalette.length;
+  const index1 = hash % greenPalette.length;
+  const index2 = (hash * 7) % greenPalette.length;
   return [
-    warmPalette[index1],
-    warmPalette[index2 === index1 ? (index2 + 1) % warmPalette.length : index2]
+    greenPalette[index1],
+    greenPalette[index2 === index1 ? (index2 + 1) % greenPalette.length : index2]
   ];
 };
 
@@ -91,27 +93,31 @@ export function CaseCard({
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
-        isHovered ? 'border-primary/50 shadow-neon-glow' : 'border-primary/30',
+        // Используем единый класс для карточки
+        'case-card-enhanced',
+        isHovered ? 'case-card-hovered' : '',
         cardHeight,
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Суперяркие пятна снизу */}
+      {/* Зеленые пятна свечения снизу */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
+            animate={{ 
+              opacity: isHovered ? 0.9 : 0.3, 
+              height: isHovered ? '280px' : '220px' 
+            }}
+            transition={{ duration: 0.4 }}
             style={{
               position: 'absolute',
               bottom: 0,
               left: `${spot.left}%`,
               width: `220px`,
-              height: `220px`,
               transform: 'translate(-50%, 50%)',
               borderRadius: '9999px',
               filter: 'blur(100px)',
@@ -129,7 +135,7 @@ export function CaseCard({
       </div>
 
       {/* Теги */}
-      <div className="relative pt-3 px-3 pb-3 z-10">
+      <div className="relative pt-5 px-4 pb-5 z-10">
         <div className="flex flex-wrap gap-2">
           {tags.map((tag, index) => (
             <span
@@ -143,38 +149,37 @@ export function CaseCard({
       </div>
 
       {/* Контент */}
-      <div className="px-4 py-5 flex-grow z-10">
-        <h3 className="text-xl font-semibold text-white leading-tight mb-2">
+      <div className="pl-6 pr-8 py-5 flex-grow z-10">
+        <h3 className="text-2xl font-semibold text-white leading-tight mb-6">
           {title}
         </h3>
 
         {description && !isCompact && (
-          <p className="text-light-gray text-sm mb-4 line-clamp-3">
+          <p className="text-light-gray text-md mb-4 line-clamp-3">
             {description}
           </p>
         )}
 
         {results && results.length > 0 && !isCompact && (
-          <div className="mb-3">
-            <h4 className="text-sm font-medium mb-2 text-primary">Key results:</h4>
-            <ul className="text-light-gray text-sm space-y-1">
+          <div className="mb-5">
+            <h4 className="text-sm font-medium mb-4 text-secondary">Key results:</h4>
+            <ul className="text-light-gray text-md space-y-0.5">
               {results.slice(0, 4).map((result, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-primary mr-2">•</span>
-                  <span className="line-clamp-1">{result}</span>
+                  <span className="text-secondary mr-2">•</span>
+                 <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
+                   __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                }} />
                 </li>
               ))}
-              {results.length > 4 && (
-                <li className="text-primary text-xs mt-1">+ more</li>
-              )}
             </ul>
           </div>
         )}
       </div>
 
       {/* Footer */}
-      <div className="px-3 pb-3 border-t border-medium-gray/40 pt-3 mt-auto z-10">
-        <p className="text-white text-sm flex items-center mb-1">
+      <div className="px-6 pb-6 border-t border-medium-gray/40 pt-4 mt-auto z-10">
+        <p className="text-white text-sm flex items-center mb-2">
           <span className="text-light-gray mr-2">Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
@@ -183,7 +188,7 @@ export function CaseCard({
           <p className="text-white/80 text-sm flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1 text-primary flex-shrink-0"
+              className="h-4 w-4 mr-1 text-secondary flex-shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -215,7 +220,7 @@ export function CaseCard({
     return (
       <button
         onClick={onClick}
-        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-primary rounded-xl"
+        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-secondary rounded-xl"
       >
         {cardContent}
       </button>

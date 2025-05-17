@@ -75,7 +75,7 @@ export const allCaseStudies: CaseStudy[] = [
 },
 {
   id: 'stripe-invoicing',
-  title: 'Stripe Invoicing and Financial Control Automation',
+  title: "Stripe Invoicing and Financial Control Automation", 
   company: 'EclipseGroup',
   location: 'Miami, FL, USA',
   industry: 'Financial Management',

@@ -1,3 +1,4 @@
+// src/components/sections/testimonials-section.tsx
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -16,6 +17,8 @@ export interface Testimonial {
   company?: string;
   image?: string;
   rating?: number; // Рейтинг от 1 до 5
+  // Добавляем массив ключевых слов для выделения
+  highlightedPhrases?: string[];
 }
 
 // Параметры секции
@@ -31,6 +34,43 @@ export interface TestimonialsSectionProps {
   maxWidth?: string;
 }
 
+// Функция для выделения ключевых слов в тексте
+const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
+  if (!phrases.length) return <>{text}</>;
+  
+  let lastIndex = 0;
+  const parts: React.ReactNode[] = [];
+  
+  phrases.forEach((phrase, i) => {
+    const lowerText = text.toLowerCase();
+    const lowerPhrase = phrase.toLowerCase();
+    const index = lowerText.indexOf(lowerPhrase, lastIndex);
+    
+    if (index !== -1) {
+      // Добавляем текст до фразы
+      if (index > lastIndex) {
+        parts.push(<span key={`text-${i}-1`}>{text.substring(lastIndex, index)}</span>);
+      }
+      
+      // Добавляем выделенную фразу
+      parts.push(
+        <span key={`highlight-${i}`} className="text-secondary font-semibold">
+          {text.substring(index, index + phrase.length)}
+        </span>
+      );
+      
+      lastIndex = index + phrase.length;
+    }
+  });
+  
+  // Добавляем оставшийся текст
+  if (lastIndex < text.length) {
+    parts.push(<span key="text-last">{text.substring(lastIndex)}</span>);
+  }
+  
+  return <>{parts}</>;
+};
+
 // Данные для отзывов по умолчанию
 const defaultTestimonials: Testimonial[] = [
   {
@@ -39,6 +79,7 @@ const defaultTestimonials: Testimonial[] = [
     author: "Uliana Pak",
     title: "CFO at EclipseGroup",
     image: "/images/testimonials/alex-johnson.jpg",
+    highlightedPhrases: ["full invoicing cycle", "used to take days"]
   },
   {
     id: 2,
@@ -46,6 +87,7 @@ const defaultTestimonials: Testimonial[] = [
     author: "Alexandr Alexeyev",
     title: "CEO at Up-Struct LLC",
     image: "/images/testimonials/maria-rodriguez.jpg",
+    highlightedPhrases: ["AI bot", "faster responses", "happier customers"]
   },
   {
     id: 3,
@@ -53,6 +95,7 @@ const defaultTestimonials: Testimonial[] = [
     author: "Anastasiia Trokhymchuk",
     title: "Legal Officer at LaneWise",
     image: "/images/testimonials/david-chen.jpg",
+    highlightedPhrases: ["sped up our entire logistics workflow"]
   },
 ];
 
@@ -153,12 +196,14 @@ export default function TestimonialsSection({
   // Выбираем вариант отображения
   if (variant === 'compact') {
     return (
-      <section className={cn("pt-20 pb-12 bg-site-bg", className)}>
+      <section className={cn("pt-60 pb-36 bg-site-bg", className)}>
         <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-10">
-  <h2 className="text-2xl md:text-3xl font-bold mb-3">{title}</h2>
+        <SectionAnimation className="text-center mb-36"> {/* Увеличено с mb-24 до mb-36 */}
+  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
   {subtitle && (
-    <p className="text-light-gray">{subtitle}</p>
+    <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+      {subtitle}
+    </p>
   )}
 </SectionAnimation>
           
@@ -189,10 +234,14 @@ export default function TestimonialsSection({
                   </div>
                 )}
                 
-                <p className="text-sm md:text-base mb-4 line-clamp-4">{testimonial.quote}</p>
+                <p className="text-sm md:text-base mb-4 line-clamp-4">
+                  {testimonial.highlightedPhrases 
+                    ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
+                    : testimonial.quote}
+                </p>
                 
                 <div className="flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+                  <div className="w-10 h-10 mr-3">
                     <ImageWithFallback
                       src={testimonial.image || ''}
                       alt={testimonial.author}
@@ -217,16 +266,16 @@ export default function TestimonialsSection({
   
   if (variant === 'cards') {
     return (
-      <section className={cn("pt-28 pb-16 bg-dark-gray", className)}>
+      <section className={cn("pt-84 pb-48 bg-dark-gray", className)}>
         <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-16">
-  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
-  {subtitle && (
-    <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
-      {subtitle}
-    </p>
-  )}
-</SectionAnimation>
+          <SectionAnimation className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            {subtitle && (
+              <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+                {subtitle}
+              </p>
+            )}
+          </SectionAnimation>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
@@ -239,7 +288,7 @@ export default function TestimonialsSection({
               >
                 <div className="p-6">
                   {withQuotes && (
-                    <div className="text-4xl text-primary opacity-20 mb-3"></div>
+                    <div className="text-4xl text-secondary opacity-20 mb-3"></div>
                   )}
                   
                   {testimonial.rating && (
@@ -249,7 +298,7 @@ export default function TestimonialsSection({
                           key={i} 
                           className={cn(
                             "w-4 h-4 mr-1",
-                            i < testimonial.rating! ? "text-primary" : "text-medium-gray"
+                            i < testimonial.rating! ? "text-secondary" : "text-medium-gray"
                           )}
                           fill="currentColor"
                           viewBox="0 0 20 20"
@@ -260,7 +309,11 @@ export default function TestimonialsSection({
                     </div>
                   )}
                   
-                  <p className="text-white mb-6 line-clamp-5">{testimonial.quote}</p>
+                  <p className="text-white mb-6 line-clamp-5">
+                    {testimonial.highlightedPhrases 
+                      ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
+                      : testimonial.quote}
+                  </p>
                   
                   <div className="flex items-center mt-auto pt-4 border-t border-dark-gray">
                     <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
@@ -290,7 +343,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью
   return (
     <section 
-      className={cn("pt-28 pb-20 bg-dark-gray", className)}
+      className={cn("pt-96 pb-80 bg-dark-gray", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -299,27 +352,27 @@ export default function TestimonialsSection({
       onTouchEnd={handleTouchEnd}
     >
       <div className="container mx-auto px-4">
-      <SectionAnimation className="text-center mb-16">
-  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
-  {subtitle && (
-    <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
-      {subtitle}
-    </p>
-  )}
-</SectionAnimation>
+        <SectionAnimation className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+          {subtitle && (
+            <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+              {subtitle}
+            </p>
+          )}
+        </SectionAnimation>
 
         <div className={cn("relative mx-auto", maxWidthClass)}>
           {/* Большие кавычки, если включено */}
           {withQuotes && (
             <>
-              <div className="absolute -top-10 -left-10 text-6xl text-primary opacity-30"></div>
-              <div className="absolute -bottom-10 -right-10 text-6xl text-primary opacity-30"></div>
+              <div className="absolute -top-10 -left-10 text-6xl text-secondary opacity-30"></div>
+              <div className="absolute -bottom-10 -right-10 text-6xl text-secondary opacity-30"></div>
             </>
           )}
           
           {/* Карусель отзывов */}
-          <div className="relative h-64 md:min-h-[14rem] overflow-hidden">
-            <AnimatePresence mode="wait">
+          <div className="relative h-64 md:min-h-[24rem] overflow-hidden"> {/* Увеличена высота контейнера */}
+          <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
                 initial={{ opacity: 0, y: 20 }}
@@ -328,98 +381,95 @@ export default function TestimonialsSection({
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0 flex flex-col justify-center"
               >
-                <blockquote className="text-center">
-                  <p className="text-xl md:text-2xl mb-6 text-white">
-                    {testimonials[activeIndex].quote}
-                  </p>
-                  <footer>
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                        <ImageWithFallback
-                          src={testimonials[activeIndex].image || ''}
-                          alt={testimonials[activeIndex].author}
-                          width={48}
-                          height={48}
-                          category="testimonial"
-                          fallbackText={testimonials[activeIndex].author.charAt(0)}
-                        />
-                      </div>
-                      <div className="text-left">
-                        <cite className="font-medium text-white not-italic">
-                          {testimonials[activeIndex].author}
-                        </cite>
-                        <p className="text-light-gray text-sm">
-                          {testimonials[activeIndex].title}
-                        </p>
-                      </div>
-                    </div>
-                  </footer>
-                </blockquote>
+                {/* Карусель отзывов - найти блок с цитатой и заменить классы размера текста */}
+<blockquote className="text-center">
+<p className="text-xl md:text-2xl lg:text-2xl mb-24 text-white leading-relaxed"> {/* Увеличен отступ снизу */}
+    {testimonials[activeIndex].highlightedPhrases 
+      ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
+      : testimonials[activeIndex].quote}
+  </p>
+  <footer>
+    <div className="flex items-center justify-center">
+    <div className="w-14 h-14 mr-5 flex-shrink-0 flex items-center -mt-1"> {/* Добавлен -mt-1 */}
+    <ImageWithFallback
+          src={testimonials[activeIndex].image || ''}
+          alt={testimonials[activeIndex].author}
+          width={56}
+          height={56}
+          category="testimonial"
+          fallbackText={testimonials[activeIndex].author.charAt(0)}
+        />
+      </div>
+      <div className="text-left">
+        <cite className="font-medium text-lg md:text-xl text-white not-italic"> {/* Увеличен размер имени */}
+          {testimonials[activeIndex].author}
+        </cite>
+        <p className="text-light-gray text-sm md:text-lg"> {/* Увеличен размер должности */}
+          {testimonials[activeIndex].title}
+        </p>
+      </div>
+    </div>
+  </footer>
+</blockquote>
               </motion.div>
             </AnimatePresence>
           </div>
           
-          {/* Навигационные стрелки (отображаются только на больших экранах) */}
-          {(!isMobile && !isTablet) && testimonials.length > 1 && (
-            <>
-              <button
-                onClick={prevTestimonial}
-                className="absolute top-1/2 -left-12 transform -translate-y-1/2 bg-dark-gray rounded-full p-2 text-white opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Previous testimonial"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextTestimonial}
-                className="absolute top-1/2 -right-12 transform -translate-y-1/2 bg-dark-gray rounded-full p-2 text-white opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary"
-                aria-label="Next testimonial"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </>
-          )}
+          {/* Навигационные стрелки - обновить внешний вид */}
+{(!isMobile && !isTablet) && testimonials.length > 1 && (
+  <>
+    <button
+      onClick={prevTestimonial}
+      className="absolute top-1/2 -left-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+      aria-label="Previous testimonial"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button
+      onClick={nextTestimonial}
+      className="absolute top-1/2 -right-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+      aria-label="Next testimonial"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </>
+)}
           
           {/* Навигационные точки */}
           {testimonials.length > 1 && (
-            <div className="flex justify-center mt-8 space-x-2">
+            <div className="flex justify-center mt-8 space-x-4">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleDotClick(index)}
                   className={cn(
-                    "w-3 h-3 rounded-full transition-all duration-300",
+                    "w-4 h-4 rounded-full transition-all duration-300",
                     index === activeIndex 
-                      ? "bg-primary" 
+                      ? "bg-secondary" 
                       : "bg-medium-gray hover:bg-light-gray"
                   )}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
             </div>
-          )}
-          
-          {/* Кнопка паузы/воспроизведения (только на декстопах) */}
-          {(!isMobile && autoplay) && (
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute bottom-0 right-0 bg-dark-gray rounded-full p-2 text-white opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary"
-              aria-label={isPlaying ? "Pause" : "Play"}
-            >
-              {isPlaying ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              )}
-            </button>
           )}
         </div>
       </div>
@@ -440,7 +490,7 @@ export function SingleTestimonial({
   return (
     <div className={cn("bg-dark-gray rounded-lg p-6", className)}>
       {withQuote && (
-        <div className="text-4xl text-primary opacity-20 mb-3"></div>
+        <div className="text-4xl text-secondary opacity-20 mb-3"></div>
       )}
       
       {testimonial.rating && (
@@ -450,7 +500,7 @@ export function SingleTestimonial({
               key={i} 
               className={cn(
                 "w-4 h-4 mr-1",
-                i < testimonial.rating! ? "text-primary" : "text-medium-gray"
+                i < testimonial.rating! ? "text-secondary" : "text-medium-gray"
               )}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -461,10 +511,14 @@ export function SingleTestimonial({
         </div>
       )}
       
-      <p className="text-white mb-6">{testimonial.quote}</p>
+      <p className="text-white mb-6">
+        {testimonial.highlightedPhrases 
+          ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
+          : testimonial.quote}
+      </p>
       
       <div className="flex items-center">
-        <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+        <div className="w-12 h-12 mr-4">
           <ImageWithFallback
             src={testimonial.image || ''}
             alt={testimonial.author}
