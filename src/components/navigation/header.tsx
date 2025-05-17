@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/utils';
@@ -58,15 +58,21 @@ export default function Header({
     href: '/contacts'
   },
   showSearch = false,
-  className
+  className,
+  variant = 'default'
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false); // Состояние для анимации появления
+  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false); // Для отслеживания наведения на дропдаун
   const { isMobile } = useDeviceDetection();
   const pathname = usePathname();
+  
+  // Рефы для позиционирования дропдауна
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [dropdownPosition, setDropdownPosition] = useState<{ left: number; top: number } | null>(null);
 
   // Эффект для отслеживания скролла и анимации появления
   useEffect(() => {
@@ -104,14 +110,35 @@ export default function Header({
   const handleMouseEnter = (name: string) => {
     if (!isMobile) {
       setActiveDropdown(name);
+      // Вычисляем позицию для дропдауна
+      const ref = dropdownRefs.current[name];
+      if (ref) {
+        const rect = ref.getBoundingClientRect();
+        setDropdownPosition({
+          left: rect.left,
+          top: rect.bottom + 8 // небольшой отступ от кнопки
+        });
+      }
     }
   };
   
   // Обработчик ухода с элемента с выпадающим меню
   const handleMouseLeave = () => {
-    if (!isMobile) {
+    if (!isMobile && !isHoveringDropdown) {
       setActiveDropdown(null);
+      setDropdownPosition(null);
     }
+  };
+  
+  // Обработчики для дропдауна
+  const handleDropdownMouseEnter = () => {
+    setIsHoveringDropdown(true);
+  };
+  
+  const handleDropdownMouseLeave = () => {
+    setIsHoveringDropdown(false);
+    setActiveDropdown(null);
+    setDropdownPosition(null);
   };
   
   // Обработчик клика на элемент с выпадающим меню на мобильных
@@ -152,59 +179,64 @@ export default function Header({
     exit: { opacity: 0, y: 8, transition: { duration: 0.1 } }
   };
   
-  // Рендерим выпадающее меню (ИСХОДНЫЙ КОД)
+  // Рендерим выпадающее меню с fixed позиционированием
   const renderDropdown = (item: NavigationItem) => {
-    if (!item.children) return null;
+    if (!item.children || activeDropdown !== item.name || !dropdownPosition) return null;
     
     return (
-      <AnimatePresence>
-        {activeDropdown === item.name && (
-          <motion.div
-            className="absolute top-full left-0 mt-2 py-3 px-4 bg-[#12071A]/90 backdrop-blur-md rounded-lg shadow-md border border-primary/10 z-50 min-w-[180px]"
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <div className="flex flex-col space-y-2">
-              {item.children.map((childItem, index) => (
-                <motion.div
-                  key={childItem.name}
-                  custom={index}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <Link
-                    href={childItem.href}
-                    className={cn(
-                      "block py-1.5 px-2 transition-colors duration-300 relative overflow-hidden",
-                      isActive(childItem.href) 
-                        ? "text-secondary text-shadow-green-soft" 
-                        : "text-white hover:text-secondary"
-                    )}
-                    onClick={() => {
-                      setActiveDropdown(null);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    target={childItem.isExternal ? "_blank" : undefined}
-                    rel={childItem.isExternal ? "noopener noreferrer" : undefined}
-                  >
-                    <span className="relative z-10">{childItem.name}</span>
-                    <motion.span 
-                      className="absolute inset-0 bg-primary/10 -z-0"
-                      initial={{ x: '100%', opacity: 0 }}
-                      whileHover={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    />
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        key={`dropdown-${item.name}`}
+        className="fixed py-3 px-4 bg-[#12071A]/70 backdrop-blur-sm rounded-lg shadow-md border border-primary/10 z-50 min-w-[200px]"
+        style={{
+          left: dropdownPosition.left,
+          top: dropdownPosition.top,
+        }}
+        variants={menuVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        onMouseEnter={handleDropdownMouseEnter}
+        onMouseLeave={handleDropdownMouseLeave}
+      >
+        <div className="flex flex-col space-y-2">
+          {item.children.map((childItem, index) => (
+            <motion.div
+              key={childItem.name}
+              custom={index}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <Link
+                href={childItem.href}
+                className={cn(
+                  "block py-1.5 px-2 transition-colors duration-300 relative overflow-hidden",
+                  isActive(childItem.href) 
+                    ? "text-secondary text-shadow-green-soft" 
+                    : "text-white hover:text-secondary"
+                )}
+                onClick={() => {
+                  setActiveDropdown(null);
+                  setDropdownPosition(null);
+                  setIsHoveringDropdown(false);
+                  setIsMobileMenuOpen(false);
+                }}
+                target={childItem.isExternal ? "_blank" : undefined}
+                rel={childItem.isExternal ? "noopener noreferrer" : undefined}
+              >
+                <span className="relative z-10">{childItem.name}</span>
+                <motion.span 
+                  className="absolute inset-0 bg-primary/10 -z-0"
+                  initial={{ x: '100%', opacity: 0 }}
+                  whileHover={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     );
   };
 
@@ -224,13 +256,16 @@ export default function Header({
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          {/* Логотип с анимацией градиента */}
+          {/* Логотип с анимацией градиента и неоновым свечением */}
           <Link 
             href="/" 
             className="text-2xl font-bold"
           >
             <span 
-              className="inline-block text-transparent bg-clip-text transition-all duration-500 ease-out"
+              className={cn(
+                "inline-block text-transparent bg-clip-text transition-all duration-500 ease-out",
+                isActive('/') && "text-shadow-green-soft" // Зеленое свечение для домашней страницы
+              )}
               style={{ 
                 backgroundImage: 'linear-gradient(90deg, #B0FF74 0%, #FFFFFF 50%, #B0FF74 100%)',
                 backgroundSize: '200% auto',
@@ -253,37 +288,49 @@ export default function Header({
               <div
                 key={item.name}
                 className="relative"
+                ref={ref => {
+                  dropdownRefs.current[item.name] = ref;
+                }}
                 onMouseEnter={() => handleMouseEnter(item.name)}
                 onMouseLeave={handleMouseLeave}
               >
                 {item.children ? (
-                  <div className="flex items-center">
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "transition-all duration-300",
-                        isActive(item.href) 
-                          ? "text-secondary text-shadow-green-soft" 
-                          : "text-white/70 hover:text-white hover:text-shadow-white-soft"
-                      )}
-                    >
-                      {item.name}
-                    </Link>
-                    <button
-                      className="ml-1 focus:outline-none text-white/70 hover:text-white"
-                      onClick={() => handleDropdownToggle(item.name)}
-                      aria-expanded={activeDropdown === item.name}
-                    >
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-4 w-4" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
+                  <div 
+                    className="flex items-center cursor-pointer" 
+                    onMouseEnter={() => handleMouseEnter(item.name)}
+                  >
+                    {/* Текст и стрелка как единый блок */}
+                    <div className="flex items-center">
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "transition-all duration-300",
+                          isActive(item.href) 
+                            ? "text-secondary text-shadow-green-soft" 
+                            : "text-white/70 hover:text-white hover:text-shadow-white-soft"
+                        )}
+                        onClick={(e) => {
+                          // Не останавливаем переход по ссылке
+                          setActiveDropdown(null);
+                        }}
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
+                        {item.name}
+                      </Link>
+                      <span
+                        className="ml-1 text-white/70 hover:text-white"
+                        onClick={() => handleDropdownToggle(item.name)}
+                      >
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          className="h-4 w-4" 
+                          fill="none" 
+                          viewBox="0 0 24 24" 
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 ) : (
                   <Link
@@ -300,7 +347,6 @@ export default function Header({
                     {item.name}
                   </Link>
                 )}
-                {renderDropdown(item)}
               </div>
             ))}
             
@@ -501,6 +547,15 @@ export default function Header({
           )}
         </AnimatePresence>
       </motion.header>
+      
+      {/* Рендерим дропдаун */}
+      <AnimatePresence>
+        {activeDropdown && navigation.map(item => (
+          <React.Fragment key={`dropdown-fragment-${item.name}`}>
+            {renderDropdown(item)}
+          </React.Fragment>
+        ))}
+      </AnimatePresence>
     </motion.div>
   );
 }
