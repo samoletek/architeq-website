@@ -93,10 +93,9 @@ export function CaseCard({
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
-        // Увеличиваем свечение границ, как в карточках Benefits
-        isHovered 
-          ? 'border-secondary/70 shadow-neon-green-glow-intense' 
-          : 'border-secondary/30 shadow-neon-green-glow',
+        // Используем единый класс для карточки
+        'case-card-enhanced',
+        isHovered ? 'case-card-hovered' : '',
         cardHeight,
         className
       )}
@@ -109,14 +108,16 @@ export function CaseCard({
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 0.9 : 0.3 }} // Делаем видимыми даже без ховера, но усиливаем на ховере
+            animate={{ 
+              opacity: isHovered ? 0.9 : 0.3, 
+              height: isHovered ? '280px' : '220px' 
+            }}
             transition={{ duration: 0.4 }}
             style={{
               position: 'absolute',
               bottom: 0,
               left: `${spot.left}%`,
               width: `220px`,
-              height: `220px`,
               transform: 'translate(-50%, 50%)',
               borderRadius: '9999px',
               filter: 'blur(100px)',
