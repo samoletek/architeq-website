@@ -56,7 +56,7 @@ export default function BenefitsSection({
   // Определяем стили для разных вариантов
   const sectionClasses = cn(
     // 6. Увеличиваем отступ сверху для расстояния между Hero и Benefits в 1.5 раза
-    "pt-52 pb-32 relative overflow-hidden", // изменено с pt-28 на pt-42 (28 * 1.5 = 42)
+    "pt-32 pb-28 relative overflow-hidden", // изменено с pt-28 на pt-42 (28 * 1.5 = 42)
     variant === 'default' ? 'bg-dark-gray' : 
     variant === 'modern' ? 'bg-gradient-to-br from-site-bg to-site-bg-deep' : 
     "bg-site-bg",

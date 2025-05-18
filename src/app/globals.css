@@ -54,6 +54,38 @@
     @apply py-12 md:py-24;
   }
   
+ /* Hero секция - радикально уменьшаем отступы */
+.section-hero {
+  @apply pt-12 pb-6 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10;
+}
+
+/* Benefits секция - умеренные отступы */
+.section-benefits {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* Solutions секция - умеренные отступы */
+.section-solutions {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+  /* Удаляем min-height или существенно уменьшаем */
+  min-height: 60vh;
+}
+
+/* Featured Cases секция - умеренные отступы */
+.section-cases {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* Testimonials секция - умеренные отступы */
+.section-testimonials {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* CTA секция - минимальные отступы, т.к. это последняя секция */
+.section-cta {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
   /* Градиентный текст для выделения слов */
   .accent-text {
     @apply inline-block text-transparent bg-clip-text;
@@ -273,7 +305,6 @@ body.search-overlay-active {
   @apply bg-[#12071A]/95 backdrop-blur-md;
 }
 
-/* Добавить в конец файла src/app/globals.css */
 .display-webkit-box {
   display: -webkit-box;
 }
@@ -288,7 +319,6 @@ body.search-overlay-active {
   text-overflow: ellipsis;
 }
 
-/* Добавить в конец файла src/app/globals.css */
 .arrow-nav-button {
   position: relative;
 }

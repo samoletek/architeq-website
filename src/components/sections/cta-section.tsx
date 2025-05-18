@@ -55,8 +55,8 @@ export default function CTASection({
   // Настройки для разных вариантов
   const variantClasses = {
     default: "py-20 bg-dark-gradient",
-    minimal: "py-12 bg-dark-gray",
-    highlight: "py-20 bg-primary/10 dark:bg-primary/5"
+    minimal: "py-16 bg-dark-gray",
+    highlight: "py-24 bg-primary/10 dark:bg-primary/5"
   };
   
   // Определяем классы для секции

@@ -343,7 +343,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью
   return (
     <section 
-      className={cn("pt-96 pb-80 bg-dark-gray", className)}
+      className={cn("pt-36 pb-40 bg-dark-gray", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

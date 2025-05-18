@@ -59,7 +59,7 @@ export default function FeaturedCasesSection({
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
   // Используем увеличенные отступы для секции
-  const sectionPadding = compact ? 'py-10' : 'pt-72 pb-72';
+  const sectionPadding = compact ? 'py-10' : 'pt-32 pb-36';
 
   // Если компонент не смонтирован на клиенте, возвращаем упрощенную версию
   if (!isMounted) {

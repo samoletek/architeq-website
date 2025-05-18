@@ -81,7 +81,7 @@ export default function HeroSection({
   };
 
   return (
-    <section className="pt-52 pb-52 relative overflow-hidden">
+    <section className="pt-40 pb-24 relative overflow-hidden">
       {/* Эффекты фона */}
       <div className="absolute right-0 top-[20%] opacity-20 w-[30vw] h-[30vw] rounded-full bg-primary/30 blur-[100px]" />
       <div className="absolute left-10 bottom-[10%] opacity-20 w-[20vw] h-[20vw] rounded-full bg-secondary/20 blur-[80px]" />
@@ -96,7 +96,7 @@ export default function HeroSection({
               animate="visible"
               className="mb-2 whitespace-nowrap"
             >
-              <span style={staticGradientStyle} className="mr-2">Architect </span>
+              <span style={staticGradientStyle} className="mr-2">Architect</span>
               <span>your workflow</span>
             </motion.div>
             
@@ -107,7 +107,7 @@ export default function HeroSection({
               transition={{ delay: 0.05 }}
               className="whitespace-nowrap"
             >
-              <span style={staticGradientStyle} className="mr-2">Scale </span>
+              <span style={staticGradientStyle} className="mr-2">Scale</span>
               <span>with confidence</span>
             </motion.div>
           </h1>
