@@ -8,6 +8,7 @@ import TestimonialsSection from '@/components/sections/testimonials-section'
 import CTASection from '@/components/sections/cta-section'
 import { generateMetadata } from '@/lib/seo/metadata';
 import { OrganizationSchema } from '@/lib/seo/schema';
+import { SectionAnimation } from '@/components/ui/section-animation';
 
 // Генерируем метаданные для главной страницы
 export const metadata = generateMetadata({
@@ -44,23 +45,33 @@ export default function Home() {
       />
       
       <SiteLayout>
-        {/* Hero section */}
+        {/* Hero section - нативная анимация */}
         <HeroSection />
 
-        {/* Benefits section */}
-        <BenefitsSection />
+        {/* Benefits section с плавной анимацией */}
+        <SectionAnimation direction="up" threshold={0.15} rootMargin="-50px 0px">
+          <BenefitsSection />
+        </SectionAnimation>
 
         {/* Solutions section */}
-        <SolutionsSection />
+        <SectionAnimation direction="none" delay={0.2} threshold={0.15} rootMargin="-50px 0px">
+          <SolutionsSection />
+        </SectionAnimation>
         
         {/* Featured Case Studies */}
-        <FeaturedCasesSection />
+        <SectionAnimation direction="up" threshold={0.15} rootMargin="-50px 0px">
+          <FeaturedCasesSection />
+        </SectionAnimation>
 
         {/* Testimonials section */}
-        <TestimonialsSection />
+        <SectionAnimation direction="none" threshold={0.15} rootMargin="-50px 0px">
+          <TestimonialsSection />
+        </SectionAnimation>
         
         {/* CTA section */}
-        <CTASection />
+        <SectionAnimation direction="scale" threshold={0.15} rootMargin="-50px 0px">
+          <CTASection />
+        </SectionAnimation>
       </SiteLayout>
     </>
   )

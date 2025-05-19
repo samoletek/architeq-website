@@ -1,7 +1,8 @@
 // src/components/sections/benefits-section.tsx
 "use client";
 
-import { AnimatedContainer, AnimatedItem } from '@/components/ui/section-animation';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 
@@ -53,54 +54,122 @@ export default function BenefitsSection({
   className,
   variant = 'default'
 }: BenefitsSectionProps) {
+  // Состояние для отслеживания видимости секции
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Сохраняем текущую ссылку в локальную переменную
+    const currentRef = sectionRef.current;
+    
+    // Функция для отслеживания видимости элемента
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Отключаем наблюдение после первого появления элемента
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        // Элемент будет считаться видимым, когда 15% его площади будет в области просмотра
+        threshold: 0.15,
+        // Маржа для раннего срабатывания (на 50px выше фактического входа в область просмотра)
+        rootMargin: '-50px 0px'
+      }
+    );
+
+    // Начинаем наблюдение за секцией
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    // Очистка observer при размонтировании компонента
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []); // Пустой массив зависимостей, так как мы используем локальную переменную
+
   // Определяем стили для разных вариантов
   const sectionClasses = cn(
-    // 6. Увеличиваем отступ сверху для расстояния между Hero и Benefits в 1.5 раза
-    "pt-32 pb-28 relative overflow-hidden", // изменено с pt-28 на pt-42 (28 * 1.5 = 42)
+    "section-benefits relative overflow-hidden", 
     variant === 'default' ? 'bg-dark-gray' : 
     variant === 'modern' ? 'bg-gradient-to-br from-site-bg to-site-bg-deep' : 
     "bg-site-bg",
     className
   );
 
+  // Варианты анимации для заголовка и подзаголовка
+  const titleVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
 
-  // Оригинальное отображение для вариантов default и alternate
+  // Варианты анимации для карточек преимуществ
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.2, 0.65, 0.3, 0.9],
+        delay: 0.2 + index * 0.1 // Задержка увеличивается с каждой карточкой
+      }
+    })
+  };
+
   return (
-    <section className={sectionClasses}>
+    <section 
+      ref={sectionRef}
+      className={sectionClasses}
+    >
       <div className="container mx-auto px-4">
-        <AnimatedContainer className="text-center mb-20"> {/* 4. Увеличено расстояние с mb-16 до mb-20 */}
-          <AnimatedItem>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
-          </AnimatedItem>
-          <AnimatedItem>
-            <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
-              {subtitle}
-            </p>
-          </AnimatedItem>
-        </AnimatedContainer>
+        <motion.div
+          className="text-center mb-20"
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+          variants={titleVariants}
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
+          <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
+            {subtitle}
+          </p>
+        </motion.div>
 
-        <AnimatedContainer staggerTime={0.15} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((benefit, index) => (
-            <AnimatedItem key={index}>
-              {/* 1. Увеличиваем свечение границ карточек, 3. Увеличиваем размер карточки */}
+            <motion.div
+              key={index}
+              custom={index}
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={cardVariants}
+            >
               <div className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 h-full 
-                           border border-primary/20 
-                           shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                           hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                           hover:border-primary/40 
-                           transition-all duration-300">
-                {/* 5. Убираем фон и форму у иконок */}
+                        border border-primary/20 
+                        shadow-[0_0_15px_rgba(119,71,207,0.2)] 
+                        hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                        hover:border-primary/40 
+                        transition-all duration-300">
                 <div className="text-white mb-4">
                   <Icon name={benefit.icon} className="h-6 w-6 transform transition-transform duration-300 group-hover:rotate-12" />
                 </div>
-                {/* Сохраняем размер заголовка */}
                 <h3 className="text-xl md:text-2xl font-semibold mb-8 whitespace-pre-line">{benefit.title}</h3>
-                {/* 3. Увеличиваем размер основного текста в карточке */}
                 <p className="text-light-gray text-base md:text-lg font-sans">{benefit.description}</p>
               </div>
-            </AnimatedItem>
+            </motion.div>
           ))}
-        </AnimatedContainer>
+        </div>
       </div>
     </section>
   );
@@ -122,7 +191,6 @@ export function CompactBenefitsSection({
             key={index}
             className="bg-dark-gray/70 backdrop-blur-sm rounded-lg p-4 flex items-start hover:bg-dark-purple/40 transition-all duration-300 border border-transparent hover:border-primary/20"
           >
-            {/* 5. Убираем фон и форму у иконок */}
             <div className="text-secondary flex-shrink-0 mr-3">
               <Icon name={benefit.icon} className="h-5 w-5" />
             </div>
@@ -152,7 +220,6 @@ export function HorizontalBenefits({
           key={index}
           className="flex-1 bg-dark-purple/30 backdrop-blur-sm rounded-lg p-6 hover:bg-dark-purple/50 transition-all duration-300 border border-primary/10 hover:border-primary/30 group"
         >
-          {/* 5. Убираем фон и форму у иконок */}
           <div className="text-secondary group-hover:text-white transition-colors duration-300 mb-4">
             <Icon name={benefit.icon} className="h-6 w-6" />
           </div>

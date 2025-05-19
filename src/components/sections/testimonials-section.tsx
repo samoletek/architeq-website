@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
 import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { SectionAnimation } from '@/components/ui/section-animation';
 
 // Интерфейс для данных отзыва
 export interface Testimonial {
@@ -118,6 +117,9 @@ export default function TestimonialsSection({
   const testimonialsCount = testimonials.length;
   const sectionRef = useRef<HTMLDivElement>(null);
   
+  // Состояние для отслеживания видимости секции
+  const [isVisible, setIsVisible] = useState(false);
+  
   // Функция для перехода к следующему отзыву
   const nextTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % testimonialsCount);
@@ -127,6 +129,38 @@ export default function TestimonialsSection({
   const prevTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + testimonialsCount) % testimonialsCount);
   }, [testimonialsCount]);
+
+  // Эффект для отслеживания видимости секции
+  useEffect(() => {
+    const currentRef = sectionRef.current; // Сохраняем ссылку в локальную переменную
+    
+    // Функция для отслеживания видимости элемента
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Отключаем наблюдение после первого появления элемента
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '-50px 0px'
+      }
+    );
+  
+    // Начинаем наблюдение за секцией
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+  
+    // Очистка observer при размонтировании компонента
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   // Автопереключение
   useEffect(() => {
@@ -192,20 +226,41 @@ export default function TestimonialsSection({
     '7xl': 'max-w-7xl',
     'full': 'max-w-full',
   }[maxWidth] || 'max-w-4xl';
+
+  // Варианты анимации для заголовка
+  const titleVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
   
   // Выбираем вариант отображения
   if (variant === 'compact') {
     return (
-      <section className={cn("pt-60 pb-36 bg-site-bg", className)}>
+      <section 
+        ref={sectionRef}
+        className={cn("section-testimonials bg-site-bg", className)}
+      >
         <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-36"> {/* Увеличено с mb-24 до mb-36 */}
-  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
-  {subtitle && (
-    <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
-      {subtitle}
-    </p>
-  )}
-</SectionAnimation>
+          <motion.div 
+            className="text-center mb-36"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={titleVariants}
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            {subtitle && (
+              <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+                {subtitle}
+              </p>
+            )}
+          </motion.div>
           
           <div className="flex items-center justify-center space-x-6 md:space-x-10">
             {testimonials.map((testimonial, index) => (
@@ -213,7 +268,7 @@ export default function TestimonialsSection({
                 key={testimonial.id}
                 className="bg-dark-gray rounded-lg p-4 md:p-6 text-center flex-1 max-w-xs"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
               >
                 {testimonial.rating && (
@@ -266,16 +321,24 @@ export default function TestimonialsSection({
   
   if (variant === 'cards') {
     return (
-      <section className={cn("pt-84 pb-48 bg-dark-gray", className)}>
-        <div className="container mx-auto px-4">
-          <SectionAnimation className="text-center mb-16">
+      <section 
+        ref={sectionRef}
+        className={cn("section-testimonials bg-dark-gray", className)}
+      >
+<div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-16"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={titleVariants}
+          >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
             {subtitle && (
               <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
                 {subtitle}
               </p>
             )}
-          </SectionAnimation>
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
@@ -283,7 +346,7 @@ export default function TestimonialsSection({
                 key={testimonial.id}
                 className="bg-medium-gray rounded-lg overflow-hidden shadow-md"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="p-6">
@@ -343,7 +406,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью
   return (
     <section 
-      className={cn("pt-36 pb-40 bg-dark-gray", className)}
+      className={cn("section-testimonials bg-dark-gray", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -352,14 +415,19 @@ export default function TestimonialsSection({
       onTouchEnd={handleTouchEnd}
     >
       <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+          variants={titleVariants}
+        >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
           {subtitle && (
             <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
               {subtitle}
             </p>
           )}
-        </SectionAnimation>
+        </motion.div>
 
         <div className={cn("relative mx-auto", maxWidthClass)}>
           {/* Большие кавычки, если включено */}
@@ -381,77 +449,77 @@ export default function TestimonialsSection({
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0 flex flex-col justify-center"
               >
-                {/* Карусель отзывов - найти блок с цитатой и заменить классы размера текста */}
-<blockquote className="text-center">
-<p className="text-xl md:text-2xl lg:text-2xl mb-24 text-white leading-relaxed"> {/* Увеличен отступ снизу */}
-    {testimonials[activeIndex].highlightedPhrases 
-      ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
-      : testimonials[activeIndex].quote}
-  </p>
-  <footer>
-    <div className="flex items-center justify-center">
-    <div className="w-14 h-14 mr-5 flex-shrink-0 flex items-center -mt-1"> {/* Добавлен -mt-1 */}
-    <ImageWithFallback
-          src={testimonials[activeIndex].image || ''}
-          alt={testimonials[activeIndex].author}
-          width={56}
-          height={56}
-          category="testimonial"
-          fallbackText={testimonials[activeIndex].author.charAt(0)}
-        />
-      </div>
-      <div className="text-left">
-        <cite className="font-medium text-lg md:text-xl text-white not-italic"> {/* Увеличен размер имени */}
-          {testimonials[activeIndex].author}
-        </cite>
-        <p className="text-light-gray text-sm md:text-lg"> {/* Увеличен размер должности */}
-          {testimonials[activeIndex].title}
-        </p>
-      </div>
-    </div>
-  </footer>
-</blockquote>
+                {/* Карусель отзывов - цитаты */}
+                <blockquote className="text-center">
+                  <p className="text-xl md:text-2xl lg:text-2xl mb-24 text-white leading-relaxed"> {/* Увеличен отступ снизу */}
+                    {testimonials[activeIndex].highlightedPhrases 
+                      ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
+                      : testimonials[activeIndex].quote}
+                  </p>
+                  <footer>
+                    <div className="flex items-center justify-center">
+                      <div className="w-14 h-14 mr-5 flex-shrink-0 flex items-center -mt-1"> {/* Добавлен -mt-1 */}
+                        <ImageWithFallback
+                          src={testimonials[activeIndex].image || ''}
+                          alt={testimonials[activeIndex].author}
+                          width={56}
+                          height={56}
+                          category="testimonial"
+                          fallbackText={testimonials[activeIndex].author.charAt(0)}
+                        />
+                      </div>
+                      <div className="text-left">
+                        <cite className="font-medium text-lg md:text-xl text-white not-italic"> {/* Увеличен размер имени */}
+                          {testimonials[activeIndex].author}
+                        </cite>
+                        <p className="text-light-gray text-sm md:text-lg"> {/* Увеличен размер должности */}
+                          {testimonials[activeIndex].title}
+                        </p>
+                      </div>
+                    </div>
+                  </footer>
+                </blockquote>
               </motion.div>
             </AnimatePresence>
           </div>
           
-          {/* Навигационные стрелки - обновить внешний вид */}
-{(!isMobile && !isTablet) && testimonials.length > 1 && (
-  <>
-    <button
-      onClick={prevTestimonial}
-      className="absolute top-1/2 -left-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
-      aria-label="Previous testimonial"
-    >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    <button
-      onClick={nextTestimonial}
-      className="absolute top-1/2 -right-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
-      aria-label="Next testimonial"
-    >
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-  </>
-)}
+          {/* Навигационные стрелки */}
+          {(!isMobile && !isTablet) && testimonials.length > 1 && (
+            <>
+              <button
+                onClick={prevTestimonial}
+                className="absolute top-1/2 -left-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+                aria-label="Previous testimonial"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextTestimonial}
+                className="absolute top-1/2 -right-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+                aria-label="Next testimonial"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
           
           {/* Навигационные точки */}
           {testimonials.length > 1 && (

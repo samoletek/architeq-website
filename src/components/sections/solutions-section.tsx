@@ -1,12 +1,12 @@
 // src/components/sections/solutions-section.tsx
 "use client";
 
-import { useState, useEffect } from 'react'; // Убираем неиспользуемый useRef
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { motion } from 'framer-motion'; // Убираем неиспользуемый AnimatePresence
+import { motion } from 'framer-motion'; 
 
 // Тип для таба решения
 export interface SolutionTab {
@@ -296,11 +296,46 @@ export function SolutionsSection({
   solutions = defaultSolutions,
   className,
   defaultSolutionId,
-}: SolutionsSectionProps) { // Убрали неиспользуемый параметр buttonText
+}: SolutionsSectionProps) {
   // Состояние для отслеживания активного решения
   const [activeSolutionId, setActiveSolutionId] = useState<string>(
     defaultSolutionId || solutions[0].id
   );
+
+  // Состояние для отслеживания видимости секции
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const currentRef = sectionRef.current; // Сохраняем ссылку в локальную переменную
+    
+    // Функция для отслеживания видимости элемента
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Отключаем наблюдение после первого появления элемента
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '-50px 0px'
+      }
+    );
+  
+    // Начинаем наблюдение за секцией
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+  
+    // Очистка observer при размонтировании компонента
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
 
   // Функция для переключения активного решения
   const setActiveSolution = (id: string) => {
@@ -313,8 +348,6 @@ export function SolutionsSection({
   useEffect(() => {
     const updateScreenHeight = () => {
       setScreenHeight(`${window.innerHeight}px`);
-
-      
     };
   
     // Установить высоту при загрузке
@@ -327,10 +360,52 @@ export function SolutionsSection({
       window.removeEventListener('resize', updateScreenHeight);
     };
   }, []);
+
+  // Варианты анимации для заголовка
+  const titleVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
+
+  // Варианты анимации для меню
+  const menuVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { 
+        duration: 0.7,
+        delay: 0.3,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
+
+  // Варианты анимации для содержимого
+  const contentVariants = {
+    hidden: { opacity: 0, x: 30 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { 
+        duration: 0.7,
+        delay: 0.5,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
   
   return (
     <section 
-      className={cn("relative overflow-hidden flex items-center", className)}
+      ref={sectionRef}
+      className={cn("section-solutions relative overflow-hidden", className)}
       style={{ minHeight: screenHeight }}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
@@ -341,19 +416,29 @@ export function SolutionsSection({
 
       <div className="relative z-10 w-full py-8">
         <div className="container mx-auto px-4 mb-12">
-          <div className="text-center">
+          <motion.div 
+            className="text-center"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={titleVariants}
+          >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12">{title}</h2>
             <p className="text-lg md:text-base text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Основной контент */}
         <div className="container mx-auto px-4 mt-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Навигационное меню */}
-            <div className="lg:col-span-4">
+            <motion.div 
+              className="lg:col-span-4"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={menuVariants}
+            >
               <div className="bg-dark-purple/30 p-6 rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] overflow-hidden relative" style={{ height: "562px" }}>
                 {/* Эффект свечения для всего блока */}
                 <div className="absolute -inset-5 bg-primary/5 rounded-full blur-3xl opacity-20 -z-10 animate-pulse-slow"></div>
@@ -369,11 +454,16 @@ export function SolutionsSection({
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
             
             {/* Правая колонка с фиксированной высотой для предотвращения скачков */}
-            <div className="lg:col-span-8 relative">
-              <div className="min-h-[650px]"> {/* Фиксированная минимальная высота для стабильности */}
+            <motion.div 
+              className="lg:col-span-8 relative"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={contentVariants}
+            >
+              <div className="min-h-[650px]">
                 {solutions.map((solution) => (
                   <SolutionContent
                     key={solution.id}
@@ -382,7 +472,7 @@ export function SolutionsSection({
                   />
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

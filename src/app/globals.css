@@ -279,8 +279,6 @@
   }
 }
 
-/* Добавь этот код в конец файла src/app/globals.css */
-
 /* Стили для поискового оверлея */
 .search-backdrop {
   @apply fixed inset-0 bg-[#12071A]/80 backdrop-blur-sm z-[9990];
