@@ -357,10 +357,49 @@ html {
     0 0 30px rgba(176, 255, 116, 0.2);
 }
 
-
 /* Тени для обычного состояния */
 .shadow-neon-green-glow {
   box-shadow: 
     0 0 10px rgba(176, 255, 116, 0.2), 
     0 0 20px rgba(176, 255, 116, 0.1);
+}
+
+/* Неоновые эффекты */
+.neon-flicker {
+  border-color: #B24BF3;
+  color: #B24BF3;
+  animation: flicker 0.5s linear infinite;
+}
+
+.neon-on {
+  border-color: #B24BF3;
+  color: #B24BF3;
+  text-shadow: 
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #B24BF3,
+    0 0 82px #B24BF3,
+    0 0 92px #B24BF3;
+  box-shadow: 
+    0 0 10px #B24BF3,
+    0 0 20px #B24BF3,
+    0 0 40px #B24BF3,
+    inset 0 0 10px #B24BF3;
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: 
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px #B24BF3,
+      0 0 80px #B24BF3;
+    opacity: 1;
   }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.5;
+  }
+}
