@@ -1,10 +1,12 @@
+// src/components/sections/cta-section.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { motion } from 'framer-motion';
 
 // Тип для параметров секции CTA
 export interface CTASectionProps {
@@ -44,6 +46,10 @@ export default function CTASection({
   const { isMobile, isLowPerformance } = useDeviceDetection();
   const [isMounted, setIsMounted] = useState(false);
   
+  // Состояние для отслеживания видимости секции
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  
   // Отключаем сложные анимации на мобильных и низкопроизводительных устройствах
   const simplifiedMode = isMobile || isLowPerformance;
   
@@ -51,12 +57,71 @@ export default function CTASection({
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Эффект для отслеживания видимости секции
+  useEffect(() => {
+    const currentRef = sectionRef.current; // Сохраняем ссылку в локальную переменную
+    
+    // Функция для отслеживания видимости элемента
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Отключаем наблюдение после первого появления элемента
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '-50px 0px'
+      }
+    );
+  
+    // Начинаем наблюдение за секцией
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+  
+    // Очистка observer при размонтировании компонента
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
   
   // Настройки для разных вариантов
   const variantClasses = {
-    default: "py-20 bg-dark-gradient",
-    minimal: "py-12 bg-dark-gray",
-    highlight: "py-20 bg-primary/10 dark:bg-primary/5"
+    default: "section-cta bg-dark-gradient",
+    minimal: "py-16 bg-dark-gray",
+    highlight: "py-24 bg-primary/10 dark:bg-primary/5"
+  };
+
+  // Варианты анимации для контента
+  const contentVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
+
+  // Варианты анимации для кнопок с задержкой
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7,
+        delay: 0.2,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
   };
   
   // Определяем классы для секции
@@ -67,7 +132,10 @@ export default function CTASection({
   );
   
   return (
-    <section className={sectionClasses}>
+    <section 
+      ref={sectionRef}
+      className={sectionClasses}
+    >
       {/* Градиентный фон, если включен - в обоих режимах */}
       {gradient && variant === 'default' && (
         <div className="absolute inset-0 bg-dark-gradient z-0"></div>
@@ -98,25 +166,31 @@ export default function CTASection({
           compact ? "p-6" : "", 
           variant === 'highlight' ? "bg-dark-gray rounded-xl shadow-lg" : ""
         )}>
-          <div className="animate-fadeIn">
+          <motion.div 
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={contentVariants}
+          >
             <h2 className={cn(
               "font-bold mb-6",
               compact ? "text-2xl" : "text-3xl md:text-4xl"
             )}>
               {title}
             </h2>
-          </div>
           
-          <div className="animate-fadeIn" style={{ animationDelay: '0.1s' }}>
             <p className={cn(
               "text-light-gray mb-8",
               compact ? "text-base" : "text-lg"
             )}>
               {description}
             </p>
-          </div>
+          </motion.div>
           
-          <div className="animate-fadeIn" style={{ animationDelay: '0.2s' }}>
+          <motion.div 
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={buttonVariants}
+          >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={primaryCta.href}>
                 <Button variant="primary" size={compact ? "default" : "lg"}>
@@ -132,21 +206,31 @@ export default function CTASection({
                 </Link>
               )}
             </div>
-          </div>
+          </motion.div>
           
           {extraContent && (
-            <div className="animate-fadeIn mt-6" style={{ animationDelay: '0.3s' }}>
+            <motion.div 
+              className="mt-6"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={contentVariants}
+            >
               {extraContent}
-            </div>
+            </motion.div>
           )}
           
           {/* Дополнительный маленький текст, если это не компактный режим */}
           {!compact && variant === 'default' && (
-            <div className="animate-fadeIn mt-6" style={{ animationDelay: '0.4s' }}>
+            <motion.div 
+              className="mt-6"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={contentVariants}
+            >
               <p className="text-sm text-light-gray">
-              Just clear insights into what automation can do for your business.
+                Just clear insights into what automation can do for your business.
               </p>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

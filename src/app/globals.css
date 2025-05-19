@@ -54,6 +54,38 @@
     @apply py-12 md:py-24;
   }
   
+ /* Hero секция - радикально уменьшаем отступы */
+.section-hero {
+  @apply pt-12 pb-6 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10;
+}
+
+/* Benefits секция - умеренные отступы */
+.section-benefits {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* Solutions секция - умеренные отступы */
+.section-solutions {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+  /* Удаляем min-height или существенно уменьшаем */
+  min-height: 60vh;
+}
+
+/* Featured Cases секция - умеренные отступы */
+.section-cases {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* Testimonials секция - умеренные отступы */
+.section-testimonials {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
+/* CTA секция - минимальные отступы, т.к. это последняя секция */
+.section-cta {
+  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+}
+
   /* Градиентный текст для выделения слов */
   .accent-text {
     @apply inline-block text-transparent bg-clip-text;
@@ -247,8 +279,6 @@
   }
 }
 
-/* Добавь этот код в конец файла src/app/globals.css */
-
 /* Стили для поискового оверлея */
 .search-backdrop {
   @apply fixed inset-0 bg-[#12071A]/80 backdrop-blur-sm z-[9990];
@@ -273,7 +303,6 @@ body.search-overlay-active {
   @apply bg-[#12071A]/95 backdrop-blur-md;
 }
 
-/* Добавить в конец файла src/app/globals.css */
 .display-webkit-box {
   display: -webkit-box;
 }
@@ -288,7 +317,6 @@ body.search-overlay-active {
   text-overflow: ellipsis;
 }
 
-/* Добавить в конец файла src/app/globals.css */
 .arrow-nav-button {
   position: relative;
 }
@@ -305,44 +333,10 @@ body.search-overlay-active {
          drop-shadow(0 0 30px rgba(176, 255, 116, 0.5));
 }
 
-/* Добавить в src/app/globals.css */
 
 /* Плавный скролл для всей страницы */
 html {
   scroll-behavior: smooth;
-}
-
-/* Улучшенная анимация прокрутки */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Скрытие полос прокрутки на некоторых браузерах */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Стили для эффекта прилипания секций */
-.sticky-section {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-
-/* Плавные переходы для всех элементов */
-* {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 /* Стили для карточек кейсов */
