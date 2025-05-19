@@ -403,3 +403,44 @@ html {
     opacity: 0.5;
   }
 }
+
+/* Временно добавьте в globals.css для отладки */
+[data-section-index] {
+  border: 1px dashed rgba(255, 0, 0, 0.3);
+}
+
+.sticky {
+  border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+/* src/app/globals.css - добавьте для отладки */
+.active-section {
+  border-left: 4px solid #00ff00 !important;
+}
+
+#sticky-debug {
+  font-family: monospace;
+}
+
+/* Улучшаем контрастность для отладки */
+[data-section-index] {
+  position: relative;
+}
+
+[data-section-index]::before {
+  content: attr(data-section-index);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px 8px;
+  font-size: 10px;
+  z-index: 100;
+}
+
+/* src/app/globals.css - добавляем стиль */
+.sticky-element {
+  position: sticky;
+  border: 1px solid rgba(0, 255, 0, 0.3); /* Для отладки */
+}
