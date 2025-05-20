@@ -100,7 +100,7 @@ export default function RootLayout({
     <html 
       lang="en" 
       className={`${inter.variable} ${ibmPlexMono.variable}`} 
-      suppressHydrationWarning // Предотвращает предупреждения гидратации
+      suppressHydrationWarning
     >
       <head>
         {/* Preload critical resources */}
@@ -111,12 +111,7 @@ export default function RootLayout({
           type="image/png"
         />
         
-        {/* Добавляем preconnect для внешних ресурсов */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://res.cloudinary.com" />
-        
-        {/* Any additional third-party scripts or analytics */}
+        {/* ... остальные теги в head */}
       </head>
       <body className="font-mono bg-background text-white antialiased">
         {/* Skip Navigation для доступности */}
@@ -133,5 +128,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  )
+  );
 }
