@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -31,11 +31,37 @@ export function GCSVideo({
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   
+  // Защита от скачивания через правый клик и перетаскивание
+  useEffect(() => {
+    // Предотвращаем правый клик и перетаскивание видео
+    const preventActions = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+    
+    // Добавляем обработчики событий для видео
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      // Отключаем контекстное меню (правый клик)
+      videoElement.addEventListener('contextmenu', preventActions);
+      // Отключаем перетаскивание
+      videoElement.addEventListener('dragstart', preventActions);
+    }
+    
+    // Функция очистки при размонтировании компонента
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener('contextmenu', preventActions);
+        videoElement.removeEventListener('dragstart', preventActions);
+      }
+    };
+  }, [videoRef.current]);
+  
   // Формируем URL для видео в Google Cloud Storage
   const bucketName = process.env.NEXT_PUBLIC_GCS_BUCKET_NAME || 'architeq-videos';
   const videoUrl = `https://storage.googleapis.com/${bucketName}/case-studies/${caseId}.mp4`;
   
-  // Стили с бордером из Benefits Section и свечением как у case-card
+  // Стили с бордером
   const containerStyles = cn(
     "bg-dark-purple/40 backdrop-blur-sm rounded-lg overflow-hidden border transition-all duration-300",
     isHovered ? "border-primary/50 shadow-neon-glow" : "border-primary/30",
@@ -107,6 +133,9 @@ export function GCSVideo({
           loop={loop}
           muted={muted}
           controls={controls}
+          controlsList="nodownload"
+          disablePictureInPicture
+          onContextMenu={(e) => e.preventDefault()}
           onError={handleError}
           onLoadedData={handleVideoLoad}
           playsInline
@@ -161,7 +190,8 @@ export function GCSVideo({
               autoPlay
               controls
               controlsList="nodownload"
-              disablePictureInPicture 
+              disablePictureInPicture
+              onContextMenu={(e) => e.preventDefault()} 
               onError={handleError}
             />
           </motion.div>
