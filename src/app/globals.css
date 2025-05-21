@@ -6,7 +6,7 @@
 @layer base {
   :root {
     --gradient-primary: linear-gradient(90deg, #B24BF3 0%, #4DADFF 100%);
-    --gradient-accent: linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%); /* Зеленый к белому */
+    --gradient-accent: linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%);
     --gradient-text: linear-gradient(90deg, #B0FF74 0%, #4DADFF 100%);
   }
   
