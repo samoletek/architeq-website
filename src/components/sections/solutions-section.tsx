@@ -405,7 +405,7 @@ export function SolutionsSection({
   return (
     <section 
       ref={sectionRef}
-      className={cn("section-solutions relative overflow-hidden", className)}
+      className={cn("section-solutions relative overflow-hidden pt-24 pb-32", className)}
       style={{ minHeight: screenHeight }}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
@@ -422,7 +422,7 @@ export function SolutionsSection({
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12">{title}</h2>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">{title}</h2>
             <p className="text-lg md:text-base text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>

@@ -81,7 +81,7 @@ export default function HeroSection({
   };
 
   return (
-    <section className="pt-40 pb-24 relative overflow-hidden">
+    <section className="pt-40 pb-48 relative overflow-hidden">
       {/* Эффекты фона */}
       <div className="absolute right-0 top-[20%] opacity-20 w-[30vw] h-[30vw] rounded-full bg-primary/30 blur-[100px]" />
       <div className="absolute left-10 bottom-[10%] opacity-20 w-[20vw] h-[20vw] rounded-full bg-secondary/20 blur-[80px]" />

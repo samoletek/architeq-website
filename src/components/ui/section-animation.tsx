@@ -1,13 +1,42 @@
 // src/components/ui/section-animation.tsx
 "use client";
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useRef } from 'react';
 import { motion, useAnimation, Variant } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { shouldEnableAnimations } from '@/lib/utils/animation';
 
 export type AnimationDirection = 'up' | 'down' | 'left' | 'right' | 'none' | 'scale';
+
+// Глобальная очередь анимаций для координации между секциями
+const animationQueue = {
+  activeAnimations: 0,
+  maxConcurrent: 2, // Максимальное число одновременных анимаций
+  queue: [] as (() => void)[],
+  
+  // Добавить анимацию в очередь
+  enqueue(animationFn: () => void) {
+    if (this.activeAnimations < this.maxConcurrent) {
+      this.activeAnimations += 1;
+      animationFn();
+    } else {
+      this.queue.push(animationFn);
+    }
+  },
+  
+  // Уведомить о завершении анимации и запустить следующую
+  dequeue() {
+    this.activeAnimations = Math.max(0, this.activeAnimations - 1);
+    if (this.queue.length > 0 && this.activeAnimations < this.maxConcurrent) {
+      const nextAnimation = this.queue.shift();
+      if (nextAnimation) {
+        this.activeAnimations += 1;
+        nextAnimation();
+      }
+    }
+  }
+};
 
 interface SectionAnimationProps {
   children: ReactNode;
@@ -17,6 +46,7 @@ interface SectionAnimationProps {
   duration?: number;
   once?: boolean;
   threshold?: number;
+  visibilityThreshold?: number; // Минимальный процент видимости для запуска
   rootMargin?: string;
   stagger?: boolean;
   staggerChildren?: number;
@@ -26,6 +56,7 @@ interface SectionAnimationProps {
     visible: Variant;
   };
   disabled?: boolean;
+  waitForPrevious?: boolean; // Ждать завершения предыдущих анимаций
 }
 
 export function SectionAnimation({
@@ -35,19 +66,22 @@ export function SectionAnimation({
   direction = 'up',
   duration = 0.6,
   once = true,
-  threshold = 0.1,
-  rootMargin = '0px',
+  visibilityThreshold = 0.3, // Минимальный процент видимости (30%)
+  rootMargin = '-10% 0px', // Изменено с -50px для относительного отступа
   stagger = false,
   staggerChildren = 0.1,
   staggerDirection = 'forward',
   customVariants,
-  disabled = false
+  disabled = false,
+  waitForPrevious = false
 }: SectionAnimationProps) {
   const { isMobile, isLowPerformance } = useDeviceDetection();
   const controls = useAnimation();
-  const [ref, inView] = useInView({
+  
+  // Улучшенный IntersectionObserver с повышенным threshold
+  const [ref, inView, entry] = useInView({
     triggerOnce: once,
-    threshold,
+    threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], // Больше точек для определения процента видимости
     rootMargin
   });
   
@@ -56,11 +90,21 @@ export function SectionAnimation({
   
   // Состояние для отслеживания клиентского рендеринга
   const [isMounted, setIsMounted] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  
+  // Отслеживание предыдущего состояния видимости для детектирования входа в область видимости
+  const prevInViewRef = useRef(false);
+  
+  // Задержка для предотвращения мигания при гидратации
+  useEffect(() => {
+    const hydrationTimer = setTimeout(() => {
+      setIsMounted(true);
+    }, 10);
+    
+    return () => clearTimeout(hydrationTimer);
+  }, []);
   
   useEffect(() => {
-    // Отмечаем, что компонент смонтирован на клиенте
-    setIsMounted(true);
-    
     // Проверяем настройки пользователя для анимаций
     setAnimationsEnabled(shouldEnableAnimations());
     
@@ -69,24 +113,56 @@ export function SectionAnimation({
     // немедленно показываем контент
     if (disabled || isLowPerformance || !animationsEnabled) {
       controls.set("visible");
-    } else if (inView) {
-      controls.start("visible");
+      return;
     }
-  }, [controls, inView, disabled, isLowPerformance, animationsEnabled]);
+    
+    // Проверка процента видимости элемента
+    const visibilityRatio = entry?.intersectionRatio || 0;
+    const isVisibleEnough = visibilityRatio >= visibilityThreshold;
+    
+    // Если элемент достаточно виден и не анимировался ранее
+    if (inView && isVisibleEnough && !hasAnimated) {
+      // Функция для запуска анимации
+      const startAnimation = () => {
+        // Используем задержку из пропсов
+        setTimeout(() => {
+          controls.start("visible").then(() => {
+            // Уведомляем очередь о завершении анимации
+            if (waitForPrevious) {
+              animationQueue.dequeue();
+            }
+          });
+          setHasAnimated(true);
+        }, delay * 1000);
+      };
+      
+      // Если настроено ожидание предыдущих анимаций
+      if (waitForPrevious) {
+        animationQueue.enqueue(startAnimation);
+      } else {
+        startAnimation();
+      }
+    }
+    
+    // Запоминаем текущее состояние для следующей проверки
+    prevInViewRef.current = inView;
+    
+  }, [controls, inView, entry, disabled, isLowPerformance, 
+      animationsEnabled, hasAnimated, visibilityThreshold, 
+      delay, waitForPrevious]);
   
   // Упрощаем анимации на мобильных устройствах
   const actualDuration = isMobile ? Math.min(duration, 0.4) : duration;
-  const actualDelay = isMobile ? Math.min(delay, 0.2) : delay;
   
   // Определяем начальное смещение в зависимости от направления
   const getInitialOffset = () => {
-    const offset = isMobile ? 20 : 40;
+    const offset = isMobile ? 20 : 30; // Уменьшено с 40 до 30 для более тонкой анимации
     switch (direction) {
       case 'up': return { opacity: 0, y: offset };
       case 'down': return { opacity: 0, y: -offset };
       case 'left': return { opacity: 0, x: offset };
       case 'right': return { opacity: 0, x: -offset };
-      case 'scale': return { opacity: 0, scale: 0.94 };
+      case 'scale': return { opacity: 0, scale: 0.96 }; // Изменено с 0.94 для более тонкой анимации
       case 'none': return { opacity: 0 };
       default: return { opacity: 0, y: offset };
     }
@@ -102,21 +178,35 @@ export function SectionAnimation({
       scale: 1,
       transition: { 
         duration: actualDuration, 
-        delay: actualDelay,
-        ease: "easeOut",
+        delay: 0, // Задержка обрабатывается в useEffect для лучшей координации
+        ease: [0.25, 0.1, 0.25, 1], // Улучшенная кривая анимации для более естественного движения
         ...(stagger && {
           staggerChildren,
           staggerDirection: staggerDirection === 'forward' ? 1 : -1,
-          delayChildren: actualDelay
+          delayChildren: 0 // Задержка обрабатывается отдельно
         })
       }
     }
   };
   
-  // Если анимации отключены или это первый серверный рендер, 
-  // показываем содержимое без анимации
+  // Добавляем индикатор загрузки для отладки
+  const debugMode = false; // Включите для отладки
+  
+  // Если анимации отключены или компонент не готов, показываем содержимое без анимации
   if (!isMounted || disabled || isLowPerformance || !animationsEnabled) {
-    return <div className={className}>{children}</div>;
+    const content = (
+      <div className={className}>
+        {debugMode && <div className="bg-red-500 text-white p-1 text-xs absolute top-0 right-0 z-50">No Animation</div>}
+        {children}
+      </div>
+    );
+    
+    // Добавляем небольшую задержку для предотвращения "прыжков" при гидратации
+    if (!isMounted) {
+      return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
+    }
+    
+    return content;
   }
 
   return (
@@ -127,6 +217,11 @@ export function SectionAnimation({
       animate={controls}
       className={className}
     >
+      {debugMode && (
+        <div className={`p-1 text-xs absolute top-0 right-0 z-50 ${hasAnimated ? 'bg-green-500' : 'bg-yellow-500'}`}>
+          {hasAnimated ? 'Animated' : 'Waiting'} - {Math.round((entry?.intersectionRatio || 0) * 100)}%
+        </div>
+      )}
       {children}
     </motion.div>
   );
@@ -143,12 +238,17 @@ export function AnimatedContainer({
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
-    setIsMounted(true);
+    // Небольшая задержка для предотвращения мигания при гидратации
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 10);
+    
+    return () => clearTimeout(timer);
   }, []);
   
-  // Если компонент не смонтирован, показываем статический контент
+  // Если компонент не смонтирован, показываем статический контент с opacity для предотвращения мигания
   if (!isMounted) {
-    return <div className={className}>{children}</div>;
+    return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
   }
   
   return (
@@ -179,7 +279,12 @@ export function AnimatedItem({
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
-    setIsMounted(true);
+    // Небольшая задержка для предотвращения мигания при гидратации
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 10);
+    
+    return () => clearTimeout(timer);
   }, []);
   
   // Определяем начальное смещение в зависимости от направления
@@ -205,14 +310,14 @@ export function AnimatedItem({
       scale: 1,
       transition: { 
         duration, 
-        ease: "easeOut" 
+        ease: [0.25, 0.1, 0.25, 1] // Улучшенная кривая анимации
       }
     }
   };
   
   // Если компонент не смонтирован, показываем статический контент
   if (!isMounted) {
-    return <div className={className}>{children}</div>;
+    return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
   }
   
   return (

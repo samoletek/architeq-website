@@ -45,31 +45,84 @@ export default function Home() {
       />
       
       <SiteLayout>
-        {/* Hero section - нативная анимация */}
+        {/* Hero section - нативная анимация без задержки */}
         <HeroSection />
 
-        {/* Benefits section с плавной анимацией */}
-        <SectionAnimation direction="up" threshold={0.15} rootMargin="-50px 0px">
+        {/* 
+          Benefits section - первая секция после Hero
+          Используем улучшенный threshold и visibilityThreshold для запуска только
+          когда секция достаточно видна на экране (30%)
+        */}
+        <SectionAnimation 
+          direction="up" 
+          threshold={0.3} 
+          visibilityThreshold={0.3} 
+          rootMargin="-10% 0px"
+          delay={0.1} // Небольшая задержка для мягкого начала
+          once={true}
+        >
           <BenefitsSection />
         </SectionAnimation>
 
-        {/* Solutions section */}
-        <SectionAnimation direction="none" delay={0.2} threshold={0.15} rootMargin="-50px 0px">
+        {/* 
+          Solutions section - секция с переключением решений
+          Используем waitForPrevious для ожидания активации предыдущей секции
+          и предотвращения одновременного срабатывания всех анимаций
+        */}
+        <SectionAnimation 
+          direction="none" 
+          delay={0.2} 
+          threshold={0.3} 
+          visibilityThreshold={0.3} 
+          rootMargin="-10% 0px"
+          waitForPrevious={true} // Ждем завершения анимации предыдущей секции
+        >
           <SolutionsSection />
         </SectionAnimation>
         
-        {/* Featured Case Studies */}
-        <SectionAnimation direction="up" threshold={0.15} rootMargin="-50px 0px">
+        {/* 
+          Featured Case Studies - координируем с предыдущими секциями
+          Увеличиваем задержку, чтобы избежать одновременного срабатывания с Solutions
+        */}
+        <SectionAnimation 
+          direction="up" 
+          threshold={0.3} 
+          visibilityThreshold={0.3} 
+          rootMargin="-10% 0px"
+          delay={0.3} // Увеличенная задержка
+          waitForPrevious={true} // Ждем завершения анимации предыдущей секции
+        >
           <FeaturedCasesSection />
         </SectionAnimation>
 
-        {/* Testimonials section */}
-        <SectionAnimation direction="none" threshold={0.15} rootMargin="-50px 0px">
+        {/* 
+          Testimonials section - отзывы клиентов
+          Применяем стаггер-анимацию для плавного появления отзывов
+        */}
+        <SectionAnimation 
+          direction="none" 
+          threshold={0.3} 
+          visibilityThreshold={0.3} 
+          rootMargin="-10% 0px"
+          delay={0.2}
+          waitForPrevious={true} // Координация с предыдущими секциями
+        >
           <TestimonialsSection />
         </SectionAnimation>
         
-        {/* CTA section */}
-        <SectionAnimation direction="scale" threshold={0.15} rootMargin="-50px 0px">
+        {/* 
+          CTA section - призыв к действию
+          Используем scale-анимацию для привлечения внимания
+          с более высоким threshold для гарантированной видимости
+        */}
+        <SectionAnimation 
+          direction="scale" 
+          threshold={0.4} // Повышенный порог для запуска только при хорошей видимости
+          visibilityThreshold={0.4} 
+          rootMargin="-10% 0px"
+          delay={0.2}
+          waitForPrevious={true} // Координация с предыдущими секциями
+        >
           <CTASection />
         </SectionAnimation>
       </SiteLayout>

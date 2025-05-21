@@ -92,7 +92,7 @@ export default function CTASection({
   
   // Настройки для разных вариантов
   const variantClasses = {
-    default: "section-cta bg-dark-gradient",
+    default: "section-cta bg-dark-gradient pt-72 pb-48",
     minimal: "py-16 bg-dark-gray",
     highlight: "py-24 bg-primary/10 dark:bg-primary/5"
   };
@@ -172,14 +172,14 @@ export default function CTASection({
             variants={contentVariants}
           >
             <h2 className={cn(
-              "font-bold mb-6",
-              compact ? "text-2xl" : "text-3xl md:text-4xl"
+              "font-bold mb-8",
+              compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
             )}>
               {title}
             </h2>
           
             <p className={cn(
-              "text-light-gray mb-8",
+              "text-light-gray mb-16",
               compact ? "text-base" : "text-lg"
             )}>
               {description}
@@ -227,9 +227,6 @@ export default function CTASection({
               animate={isVisible ? "visible" : "hidden"}
               variants={contentVariants}
             >
-              <p className="text-sm text-light-gray">
-                Just clear insights into what automation can do for your business.
-              </p>
             </motion.div>
           )}
         </div>
