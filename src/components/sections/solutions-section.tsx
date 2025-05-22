@@ -252,6 +252,29 @@ whileHover={{
 
 // Компонент для стилизованного bullet point с эффектом свечения
 const GlowingBulletPoint = ({ text, index = 0 }: { text: string; index: number }) => {
+    // Массив ключевых слов для выделения
+    const keyWords = [
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+    ];
+    // Функция для выделения ключевых слов
+    const highlightKeywords = (text: string) => {
+      let highlightedText = text;
+      
+      keyWords.forEach(keyword => {
+        const regex = new RegExp(`\\b(${keyword})\\b`, 'gi');
+        highlightedText = highlightedText.replace(
+          regex, 
+          `<span class="text-white font-medium">${keyword}</span>`
+        );
+      });
+      
+      return highlightedText;
+    };
+  
   return (
     <motion.li 
       className="flex items-start text-lg mb-4 last:mb-0"
@@ -295,16 +318,15 @@ const GlowingBulletPoint = ({ text, index = 0 }: { text: string; index: number }
       
       {/* Анимированный текст буллита */}
       <motion.span 
-        className="text-light-gray"
+        className="text-white/90"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ 
           duration: 0.3,
           delay: 0.3 + (index * 0.15) + 0.1 // Согласованная с точкой задержка
         }}
-      >
-        {text}
-      </motion.span>
+        dangerouslySetInnerHTML={{ __html: highlightKeywords(text) }}
+        />
     </motion.li>
   );
 };
@@ -357,31 +379,31 @@ const SolutionContent = ({
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] relative overflow-hidden bg-[linear-gradient(to_right,_#050108_0%,_#0C0412_50%,_#050108_100%)] before:absolute before:content-[''] before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] backdrop-blur-sm p-14 h-full"
+        className="w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] bg-gradient-to-bl from-[#12071A] to-[#170A24] backdrop-blur-sm p-14 h-full relative overflow-hidden"
       >
-        {/* Добавляем эффект пульсирующего свечения для границ - фиолетовый акцент */}
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 rounded-xl blur-sm -z-10"></div>
-        <motion.div 
-          className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/5 to-primary/30 rounded-xl blur-sm -z-10"
-          animate={{ 
-            opacity: [0.5, 0.8, 0.5] 
-          }}
-          transition={{ 
-            duration: 4, 
-            repeat: Infinity,
-            ease: "easeInOut" 
-          }}
-        />
+{/* Эффект темного свечения для границ */}
+<div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 rounded-xl blur-sm -z-10"></div>
+<motion.div 
+  className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/5 to-primary/30 rounded-xl blur-sm -z-10"
+  animate={{ 
+    opacity: [0.5, 0.8, 0.5] 
+  }}
+  transition={{ 
+    duration: 4, 
+    repeat: Infinity,
+    ease: "easeInOut" 
+  }}
+/>
         
         <div className="flex flex-col justify-between h-full relative z-10">
           <div className="space-y-8 px-2">
             {/* Заголовок */}
             <h3 className="text-3xl font-bold mb-8 text-white">
-              {solution.label} Automation
+              {solution.label}
             </h3>
             
             {/* Описание */}
-            <p className="text-xl text-light-gray leading-relaxed">
+            <p className="text-xl text-white/90 leading-relaxed">
               {solution.description}
             </p>
             
@@ -421,7 +443,6 @@ const SolutionContent = ({
               </motion.ul>
             </div>
           </div>
-          
           <div className="mt-auto pt-10 flex justify-end px-2">
   {solution.href && (
     <Link href={solution.href}>
@@ -637,7 +658,7 @@ export function SolutionsSection({
               animate={isVisible ? "visible" : "hidden"}
               variants={menuVariants}
             >
-             <div className="relative p-6 rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] overflow-hidden flex flex-col justify-center bg-[linear-gradient(to_right,_#12071A_0%,_#170A24_50%,_#12071A_100%)] before:absolute before:content-[''] before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] backdrop-blur-sm"
+             <div className="relative p-6 rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] overflow-hidden flex flex-col justify-center bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] before:absolute before:content-[''] before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] backdrop-blur-sm"
                   style={{ height: "550px" }}> {/* Уменьшена высота контейнера и добавлено центрирование */}
                 {/* Улучшенный эффект свечения для всего блока - фиолетовый акцент */}
                 <motion.div 
