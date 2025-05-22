@@ -381,12 +381,12 @@ const SolutionContent = ({
         exit="exit"
         className="w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] bg-gradient-to-bl from-[#12071A] to-[#170A24] backdrop-blur-sm p-14 h-full relative overflow-hidden"
       >
-{/* Эффект темного свечения для границ */}
-<div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/10 to-primary/30 rounded-xl blur-sm -z-10"></div>
+{/* Насыщенное темное свечение */}
+<div className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-xl -z-10"></div>
 <motion.div 
-  className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 via-primary/5 to-primary/30 rounded-xl blur-sm -z-10"
+  className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-xl blur-xl -z-10"
   animate={{ 
-    opacity: [0.5, 0.8, 0.5] 
+    opacity: [0.6, 0.9, 0.6] 
   }}
   transition={{ 
     duration: 4, 
@@ -462,22 +462,22 @@ const SolutionContent = ({
       >
         {/* Эффект свечения для кнопки - зеленый акцент */}
         <motion.div 
-          className="absolute inset-0 bg-secondary/30 rounded-full blur-md z-0"
-          animate={{ 
-            opacity: [0.5, 0.8, 0.5],
-            boxShadow: [
-              "0 0 10px 2px rgba(176, 255, 116, 0.3)",
-              "0 0 20px 4px rgba(176, 255, 116, 0.5)",
-              "0 0 10px 2px rgba(176, 255, 116, 0.3)"
-            ]
-          }}
-          transition={{ 
-            duration: 3, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.3 + (solution.features.length * 0.15) + 0.2 // Совпадает с задержкой родительского элемента
-          }}
-        />
+  className="absolute inset-0 bg-secondary/30 rounded-full blur-lg z-0"
+  animate={{ 
+    opacity: [0.5, 0.8, 0.5],
+    boxShadow: [
+      "0 0 15px 3px rgba(176, 255, 116, 0.4)",
+      "0 0 30px 6px rgba(176, 255, 116, 0.6)",
+      "0 0 15px 3px rgba(176, 255, 116, 0.4)"
+    ]
+  }}
+  transition={{ 
+    duration: 3, 
+    repeat: Infinity,
+    ease: "easeInOut",
+    delay: 0.3 + (solution.features.length * 0.15) + 0.2
+  }}
+/>
         
         <Button 
           size="lg" 
@@ -662,7 +662,7 @@ export function SolutionsSection({
                   style={{ height: "550px" }}> {/* Уменьшена высота контейнера и добавлено центрирование */}
                 {/* Улучшенный эффект свечения для всего блока - фиолетовый акцент */}
                 <motion.div 
-                  className="absolute -inset-1 bg-gradient-to-b from-primary/30 via-primary/10 to-primary/30 rounded-xl blur-md -z-10"
+                  className="absolute -inset-1 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-lg -z-10"
                   animate={{ 
                     opacity: [0.5, 0.8, 0.5], 
                   }}
