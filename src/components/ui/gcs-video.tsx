@@ -31,9 +31,8 @@ export function GCSVideo({
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   
-  // Защита от скачивания через правый клик и перетаскивание
+  // Защита от скачивания (правый клик и перетаскивание)
   useEffect(() => {
-    // Предотвращаем правый клик и перетаскивание видео
     const preventActions = (e: Event) => {
       e.preventDefault();
       return false;
@@ -42,7 +41,7 @@ export function GCSVideo({
     // Добавляем обработчики событий для видео
     const videoElement = videoRef.current;
     if (videoElement) {
-      // Отключаем контекстное меню (правый клик)
+      // Отключаем контекстное меню
       videoElement.addEventListener('contextmenu', preventActions);
       // Отключаем перетаскивание
       videoElement.addEventListener('dragstart', preventActions);
@@ -141,7 +140,7 @@ export function GCSVideo({
           playsInline
         />
         
-        {/* Кнопка расширения в правом нижнем углу */}
+        {/* Кнопка фуллскрин */}
         {isLoaded && !hasError && (
           <div className="absolute bottom-4 right-4 z-10">
             <button
