@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { motion } from 'framer-motion'; 
+import { motion, AnimatePresence } from 'framer-motion'; 
 
 // Тип для таба решения
 export interface SolutionTab {
@@ -147,43 +147,189 @@ const SolutionMenuItem = ({
   onClick: () => void;
 }) => {
   return (
-    <motion.button
+    <motion.div
       className={cn(
-        "w-full text-left py-5 px-6 rounded-lg mb-5 flex items-center group transition-colors duration-300 relative overflow-hidden focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none",
+        "w-full text-left py-4 px-6 rounded-lg mb-3 flex items-center group transition-all duration-300 relative overflow-hidden cursor-pointer",
         isActive 
-          ? "bg-dark-purple/20 shadow-neon-glow text-white opacity-100" 
-          : "bg-dark-purple/20 hover:bg-dark-purple/40 text-light-gray hover:opacity-90"
+          ? "text-white" 
+          : "text-light-gray hover:text-white"
       )}
       onClick={onClick}
-      whileHover={{ 
-        x: 4,
-        transition: {
-          x: {
-            type: "spring",
-            stiffness: 500,
-            damping: 25,
-            mass: 0.5,
-            duration: 0.15
-          }
-        }
-      }}
-      whileFocus={{ outline: "none" }}
-      whileTap={{ outline: "none" }}
+whileHover={{ 
+  x: 8,
+  transition: {
+    type: "spring",
+    stiffness: 800,     // Увеличено для мгновенной реакции
+    damping: 15,        // Уменьшено для более быстрого движения
+    mass: 0.2,          // Уменьшено для меньшей инерции
+    velocity: 10,       // Добавлено для мгновенного старта
+    restDelta: 0.001,   // Более точная остановка
+    duration: 0         // Убрано ограничение по времени
+  }
+}}
     >
-      {/* Добавляем свечение в виде абсолютно позиционированного элемента */}
+      {/* Эффект свечения для активного элемента - фиолетовый акцент */}
       {isActive && (
-        <div className="absolute inset-0 bg-primary/10 rounded-lg filter blur-md opacity-60 -z-10"></div>
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
+          animate={{ 
+            opacity: [0.5, 0.7, 0.5], 
+          }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity,
+            ease: "easeInOut" 
+          }}
+        />
       )}
-      <div className="w-14 flex justify-center items-center mr-4 flex-shrink-0">
-        <Icon name={solution.icon} className={`h-7 w-7 ${isActive ? 'text-white' : 'text-light-gray group-hover:text-white transition-colors duration-100'}`} />
+      
+      <div className="w-12 flex justify-center items-center mr-4 flex-shrink-0">
+        <motion.div
+          animate={isActive ? {
+            scale: [1, 1.05, 1],
+            filter: ["drop-shadow(0 0 8px rgba(178, 75, 243, 0.4))", "drop-shadow(0 0 12px rgba(178, 75, 243, 0.6))", "drop-shadow(0 0 8px rgba(178, 75, 243, 0.4))"],
+          } : {}}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <Icon 
+            name={solution.icon} 
+            className={`h-6 w-6 ${
+              isActive 
+                ? 'text-primary neon-glow' 
+                : 'text-light-gray group-hover:text-white transition-colors duration-300'
+            }`} 
+          />
+        </motion.div>
       </div>
-      <div className={`font-medium text-xl group-hover:text-shadow-white-soft group-hover:text-white ${isActive ? 'text-white' : 'text-light-gray'} transition-colors duration-100`}>
-        {solution.label}
+      
+      <div className="flex-grow">
+        <motion.div 
+          className={cn(
+            "font-medium text-lg transition-all duration-300",
+            isActive 
+              ? "text-white primary-text" 
+              : "text-light-gray group-hover:text-white"
+          )}
+          animate={isActive ? {
+            textShadow: ["0 0 4px rgba(178, 75, 243, 0.3)", "0 0 8px rgba(178, 75, 243, 0.5)", "0 0 4px rgba(178, 75, 243, 0.3)"]
+          } : {}}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          {solution.label}
+        </motion.div>
       </div>
-    </motion.button>
+      
+      {isActive && (
+        <motion.div 
+          className="w-1.5 h-10 rounded-full bg-primary ml-2"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1,
+            boxShadow: ["0 0 5px rgba(178, 75, 243, 0.5)", "0 0 15px rgba(178, 75, 243, 0.7)", "0 0 5px rgba(178, 75, 243, 0.5)"]
+          }}
+          transition={{
+            duration: 0.3,
+            boxShadow: {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }}
+        />
+      )}
+    </motion.div>
   );
 };
 
+// Компонент для стилизованного bullet point с эффектом свечения
+const GlowingBulletPoint = ({ text, index = 0 }: { text: string; index: number }) => {
+    // Массив ключевых слов для выделения
+    const keyWords = [
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+      `Clear roadmap for implementation`,`End-to-end workflow automation`,`System integration & error-proof data flow`, `Custom dashboards for live insights`, `Smart validation & fail-safes`, 
+    ];
+    // Функция для выделения ключевых слов
+    const highlightKeywords = (text: string) => {
+      let highlightedText = text;
+      
+      keyWords.forEach(keyword => {
+        const regex = new RegExp(`\\b(${keyword})\\b`, 'gi');
+        highlightedText = highlightedText.replace(
+          regex, 
+          `<span class="text-white font-medium">${keyword}</span>`
+        );
+      });
+      
+      return highlightedText;
+    };
+  
+  return (
+    <motion.li 
+      className="flex items-start text-lg mb-4 last:mb-0"
+      initial={{ opacity: 0, x: 20 }} // Начинаем справа
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ 
+        duration: 0.5,
+        delay: 0.3 + (index * 0.15), // Задержка нарастает с каждым элементом
+        ease: [0.1, 0.6, 0.3, 1] // Та же кривая, что и для основного контейнера
+      }}
+    >
+      <motion.div 
+        className="relative flex-shrink-0 mr-4 mt-1"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ 
+          scale: 1,
+          opacity: 1,
+        }}
+        transition={{ 
+          duration: 0.3,
+          delay: 0.3 + (index * 0.15) + 0.1, // Немного дополнительной задержки для точки
+        }}
+      >
+        <motion.div
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.9, 1, 0.9] 
+          }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 0.3 + (index * 0.15) + 0.3 // Задержка для начала пульсации
+          }}
+        >
+          <div className="w-2 h-2 rounded-full bg-secondary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="w-2 h-2 rounded-full bg-secondary/70 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 blur-[2px]"></div>
+          <div className="w-6 h-6 rounded-full bg-secondary/30 blur-[3px]"></div>
+        </motion.div>
+      </motion.div>
+      
+      {/* Анимированный текст буллита */}
+      <motion.span 
+        className="text-white/90"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ 
+          duration: 0.3,
+          delay: 0.3 + (index * 0.15) + 0.1 // Согласованная с точкой задержка
+        }}
+        dangerouslySetInnerHTML={{ __html: highlightKeywords(text) }}
+        />
+    </motion.li>
+  );
+};
 
 // Компонент для отдельного решения
 const SolutionContent = ({ 
@@ -197,24 +343,27 @@ const SolutionContent = ({
   const contentVariants = {
     initial: { 
       opacity: 0,
-      x: -20,
+      x: 40,  // Начинаем справа
+      y: 0    // Явно указываем отсутствие вертикального движения
     },
     animate: { 
       opacity: 1,
       x: 0,
+      y: 0,
       transition: { 
-        type: "tween", // Более предсказуемая анимация
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1], // Плавная кривая анимации
+        type: "tween", 
+        duration: 0.5,
+        ease: "easeOut"  // Более простая и надежная кривая
       }
     },
     exit: { 
       opacity: 0,
-      x: -10,
+      x: -40,  // Уходим влево
+      y: 0,    // Без вертикального движения
       transition: { 
         type: "tween",
-        duration: 0.2,
-        ease: [0.25, 0.1, 0.25, 1],
+        duration: 0.3,
+        ease: "easeIn"
       }
     }
   };
@@ -230,60 +379,130 @@ const SolutionContent = ({
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] bg-dark-purple/20 backdrop-blur-sm p-12 h-full"
+        className="w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] bg-gradient-to-bl from-[#12071A] to-[#170A24] backdrop-blur-sm p-14 h-full relative overflow-hidden"
       >
-        <div className="flex flex-col justify-between h-full">
-          <div className="space-y-10 px-2">
+{/* Насыщенное темное свечение */}
+<div className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-xl -z-10"></div>
+<motion.div 
+  className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-xl blur-xl -z-10"
+  animate={{ 
+    opacity: [0.6, 0.9, 0.6] 
+  }}
+  transition={{ 
+    duration: 4, 
+    repeat: Infinity,
+    ease: "easeInOut" 
+  }}
+/>
+        
+        <div className="flex flex-col justify-between h-full relative z-10">
+          <div className="space-y-8 px-2">
             {/* Заголовок */}
-            <h3 className="text-3xl font-bold mb-10">
-              {solution.label} Automation
+            <h3 className="text-3xl font-bold mb-8 text-white">
+              {solution.label}
             </h3>
             
             {/* Описание */}
-            <p className="text-xl text-light-gray leading-relaxed">
+            <p className="text-xl text-white/90 leading-relaxed">
               {solution.description}
             </p>
             
-            <div className="mt-10">
-              {/* Подзаголовок */}
-              <h4 className="text-2xl font-semibold mb-10">Key Features:</h4>
-              <ul className="space-y-3">
-                {solution.features.map((feature, index) => (
-                  <li 
-                    key={index} 
-                    className="flex items-start text-lg"
-                  >
-                    <span className="text-primary text-xl mr-3">•</span>
-                    <span className="text-light-gray">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="mt-8">
+              {/* Подзаголовок с улучшенным стилем */}
+              <motion.h4 
+  className="text-2xl font-semibold mb-8 text-white" // Убрали accent-text для чистого белого цвета
+  initial={{ opacity: 0, x: 30 }} // Начинает справа
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ 
+    duration: 0.4,
+    delay: 0.2, // Небольшая задержка относительно контейнера
+    ease: [0.25, 0.4, 0.3, 1]
+  }}
+>
+  Key Features:
+</motion.h4>
+              
+              {/* Улучшенные bullet points с эффектом свечения */}
+              <motion.ul 
+                className="space-y-3"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.1
+                    }
+                  }
+                }}
+                initial="hidden"
+                animate="show"
+              >
+{solution.features.map((feature, index) => (
+  <GlowingBulletPoint key={index} text={feature} index={index} />
+))}
+              </motion.ul>
             </div>
           </div>
-          
-          <div className="mt-auto pt-12 flex justify-end px-2">
-            {solution.href && (
-              <Link href={solution.href}>
-             <Button size="lg" className="px-8 py-5 text-lg focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none">
-              Learn More
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-6 ml-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Button>
-            </Link>
-            )}
-          </div>
+          <div className="mt-auto pt-10 flex justify-end px-2">
+  {solution.href && (
+    <Link href={solution.href}>
+      <motion.div
+        initial={{ opacity: 0, x: 40 }} // Начинаем справа вне экрана
+        animate={{ opacity: 1, x: 0 }} // Анимация влево
+        transition={{ 
+          duration: 1,
+          delay: 0.3 + (solution.features.length * 0.15) + 0.2, // Задержка после последнего буллита
+          ease: [0.1, 0.6, 0.3, 1] // Та же кривая анимации, что у буллитов
+        }}
+        whileHover={{ 
+          scale: 1.05,
+          filter: "brightness(1.1)"
+        }}
+        className="relative"
+      >
+        {/* Эффект свечения для кнопки - зеленый акцент */}
+        <motion.div 
+  className="absolute inset-0 bg-secondary/30 rounded-full blur-lg z-0"
+  animate={{ 
+    opacity: [0.5, 0.8, 0.5],
+    boxShadow: [
+      "0 0 15px 3px rgba(176, 255, 116, 0.4)",
+      "0 0 30px 6px rgba(176, 255, 116, 0.6)",
+      "0 0 15px 3px rgba(176, 255, 116, 0.4)"
+    ]
+  }}
+  transition={{ 
+    duration: 3, 
+    repeat: Infinity,
+    ease: "easeInOut",
+    delay: 0.3 + (solution.features.length * 0.15) + 0.2
+  }}
+/>
+        
+        <Button 
+          size="lg" 
+          className="bg-secondary text-gray-900 hover:bg-opacity-100 px-8 py-5 text-lg focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none relative z-10"
+        >
+          Learn More
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-6 ml-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </Button>
+      </motion.div>
+    </Link>
+  )}
+</div>
         </div>
       </motion.div>
     </div>
@@ -395,9 +614,9 @@ export function SolutionsSection({
       opacity: 1, 
       x: 0,
       transition: { 
-        duration: 0.7,
+        duration: 1.2, // Более медленная анимация
         delay: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9]
+        ease: [0.1, 0.3, 0.2, 1] // Более плавная кривая анимации
       }
     }
   };
@@ -405,7 +624,7 @@ export function SolutionsSection({
   return (
     <section 
       ref={sectionRef}
-      className={cn("section-solutions relative overflow-hidden", className)}
+      className={cn("section-solutions relative overflow-hidden pt-24 pb-32", className)}
       style={{ minHeight: screenHeight }}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
@@ -422,28 +641,39 @@ export function SolutionsSection({
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12">{title}</h2>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">{title}</h2>
             <p className="text-lg md:text-base text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
           </motion.div>
         </div>
 
-        {/* Основной контент */}
+        {/* Основной контент с улучшенным балансом колонок */}
         <div className="container mx-auto px-4 mt-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Навигационное меню */}
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-10">
+            {/* Навигационное меню - высота уменьшена до 400px и центрировано содержимое */}
             <motion.div 
-              className="lg:col-span-4"
+              className="lg:col-span-3"
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={menuVariants}
             >
-              <div className="bg-dark-purple/30 p-6 rounded-xl border border-primary/25 shadow-[0_0_15px_rgba(119,71,207,0.15)] overflow-hidden relative" style={{ height: "562px" }}>
-                {/* Эффект свечения для всего блока */}
-                <div className="absolute -inset-5 bg-primary/5 rounded-full blur-3xl opacity-20 -z-10 animate-pulse-slow"></div>
+             <div className="relative p-6 rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] overflow-hidden flex flex-col justify-center bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] before:absolute before:content-[''] before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] backdrop-blur-sm"
+                  style={{ height: "550px" }}> {/* Уменьшена высота контейнера и добавлено центрирование */}
+                {/* Улучшенный эффект свечения для всего блока - фиолетовый акцент */}
+                <motion.div 
+                  className="absolute -inset-1 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-lg -z-10"
+                  animate={{ 
+                    opacity: [0.5, 0.8, 0.5], 
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity,
+                    ease: "easeInOut" 
+                  }}
+                />
                 
-                <div className="space-y-3">
+                <div className="space-y-4"> {/* Уменьшен отступ между элементами меню */}
                   {solutions.map((solution) => (
                     <SolutionMenuItem 
                       key={solution.id}
@@ -456,21 +686,25 @@ export function SolutionsSection({
               </div>
             </motion.div>
             
-            {/* Правая колонка с фиксированной высотой для предотвращения скачков */}
+            {/* Правая колонка - фиксированная высота 400px */}
             <motion.div 
-              className="lg:col-span-8 relative"
+              className="lg:col-span-7 relative"
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={contentVariants}
             >
-              <div className="min-h-[650px]">
-                {solutions.map((solution) => (
-                  <SolutionContent
-                    key={solution.id}
-                    solution={solution}
-                    isActive={activeSolutionId === solution.id}
-                  />
-                ))}
+              <div style={{ height: "550px" }}> {/* Фиксированная высота, совпадает с левой колонкой */}
+              <AnimatePresence mode="wait" initial={false}> 
+                  {solutions.map((solution) => (
+                    activeSolutionId === solution.id && (
+                      <SolutionContent
+                        key={solution.id}
+                        solution={solution}
+                        isActive={true}
+                      />
+                    )
+                  ))}
+                </AnimatePresence>
               </div>
             </motion.div>
           </div>

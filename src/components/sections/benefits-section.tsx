@@ -1,10 +1,11 @@
 // src/components/sections/benefits-section.tsx
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
+import { useScrollAnimation } from '@/lib/utils/animation';
 
 // Интерфейс для преимущества
 export interface Benefit {
@@ -30,7 +31,7 @@ const defaultBenefits: Benefit[] = [
     icon: 'finance',
   },
   {
-    title: 'Save Time, \nAmplify Results',  // 2. Перенос на вторую строку слова Amplify
+    title: 'Save Time, \nAmplify Results',
     description: 'Automate manual operations and improve the way your teams work. Grow your business, not your admin load.',
     icon: 'clock',
   },
@@ -54,47 +55,40 @@ export default function BenefitsSection({
   className,
   variant = 'default'
 }: BenefitsSectionProps) {
-  // Состояние для отслеживания видимости секции
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  // Используем улучшенный хук для отслеживания скролла
+  const { ref, isVisible, visibilityRatio } = useScrollAnimation({
+    threshold: 0.3,
+    rootMargin: '-10% 0px',
+    triggerOnce: true,
+    visibilityThreshold: 0.3
+  });
+  
+  // Состояние для управления анимациями
+  const [isReady, setIsReady] = useState(false);
+  const titleControls = useAnimation();
+  const [hasAnimated, setHasAnimated] = useState(false);
 
+  // Эффект для предотвращения анимации при первоначальной загрузке
   useEffect(() => {
-    // Сохраняем текущую ссылку в локальную переменную
-    const currentRef = sectionRef.current;
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
     
-    // Функция для отслеживания видимости элемента
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Отключаем наблюдение после первого появления элемента
-          observer.unobserve(entry.target);
-        }
-      },
-      {
-        // Элемент будет считаться видимым, когда 15% его площади будет в области просмотра
-        threshold: 0.15,
-        // Маржа для раннего срабатывания (на 50px выше фактического входа в область просмотра)
-        rootMargin: '-50px 0px'
-      }
-    );
+    return () => clearTimeout(timer);
+  }, []);
 
-    // Начинаем наблюдение за секцией
-    if (currentRef) {
-      observer.observe(currentRef);
+  // Эффект для координированного запуска анимаций
+  useEffect(() => {
+    if (isVisible && isReady && !hasAnimated && visibilityRatio >= 0.3) {
+      titleControls.start("visible").then(() => {
+        setHasAnimated(true);
+      });
     }
-
-    // Очистка observer при размонтировании компонента
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, []); // Пустой массив зависимостей, так как мы используем локальную переменную
+  }, [isVisible, isReady, titleControls, hasAnimated, visibilityRatio]);
 
   // Определяем стили для разных вариантов
   const sectionClasses = cn(
-    "section-benefits relative overflow-hidden", 
+    "section-benefits relative overflow-hidden pt-40 pb-48", 
     variant === 'default' ? 'bg-dark-gray' : 
     variant === 'modern' ? 'bg-gradient-to-br from-site-bg to-site-bg-deep' : 
     "bg-site-bg",
@@ -103,41 +97,69 @@ export default function BenefitsSection({
 
   // Варианты анимации для заголовка и подзаголовка
   const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
+        duration: 0.6, 
+        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
 
   // Варианты анимации для карточек преимуществ
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 30 },
     visible: (index: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
-        delay: 0.2 + index * 0.1 // Задержка увеличивается с каждой карточкой
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.15 + index * 0.12
+      }
+    })
+  };
+
+  // Варианты анимации для заголовков карточек (слева направо)
+  const cardTitleVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.3 + index * 0.15
+      }
+    })
+  };
+
+  // Варианты анимации для описания карточек (слева направо)
+  const cardDescriptionVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.45 + index * 0.15
       }
     })
   };
 
   return (
     <section 
-      ref={sectionRef}
+      ref={ref}
       className={sectionClasses}
     >
       <div className="container mx-auto px-4">
         <motion.div
           className="text-center mb-20"
           initial="hidden"
-          animate={isVisible ? "visible" : "hidden"}
+          animate={titleControls}
           variants={titleVariants}
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
@@ -152,20 +174,79 @@ export default function BenefitsSection({
               key={index}
               custom={index}
               initial="hidden"
-              animate={isVisible ? "visible" : "hidden"}
+              animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 h-full 
-                        border border-primary/20 
-                        shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                        hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                        hover:border-primary/40 
-                        transition-all duration-300">
-                <div className="text-white mb-4">
-                  <Icon name={benefit.icon} className="h-6 w-6 transform transition-transform duration-300 group-hover:rotate-12" />
+<div className="relative rounded-lg p-8 h-full transition-all duration-500 overflow-hidden
+          bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
+          before:absolute before:content-[''] before:inset-0 
+          before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
+          backdrop-blur-sm group
+          border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
+          hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+          hover:border-primary/40">
+                
+                {/* Эффект свечения для активного элемента - фиолетовый акцент */}
+                <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
+                animate={{ 
+                opacity: [0.5, 0.7, 0.5], 
+               }}
+               transition={{ 
+               duration: 3, 
+               repeat: Infinity,
+               ease: "easeInOut" 
+              }}
+              />
+                
+                {/* Анимированное свечение */}
+                <motion.div 
+                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-lg blur-lg -z-10"
+                  animate={{ 
+                    opacity: [0.6, 0.9, 0.6] 
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity,
+                    ease: "easeInOut" 
+                  }}
+                />
+
+               {/* Свечение при наведении */}
+<motion.div 
+  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/0 via-[#180033]/0 to-[#121212]/0 rounded-lg blur-3xl -z-10 opacity-0 group-hover:opacity-100"
+  whileHover={{
+    opacity: 1,
+    background: "radial-gradient(circle, rgba(31,10,46,0.6) 0%, rgba(24,0,51,0.4) 50%, rgba(18,7,26,0.3) 100%)",
+    transition: { duration: 0.3 }
+  }}
+/>
+                
+                <div className="relative z-10">
+                  <div className="text-white mb-4">
+                  <Icon name={benefit.icon} className="h-6 w-6" />
+                  </div>
+                  
+                  <motion.h3 
+                    className="text-xl md:text-2xl font-semibold mb-8 whitespace-pre-line"
+                    custom={index}
+                    initial="hidden"
+                    animate={hasAnimated ? "visible" : "hidden"}
+                    variants={cardTitleVariants}
+                  >
+                    {benefit.title}
+                  </motion.h3>
+                  
+                  <motion.p 
+                    className="text-light-gray text-base md:text-lg font-sans"
+                    custom={index}
+                    initial="hidden"
+                    animate={hasAnimated ? "visible" : "hidden"}
+                    variants={cardDescriptionVariants}
+                  >
+                    {benefit.description}
+                  </motion.p>
                 </div>
-                <h3 className="text-xl md:text-2xl font-semibold mb-8 whitespace-pre-line">{benefit.title}</h3>
-                <p className="text-light-gray text-base md:text-lg font-sans">{benefit.description}</p>
               </div>
             </motion.div>
           ))}
@@ -189,14 +270,21 @@ export function CompactBenefitsSection({
         {benefits?.map((benefit, index) => (
           <div 
             key={index}
-            className="bg-dark-gray/70 backdrop-blur-sm rounded-lg p-4 flex items-start hover:bg-dark-purple/40 transition-all duration-300 border border-transparent hover:border-primary/20"
+            className="relative rounded-lg p-4 flex items-start transition-all duration-300 overflow-hidden group
+                      bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
+                      border border-transparent hover:border-primary/20"
           >
-            <div className="text-secondary flex-shrink-0 mr-3">
-              <Icon name={benefit.icon} className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-1">{benefit.title}</h4>
-              <p className="text-light-gray text-sm font-sans">{benefit.description}</p>
+            {/* Компактное свечение для маленьких карточек */}
+            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/25 via-[#180033]/20 to-[#121212]/30 rounded-lg blur-sm -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            <div className="relative z-10 flex items-start w-full">
+              <div className="text-secondary flex-shrink-0 mr-3">
+                <Icon name={benefit.icon} className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold mb-1">{benefit.title}</h4>
+                <p className="text-light-gray text-sm font-sans">{benefit.description}</p>
+              </div>
             </div>
           </div>
         ))}
@@ -218,13 +306,22 @@ export function HorizontalBenefits({
       {benefits.map((benefit, index) => (
         <div 
           key={index}
-          className="flex-1 bg-dark-purple/30 backdrop-blur-sm rounded-lg p-6 hover:bg-dark-purple/50 transition-all duration-300 border border-primary/10 hover:border-primary/30 group"
+          className="relative flex-1 rounded-lg p-6 transition-all duration-300 overflow-hidden group
+                    bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
+                    border border-primary/10 hover:border-primary/30"
         >
-          <div className="text-secondary group-hover:text-white transition-colors duration-300 mb-4">
-            <Icon name={benefit.icon} className="h-6 w-6" />
+          {/* Горизонтальное свечение */}
+          <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/35 rounded-lg blur-md -z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <div className="relative z-10">
+            <div className="text-secondary group-hover:text-white transition-colors duration-300 mb-4">
+              <Icon name={benefit.icon} className="h-6 w-6" />
+            </div>
+            <h4 className="text-xl font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">
+              {benefit.title}
+            </h4>
+            <p className="text-light-gray font-sans">{benefit.description}</p>
           </div>
-          <h4 className="text-xl font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">{benefit.title}</h4>
-          <p className="text-light-gray font-sans">{benefit.description}</p>
         </div>
       ))}
     </div>

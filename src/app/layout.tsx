@@ -100,7 +100,7 @@ export default function RootLayout({
     <html 
       lang="en" 
       className={`${inter.variable} ${ibmPlexMono.variable}`} 
-      suppressHydrationWarning // Предотвращает предупреждения гидратации
+      suppressHydrationWarning
     >
       <head>
         {/* Preload critical resources */}
@@ -109,15 +109,34 @@ export default function RootLayout({
           href="/images/logo.png" 
           as="image" 
           type="image/png"
+          />
+          <link 
+            rel="preload" 
+            as="font" 
+            type="font/woff2" 
+            crossOrigin="anonymous"
+          />
+                {/* Скрипт для предотвращения мигания при загрузке */}
+                <script 
+          dangerouslySetInnerHTML={{ 
+            __html: `
+              document.documentElement.classList.add('is-loading');
+              window.addEventListener('load', function() {
+                setTimeout(function() {
+                  document.documentElement.classList.remove('is-loading');
+                  document.documentElement.classList.add('is-ready');
+                }, 100);
+              });
+              
+              // Определяем поддержку анимаций
+              const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              if (reducedMotion) {
+                document.documentElement.classList.add('reduced-motion');
+              }
+            `
+          }}
         />
-        
-        {/* Добавляем preconnect для внешних ресурсов */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://res.cloudinary.com" />
-        
-        {/* Any additional third-party scripts or analytics */}
-      </head>
+              </head>
       <body className="font-mono bg-background text-white antialiased">
         {/* Skip Navigation для доступности */}
         <a 
@@ -133,5 +152,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  )
+  );
 }
