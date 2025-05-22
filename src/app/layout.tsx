@@ -5,12 +5,12 @@ import './globals.css'
 import { siteMetadata } from '@/lib/seo/metadata'
 import { generateFaviconMetadata } from '@/lib/seo/favicon-metadata'
 
-// Определяем шрифты с подмножествами для лучшей производительности
+// Определяем шрифты с подмножествами
 const inter = Inter({ 
   subsets: ['latin', 'cyrillic'],
   variable: '--font-inter',
-  display: 'swap', // Используем swap для быстрого отображения текста
-  preload: true, // Предзагружаем шрифт
+  display: 'swap',
+  preload: true,
 })
 
 const ibmPlexMono = IBM_Plex_Mono({ 
@@ -21,7 +21,7 @@ const ibmPlexMono = IBM_Plex_Mono({
   preload: true,
 })
 
-// Настройки viewport (перенесли themeColor сюда согласно рекомендации)
+// Настройки viewport
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#121212' },
@@ -31,7 +31,6 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  // Добавляем для мобильных устройств
   viewportFit: 'cover',
 }
 
@@ -53,8 +52,6 @@ export const metadata: Metadata = {
   creator: siteMetadata.siteName,
   publisher: siteMetadata.siteName,
   formatDetection: {
-    // Отключаем автоматическое определение телефонов и адресов
-    // для предотвращения нежелательного форматирования на мобильных устройствах
     telephone: false,
     address: false,
     email: false,
@@ -80,11 +77,9 @@ export const metadata: Metadata = {
     title: siteMetadata.defaultTitle,
     description: siteMetadata.defaultDescription,
     images: [siteMetadata.defaultOgImage],
-    creator: '@yourhandle', // Замените на свой Twitter
-    site: '@yourhandle', // Замените на свой Twitter
+    creator: '@yourhandle',
+    site: '@yourhandle'
   },
-  // Используем только иконки и прочие метаданные из функции generateFaviconMetadata,
-  // перенеся themeColor в viewport выше
   icons: generateFaviconMetadata().icons,
   manifest: generateFaviconMetadata().manifest,
   appleWebApp: generateFaviconMetadata().appleWebApp,
@@ -100,7 +95,7 @@ export default function RootLayout({
     <html 
       lang="en" 
       className={`${inter.variable} ${ibmPlexMono.variable}`} 
-      suppressHydrationWarning // Предотвращает предупреждения гидратации
+      suppressHydrationWarning
     >
       <head>
         {/* Preload critical resources */}
