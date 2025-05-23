@@ -1,25 +1,11 @@
+// src/app/(pages)/services/page.tsx
+"use client";
+
+import { useState, useEffect } from 'react';
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
-import { siteMetadata } from '@/lib/seo/metadata';
-
-export const metadata: Metadata = {
-  title: 'Services | Business Process Automation',
-  description: 'Explore our full range of business automation services including CRM integration, document automation, AI solutions, and more.',
-  keywords: ['business automation', 'CRM integration', 'document automation', 'AI solutions', 'business process', 'financial systems integration'],
-  openGraph: {
-    title: 'Business Automation Services | Architeq',
-    description: 'Explore our full range of business automation services including CRM integration, document automation, AI solutions, and more.',
-    url: `${siteMetadata.siteUrl}/services`,
-    siteName: siteMetadata.siteName,
-    locale: siteMetadata.defaultLocale,
-    type: 'website',
-  },
-  alternates: {
-    canonical: `${siteMetadata.siteUrl}/services`,
-  },
-};
+import { motion } from 'framer-motion';
 
 // Данные о услугах
 const services = [
@@ -109,16 +95,208 @@ const services = [
   }
 ];
 
+// Интерфейс для карточки услуги
+interface ServiceCardProps {
+  service: typeof services[0];
+  index: number;
+  isVisible: boolean;
+}
+// Компонент карточки услуги с улучшенным дизайном - ПОЛНАЯ ВЕРСИЯ
+function ServiceCard({ service, index, isVisible }: ServiceCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Анимационные варианты для карточек
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.2, 0.65, 0.3, 0.9],
+        delay: 0.1 + index * 0.1
+      }
+    }
+  };
+
+  // Анимация для кнопки (снизу вверх с fade-in)
+  const buttonVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+      transition: { duration: 0.3 }
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.4, ease: "easeOut" }
+    }
+  };
+
+  return (
+    <motion.div
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={cardVariants}
+      className={`
+        relative group transition-all duration-500 ease-out
+        bg-dark-gradient rounded-xl p-8 
+        border-2 border-primary/50 hover:border-primary/70
+        hover:transform hover:scale-[1.02] hover:-translate-y-2
+        h-full
+        overflow-hidden
+      `}
+      style={{
+        boxShadow: isHovered 
+          ? '0 20px 40px rgba(0, 0, 0, 0.15), 0 0 15px rgba(178, 75, 243, 0.3), 0 0 30px rgba(178, 75, 243, 0.2)'
+          : '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.4)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Фиолетовый градиент внизу карточки */}
+      <div 
+        className={`
+          absolute inset-x-0 bottom-0 h-20 
+          bg-gradient-to-t from-primary/20 via-primary/10 to-transparent
+          transition-opacity duration-500
+          ${isHovered ? 'opacity-100' : 'opacity-50'}
+        `} 
+      />
+
+      {/* Внутреннее свечение при hover */}
+      <div 
+        className={`
+          absolute inset-0 rounded-xl 
+          bg-gradient-to-br from-primary/5 via-transparent to-primary/5
+          transition-opacity duration-500
+          ${isHovered ? 'opacity-100' : 'opacity-0'}
+        `} 
+      />
+      
+      {/* Контент карточки */}
+      <div className="relative z-10 h-full flex flex-col">
+        
+        {/* Icon without background */}
+        <div className="mb-8 flex-shrink-0">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full text-primary transition-all duration-500">
+            {renderServiceIcon(service.icon)}
+          </div>
+        </div>
+        
+        {/* Заголовок */}
+        <div className="mb-6 flex-shrink-0">
+          <h3 className="text-2xl font-bold leading-tight text-white">
+            {service.title}
+          </h3>
+        </div>
+        
+        {/* Описание - растет по содержимому */}
+        <div className="mb-auto flex-grow">
+          <p className="text-light-gray leading-relaxed text-base mb-8">
+            {service.description}
+          </p>
+          
+          {/* Core Capabilities - выравниваются по нижнему краю описания */}
+          <div className="mt-auto">
+            <h4 className="text-base font-semibold mb-4 text-primary">
+              Core Capabilities:
+            </h4>
+            <ul className="space-y-3">
+              {service.features.slice(0, 3).map((feature, fIndex) => (
+                <li key={fIndex} className="flex items-start">
+                  <span className="text-primary mr-3 mt-1 flex-shrink-0 text-lg">
+                    •
+                  </span>
+                  <span className="text-light-gray text-base leading-relaxed">
+                    {feature}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        
+        {/* CTA Button - появляется только при hover */}
+        <motion.div 
+          className="relative mt-8 flex-shrink-0"
+          initial="hidden"
+          animate={isHovered ? "visible" : "hidden"}
+          variants={buttonVariants}
+        >
+          <Link href={`/services/${service.id}`}>
+            <Button 
+              variant="primary" 
+              className="w-full transition-all duration-300 text-base py-4"
+            >
+              <span className="flex items-center justify-center">
+                Learn More
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </span>
+            </Button>
+          </Link>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function ServicesPage() {
+  const [isMounted, setIsMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    // Небольшая задержка для плавного появления
+    setTimeout(() => setIsVisible(true), 100);
+  }, []);
+
+  // Анимационные варианты для заголовков
+  const titleVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.7, 
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
+  };
+
+  if (!isMounted) {
+    return null; // Предотвращаем гидратацию до монтирования
+  }
+
   return (
     <SiteLayout>
-      {/* Hero section - используем новые стандартные классы */}
-      <section className="section-hero bg-dark-gray">
+      {/* Hero section */}
+      <motion.section 
+        className="section-hero bg-dark-gray"
+        initial="hidden"
+        animate="visible"
+        variants={titleVariants}
+      >
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">How We Architect</h1>
+            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">
+              How We Architect
+            </h1>
             <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
-                We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
+              We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             <div className="flex flex-col sm:flex-row justify-center button-gap-large">
               <Button variant="primary" size="lg" href="/contacts">
@@ -130,199 +308,159 @@ export default function ServicesPage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Services Overview section - используем новые стандартные классы */}
+      {/* Services Overview section */}
       <section className="section-benefits bg-site-bg">
         <div className="container mx-auto px-4">
-          <div className="text-center section-content-spacing">
+          <motion.div 
+            className="text-center section-content-spacing"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={titleVariants}
+          >
             <h2 className="section-title-large font-bold section-title-spacing">Solutions We Offer</h2>
             <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
               From CRM integration to AI-powered automation, we provide solutions to address all aspects of your business operations.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <div 
-                key={index}
-                className="bg-dark-gradient rounded-xl p-6 h-full border border-medium-gray hover:border-primary/30 transition-all duration-300 hover:shadow-neon-glow group"
-              >
-                {/* Icon */}
-                <div className="rounded-full w-16 h-16 flex items-center justify-center mb-4 bg-medium-gray text-primary group-hover:bg-primary/10 transition-colors duration-300">
-                  {renderServiceIcon(service.icon)}
-                </div>
-                
-                {/* Content */}
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                <p className="text-light-gray mb-4">{service.description}</p>
-                
-                {/* Features */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-medium mb-2 text-primary">Core Capabilities:</h4>
-                  <ul className="space-y-1">
-                    {service.features.slice(0, 3).map((feature, fIndex) => (
-                      <li key={fIndex} className="flex items-start">
-                        <span className="text-primary mr-2">•</span>
-                        <span className="text-light-gray">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {/* CTA */}
-                <div className="mt-auto pt-4">
-                  <Link href={`/services/${service.id}`}>
-                    <Button variant="secondary" className="w-full">
-                      Learn More
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+              <ServiceCard
+                key={service.id}
+                service={service}
+                index={index}
+                isVisible={isVisible}
+              />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Process section - используем новые стандартные классы */}
+      {/* Process section */}
       <section className="section-benefits bg-dark-gray">
         <div className="container mx-auto px-4">
-          <div className="text-center section-content-spacing">
-            <h2 className="section-title-large font-bold section-title-spacing-large">Our Automation Flow:<br />From Discovery to Deployment</h2>
+          <motion.div 
+            className="text-center section-content-spacing"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={titleVariants}
+          >
+            <h2 className="section-title-large font-bold section-title-spacing-large">
+              Our Automation Flow:<br />From Discovery to Deployment
+            </h2>
             <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
-            A sharp, proven framework — designed to deliver fast<br />and integrate deep into your ops.
+              A sharp, proven framework — designed to deliver fast<br />and integrate deep into your ops.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="max-w-4xl mx-auto section-content-spacing-large">
+          <motion.div 
+            className="max-w-4xl mx-auto section-content-spacing-large"
+            initial="hidden"
+            animate={isVisible ? "visible" : "hidden"}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: { 
+                  delay: 0.3,
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
             <div className="relative space-y-12">
               {/* Vertical line */}
               <div className="absolute left-5 top-5 bottom-0 w-0.5 bg-primary" />
               
-              {/* Step 1 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">1</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Align on Scope. Kick Things Off</h3>
-                  <p className="text-light-gray">
-                  We start by signing an NDA and holding a kickoff meeting to clarify your objectives and expectations. This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Step 2 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">2</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Understand Your Reality</h3>
-                  <p className="text-light-gray">
-                  We dive deep into understanding your business operations through stakeholder interviews and process discovery. We observe your current workflows, uncover inefficiencies, and identify where automation can add the most value.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Step 3 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">3</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Map the Process. Spot the Gaps</h3>
-                  <p className="text-light-gray">
-                  We document your existing business processes in detail, mapping every step, role, and decision point. This step helps us highlight pain points, overlaps, and areas where automation can be implemented effectively.
-                  </p>
-                </div>
-              </div>
-              
-              {/* Step 4 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">4</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Design the Future Flow</h3>
-                  <p className="text-light-gray">
-                  Based on our analysis, we design a custom solution that will optimize your processes. We define what your future workflows should look like and ensure that the solution is tailored to meet your specific needs, with an emphasis on improving efficiency and reducing complexity.
-                  </p>
-                </div>
-              </div>
-              {/* Step 5 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">5</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Plan the Rollout. Set the Timeline</h3>
-                  <p className="text-light-gray">
-                  We create a detailed implementation plan, including the specific steps, timelines, and resources required to get the solution up and running. Our team sets clear milestones to ensure timely delivery and success at each stage of the project.
-                  </p>
-                </div>
-              </div>
-              {/* Step 6 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">6</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Implement, Test, Iterate</h3>
-                  <p className="text-light-gray">
-                  We deploy the solution, ensuring minimal disruption to your daily operations. During this phase, we rigorously test the system to ensure everything functions as expected. If necessary, we make adjustments and improvements before the full-scale launch.
-                  </p>
-                </div>
-              </div>
-              {/* Step 7 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">7</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Data Migration & System Integration</h3>
-                  <p className="text-light-gray">
-                  After the solution has been tested and confirmed, we migrate your existing data and integrate the new system with your other tools. This ensures smooth data transfer, seamless workflows, and full compatibility with your existing infrastructure.
-                  </p>
-                </div>
-              </div>
-              {/* Step 8 */}
-              <div className="relative flex">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10">
-                  <span className="font-bold">8</span>
-                </div>
-                <div className="ml-6">
-                  <h3 className="text-xl font-bold mb-2">Train the Team. Support the Growth</h3>
-                  <p className="text-light-gray">
-                  Once the solution is live, we provide comprehensive training to ensure your team can fully leverage the new system. We offer ongoing support to address any challenges and make adjustments as your business continues to evolve.
-                </p>
-                </div>
-              </div>
+              {/* Steps */}
+              {[
+                {
+                  title: "Align on Scope. Kick Things Off",
+                  description: "We start by signing an NDA and holding a kickoff meeting to clarify your objectives and expectations. This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning."
+                },
+                {
+                  title: "Understand Your Reality",
+                  description: "We dive deep into understanding your business operations through stakeholder interviews and process discovery. We observe your current workflows, uncover inefficiencies, and identify where automation can add the most value."
+                },
+                {
+                  title: "Map the Process. Spot the Gaps",
+                  description: "We document your existing business processes in detail, mapping every step, role, and decision point. This step helps us highlight pain points, overlaps, and areas where automation can be implemented effectively."
+                },
+                {
+                  title: "Design the Future Flow",
+                  description: "Based on our analysis, we design a custom solution that will optimize your processes. We define what your future workflows should look like and ensure that the solution is tailored to meet your specific needs, with an emphasis on improving efficiency and reducing complexity."
+                },
+                {
+                  title: "Plan the Rollout. Set the Timeline",
+                  description: "We create a detailed implementation plan, including the specific steps, timelines, and resources required to get the solution up and running. Our team sets clear milestones to ensure timely delivery and success at each stage of the project."
+                },
+                {
+                  title: "Implement, Test, Iterate",
+                  description: "We deploy the solution, ensuring minimal disruption to your daily operations. During this phase, we rigorously test the system to ensure everything functions as expected. If necessary, we make adjustments and improvements before the full-scale launch."
+                },
+                {
+                  title: "Data Migration & System Integration",
+                  description: "After the solution has been tested and confirmed, we migrate your existing data and integrate the new system with your other tools. This ensures smooth data transfer, seamless workflows, and full compatibility with your existing infrastructure."
+                },
+                {
+                  title: "Train the Team. Support the Growth",
+                  description: "Once the solution is live, we provide comprehensive training to ensure your team can fully leverage the new system. We offer ongoing support to address any challenges and make adjustments as your business continues to evolve."
+                }
+              ].map((step, index) => (
+                <motion.div 
+                  key={index}
+                  className="relative flex group"
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: { 
+                      opacity: 1, 
+                      x: 0,
+                      transition: { duration: 0.6, ease: [0.2, 0.65, 0.3, 0.9] }
+                    }
+                  }}
+                >
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10 group-hover:bg-primary transition-colors duration-300">
+                    <span className="font-bold text-dark-gray">{index + 1}</span>
+                  </div>
+                  <div className="ml-6">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
+                      {step.title}
+                    </h3>
+                    <p className="text-light-gray group-hover:text-gray-200 transition-colors duration-300">
+                      {step.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
       
-      {/* CTA section - используем новые стандартные классы */}
-      <section className="section-cta bg-dark-gradient">
+      {/* CTA section */}
+      <motion.section 
+        className="section-cta bg-dark-gradient"
+        initial="hidden"
+        animate={isVisible ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0, scale: 0.95 },
+          visible: { 
+            opacity: 1, 
+            scale: 1,
+            transition: { 
+              delay: 0.5,
+              duration: 0.7, 
+              ease: [0.2, 0.65, 0.3, 0.9]
+            }
+          }
+        }}
+      >
         <div className="container mx-auto px-4 text-center">
           <h2 className="section-title-medium font-bold section-title-spacing">Ready to Streamline the Flow?</h2>
           <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
-          Trust our team to map your processes and<br />uncover automation potential.
+            Trust our team to map your processes and<br />uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center button-gap-default">
             <Button variant="primary" size="lg" href="/contacts">
@@ -333,7 +471,7 @@ export default function ServicesPage() {
             </Button>
           </div>
         </div>
-      </section>
+      </motion.section>
     </SiteLayout>
   );
 }

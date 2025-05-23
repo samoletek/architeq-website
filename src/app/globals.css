@@ -344,6 +344,33 @@ html {
     0 0 20px rgba(176, 255, 116, 0.1);
 }
 
+
+/* Стили для карточек услуг (фиолетовые) */
+.service-card-enhanced {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+/* Стили при наведении для карточек услуг */
+.service-card-enhanced.service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Тени для фиолетового свечения */
+.shadow-neon-purple-glow {
+  box-shadow: 
+    0 0 10px rgba(178, 75, 243, 0.2), 
+    0 0 20px rgba(178, 75, 243, 0.1) !important;
+}
+
+
 /* Стили для sticky секций и плавного скролла */
 .sticky-element {
   position: sticky !important;
@@ -490,4 +517,25 @@ html.is-ready {
 
 .fonts-loading {
   opacity: 0.98;
+}
+
+/* Принудительно для всех карточек на странице services */
+[class*="service-card-enhanced"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+[class*="service-card-enhanced"]:hover,
+[class*="service-card-enhanced"].service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Альтернативный вариант через data-атрибут */
+[data-card-type="service"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
 }
