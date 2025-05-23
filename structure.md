@@ -162,13 +162,11 @@ architeq-website/
 
 ### Корневая директория
 - **`.claude/settings.local.json`** - Локальные настройки Claude Code
-- **`.env.local`** - Переменные окружения для локальной разработки
 - **`.eslintcache`** - Кэш ESLint для ускорения проверки кода
 - **`.gitignore`** - Файлы и папки, игнорируемые Git
 - **`component-structure.json`** - JSON-структура компонентов проекта
 - **`eslint.config.mjs`** - Конфигурация ESLint для линтинга кода
 - **`LICENSE`** - Лицензия проекта (MIT)
-- **`next-env.d.ts`** - TypeScript типы для Next.js
 - **`next.config.js`** - Конфигурация Next.js приложения
 - **`package-lock.json`** - Зафиксированные версии зависимостей
 - **`package.json`** - Метаданные проекта и зависимости
