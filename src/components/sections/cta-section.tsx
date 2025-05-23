@@ -30,7 +30,7 @@ export interface CTASectionProps {
 
 export default function CTASection({
   title = "Ready to Streamline the Flow?",
-  description = "Trust our team to map your processes and uncover automation potential.",
+  description = "Trust our team to map your processes and<br />uncover automation potential.",
   primaryCta = {
     text: "See How It Works",
     href: "/contacts"

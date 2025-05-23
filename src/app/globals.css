@@ -54,31 +54,102 @@
     @apply py-12 md:py-24;
   }
   
-  /* Секции с оптимизированными отступами */
-  .section-hero {
-    @apply pt-12 pb-6 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10;
-  }
+  /* ========== ЕДИНЫЙ СТАНДАРТ ДИЗАЙНА (РЕАЛЬНЫЕ ЗНАЧЕНИЯ) ========== */
 
-  .section-benefits {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-  }
+/* Отступы секций - точные значения с главной страницы */
+.section-hero {
+  @apply pt-40 pb-48;
+}
 
-  .section-solutions {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-    min-height: 60vh;
-  }
+.section-benefits {
+  @apply pt-40 pb-48;
+}
 
-  .section-cases {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-  }
+.section-solutions {
+  @apply pt-24 pb-32;
+  min-height: 60vh;
+}
 
-  .section-testimonials {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-  }
+.section-cases {
+  @apply pt-48 pb-64;
+}
 
-  .section-cta {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-  }
+.section-testimonials {
+  @apply pt-48 pb-20;
+}
+
+.section-cta {
+  @apply pt-72 pb-48;
+}
+
+/* Стандартные размеры заголовков */
+.hero-title {
+  @apply text-4xl md:text-6xl lg:text-7xl;
+}
+
+.hero-subtitle {
+  @apply text-xl md:text-2xl lg:text-3xl;
+}
+
+.section-title-large {
+  @apply text-4xl md:text-5xl lg:text-6xl;
+}
+
+.section-title-medium {
+  @apply text-3xl md:text-4xl lg:text-5xl;
+}
+
+.section-subtitle-large {
+  @apply text-base md:text-lg;
+}
+
+.section-subtitle-medium {
+  @apply text-lg md:text-2xl;
+}
+
+.section-subtitle-small {
+  @apply text-lg;
+}
+
+/* Стандартные отступы заголовков */
+.hero-title-spacing {
+  @apply mb-6;
+}
+
+.hero-subtitle-spacing {
+  @apply mb-8;
+}
+
+.section-title-spacing {
+  @apply mb-8;
+}
+
+.section-title-spacing-large {
+  @apply mb-12;
+}
+
+.section-content-spacing {
+  @apply mb-20;
+}
+
+.section-content-spacing-large {
+  @apply mt-24;
+}
+
+.section-button-spacing {
+  @apply mb-16;
+}
+
+/* Расстояния между кнопками */
+.button-gap-default {
+  @apply gap-4;
+}
+
+.button-gap-large {
+  @apply gap-6;
+}
+
+/* ============================================= */
 
   /* Градиентный текст для выделения слов */
   .accent-text {
@@ -420,5 +491,3 @@ html.is-ready {
 .fonts-loading {
   opacity: 0.98;
 }
-
-

@@ -112,15 +112,15 @@ const services = [
 export default function ServicesPage() {
   return (
     <SiteLayout>
-      {/* Hero section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
+      {/* Hero section - используем новые стандартные классы */}
+      <section className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">How We Architect</h1>
-            <p className="text-xl text-light-gray mb-10 max-w-3xl">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">How We Architect</h1>
+            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
                 We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row justify-center button-gap-large">
               <Button variant="primary" size="lg" href="/contacts">
                 See How It Works 
               </Button>
@@ -132,12 +132,12 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services Overview section */}
-      <section className="py-20 bg-site-bg">
+      {/* Services Overview section - используем новые стандартные классы */}
+      <section className="section-benefits bg-site-bg">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Solutions We Offer</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
+          <div className="text-center section-content-spacing">
+            <h2 className="section-title-large font-bold section-title-spacing">Solutions We Offer</h2>
+            <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
               From CRM integration to AI-powered automation, we provide solutions to address all aspects of your business operations.
             </p>
           </div>
@@ -198,17 +198,17 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Process section */}
-      <section className="py-20 bg-dark-gray">
+      {/* Process section - используем новые стандартные классы */}
+      <section className="section-benefits bg-dark-gray">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Automation Flow: From Discovery to Deployment</h2>
-            <p className="text-light-gray max-w-3xl mx-auto">
-            A sharp, proven framework — designed to deliver fast and integrate deep into your ops.
+          <div className="text-center section-content-spacing">
+            <h2 className="section-title-large font-bold section-title-spacing-large">Our Automation Flow:<br />From Discovery to Deployment</h2>
+            <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
+            A sharp, proven framework — designed to deliver fast<br />and integrate deep into your ops.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto section-content-spacing-large">
             <div className="relative space-y-12">
               {/* Vertical line */}
               <div className="absolute left-5 top-5 bottom-0 w-0.5 bg-primary" />
@@ -317,14 +317,14 @@ export default function ServicesPage() {
         </div>
       </section>
       
-      {/* CTA section */}
-      <section className="py-16 bg-dark-gradient">
+      {/* CTA section - используем новые стандартные классы */}
+      <section className="section-cta bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Streamline the Flow?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-          Trust our team to map your processes and uncover automation potential.
+          <h2 className="section-title-medium font-bold section-title-spacing">Ready to Streamline the Flow?</h2>
+          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
+          Trust our team to map your processes and<br />uncover automation potential.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center button-gap-default">
             <Button variant="primary" size="lg" href="/contacts">
               See How It Works
             </Button>
