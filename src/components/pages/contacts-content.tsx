@@ -232,24 +232,24 @@ export default function ContactsContent() {
   return (
     <>
       {/* Hero section */}
-      <section className="py-20 bg-dark-gray">
+      <section className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
-            <p className="text-xl text-light-gray mb-6">
-              Get in touch with us today to discuss your automation needs and how we can help optimize your business processes.
+            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacingg">Get in Touch</h1>
+            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
+            Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
             </p>
           </div>
         </div>
       </section>
       
       {/* Contact Form and Calendly */}
-      <section className="py-20 bg-dark-gray">
+      <section className="pt-2 pb-48 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form & Info */}
             <div>
-              <h2 className="text-2xl font-bold mb-6">Send Message</h2>
+              <h2 className="section-title-medium font-bold section-title-spacing pb-12">Send Message</h2>
               
               {/* Form status message */}
               {formState.submitMessage && (
@@ -257,7 +257,7 @@ export default function ContactsContent() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className={`p-4 mb-6 rounded-lg ${
+                  className={`p-6 mb-6 rounded-lg ${
                     formState.submitMessage.type === 'success' 
                       ? 'bg-green-500/20 text-green-200 border border-green-500/30' 
                       : 'bg-red-500/20 text-red-200 border border-red-500/30'
@@ -268,7 +268,7 @@ export default function ContactsContent() {
               )}
               
               <form onSubmit={handleSubmit} noValidate>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                   <FormInput
                     id="name"
                     name="name"
@@ -299,7 +299,7 @@ export default function ContactsContent() {
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                   <FormInput
                     id="company"
                     name="company"
@@ -325,7 +325,7 @@ export default function ContactsContent() {
                   />
                 </div>
                 
-                <div className="mb-4">
+                <div className="mb-10">
                   <FormSelect
                     id="interest"
                     name="interest"
@@ -336,7 +336,7 @@ export default function ContactsContent() {
                   />
                 </div>
                 
-                <div className="mb-6">
+                <div className="mb-10">
                   <FormInput
                     id="message"
                     name="message"
@@ -365,8 +365,8 @@ export default function ContactsContent() {
               </form>
               
               {/* Contact Information */}
-              <div className="mt-12">
-                <div className="bg-[#12071A]/80 rounded-lg p-6 space-y-4">
+              <div className="mt-29">
+                <div className="bg-[#12071A]/80 rounded-lg p-11 space-y-12">
                   <div>
                     <h4 className="font-medium mb-1">Email</h4>
                     <p className="text-light-gray">hi@architeq.io</p>
@@ -387,16 +387,16 @@ export default function ContactsContent() {
             
             {/* Calendly Widget - увеличен размер */}
             <div>
-              <div className="bg-[#12071A]/80 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4">Schedule a Call</h3>
+              <div className="bg-[#12071A]/80 rounded-lg p-10">
+                <h3 className="section-title-small mb-6 ">Schedule a Call</h3>
                 <p className="text-light-gray mb-4">
                   Schedule a 30-minute call with our founder.
                 </p>
-                <div className="mt-6 overflow-hidden rounded-lg border border-medium-gray">
+                <div className="mt-10 overflow-hidden rounded-lg border border-medium-gray">
                   <CalendlyWidget 
                     url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
                     styles={{
-                      height: "750px", // Увеличена высота для лучшей видимости
+                      height: "750px",
                       width: "100%"
                     }}
                     prefill={{
@@ -416,9 +416,9 @@ export default function ContactsContent() {
       </section>
       
       {/* FAQ Section with updated styling */}
-      <section className="py-16 bg-site-bg">
+      <section className="section-benefits bg-site-bg">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">FAQ</h2>
+          <h2 className="section-title-medium font-bold section-title-spacing pb-12 text-center">FAQ</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <div 

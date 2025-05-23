@@ -113,11 +113,11 @@ export default function AboutPage() {
   return (
     <SiteLayout>
       {/* Hero Section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
+      <section className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About Architeq</h1>
-            <p className="text-xl text-light-gray mb-6">
+            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">About Architeq</h1>
+            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
             We architect digital systems that flex, scale, and adapt — for companies across industries.
             </p>
           </div>
@@ -125,12 +125,12 @@ export default function AboutPage() {
       </section>
 
       {/* History & Mission Section */}
-      <section id="history" className="py-20 bg-site-bg">
+      <section id="history" className="section-benefits bg-site-bg">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-              <p className="text-light-gray mb-4">
+            <h2 className="section-title-large font-bold section-title-spacing">Our Story</h2>
+            <p className="text-light-gray mb-4">
                 Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams drowning in day-to-day operations instead of charting their growth strategy. These scaling businesses were caught in a trap — spending up to 70% of their time firefighting operational issues while their strategic vision gathered dust.
               </p>
               <p className="text-light-gray mb-4">
@@ -157,12 +157,12 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-20 bg-dark-gray">
+      <section id="team" className="section-benefits bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
-            <p className="text-light-gray max-w-2xl mx-auto">
-              Our team of experts brings together diverse backgrounds in technology, business process optimization, and industry-specific knowledge.
+            <h2 className="section-title-large font-bold section-title-spacing">Meet Our Team</h2>
+            <p className="section-subtitle-large text-light-gray max-w-2xl mx-auto">
+              Our team of experts brings together diverse backgrounds in technology, business process optimization,<br />and industry-specific knowledge.
             </p>
           </div>
 
@@ -191,12 +191,12 @@ export default function AboutPage() {
       </section>
 
       {/* Methodology Section */}
-      <section id="methodology" className="py-20 bg-site-bg">
+      <section id="methodology" className="section-benefits bg-site-bg">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Methodology</h2>
-            <p className="text-light-gray max-w-2xl mx-auto">
-            We don&apos;t believe in cookie-cutter solutions or automation for automation&apos;s sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems and drive measurable impact.
+            <h2 className="section-title-large font-bold section-title-spacing">Our Methodology</h2>
+            <p className="section-subtitle-large text-light-gray max-w-2xl mx-auto">
+            We don&apos;t believe in cookie-cutter solutions or automation for automation&apos;s sake. Our battle-tested approach is focused on meaningful outcomes—no fluff, no wasted time or budget—just systems built to solve real business problems<br />and drive measurable impact.
             </p>
           </div>
 
@@ -237,12 +237,12 @@ export default function AboutPage() {
       </section>
 
       {/* Technology Stack Section */}
-      <section id="tech" className="py-20 bg-dark-gray">
+      <section id="tech" className="section-benefits bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Technology Stack</h2>
-            <p className="text-light-gray max-w-2xl mx-auto">
-            We build scalable automations on trusted, industry-leading platforms—tailored to your workflows and tech stack—and continuously explore new tools, adopting only those that prove their reliability, performance, and real business value through rigorous testing.
+            <h2 className="section-title-large font-bold section-title-spacing">Our Technology Stack</h2>
+            <p className="section-subtitle-large text-light-gray max-w-2xl mx-auto">
+            We build scalable automations on trusted, industry-leading platforms—tailored to your workflows and tech stack—and continuously explore new tools, adopting only those that prove their reliability, performance, and real business<br />value through rigorous testing.
             </p>
           </div>
 
@@ -274,13 +274,13 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-dark-gradient">
+      <section className="section-cta bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Streamline the Flow?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
+          <h2 className="section-title-medium font-bold section-title-spacing">Ready to Streamline the Flow?</h2>
+          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
           Trust our team to map your processes and uncover automation potential.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center button-gap-default">
             <Link href="/contacts">
               <Button variant="primary" size="lg">
                 Contact Our Team

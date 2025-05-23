@@ -106,18 +106,20 @@ export default function CasesContent() {
   return (
     <>
       {/* Hero section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
+      <section className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             {/* Отключаем анимацию при первом рендеринге и включаем ее через useEffect */}
             <div data-animate="fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
-              <p className="text-xl text-light-gray mb-6">
+              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">Case Studies</h1>
+              <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
                 Explore how we have helped companies across various industries optimize their processes and achieve significant results.
               </p>
-              <Button variant="primary" size="lg" href="/contacts">
-                Request a Similar Solution
-              </Button>
+              <div className="flex flex-col sm:flex-row justify-center button-gap-large">
+             <Button variant="primary" size="lg" href="/contacts">
+             Request a Similar Solution
+            </Button>
+             </div>
             </div>
           </div>
         </div>
@@ -227,16 +229,21 @@ export default function CasesContent() {
         </div>
       </section>
       
-      {/* CTA section */}
-      <section className="py-16 bg-dark-gradient">
+      {/* CTA section - используем новые стандартные классы */}
+      <section className="section-cta bg-dark-gradient">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Want to achieve similar results?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Get in touch with us today to discuss how our automation solutions can help your business achieve optimal efficiency and growth.
+          <h2 className="section-title-medium font-bold section-title-spacing">Ready to Get Similar Results?</h2>
+          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
+            Let our team analyze your processes and design a custom automation solution for your business.
           </p>
-          <Button variant="primary" size="lg" href="/contacts">
-            Free Consultation
-          </Button>
+          <div className="flex flex-col sm:flex-row justify-center button-gap-default">
+            <Button variant="primary" size="lg" href="/contacts">
+              Start Your Project
+            </Button>
+            <Button variant="secondary" size="lg" href="/services">
+              Explore Our Services
+            </Button>
+          </div>
         </div>
       </section>
     </>
