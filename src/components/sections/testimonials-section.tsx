@@ -15,8 +15,7 @@ export interface Testimonial {
   title: string;
   company?: string;
   image?: string;
-  rating?: number; // Рейтинг от 1 до 5
-  // Добавляем массив ключевых слов для выделения
+  rating?: number;
   highlightedPhrases?: string[];
 }
 
@@ -33,7 +32,7 @@ export interface TestimonialsSectionProps {
   maxWidth?: string;
 }
 
-// Функция для выделения ключевых слов в тексте
+// Функция для выделения ключевых слов
 const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
   if (!phrases.length) return <>{text}</>;
   
@@ -46,12 +45,10 @@ const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
     const index = lowerText.indexOf(lowerPhrase, lastIndex);
     
     if (index !== -1) {
-      // Добавляем текст до фразы
       if (index > lastIndex) {
         parts.push(<span key={`text-${i}-1`}>{text.substring(lastIndex, index)}</span>);
       }
       
-      // Добавляем выделенную фразу
       parts.push(
         <span key={`highlight-${i}`} className="text-secondary font-semibold">
           {text.substring(index, index + phrase.length)}
@@ -62,7 +59,6 @@ const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
     }
   });
   
-  // Добавляем оставшийся текст
   if (lastIndex < text.length) {
     parts.push(<span key="text-last">{text.substring(lastIndex)}</span>);
   }
@@ -116,30 +112,23 @@ export default function TestimonialsSection({
   const { isMobile, isTablet } = useDeviceDetection();
   const testimonialsCount = testimonials.length;
   const sectionRef = useRef<HTMLDivElement>(null);
-  
-  // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
   
-  // Функция для перехода к следующему отзыву
   const nextTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % testimonialsCount);
   }, [testimonialsCount]);
   
-  // Функция для перехода к предыдущему отзыву
   const prevTestimonial = useCallback(() => {
     setActiveIndex((prev) => (prev - 1 + testimonialsCount) % testimonialsCount);
   }, [testimonialsCount]);
 
-  // Эффект для отслеживания видимости секции
   useEffect(() => {
-    const currentRef = sectionRef.current; // Сохраняем ссылку в локальную переменную
+    const currentRef = sectionRef.current;
     
-    // Функция для отслеживания видимости элемента
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Отключаем наблюдение после первого появления элемента
           observer.unobserve(entry.target);
         }
       },
@@ -149,12 +138,10 @@ export default function TestimonialsSection({
       }
     );
   
-    // Начинаем наблюдение за секцией
     if (currentRef) {
       observer.observe(currentRef);
     }
   
-    // Очистка observer при размонтировании компонента
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);
@@ -171,15 +158,12 @@ export default function TestimonialsSection({
     return () => clearInterval(interval);
   }, [isPlaying, nextTestimonial, autoplaySpeed]);
 
-  // Обработчики для паузы при наведении
   const handleMouseEnter = () => setIsPlaying(false);
   const handleMouseLeave = () => setIsPlaying(autoplay);
 
-  // Обработчик для клика на точку
   const handleDotClick = (index: number) => {
     setActiveIndex(index);
     setIsPlaying(false);
-    // Возобновляем автопереключение через некоторое время после клика
     setTimeout(() => setIsPlaying(autoplay), autoplaySpeed);
   };
   
@@ -196,14 +180,12 @@ export default function TestimonialsSection({
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
-    const isSwipe = Math.abs(distance) > 50; // минимальное расстояние для свайпа
+    const isSwipe = Math.abs(distance) > 50;
     
     if (isSwipe) {
       if (distance > 0) {
-        // Свайп влево - следующий слайд
         nextTestimonial();
       } else {
-        // Свайп вправо - предыдущий слайд
         prevTestimonial();
       }
     }
@@ -212,7 +194,6 @@ export default function TestimonialsSection({
     setTouchEnd(null);
   };
   
-  // Определяем максимальную ширину контейнера
   const maxWidthClass = {
     'sm': 'max-w-sm',
     'md': 'max-w-md',
@@ -227,7 +208,6 @@ export default function TestimonialsSection({
     'full': 'max-w-full',
   }[maxWidth] || 'max-w-4xl';
 
-  // Варианты анимации для заголовка
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -240,33 +220,33 @@ export default function TestimonialsSection({
     }
   };
   
-  // Выбираем вариант отображения
+  // Компактный вариант
   if (variant === 'compact') {
     return (
       <section 
         ref={sectionRef}
         className={cn("section-testimonials bg-site-bg", className)}
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <motion.div 
-            className="text-center mb-36"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
             {subtitle && (
-              <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+              <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
                 {subtitle}
               </p>
             )}
           </motion.div>
           
-          <div className="flex items-center justify-center space-x-6 md:space-x-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.id}
-                className="bg-dark-gray rounded-lg p-4 md:p-6 text-center flex-1 max-w-xs"
+                className="bg-dark-gray rounded-lg p-4 sm:p-6 text-center flex-1 max-w-xs w-full sm:w-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -289,14 +269,14 @@ export default function TestimonialsSection({
                   </div>
                 )}
                 
-                <p className="text-sm md:text-base mb-4 line-clamp-4">
+                <p className="text-xs sm:text-sm md:text-base mb-4 line-clamp-4">
                   {testimonial.highlightedPhrases 
                     ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
                     : testimonial.quote}
                 </p>
                 
                 <div className="flex items-center justify-center">
-                  <div className="w-10 h-10 mr-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 mr-3">
                     <ImageWithFallback
                       src={testimonial.image || ''}
                       alt={testimonial.author}
@@ -307,7 +287,7 @@ export default function TestimonialsSection({
                     />
                   </div>
                   <div className="text-left">
-                    <p className="font-medium text-sm">{testimonial.author}</p>
+                    <p className="font-medium text-xs sm:text-sm">{testimonial.author}</p>
                     <p className="text-light-gray text-xs">{testimonial.title}</p>
                   </div>
                 </div>
@@ -319,28 +299,29 @@ export default function TestimonialsSection({
     );
   }
   
+  // Вариант с карточками
   if (variant === 'cards') {
     return (
       <section 
         ref={sectionRef}
         className={cn("section-testimonials bg-dark-gray", className)}
       >
-<div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
             {subtitle && (
-              <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+              <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
                 {subtitle}
               </p>
             )}
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.id}
@@ -349,9 +330,9 @@ export default function TestimonialsSection({
                 animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   {withQuotes && (
-                    <div className="text-4xl text-secondary opacity-20 mb-3"></div>
+                    <div className="text-3xl sm:text-4xl text-secondary opacity-20 mb-3"></div>
                   )}
                   
                   {testimonial.rating && (
@@ -372,14 +353,14 @@ export default function TestimonialsSection({
                     </div>
                   )}
                   
-                  <p className="text-white mb-6 line-clamp-5">
+                  <p className="text-white text-sm sm:text-base mb-6 line-clamp-5">
                     {testimonial.highlightedPhrases 
                       ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
                       : testimonial.quote}
                   </p>
                   
                   <div className="flex items-center mt-auto pt-4 border-t border-dark-gray">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden mr-3 sm:mr-4">
                       <ImageWithFallback
                         src={testimonial.image || ''}
                         alt={testimonial.author}
@@ -390,8 +371,8 @@ export default function TestimonialsSection({
                       />
                     </div>
                     <div>
-                      <h4 className="font-medium">{testimonial.author}</h4>
-                      <p className="text-light-gray text-sm">{testimonial.title}</p>
+                      <h4 className="font-medium text-sm sm:text-base">{testimonial.author}</h4>
+                      <p className="text-light-gray text-xs sm:text-sm">{testimonial.title}</p>
                     </div>
                   </div>
                 </div>
@@ -414,33 +395,33 @@ export default function TestimonialsSection({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
           {subtitle && (
-            <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
+            <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
               {subtitle}
             </p>
           )}
         </motion.div>
 
         <div className={cn("relative mx-auto", maxWidthClass)}>
-          {/* Большие кавычки, если включено */}
+          {/* Большие кавычки */}
           {withQuotes && (
             <>
-              <div className="absolute -top-10 -left-10 text-6xl text-secondary opacity-30"></div>
-              <div className="absolute -bottom-10 -right-10 text-6xl text-secondary opacity-30"></div>
+              <div className="absolute -top-6 sm:-top-8 md:-top-10 -left-6 sm:-left-8 md:-left-10 text-4xl sm:text-5xl md:text-6xl text-secondary opacity-30"></div>
+              <div className="absolute -bottom-6 sm:-bottom-8 md:-bottom-10 -right-6 sm:-right-8 md:-right-10 text-4xl sm:text-5xl md:text-6xl text-secondary opacity-30"></div>
             </>
           )}
           
           {/* Карусель отзывов */}
-          <div className="relative h-64 md:min-h-[24rem] overflow-hidden"> {/* Увеличена высота контейнера */}
-          <AnimatePresence mode="wait">
+          <div className="relative min-h-[200px] sm:min-h-[280px] md:min-h-[320px] lg:min-h-[380px] overflow-hidden">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={activeIndex}
                 initial={{ opacity: 0, y: 20 }}
@@ -449,16 +430,16 @@ export default function TestimonialsSection({
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0 flex flex-col justify-center"
               >
-                {/* Карусель отзывов - цитаты */}
+                {/* Цитата */}
                 <blockquote className="text-center">
-                  <p className="text-xl md:text-2xl lg:text-2xl mb-24 text-white leading-relaxed"> {/* Увеличен отступ снизу */}
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-12 md:mb-16 lg:mb-20 text-white leading-relaxed px-4">
                     {testimonials[activeIndex].highlightedPhrases 
                       ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
                       : testimonials[activeIndex].quote}
                   </p>
                   <footer>
                     <div className="flex items-center justify-center">
-                      <div className="w-14 h-14 mr-5 flex-shrink-0 flex items-center -mt-1"> {/* Добавлен -mt-1 */}
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 mr-3 sm:mr-5 flex-shrink-0 flex items-center">
                         <ImageWithFallback
                           src={testimonials[activeIndex].image || ''}
                           alt={testimonials[activeIndex].author}
@@ -469,10 +450,10 @@ export default function TestimonialsSection({
                         />
                       </div>
                       <div className="text-left">
-                        <cite className="font-medium text-lg md:text-xl text-white not-italic"> {/* Увеличен размер имени */}
+                        <cite className="font-medium text-base sm:text-lg md:text-xl text-white not-italic">
                           {testimonials[activeIndex].author}
                         </cite>
-                        <p className="text-light-gray text-sm md:text-lg"> {/* Увеличен размер должности */}
+                        <p className="text-light-gray text-xs sm:text-sm md:text-base">
                           {testimonials[activeIndex].title}
                         </p>
                       </div>
@@ -483,17 +464,17 @@ export default function TestimonialsSection({
             </AnimatePresence>
           </div>
           
-          {/* Навигационные стрелки */}
+          {/* Навигационные стрелки - только на десктопе */}
           {(!isMobile && !isTablet) && testimonials.length > 1 && (
             <>
               <button
                 onClick={prevTestimonial}
-                className="absolute top-1/2 -left-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+                className="absolute top-1/2 -left-16 lg:-left-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
                 aria-label="Previous testimonial"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+                  className="h-8 w-8 lg:h-10 lg:w-10 transition-all duration-300 group-hover:neon-green-glow" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -504,12 +485,12 @@ export default function TestimonialsSection({
               </button>
               <button
                 onClick={nextTestimonial}
-                className="absolute top-1/2 -right-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
+                className="absolute top-1/2 -right-16 lg:-right-28 transform -translate-y-1/2 text-secondary hover:text-white transition-colors duration-300 focus:outline-none group"
                 aria-label="Next testimonial"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-10 w-10 transition-all duration-300 group-hover:neon-green-glow" 
+                  className="h-8 w-8 lg:h-10 lg:w-10 transition-all duration-300 group-hover:neon-green-glow" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -523,13 +504,13 @@ export default function TestimonialsSection({
           
           {/* Навигационные точки */}
           {testimonials.length > 1 && (
-            <div className="flex justify-center mt-8 space-x-4">
+            <div className="flex justify-center mt-6 sm:mt-8 space-x-3 sm:space-x-4">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => handleDotClick(index)}
                   className={cn(
-                    "w-4 h-4 rounded-full transition-all duration-300",
+                    "w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300",
                     index === activeIndex 
                       ? "bg-secondary" 
                       : "bg-medium-gray hover:bg-light-gray"
@@ -556,9 +537,9 @@ export function SingleTestimonial({
   className?: string;
 }) {
   return (
-    <div className={cn("bg-dark-gray rounded-lg p-6", className)}>
+    <div className={cn("bg-dark-gray rounded-lg p-4 sm:p-6", className)}>
       {withQuote && (
-        <div className="text-4xl text-secondary opacity-20 mb-3"></div>
+        <div className="text-3xl sm:text-4xl text-secondary opacity-20 mb-3"></div>
       )}
       
       {testimonial.rating && (
@@ -579,14 +560,14 @@ export function SingleTestimonial({
         </div>
       )}
       
-      <p className="text-white mb-6">
+      <p className="text-white text-sm sm:text-base mb-6">
         {testimonial.highlightedPhrases 
           ? highlightKeyPhrases(testimonial.quote, testimonial.highlightedPhrases) 
           : testimonial.quote}
       </p>
       
       <div className="flex items-center">
-        <div className="w-12 h-12 mr-4">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 mr-3 sm:mr-4">
           <ImageWithFallback
             src={testimonial.image || ''}
             alt={testimonial.author}
@@ -597,8 +578,8 @@ export function SingleTestimonial({
           />
         </div>
         <div>
-          <h4 className="font-medium">{testimonial.author}</h4>
-          <p className="text-light-gray text-sm">{testimonial.title}</p>
+          <h4 className="font-medium text-sm sm:text-base">{testimonial.author}</h4>
+          <p className="text-light-gray text-xs sm:text-sm">{testimonial.title}</p>
         </div>
       </div>
     </div>

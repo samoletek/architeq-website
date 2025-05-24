@@ -81,22 +81,22 @@ export default function HeroSection({
   };
 
   return (
-    <section className="pt-40 pb-24 relative overflow-hidden">
+    <section className="section-hero relative overflow-hidden">
       {/* Эффекты фона */}
       <div className="absolute right-0 top-[20%] opacity-20 w-[30vw] h-[30vw] rounded-full bg-primary/30 blur-[100px]" />
       <div className="absolute left-10 bottom-[10%] opacity-20 w-[20vw] h-[20vw] rounded-full bg-secondary/20 blur-[80px]" />
       
-      <div className="container px-6 mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 h-full flex items-center">
         <div className="max-w-3xl">
-          {/* Заголовок с анимацией */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+          {/* Заголовок с анимацией и адаптивными размерами */}
+          <h1 className="font-bold leading-tight mb-4 sm:mb-6 md:mb-8">
             <motion.div
               variants={titleVariants}
               initial="hidden"
               animate="visible"
-              className="mb-2 whitespace-nowrap"
+              className="mb-1 sm:mb-2"
             >
-              <span style={staticGradientStyle} className="mr-2">Architect </span>
+              <span style={staticGradientStyle} className="mr-1 sm:mr-2">Architect </span>
               <span>your workflow</span>
             </motion.div>
             
@@ -105,25 +105,24 @@ export default function HeroSection({
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.05 }}
-              className="whitespace-nowrap"
             >
-              <span style={staticGradientStyle} className="mr-2">Scale </span>
+              <span style={staticGradientStyle} className="mr-1 sm:mr-2">Scale </span>
               <span>with confidence</span>
             </motion.div>
           </h1>
           
-          {/* Описание - с анимацией справа налево */}
+          {/* Описание с адаптивными размерами */}
           <motion.div
             variants={descriptionVariants}
             initial="hidden"
             animate="visible"
-            className="text-xl md:text-2xl lg:text-3xl text-white/80 mb-8 font-sans leading-relaxed"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 mb-6 sm:mb-8 md:mb-10 font-sans leading-relaxed max-w-2xl"
           >
             <p>{description}</p>
           </motion.div>
           
-          {/* Кнопка и поиск рядом - с анимацией появления */}
-          <div className="flex flex-wrap items-center gap-6">
+          {/* Кнопка и поиск */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
             <motion.div
               variants={buttonVariants}
               initial="hidden"
@@ -133,7 +132,7 @@ export default function HeroSection({
                 variant="secondary" 
                 size="lg" 
                 href={primaryCta.href} 
-                className="shadow-neon-green-glow px-8 py-4 text-lg"
+                className="shadow-neon-green-glow text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4"
               >
                 {primaryCta.text}
               </Button>
@@ -143,6 +142,7 @@ export default function HeroSection({
               variants={searchVariants}
               initial="hidden"
               animate="visible"
+              className="w-full sm:w-auto"
             >
               <HeroSearch />
             </motion.div>

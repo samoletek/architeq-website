@@ -20,28 +20,36 @@
     @apply font-heading font-bold;
   }
   
+  /* Обновленные размеры заголовков с лучшей адаптивностью */
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
   }
   
   h2 {
-    @apply text-3xl md:text-4xl;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
   }
   
   h3 {
-    @apply text-2xl md:text-3xl;
+    @apply text-xl sm:text-2xl md:text-3xl;
   }
   
   h4 {
-    @apply text-xl md:text-2xl;
+    @apply text-lg sm:text-xl md:text-2xl;
   }
   
   h5 {
-    @apply text-lg md:text-xl;
+    @apply text-base sm:text-lg md:text-xl;
   }
   
   h6 {
-    @apply text-base md:text-lg;
+    @apply text-sm sm:text-base md:text-lg;
+  }
+  
+  /* Базовый размер текста для мобильных устройств */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
   }
 }
 
@@ -54,42 +62,43 @@
     @apply py-12 md:py-24;
   }
   
- /* Hero секция - радикально уменьшаем отступы */
-.section-hero {
-  @apply pt-12 pb-6 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10;
-}
+  /* Обновленные секции с оптимизированными отступами */
+  .section-hero {
+    @apply pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24;
+    min-height: 80vh;
+  }
 
-/* Benefits секция - умеренные отступы */
-.section-benefits {
-  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-}
+  .section-benefits {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+  }
 
-/* Solutions секция - умеренные отступы */
-.section-solutions {
-  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-  /* Удаляем min-height или существенно уменьшаем */
-  min-height: 60vh;
-}
+  .section-solutions {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    min-height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .section-solutions {
+      min-height: 60vh;
+    }
+  }
 
-/* Featured Cases секция - умеренные отступы */
-.section-cases {
-  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-}
+  .section-cases {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+  }
 
-/* Testimonials секция - умеренные отступы */
-.section-testimonials {
-  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-}
+  .section-testimonials {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+  }
 
-/* CTA секция - минимальные отступы, т.к. это последняя секция */
-.section-cta {
-  @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-}
+  .section-cta {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+  }
 
   /* Градиентный текст для выделения слов */
   .accent-text {
     @apply inline-block text-transparent bg-clip-text;
-    background-image: var(--gradient-accent); /* Зеленый к белому */
+    background-image: var(--gradient-accent);
   }
   
   .primary-text {
@@ -99,17 +108,17 @@
   
   /* Кнопки в стиле скриншотов */
   .btn-primary {
-    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-6 py-3 rounded-full font-medium transition-all;
+    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
     box-shadow: 0 0 15px rgba(176, 255, 116, 0.3);
   }
   
   .btn-secondary {
-    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-6 py-3 rounded-full font-medium transition-all;
+    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
   }
   
   /* Футер */
   .footer {
-    @apply bg-footer-bg py-12 border-t border-primary/20;
+    @apply bg-footer-bg py-8 sm:py-12 border-t border-primary/20;
   }
   
   /* Декоративные элементы */
@@ -126,8 +135,6 @@
   }
   
   /* СТИЛИ ДЛЯ СТРАНИЦЫ КЕЙСА */
-  
-  /* Постоянное интенсивное фиолетовое свечение для видео (как у primary кнопки при наведении) */
   .video-button-glow {
     @apply relative;
     box-shadow: 
@@ -155,13 +162,65 @@
     opacity: 0.9;
   }
   
-  /* Определяем shadow-neon-glow-intense */
   .shadow-neon-glow-intense {
     box-shadow: 
       0 0 20px rgba(178, 75, 243, 0.6),
       0 0 40px rgba(178, 75, 243, 0.4),
       0 0 60px rgba(178, 75, 243, 0.3),
       0 0 80px rgba(119, 71, 207, 0.2);
+  }
+  
+  /* Адаптивная типографика */
+  @media (max-width: 640px) {
+    .text-responsive-sm {
+      @apply text-sm;
+    }
+    
+    .text-responsive-base {
+      @apply text-sm;
+    }
+    
+    .text-responsive-lg {
+      @apply text-base;
+    }
+    
+    .text-responsive-xl {
+      @apply text-lg;
+    }
+    
+    .text-responsive-2xl {
+      @apply text-xl;
+    }
+    
+    .text-responsive-3xl {
+      @apply text-2xl;
+    }
+  }
+  
+  @media (min-width: 641px) {
+    .text-responsive-sm {
+      @apply text-sm;
+    }
+    
+    .text-responsive-base {
+      @apply text-base;
+    }
+    
+    .text-responsive-lg {
+      @apply text-lg;
+    }
+    
+    .text-responsive-xl {
+      @apply text-xl;
+    }
+    
+    .text-responsive-2xl {
+      @apply text-2xl;
+    }
+    
+    .text-responsive-3xl {
+      @apply text-3xl;
+    }
   }
 }
 
@@ -215,33 +274,6 @@
   .text-shadow-green-soft {
     text-shadow: 0 0 5px rgba(176, 255, 116, 0.5), 0 0 15px rgba(176, 255, 116, 0.4), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 45px rgba(176, 255, 116, 0.2);
   }
-  
-  /* Анимации для волнообразного свечения */
-  @keyframes waveGlowWhite {
-    0% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2), 0 0 90px rgba(255, 255, 255, 0.1); }
-    20% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 35px rgba(255, 255, 255, 0.4), 0 0 70px rgba(255, 255, 255, 0.3), 0 0 100px rgba(255, 255, 255, 0.2); }
-    40% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.3), 0 0 110px rgba(255, 255, 255, 0.2); }
-    60% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 45px rgba(255, 255, 255, 0.4), 0 0 85px rgba(255, 255, 255, 0.3), 0 0 120px rgba(255, 255, 255, 0.2); }
-    80% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.4), 0 0 65px rgba(255, 255, 255, 0.3), 0 0 90px rgba(255, 255, 255, 0.2); }
-    100% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.2), 0 0 90px rgba(255, 255, 255, 0.1); }
-  }
-  
-  @keyframes waveGlowGreen {
-    0% { text-shadow: 0 0 15px rgba(176, 255, 116, 0.5), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 60px rgba(176, 255, 116, 0.2), 0 0 90px rgba(176, 255, 116, 0.1); }
-    20% { text-shadow: 0 0 10px rgba(176, 255, 116, 0.6), 0 0 35px rgba(176, 255, 116, 0.4), 0 0 70px rgba(176, 255, 116, 0.3), 0 0 100px rgba(176, 255, 116, 0.2); }
-    40% { text-shadow: 0 0 20px rgba(176, 255, 116, 0.5), 0 0 40px rgba(176, 255, 116, 0.4), 0 0 80px rgba(176, 255, 116, 0.3), 0 0 110px rgba(176, 255, 116, 0.2); }
-    60% { text-shadow: 0 0 15px rgba(176, 255, 116, 0.6), 0 0 45px rgba(176, 255, 116, 0.4), 0 0 85px rgba(176, 255, 116, 0.3), 0 0 120px rgba(176, 255, 116, 0.2); }
-    80% { text-shadow: 0 0 10px rgba(176, 255, 116, 0.5), 0 0 30px rgba(176, 255, 116, 0.4), 0 0 65px rgba(176, 255, 116, 0.3), 0 0 90px rgba(176, 255, 116, 0.2); }
-    100% { text-shadow: 0 0 15px rgba(176, 255, 116, 0.5), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 60px rgba(176, 255, 116, 0.2), 0 0 90px rgba(176, 255, 116, 0.1); }
-  }
-  
-  .animate-wave-glow-white {
-    animation: waveGlowWhite 15s ease-in-out infinite;
-  }
-  
-  .animate-wave-glow-green {
-    animation: waveGlowGreen 15s ease-in-out infinite;
-  }
 }
 
 .no-focus-outline {
@@ -279,61 +311,6 @@
   }
 }
 
-/* Стили для поискового оверлея */
-.search-backdrop {
-  @apply fixed inset-0 bg-[#12071A]/80 backdrop-blur-sm z-[9990];
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-}
-
-/* Класс для блокировки прокрутки при открытом поиске */
-body.search-overlay-active {
-  @apply overflow-hidden;
-}
-
-/* Стили для контента поиска */
-.search-content {
-  @apply bg-[#12071A]/95 backdrop-blur-md z-[9991];
-}
-
-/* Стили для выпадающего меню результатов поиска */
-.search-dropdown {
-  @apply bg-[#12071A]/95 backdrop-blur-md;
-}
-
-.display-webkit-box {
-  display: -webkit-box;
-}
-
-.webkit-box-orient-vertical {
-  -webkit-box-orient: vertical;
-}
-
-.line-clamp-3 {
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.arrow-nav-button {
-  position: relative;
-}
-
-.arrow-nav-button svg {
-  filter: drop-shadow(0 0 8px rgba(176, 255, 116, 0.7)) 
-         drop-shadow(0 0 12px rgba(176, 255, 116, 0.5));
-  transition: filter 0.5s ease;
-}
-
-.arrow-nav-button:hover svg {
-  filter: drop-shadow(0 0 10px rgba(176, 255, 116, 0.9)) 
-         drop-shadow(0 0 20px rgba(176, 255, 116, 0.7))
-         drop-shadow(0 0 30px rgba(176, 255, 116, 0.5));
-}
-
-
 /* Плавный скролл для всей страницы */
 html {
   scroll-behavior: smooth;
@@ -364,42 +341,173 @@ html {
     0 0 20px rgba(176, 255, 116, 0.1);
 }
 
-/* Неоновые эффекты */
-.neon-flicker {
-  border-color: #B24BF3;
-  color: #B24BF3;
-  animation: flicker 0.5s linear infinite;
+/* Стили для sticky секций и плавного скролла */
+.sticky-element {
+  position: sticky !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: opacity 0.5s ease;
 }
 
-.neon-on {
-  border-color: #B24BF3;
-  color: #B24BF3;
-  text-shadow: 
-    0 0 7px #fff,
-    0 0 10px #fff,
-    0 0 21px #fff,
-    0 0 42px #B24BF3,
-    0 0 82px #B24BF3,
-    0 0 92px #B24BF3;
-  box-shadow: 
-    0 0 10px #B24BF3,
-    0 0 20px #B24BF3,
-    0 0 40px #B24BF3,
-    inset 0 0 10px #B24BF3;
+/* Поддержка CSS Scroll Snap для плавной прокрутки от секции к секции */
+html.has-smooth-scroll {
+  scroll-behavior: smooth;
 }
 
-@keyframes flicker {
-  0%, 18%, 22%, 25%, 53%, 57%, 100% {
-    text-shadow: 
-      0 0 4px #fff,
-      0 0 11px #fff,
-      0 0 19px #fff,
-      0 0 40px #B24BF3,
-      0 0 80px #B24BF3;
-    opacity: 1;
+.snap-y {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-mandatory > [data-section-index] {
+  scroll-snap-align: start;
+}
+
+/* ===== Дополнительные стили для оптимизации анимаций ===== */
+
+/* Классы для стабилизации контента при гидратации */
+.content-visibility-auto {
+  content-visibility: auto;
+}
+
+.stabilize-content {
+  min-height: 1px;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+  will-change: opacity, transform;
+}
+
+/* Плавные анимации при скролле */
+.animate-on-scroll {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Класс для предотвращения дёргания при загрузке */
+.prevent-flash {
+  opacity: 0.99999;
+}
+
+/* Улучшенные эффекты hover */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Плавное появление элементов с разной задержкой */
+.fade-in-1 {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.fade-in-2 {
+  animation: fadeIn 0.8s ease 0.2s forwards;
+  opacity: 0;
+}
+
+.fade-in-3 {
+  animation: fadeIn 0.8s ease 0.4s forwards;
+  opacity: 0;
+}
+
+.fade-in-4 {
+  animation: fadeIn 0.8s ease 0.6s forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  20%, 24%, 55% {
-    text-shadow: none;
-    opacity: 0.5;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Фиксированный скролл при загрузке для предотвращения скачков */
+html.is-loading {
+  overflow: hidden;
+}
+
+html.is-ready {
+  transition: opacity 0.3s ease;
+}
+
+/* Оптимизация для анимаций на мобильных устройствах */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Улучшенные скроллинг-эффекты */
+.snap-scroll {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.snap-scroll > section {
+  scroll-snap-align: start;
+  height: 100vh;
+}
+
+/* Плавные переходы между секциями */
+.section-transition {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Задержка для загрузки шрифтов */
+.fonts-loaded {
+  transition: opacity 0.5s ease;
+}
+
+.fonts-loading {
+  opacity: 0.98;
+}
+
+/* Мобильная оптимизация */
+@media (max-width: 640px) {
+  /* Меньше padding для мобильных устройств */
+  .container {
+    @apply px-4;
+  }
+  
+  /* Уменьшенные отступы для секций */
+  .section {
+    @apply py-8;
+  }
+  
+  /* Оптимизация размеров текста */
+  .lead-text {
+    @apply text-base;
+  }
+  
+  /* Уменьшенные кнопки */
+  .btn-primary,
+  .btn-secondary {
+    @apply px-4 py-2 text-sm;
   }
 }
