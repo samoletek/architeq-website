@@ -81,21 +81,6 @@ export default function CTASection({
     };
   }, []);
 
-  const [screenHeight, setScreenHeight] = useState('100vh');
-  
-  useEffect(() => {
-    const updateScreenHeight = () => {
-      setScreenHeight(`${window.innerHeight}px`);
-    };
-  
-    updateScreenHeight();
-    window.addEventListener('resize', updateScreenHeight);
-    
-    return () => {
-      window.removeEventListener('resize', updateScreenHeight);
-    };
-  }, []);
-
   const contentVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
