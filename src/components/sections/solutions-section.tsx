@@ -481,14 +481,25 @@ const SolutionContent = ({
                 <motion.div
                   initial={{ opacity: 0, x: 40 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ 
-                    duration: 1,
-                    delay: 0.3 + (solution.features.length * 0.15) + 0.2,
-                    ease: [0.1, 0.6, 0.3, 1]
-                  }}
-                  whileHover={{ 
+                  whileHover={!isMobile ? { 
                     scale: 1.05,
                     filter: "brightness(1.1)"
+                  } : undefined}
+                  whileTap={!isMobile ? { 
+                    scale: 0.98 
+                  } : undefined}
+                  transition={{ 
+                    initial: {
+                      duration: 1,
+                      delay: 0.3 + (solution.features.length * 0.15) + 0.2,
+                      ease: [0.1, 0.6, 0.3, 1]
+                    },
+                    whileHover: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 25,
+                      mass: 0.5
+                    }
                   }}
                   className="relative"
                 >
@@ -722,7 +733,7 @@ export function SolutionsSection({
               >
                 <div 
                   className="relative p-6 rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] overflow-hidden flex flex-col justify-center bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] before:absolute before:content-[''] before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] backdrop-blur-sm"
-                  style={{ minHeight: "500px", maxHeight: "600px" }}
+                  style={{ minHeight: "550px", maxHeight: "650px" }}
                 >
                   {/* Эффект свечения */}
                   <motion.div 
@@ -758,7 +769,7 @@ export function SolutionsSection({
                 animate={isVisible ? "visible" : "hidden"}
                 variants={contentVariants}
               >
-                <div style={{ minHeight: "500px", maxHeight: "600px" }}>
+                <div style={{ minHeight: "550px", maxHeight: "650px" }}>
                   <AnimatePresence mode="wait" initial={false}> 
                     {solutions.map((solution) => (
                       activeSolutionId === solution.id && (

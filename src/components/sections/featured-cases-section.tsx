@@ -35,14 +35,19 @@ export default function FeaturedCasesSection({
   variant = 'default',
   caseCardVariant = 'default'
 }: FeaturedCasesSectionProps) {
+  // Состояние для отслеживания клиентского рендеринга
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   
+  // Устанавливаем флаг монтирования после первого рендера
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // Эффект для отслеживания видимости секции
   useEffect(() => {
     if (!sectionRef.current) return;
     
@@ -50,7 +55,7 @@ export default function FeaturedCasesSection({
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          observer.disconnect(); // Используем disconnect вместо unobserve
         }
       },
       {
@@ -62,49 +67,54 @@ export default function FeaturedCasesSection({
     observer.observe(sectionRef.current);
     
     return () => {
-      observer.disconnect();
+      observer.disconnect(); // Просто отключаем наблюдатель при размонтировании
     };
   }, [isMounted]);
 
+  // Если кейсы не переданы явно, получаем избранные кейсы
   const featuredCases = cases || getFeaturedCases(maxCases);
+  
+  // Ограничиваем количество отображаемых кейсов
   const displayCases = featuredCases.slice(0, maxCases);
   
+  // Определяем фон секции в зависимости от варианта
   const sectionBg = variant === 'default' ? 'bg-[#121212]' : 'bg-dark-gray';
   
-  // Адаптивная сетка для мобильных устройств
+  // Адаптируем количество колонок для разных размеров экрана
   const gridCols = displayCases.length === 1 
     ? 'grid-cols-1'
     : displayCases.length === 2 
-      ? 'grid-cols-1 sm:grid-cols-2' 
-      : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+      ? 'grid-cols-1 md:grid-cols-2' 
+      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
+  // Определяем класс секции
   const sectionClasses = cn(
     "section-cases",
     sectionBg,
     className
   );
 
-  // Упрощенная версия без анимаций
+  // Упрощенная версия без анимаций, если компонент не смонтирован
   if (!isMounted) {
     return (
       <section className={sectionClasses}>
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4">
           {/* Заголовок и подзаголовок */}
           {!compact && (
-            <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
-              <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
+            <div className="text-center mb-20">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
+              <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
           
           {/* Компактный заголовок */}
           {compact && title && (
-            <div className="flex justify-between items-center mb-6 sm:mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold">{title}</h2>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold">{title}</h2>
               {viewAllUrl && (
-                <Link href={viewAllUrl} className="text-primary hover:underline text-xs sm:text-sm font-medium flex items-center">
+                <Link href={viewAllUrl} className="text-primary hover:underline text-sm font-medium flex items-center">
                   {viewAllText}
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
@@ -113,7 +123,7 @@ export default function FeaturedCasesSection({
           )}
 
           {/* Сетка кейсов */}
-          <div className={cn("grid gap-4 sm:gap-6 md:gap-8", gridCols)}>
+          <div className={cn("grid gap-8", gridCols)}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
@@ -139,9 +149,9 @@ export default function FeaturedCasesSection({
 
           {/* Кнопка "Посмотреть все" */}
           {!compact && viewAllUrl && (
-            <div className="mt-12 sm:mt-16 md:mt-20 text-center">
+            <div className="mt-16 text-center">
               <Link href={viewAllUrl}>
-                <Button variant="secondary" size="lg" className="text-sm sm:text-base">
+                <Button variant="secondary" size="lg">
                   {viewAllText}
                 </Button>
               </Link>
@@ -152,7 +162,7 @@ export default function FeaturedCasesSection({
     );
   }
 
-  // Анимационные варианты
+  // Анимационные варианты для заголовка
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -165,6 +175,7 @@ export default function FeaturedCasesSection({
     }
   };
 
+  // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: (index: number) => ({
@@ -178,6 +189,7 @@ export default function FeaturedCasesSection({
     })
   };
 
+  // Анимационные варианты для кнопки
   const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -197,33 +209,33 @@ export default function FeaturedCasesSection({
       ref={sectionRef}
       className={sectionClasses}
     >
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         {/* Заголовок и подзаголовок */}
         {!compact && (
           <motion.div 
-            className="text-center mb-12 sm:mb-16 md:mb-20"
+            className="text-center mb-20"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
-            <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
+            <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </motion.div>
         )}
         
         {/* Компактный заголовок */}
         {compact && title && (
           <motion.div 
-            className="flex justify-between items-center mb-6 sm:mb-8"
+            className="flex justify-between items-center mb-8"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-xl sm:text-2xl font-bold">{title}</h2>
+            <h2 className="text-2xl font-bold">{title}</h2>
             {viewAllUrl && (
-              <Link href={viewAllUrl} className="text-primary hover:underline text-xs sm:text-sm font-medium flex items-center">
+              <Link href={viewAllUrl} className="text-primary hover:underline text-sm font-medium flex items-center">
                 {viewAllText}
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -232,7 +244,7 @@ export default function FeaturedCasesSection({
         )}
 
         {/* Сетка кейсов */}
-        <div className={cn("grid gap-4 sm:gap-6 md:gap-8", gridCols)}>
+        <div className={cn("grid gap-8", gridCols)}>
           {displayCases.map((caseItem, index) => {
             const cardData = toCaseCardFormat(caseItem);
             return (
@@ -265,13 +277,13 @@ export default function FeaturedCasesSection({
         {/* Кнопка "Посмотреть все" */}
         {!compact && viewAllUrl && (
           <motion.div 
-            className="mt-12 sm:mt-16 md:mt-20 text-center"
+            className="mt-16 text-center"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={buttonVariants}
           >
             <Link href={viewAllUrl}>
-              <Button variant="secondary" size="lg" className="text-sm sm:text-base">
+              <Button variant="secondary" size="lg">
                 {viewAllText}
               </Button>
             </Link>
@@ -294,15 +306,15 @@ export function HorizontalCasesSection({
   const displayCases = cases || getFeaturedCases(6);
   
   return (
-    <div className={cn("py-8 sm:py-10", className)}>
-      <div className="container mx-auto">
+    <div className={cn("py-10", className)}>
+      <div className="container mx-auto px-4">
         {/* Заголовок с ссылкой "Посмотреть все" */}
-        <div className="flex justify-between items-center mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold">{title}</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">{title}</h2>
           {viewAllUrl && (
-            <Link href={viewAllUrl} className="text-primary hover:underline text-xs sm:text-sm font-medium flex items-center">
+            <Link href={viewAllUrl} className="text-primary hover:underline text-sm font-medium flex items-center">
               {viewAllText}
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
@@ -311,13 +323,13 @@ export function HorizontalCasesSection({
         
         {/* Горизонтальный скролл с кейсами */}
         <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-          <div className="flex space-x-3 sm:space-x-4 pb-4" style={{ minWidth: 'max-content' }}>
+          <div className="flex space-x-4 pb-4" style={{ minWidth: 'max-content' }}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
                 <div 
                   key={index} 
-                  className="w-[240px] sm:w-[280px] flex-shrink-0"
+                  className="w-[280px] flex-shrink-0"
                 >
                   <CaseCard 
                     id={cardData.id}

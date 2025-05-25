@@ -62,6 +62,18 @@ export function CaseCard({
   onClick
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
@@ -86,14 +98,13 @@ export function CaseCard({
     }
   }, [id, href]);
 
-  const cardHeight = isCompact ? 'auto' : 'min-h-[420px]';
+  const cardHeight = isCompact ? 'auto' : 'min-h-[380px] sm:min-h-[420px]';
 
   const cardContent = (
     <motion.div
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
-        // Используем единый класс для карточки
         'case-card-enhanced',
         isHovered ? 'case-card-hovered' : '',
         cardHeight,
@@ -135,12 +146,15 @@ export function CaseCard({
       </div>
 
       {/* Теги */}
-      <div className="relative pt-5 px-4 pb-5 z-10">
-        <div className="flex flex-wrap gap-2">
+      <div className={cn(
+        "relative z-10",
+        isMobile ? "pt-3 px-3 pb-3" : "pt-5 px-4 pb-5"
+      )}>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"
+              className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-0.5 sm:py-1 rounded-md border border-white/10"
             >
               {tag}
             </span>
@@ -149,27 +163,44 @@ export function CaseCard({
       </div>
 
       {/* Контент */}
-      <div className="pl-6 pr-8 py-5 flex-grow z-10">
-        <h3 className="text-2xl font-semibold text-white leading-tight mb-6">
+      <div className={cn(
+        "flex-grow z-10",
+        isMobile ? "pl-4 pr-5 py-3" : "pl-6 pr-8 py-5"
+      )}>
+        <h3 className={cn(
+          "font-semibold text-white leading-tight",
+          isMobile ? "text-lg mb-3" : "text-2xl mb-6"
+        )}>
           {title}
         </h3>
 
         {description && !isCompact && (
-          <p className="text-light-gray text-md mb-4 line-clamp-3">
+          <p className={cn(
+            "text-light-gray mb-3 line-clamp-3",
+            isMobile ? "text-xs" : "text-md"
+          )}>
             {description}
           </p>
         )}
 
         {results && results.length > 0 && !isCompact && (
-          <div className="mb-5">
-            <h4 className="text-sm font-medium mb-4 text-secondary">Key results:</h4>
-            <ul className="text-light-gray text-md space-y-0.5">
-              {results.slice(0, 4).map((result, index) => (
+          <div className={cn(
+            isMobile ? "mb-3" : "mb-5"
+          )}>
+            <h4 className={cn(
+              "font-medium text-secondary",
+              isMobile ? "text-xs mb-2" : "text-sm mb-4"
+            )}>Key results:</h4>
+            <ul className={cn(
+              "text-light-gray space-y-0.5",
+              isMobile ? "text-xs" : "text-md"
+            )}>
+              {results.slice(0, isMobile ? 3 : 4).map((result, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-secondary mr-2">•</span>
-                 <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
-                   __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
-                }} />
+                  <span className="text-secondary mr-1.5 sm:mr-2">•</span>
+                  <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
+                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                  }} />
                 </li>
               ))}
             </ul>
@@ -178,17 +209,29 @@ export function CaseCard({
       </div>
 
       {/* Footer */}
-      <div className="px-6 pb-6 border-t border-medium-gray/40 pt-4 mt-auto z-10">
-        <p className="text-white text-sm flex items-center mb-2">
-          <span className="text-light-gray mr-2">Company:</span>
+      <div className={cn(
+        "border-t border-medium-gray/40 mt-auto z-10",
+        isMobile ? "px-4 pb-4 pt-3" : "px-6 pb-6 pt-4"
+      )}>
+        <p className={cn(
+          "text-white flex items-center",
+          isMobile ? "text-xs mb-1.5" : "text-sm mb-2"
+        )}>
+          <span className="text-light-gray mr-1.5 sm:mr-2">Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
 
         {(location || industry) && (
-          <p className="text-white/80 text-sm flex items-center">
+          <p className={cn(
+            "text-white/80 flex items-center",
+            isMobile ? "text-xs" : "text-sm"
+          )}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1 text-secondary flex-shrink-0"
+              className={cn(
+                "mr-1 text-secondary flex-shrink-0",
+                isMobile ? "h-3 w-3" : "h-4 w-4"
+              )}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

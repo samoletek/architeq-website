@@ -283,7 +283,7 @@ export default function Header({
               <div className="relative flex items-center">
                 <button
                   onClick={toggleSearch}
-                  className="text-white hover:text-secondary transition-colors mt-0.5" 
+                  className="text-white/70 hover:text-white hover:text-shadow-white-soft transition-all duration-300 mt-0.5" 
                   aria-label="Search"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -306,7 +306,7 @@ export default function Header({
             {/* Поиск на мобильном */}
             {showSearch && (
               <button 
-                className="text-white hover:text-secondary p-2"
+                className="text-white/70 hover:text-white hover:text-shadow-white-soft transition-all duration-300 p-2"
                 onClick={toggleSearch}
                 aria-label="Search"
               >
@@ -356,10 +356,13 @@ export default function Header({
               {/* Контент меню */}
               <motion.div
                 className="md:hidden fixed inset-0 z-50 flex flex-col"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, y: "100%" }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
               >
                 {/* Верхняя панель с логотипом и кнопкой закрытия */}
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -455,12 +458,23 @@ export default function Header({
         {/* Полноэкранный поиск */}
         <AnimatePresence>
           {showSearch && isSearchOpen && (
-            <SearchBar 
-              variant="overlay" 
-              isExpanded={true} 
-              onToggle={toggleSearch}
-              placeholder="Search is here..."
-            />
+            <>
+              {/* Блюр фон */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 bg-black/50 backdrop-blur-md z-[60]"
+                onClick={toggleSearch}
+              />
+              <SearchBar 
+                variant="overlay" 
+                isExpanded={true} 
+                onToggle={toggleSearch}
+                placeholder="Search is here..."
+              />
+            </>
           )}
         </AnimatePresence>
       </motion.header>

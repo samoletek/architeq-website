@@ -14,6 +14,37 @@
     @apply bg-site-bg text-white font-sans;
     background: linear-gradient(135deg, #121212 0%, #180033 100%);
     background-attachment: fixed;
+    overscroll-behavior: auto;
+    position: relative;
+  }
+  
+  /* Предотвращение белой полосы при оверскролле */
+  html {
+    background: linear-gradient(135deg, #121212 0%, #180033 100%);
+    background-attachment: fixed;
+    overscroll-behavior: auto;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #121212 0%, #180033 100%);
+    z-index: -1;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #180033 0%, #121212 100%);
+    z-index: -1;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -64,16 +95,16 @@
   
   /* Обновленные секции с оптимизированными отступами */
   .section-hero {
-    @apply pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 lg:pt-36 lg:pb-24;
-    min-height: 80vh;
+    @apply pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-36 lg:pb-20;
+    min-height: 70vh;
   }
 
   .section-benefits {
-    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    @apply py-10 sm:py-14 md:py-16 lg:py-20;
   }
 
   .section-solutions {
-    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    @apply py-12 sm:py-16 md:py-20 lg:py-28;
     min-height: auto;
   }
   
@@ -408,6 +439,32 @@ html.has-smooth-scroll {
 }
 
 /* Плавное появление элементов с разной задержкой */
+
+/* ===== Стили для поискового оверлея ===== */
+.search-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: -1;
+}
+
+.search-content {
+  background: rgba(18, 7, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(119, 71, 207, 0.3);
+  box-shadow: 0 0 30px rgba(119, 71, 207, 0.2);
+}
+
+.search-dropdown {
+  background: rgba(18, 7, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 51, 51, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
 .fade-in-1 {
   animation: fadeIn 0.8s ease forwards;
 }

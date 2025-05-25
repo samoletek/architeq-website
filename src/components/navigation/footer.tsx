@@ -2,10 +2,23 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Footer() {
   const [showSocialTooltip, setShowSocialTooltip] = useState<string | null>(null);
+  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Обработчик для соцсетей которые еще не активны
   const handleInactiveSocial = (e: React.MouseEvent, network: string) => {
@@ -13,154 +26,149 @@ export default function Footer() {
     setShowSocialTooltip(network);
   };
 
+  // Обработчик для мобильных выпадающих списков
+  const toggleSection = (section: string) => {
+    setOpenSection(openSection === section ? null : section);
+  };
+
+  // Данные для секций
+  const sections = [
+    {
+      id: 'services',
+      title: 'Our Services',
+      href: '/services',
+      items: [
+        { href: '/services/business-process', label: 'Workflow Automation' },
+        { href: '/services/crm-integration', label: 'CRM Integrations' },
+        { href: '/services/boxed-solutions', label: 'Boxed Solutions' },
+        { href: '/services/ai-solutions', label: 'AI-Powered Solutions' },
+        { href: '/services/documentation', label: 'Automated Document Flow' },
+        { href: '/services/finance', label: 'Finance Automations' },
+      ]
+    },
+    {
+      id: 'cases',
+      title: 'Our Cases',
+      href: '/cases',
+      items: [
+        { href: '/cases/broker-calculator', label: 'Custom web-app' },
+        { href: '/cases/stripe-invoicing', label: 'Stripe Invoicing' },
+        { href: '/cases/document-generation', label: 'Documents Generation' },
+        { href: '/cases/kitchen-cabinetry-solution', label: 'Kitchen company Solution' },
+        { href: '/cases/ai-crm-assistant', label: 'AI custom solutions' },
+      ]
+    },
+    {
+      id: 'about',
+      title: 'About Us',
+      href: '/about',
+      items: [
+        { href: '/about#history', label: 'Company' },
+        { href: '/about#team', label: 'Team' },
+        { href: '/about#methodology', label: 'How it works' },
+        { href: '/about#tech', label: 'Tech Stack' },
+      ]
+    },
+    {
+      id: 'contact',
+      title: 'Contact Us',
+      href: '/contacts',
+      items: [
+        { href: '/contacts', label: 'Schedule a Call' },
+        { href: '/contacts', label: 'Fill out onboarding' },
+        { href: '/about#faq', label: 'FAQ' },
+      ]
+    }
+  ];
+
   return (
     <footer className="bg-dark-gray pt-12 sm:pt-16 md:pt-20 pb-4 sm:pb-6 relative overflow-hidden">
       {/* Градиентный фон */}
       <div className="absolute inset-0 bg-gradient-to-b from-site-bg via-dark-gray to-dark-purple opacity-50" />
       
       <div className="container mx-auto px-4 relative">
-        {/* Верхняя часть с колонками */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
-          {/* Our Services */}
-          <div>
-            <Link href="/services" className="text-base sm:text-lg font-bold mb-3 sm:mb-4 inline-block hover:text-secondary hover:text-shadow-green-soft transition-colors">
-              Our Services
-            </Link>
-            <ul className="space-y-2 sm:space-y-3">
-              <li>
-                <Link href="/services/business-process" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Workflow Automation
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/crm-integration" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  CRM Integrations
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/boxed-solutions" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Boxed Solutions
-                </Link>
-              </li>
-              <li>
-                <Link href="/services/ai-solutions" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  AI-Powered Solutions
-                </Link>
-              </li>
-              <li className="hidden sm:block">
-                <Link href="/services/documentation" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Automated Document Flow
-                </Link>
-              </li>
-              <li className="hidden sm:block">
-                <Link href="/services/finance" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Finance Automations
-                </Link>
-              </li>
-            </ul>
+        {/* Мобильная версия с выпадающими списками */}
+        {isMobile ? (
+          <div className="mb-8">
+            {sections.map((section) => (
+              <div key={section.id} className="border-b border-white/10 last:border-b-0">
+                <button
+                  onClick={() => toggleSection(section.id)}
+                  className="w-full flex items-center justify-between py-4 text-left"
+                >
+                  <Link 
+                    href={section.href} 
+                    className="text-base font-bold hover:text-secondary transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {section.title}
+                  </Link>
+                  <motion.svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-white/60"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    animate={{ rotate: openSection === section.id ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </motion.svg>
+                </button>
+                
+                <AnimatePresence>
+                  {openSection === section.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="pb-4 space-y-2">
+                        {section.items.map((item, index) => (
+                          <motion.li 
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                          >
+                            <Link 
+                              href={item.href} 
+                              className="text-light-gray hover:text-white transition-colors text-sm block py-1 pl-4"
+                            >
+                              {item.label}
+                            </Link>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
           </div>
-
-          {/* Our Cases */}
-          <div>
-            <Link href="/cases" className="text-base sm:text-lg font-bold mb-3 sm:mb-4 inline-block hover:text-secondary hover:text-shadow-green-soft transition-colors">
-              Our Cases
-            </Link>
-            <ul className="space-y-2 sm:space-y-3">
-              <li>
-                <Link href="/cases/broker-calculator" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Custom web-app
+        ) : (
+          /* Десктопная версия - оригинальная сетка */
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
+            {sections.map((section) => (
+              <div key={section.id}>
+                <Link href={section.href} className="text-base sm:text-lg font-bold mb-3 sm:mb-4 inline-block hover:text-secondary hover:text-shadow-green-soft transition-colors">
+                  {section.title}
                 </Link>
-              </li>
-              <li>
-                <Link href="/cases/stripe-invoicing" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Stripe Invoicing
-                </Link>
-              </li>
-              <li>
-                <Link href="/cases/document-generation" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Documents Generation
-                </Link>
-              </li>
-              <li className="hidden sm:block">
-                <Link href="/cases/kitchen-cabinetry-solution" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Kitchen company Solution
-                </Link>
-              </li>
-              <li className="hidden sm:block">
-                <Link href="/cases/ai-crm-assistant" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  AI custom solutions
-                </Link>
-              </li>
-            </ul>
+                <ul className="space-y-2 sm:space-y-3">
+                  {section.items.slice(0, section.id === 'contact' ? 3 : 6).map((item, index) => (
+                    <li key={index}>
+                      <Link href={item.href} className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
-
-          {/* About Us - только на планшетах и десктопах */}
-          <div className="hidden md:block">
-            <Link href="/about" className="text-base sm:text-lg font-bold mb-3 sm:mb-4 inline-block hover:text-secondary hover:text-shadow-green-soft transition-colors">
-              About Us
-            </Link>
-            <ul className="space-y-2 sm:space-y-3">
-              <li>
-                <Link href="/about#history" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Company
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#team" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Team
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#methodology" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  How it works
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#tech" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Tech Stack
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact us - только на больших экранах */}
-          <div className="hidden lg:block">
-            <Link href="/contacts" className="text-base sm:text-lg font-bold mb-3 sm:mb-4 inline-block hover:text-secondary hover:text-shadow-green-soft transition-colors">
-              Contact Us
-            </Link>
-            <ul className="space-y-2 sm:space-y-3">
-              <li>
-                <Link href="/contacts" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Schedule a Call
-                </Link>
-              </li>
-              <li>
-                <Link href="/contacts" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  Fill out onboarding
-                </Link>
-              </li>
-              <li>
-                <Link href="/about#faq" className="text-light-gray hover:text-white transition-colors text-xs sm:text-sm">
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Дополнительные ссылки для мобильных */}
-        <div className="grid grid-cols-2 gap-6 mb-8 sm:hidden">
-          <div>
-            <Link href="/about" className="text-base font-bold mb-2 inline-block hover:text-secondary transition-colors">
-              About
-            </Link>
-          </div>
-          <div>
-            <Link href="/contacts" className="text-base font-bold mb-2 inline-block hover:text-secondary transition-colors">
-              Contact
-            </Link>
-          </div>
-        </div>
+        )}
 
         {/* Основная часть */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start lg:items-center mb-0">

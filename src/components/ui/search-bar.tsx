@@ -80,7 +80,7 @@ export function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   
-  // Обработка клика вне компонента - обновлено для закрытия окна поиска
+  // Обработка клика вне компонента и скролла
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -91,10 +91,31 @@ export function SearchBar({
         }
       }
     };
+
+    const handleScroll = () => {
+      // Закрываем поиск при скролле, если это overlay
+      if (variant === 'overlay' && isExpanded && onToggle) {
+        onToggle();
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowResults(false);
+        if (variant === 'overlay' && isExpanded && onToggle) {
+          onToggle();
+        }
+      }
+    };
     
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('scroll', handleScroll, true); // true для capture phase
+    document.addEventListener('keydown', handleEscape);
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('scroll', handleScroll, true);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [variant, isExpanded, onToggle]);
   
