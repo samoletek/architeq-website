@@ -106,8 +106,9 @@ export default function CTASection({
     }
   };
   
+  // Настройки для разных вариантов
   const variantClasses = {
-    default: "section-cta bg-dark-gradient",
+    default: "section-cta bg-dark-gradient pt-72 pb-48",
     minimal: "py-12 sm:py-16 bg-dark-gray",
     highlight: "py-16 sm:py-20 md:py-24 bg-primary/10 dark:bg-primary/5"
   };
@@ -211,6 +212,17 @@ export default function CTASection({
               variants={contentVariants}
             >
               {extraContent}
+            </motion.div>
+          )}
+          
+          {/* Дополнительный маленький текст, если это не компактный режим */}
+          {!compact && variant === 'default' && (
+            <motion.div 
+              className="mt-6"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={contentVariants}
+            >
             </motion.div>
           )}
         </div>

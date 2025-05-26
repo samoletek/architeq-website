@@ -91,6 +91,7 @@ export default function FeaturedCasesSection({
   const sectionClasses = cn(
     "section-cases",
     sectionBg,
+    "pt-48 pb-64",
     className
   );
 
@@ -149,7 +150,7 @@ export default function FeaturedCasesSection({
 
           {/* Кнопка "Посмотреть все" */}
           {!compact && viewAllUrl && (
-            <div className="mt-16 text-center">
+            <div className="mt-36 text-center">
               <Link href={viewAllUrl}>
                 <Button variant="secondary" size="lg">
                   {viewAllText}

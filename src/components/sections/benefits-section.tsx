@@ -55,6 +55,7 @@ export default function BenefitsSection({
   className,
   variant = 'default'
 }: BenefitsSectionProps) {
+  // Используем улучшенный хук для отслеживания скролла
   const { ref, isVisible, visibilityRatio } = useScrollAnimation({
     threshold: 0.3,
     rootMargin: '-10% 0px',
@@ -62,10 +63,12 @@ export default function BenefitsSection({
     visibilityThreshold: 0.3
   });
   
+  // Состояние для управления анимациями
   const [isReady, setIsReady] = useState(false);
   const titleControls = useAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
 
+  // Эффект для предотвращения анимации при первоначальной загрузке
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsReady(true);
@@ -74,6 +77,7 @@ export default function BenefitsSection({
     return () => clearTimeout(timer);
   }, []);
 
+  // Эффект для координированного запуска анимаций
   useEffect(() => {
     if (isVisible && isReady && !hasAnimated && visibilityRatio >= 0.3) {
       titleControls.start("visible").then(() => {
@@ -82,8 +86,9 @@ export default function BenefitsSection({
     }
   }, [isVisible, isReady, titleControls, hasAnimated, visibilityRatio]);
 
+  // Определяем стили для разных вариантов
   const sectionClasses = cn(
-    "section-benefits relative overflow-hidden", 
+    "section-benefits relative overflow-hidden pt-40 pb-48", 
     variant === 'default' ? 'bg-dark-gray' : 
     variant === 'modern' ? 'bg-gradient-to-br from-site-bg to-site-bg-deep' : 
     "bg-site-bg",
@@ -115,6 +120,7 @@ export default function BenefitsSection({
     })
   };
 
+  // Варианты анимации для заголовков карточек (слева направо)
   const cardTitleVariants = {
     hidden: { opacity: 0, x: -30 },
     visible: (index: number) => ({
@@ -128,6 +134,7 @@ export default function BenefitsSection({
     })
   };
 
+  // Варианты анимации для описания карточек (слева направо)
   const cardDescriptionVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: (index: number) => ({
