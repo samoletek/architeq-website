@@ -90,7 +90,7 @@ interface ServiceNavigationProps {
   scrollProgress: number;
 }
 
-// Компонент левой навигации с белой линией и кругом
+// Компонент левой навигации с анимацией следования за курсором
 function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgress }: ServiceNavigationProps) {
   const [, setHoveredIndex] = useState(-1);
   const navItemHeight = 48;
@@ -127,13 +127,25 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
         <nav className="relative ml-12 flex-1 flex flex-col justify-center">
           <div className="space-y-6">
             {services.map((service, index) => (
-              <div
+              <motion.div
                 key={service.id}
                 onClick={() => onServiceClick(index)}
                 className="flex items-center w-full text-left cursor-pointer transition-all duration-300 relative group"
                 style={{ height: `${navItemHeight}px` }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(-1)}
+                whileHover={{ 
+                  x: 8,
+                  transition: {
+                    type: "spring",
+                    stiffness: 800,
+                    damping: 15,
+                    mass: 0.2,
+                    velocity: 10,
+                    restDelta: 0.001,
+                    duration: 0
+                  }
+                }}
               >
                 <div className="flex-1 flex items-center">
                   <motion.h4 
@@ -147,20 +159,11 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
                     style={activeIndex === index ? {
                       textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6)'
                     } : {}}
-                    whileHover={{
-                      scale: 1.05,
-                      x: 8,
-                      transition: { duration: 0.2, ease: "easeOut" }
-                    }}
-                    whileTap={{
-                      scale: 0.98,
-                      transition: { duration: 0.1 }
-                    }}
                   >
                     {service.title}
                   </motion.h4>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </nav>
