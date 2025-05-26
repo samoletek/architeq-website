@@ -14,34 +14,73 @@
     @apply bg-site-bg text-white font-sans;
     background: linear-gradient(135deg, #121212 0%, #180033 100%);
     background-attachment: fixed;
+    overscroll-behavior: auto;
+    position: relative;
+  }
+  
+  /* Предотвращение белой полосы при оверскролле */
+  html {
+    background: linear-gradient(135deg, #121212 0%, #180033 100%);
+    background-attachment: fixed;
+    overscroll-behavior: auto;
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: -100vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #121212 0%, #180033 100%);
+    z-index: -1;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #180033 0%, #121212 100%);
+    z-index: -1;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
   }
   
+  /* Обновленные размеры заголовков с лучшей адаптивностью */
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
   }
   
   h2 {
-    @apply text-3xl md:text-4xl;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
   }
   
   h3 {
-    @apply text-2xl md:text-3xl;
+    @apply text-xl sm:text-2xl md:text-3xl;
   }
   
   h4 {
-    @apply text-xl md:text-2xl;
+    @apply text-lg sm:text-xl md:text-2xl;
   }
   
   h5 {
-    @apply text-lg md:text-xl;
+    @apply text-base sm:text-lg md:text-xl;
   }
   
   h6 {
-    @apply text-base md:text-lg;
+    @apply text-sm sm:text-base md:text-lg;
+  }
+  
+  /* Базовый размер текста для мобильных устройств */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
   }
 }
 
@@ -54,36 +93,43 @@
     @apply py-12 md:py-24;
   }
   
-  /* Секции с оптимизированными отступами */
+  /* Обновленные секции с оптимизированными отступами */
   .section-hero {
-    @apply pt-12 pb-6 md:pt-16 md:pb-8 lg:pt-20 lg:pb-10;
+    @apply pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-36 lg:pb-20;
+    min-height: 70vh;
   }
 
   .section-benefits {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+    @apply py-10 sm:py-14 md:py-16 lg:py-20;
   }
 
   .section-solutions {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
-    min-height: 60vh;
+    @apply py-12 sm:py-16 md:py-20 lg:py-28;
+    min-height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .section-solutions {
+      min-height: 60vh;
+    }
   }
 
   .section-cases {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
   }
 
   .section-testimonials {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
   }
 
   .section-cta {
-    @apply pt-6 pb-6 md:pt-8 md:pb-8 lg:pt-10 lg:pb-10;
+    @apply py-12 sm:py-16 md:py-20 lg:py-24;
   }
 
   /* Градиентный текст для выделения слов */
   .accent-text {
     @apply inline-block text-transparent bg-clip-text;
-    background-image: var(--gradient-accent); /* Зеленый к белому */
+    background-image: var(--gradient-accent);
   }
   
   .primary-text {
@@ -93,17 +139,17 @@
   
   /* Кнопки в стиле скриншотов */
   .btn-primary {
-    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-6 py-3 rounded-full font-medium transition-all;
+    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
     box-shadow: 0 0 15px rgba(176, 255, 116, 0.3);
   }
   
   .btn-secondary {
-    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-6 py-3 rounded-full font-medium transition-all;
+    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
   }
   
   /* Футер */
   .footer {
-    @apply bg-footer-bg py-12 border-t border-primary/20;
+    @apply bg-footer-bg py-8 sm:py-12 border-t border-primary/20;
   }
   
   /* Декоративные элементы */
@@ -154,6 +200,59 @@
       0 0 60px rgba(178, 75, 243, 0.3),
       0 0 80px rgba(119, 71, 207, 0.2);
   }
+  
+  /* Адаптивная типографика */
+  @media (max-width: 640px) {
+    .text-responsive-sm {
+      @apply text-sm;
+    }
+    
+    .text-responsive-base {
+      @apply text-sm;
+    }
+    
+    .text-responsive-lg {
+      @apply text-base;
+    }
+    
+    .text-responsive-xl {
+      @apply text-lg;
+    }
+    
+    .text-responsive-2xl {
+      @apply text-xl;
+    }
+    
+    .text-responsive-3xl {
+      @apply text-2xl;
+    }
+  }
+  
+  @media (min-width: 641px) {
+    .text-responsive-sm {
+      @apply text-sm;
+    }
+    
+    .text-responsive-base {
+      @apply text-base;
+    }
+    
+    .text-responsive-lg {
+      @apply text-lg;
+    }
+    
+    .text-responsive-xl {
+      @apply text-xl;
+    }
+    
+    .text-responsive-2xl {
+      @apply text-2xl;
+    }
+    
+    .text-responsive-3xl {
+      @apply text-3xl;
+    }
+  }
 }
 
 @layer utilities {
@@ -164,6 +263,19 @@
   
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+  
+  /* Z-index утилиты для правильного наложения слоев */
+  .z-35 {
+    z-index: 35;
+  }
+  
+  .z-45 {
+    z-index: 45;
+  }
+  
+  .z-55 {
+    z-index: 55;
   }
   
   /* Градиентные границы */
@@ -298,7 +410,6 @@ html.has-smooth-scroll {
   scroll-snap-align: start;
 }
 
-
 /* ===== Дополнительные стили для оптимизации анимаций ===== */
 
 /* Классы для стабилизации контента при гидратации */
@@ -340,7 +451,23 @@ html.has-smooth-scroll {
   transform: translateY(-5px);
 }
 
-/* Плавное появление элементов с разной задержкой */
+/* ===== Исправленные стили для поискового оверлея ===== */
+.search-content {
+  background: rgba(18, 7, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(119, 71, 207, 0.3);
+  box-shadow: 0 0 30px rgba(119, 71, 207, 0.2);
+}
+
+.search-dropdown {
+  background: rgba(18, 7, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 51, 51, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
 .fade-in-1 {
   animation: fadeIn 0.8s ease forwards;
 }
@@ -421,4 +548,26 @@ html.is-ready {
   opacity: 0.98;
 }
 
-
+/* Мобильная оптимизация */
+@media (max-width: 640px) {
+  /* Меньше padding для мобильных устройств */
+  .container {
+    @apply px-4;
+  }
+  
+  /* Уменьшенные отступы для секций */
+  .section {
+    @apply py-8;
+  }
+  
+  /* Оптимизация размеров текста */
+  .lead-text {
+    @apply text-base;
+  }
+  
+  /* Уменьшенные кнопки */
+  .btn-primary,
+  .btn-secondary {
+    @apply px-4 py-2 text-sm;
+  }
+}

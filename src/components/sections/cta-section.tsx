@@ -45,29 +45,22 @@ export default function CTASection({
 }: CTASectionProps) {
   const { isMobile, isLowPerformance } = useDeviceDetection();
   const [isMounted, setIsMounted] = useState(false);
-  
-  // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Отключаем сложные анимации на мобильных и низкопроизводительных устройствах
   const simplifiedMode = isMobile || isLowPerformance;
   
-  // Эффект для отслеживания монтирования на клиенте
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Эффект для отслеживания видимости секции
   useEffect(() => {
-    const currentRef = sectionRef.current; // Сохраняем ссылку в локальную переменную
+    const currentRef = sectionRef.current;
     
-    // Функция для отслеживания видимости элемента
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Отключаем наблюдение после первого появления элемента
           observer.unobserve(entry.target);
         }
       },
@@ -77,27 +70,17 @@ export default function CTASection({
       }
     );
   
-    // Начинаем наблюдение за секцией
     if (currentRef) {
       observer.observe(currentRef);
     }
   
-    // Очистка observer при размонтировании компонента
     return () => {
       if (currentRef) {
         observer.unobserve(currentRef);
       }
     };
   }, []);
-  
-  // Настройки для разных вариантов
-  const variantClasses = {
-    default: "section-cta bg-dark-gradient pt-72 pb-48",
-    minimal: "py-16 bg-dark-gray",
-    highlight: "py-24 bg-primary/10 dark:bg-primary/5"
-  };
 
-  // Варианты анимации для контента
   const contentVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -110,7 +93,6 @@ export default function CTASection({
     }
   };
 
-  // Варианты анимации для кнопок с задержкой
   const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -124,7 +106,13 @@ export default function CTASection({
     }
   };
   
-  // Определяем классы для секции
+  // Настройки для разных вариантов
+  const variantClasses = {
+    default: "section-cta bg-dark-gradient pt-72 pb-48",
+    minimal: "py-12 sm:py-16 bg-dark-gray",
+    highlight: "py-16 sm:py-20 md:py-24 bg-primary/10 dark:bg-primary/5"
+  };
+  
   const sectionClasses = cn(
     variantClasses[variant], 
     "relative overflow-hidden", 
@@ -136,7 +124,7 @@ export default function CTASection({
       ref={sectionRef}
       className={sectionClasses}
     >
-      {/* Градиентный фон, если включен - в обоих режимах */}
+      {/* Градиентный фон */}
       {gradient && variant === 'default' && (
         <div className="absolute inset-0 bg-dark-gradient z-0"></div>
       )}
@@ -145,13 +133,13 @@ export default function CTASection({
       {particles && isMounted && !simplifiedMode && (
         <>
           <div 
-            className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full opacity-5 blur-[100px]"
+            className="absolute top-0 left-0 w-64 h-64 sm:w-96 sm:h-96 bg-primary rounded-full opacity-5 blur-[100px]"
             style={{ 
               transform: 'translate(0, 0)'
             }}
           />
           <div 
-            className="absolute bottom-0 right-0 w-96 h-96 bg-neon-blue rounded-full opacity-5 blur-[100px]"
+            className="absolute bottom-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-neon-blue rounded-full opacity-5 blur-[100px]"
             style={{ 
               transform: 'translate(0, 0)'
             }}
@@ -160,11 +148,11 @@ export default function CTASection({
       )}
       
       {/* Контент */}
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto relative z-10">
         <div className={cn(
           "max-w-3xl mx-auto text-center", 
-          compact ? "p-6" : "", 
-          variant === 'highlight' ? "bg-dark-gray rounded-xl shadow-lg" : ""
+          compact ? "p-4 sm:p-6" : "", 
+          variant === 'highlight' ? "bg-dark-gray rounded-xl shadow-lg p-6 sm:p-8" : ""
         )}>
           <motion.div 
             initial="hidden"
@@ -172,15 +160,15 @@ export default function CTASection({
             variants={contentVariants}
           >
             <h2 className={cn(
-              "font-bold mb-8",
-              compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
+              "font-bold mb-4 sm:mb-6 md:mb-8",
+              compact ? "text-xl sm:text-2xl" : ""
             )}>
               {title}
             </h2>
           
             <p className={cn(
-              "text-light-gray mb-16",
-              compact ? "text-base" : "text-lg"
+              "text-light-gray mb-8 sm:mb-12 md:mb-16",
+              compact ? "text-sm sm:text-base" : "text-sm sm:text-base md:text-lg"
             )}>
               {description}
             </p>
@@ -191,16 +179,24 @@ export default function CTASection({
             animate={isVisible ? "visible" : "hidden"}
             variants={buttonVariants}
           >
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Link href={primaryCta.href}>
-                <Button variant="primary" size={compact ? "default" : "lg"}>
+                <Button 
+                  variant="primary" 
+                  size={compact ? "default" : "lg"}
+                  className="w-full sm:w-auto text-sm sm:text-base"
+                >
                   {primaryCta.text}
                 </Button>
               </Link>
               
               {secondaryCta?.href && secondaryCta.text && (
                 <Link href={secondaryCta.href}>
-                  <Button variant="secondary" size={compact ? "default" : "lg"}>
+                  <Button 
+                    variant="secondary" 
+                    size={compact ? "default" : "lg"}
+                    className="w-full sm:w-auto text-sm sm:text-base"
+                  >
                     {secondaryCta.text}
                   </Button>
                 </Link>
@@ -210,7 +206,7 @@ export default function CTASection({
           
           {extraContent && (
             <motion.div 
-              className="mt-6"
+              className="mt-4 sm:mt-6"
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={contentVariants}
@@ -248,10 +244,15 @@ export function InlineCTA({
   className?: string;
 }) {
   return (
-    <div className={cn("bg-dark-gray rounded-lg p-6 flex flex-col sm:flex-row items-center justify-between", className)}>
-      <h3 className="font-semibold text-lg mb-4 sm:mb-0">{title}</h3>
+    <div className={cn(
+      "bg-dark-gray rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", 
+      className
+    )}>
+      <h3 className="font-semibold text-base sm:text-lg">{title}</h3>
       <Link href={buttonHref}>
-        <Button variant="primary">{buttonText}</Button>
+        <Button variant="primary" className="text-sm sm:text-base w-full sm:w-auto">
+          {buttonText}
+        </Button>
       </Link>
     </div>
   );
@@ -279,13 +280,13 @@ export function FloatingCTA({
   
   return (
     <div
-      className="fixed bottom-0 left-0 w-full z-50 p-4 bg-dark-gray/80 backdrop-blur-md border-t border-medium-gray"
+      className="fixed bottom-0 left-0 w-full z-50 p-3 sm:p-4 bg-dark-gray/80 backdrop-blur-md border-t border-medium-gray"
       style={{ 
         transform: 'translateY(0)' 
       }}
     >
       <Link href={href} className="block">
-        <Button variant="primary" className="w-full">
+        <Button variant="primary" className="w-full text-sm">
           {text}
         </Button>
       </Link>

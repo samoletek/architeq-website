@@ -86,6 +86,8 @@ architeq-website/
 │   │   │   ├── hero-section.tsx
 │   │   │   ├── solutions-section.tsx
 │   │   │   └── testimonials-section.tsx
+│   │   ├── templates/
+│   │   │   └── service-template.tsx
 │   │   └── ui/
 │   │       ├── buttons/
 │   │       │   └── glowing-text-button.tsx
@@ -116,17 +118,12 @@ architeq-website/
 │   │       ├── neon-button.tsx
 │   │       ├── page-transition.tsx
 │   │       ├── recently-viewed-cases.tsx
-│   │       ├── scroll-animation.tsx
-│   │       ├── scroll-sections.tsx
 │   │       ├── search-bar.tsx
 │   │       ├── section-animation.tsx
-│   │       ├── smooth-scroll.tsx
 │   │       └── solution-switcher.tsx
 │   └── lib/
 │       ├── data/
 │       │   └── case-studies.ts
-│       ├── hooks/
-│       │   └── useInViewAnimation.ts
 │       ├── seo/
 │       │   ├── favicon-metadata.tsx
 │       │   ├── metadata.ts
@@ -140,6 +137,8 @@ architeq-website/
 │           ├── device-detection.ts
 │           ├── utils.ts
 │           └── validation.ts
+├── .claude/
+│   └── settings.local.json
 ├── .eslintcache
 ├── component-structure.json
 ├── eslint.config.mjs
@@ -155,4 +154,155 @@ architeq-website/
 └── tsconfig.json
 ```
 
-*Структура сгенерирована автоматически: 22.05.2025, 12:11*
+*Структура обновлена: 23.05.2025, 14:22*
+
+---
+
+## Описание файлов проекта
+
+### Корневая директория
+- **`.claude/settings.local.json`** - Локальные настройки Claude Code
+- **`.eslintcache`** - Кэш ESLint для ускорения проверки кода
+- **`.gitignore`** - Файлы и папки, игнорируемые Git
+- **`component-structure.json`** - JSON-структура компонентов проекта
+- **`eslint.config.mjs`** - Конфигурация ESLint для линтинга кода
+- **`LICENSE`** - Лицензия проекта (MIT)
+- **`next.config.js`** - Конфигурация Next.js приложения
+- **`package-lock.json`** - Зафиксированные версии зависимостей
+- **`package.json`** - Метаданные проекта и зависимости
+- **`postcss.config.js`** - Конфигурация PostCSS для обработки CSS
+- **`README.md`** - Документация проекта
+- **`structure.md`** - Структура и описание файлов проекта
+- **`tailwind.config.ts`** - Конфигурация Tailwind CSS
+- **`tsconfig.json`** - Конфигурация TypeScript компилятора
+
+### public/
+- **`favicon/`** - Иконки для разных устройств и браузеров
+  - **`android-chrome-*.png`** - Иконки для Android Chrome
+  - **`apple-touch-icon.png`** - Иконка для iOS Safari
+  - **`favicon-*.png`** - Стандартные favicon размеры
+  - **`site.webmanifest`** - Манифест веб-приложения
+- **`images/services/`** - Изображения для страниц услуг
+- **`styles/`** - Дополнительные CSS файлы
+  - **`animations.css`** - CSS анимации
+  - **`glassmorphism.css`** - Эффекты стекломорфизма
+  - **`gradients.css`** - Градиентные стили
+- **`*.svg`** - SVG иконки (file, globe, next, vercel, window)
+- **`robots.txt`** - Инструкции для поисковых роботов
+- **`sitemap.xml`** - Карта сайта для SEO
+
+### scripts/
+- **`analyze-components.js`** - Скрипт анализа структуры компонентов
+- **`generate-structure.js`** - Скрипт генерации файла структуры
+
+### src/app/
+- **`favicon.ico`** - Основная иконка сайта
+- **`globals.css`** - Глобальные стили приложения
+- **`layout.tsx`** - Корневой лейаут приложения
+- **`page.tsx`** - Главная страница сайта
+
+#### src/app/(pages)/
+- **`about/page.tsx`** - Страница "О нас"
+- **`cases/page.tsx`** - Список кейсов
+- **`cases/[slug]/page.tsx`** - Динамическая страница кейса
+- **`contacts/page.tsx`** - Страница контактов
+- **`cookies/page.tsx`** - Политика использования cookies
+- **`privacy/page.tsx`** - Политика конфиденциальности
+- **`terms/page.tsx`** - Пользовательское соглашение
+- **`services/page.tsx`** - Общая страница услуг
+- **`services/*/page.tsx`** - Страницы отдельных услуг (AI, CRM, etc.)
+
+#### src/app/api/
+- **`contact/route.ts`** - API endpoint для обработки контактных форм
+- **`search/route.ts`** - API endpoint для поиска по сайту
+
+#### Другие страницы
+- **`effects-demo/page.tsx`** - Демо-страница эффектов
+- **`search/page.tsx`** - Страница результатов поиска
+
+### src/components/
+
+#### layout/
+- **`site-layout.tsx`** - Основной лейаут с хедером и футером
+
+#### navigation/
+- **`footer.tsx`** - Компонент футера сайта
+- **`header.tsx`** - Компонент хедера с навигацией
+
+#### pages/
+- **`cases-content.tsx`** - Контент для страницы кейсов
+- **`contacts-content.tsx`** - Контент для страницы контактов
+
+#### sections/
+- **`benefits-section.tsx`** - Секция преимуществ на главной
+- **`cta-section.tsx`** - Секция призыва к действию
+- **`featured-cases-section.tsx`** - Секция избранных кейсов
+- **`hero-section.tsx`** - Героическая секция главной страницы
+- **`solutions-section.tsx`** - Секция решений с переключателем
+- **`testimonials-section.tsx`** - Секция отзывов клиентов
+
+#### templates/
+- **`service-template.tsx`** - Шаблон для страниц услуг
+
+#### ui/
+**Кнопки:**
+- **`button.tsx`** - Базовый компонент кнопки
+- **`buttons/glowing-text-button.tsx`** - Кнопка с неоновым эффектом
+- **`loading-button.tsx`** - Кнопка с индикатором загрузки
+- **`neon-button.tsx`** - Неоновая кнопка
+
+**Карточки:**
+- **`benefit-card.tsx`** - Карточка преимущества
+- **`cards/case-card.tsx`** - Карточка кейса
+
+**Эффекты:**
+- **`effects/depth-card.tsx`** - Карточка с 3D эффектом
+- **`effects/gradient-follow.tsx`** - Следящий за курсором градиент
+- **`effects/hover-element.tsx`** - Элемент с hover эффектами
+- **`effects/parallax-element.tsx`** - Параллакс элемент
+- **`effects/rotation-utils.ts`** - Утилиты для поворотов
+- **`effects/scroll-animate.tsx`** - Анимация при скролле
+- **`effects/wave-divider.tsx`** - Волновой разделитель
+
+**Формы:**
+- **`form-input.tsx`** - Компонент поля ввода
+- **`form-select.tsx`** - Компонент выпадающего списка
+- **`calendly-widget.tsx`** - Виджет календарного планировщика
+
+**Поиск:**
+- **`hero-search.tsx`** - Поиск в героической секции
+- **`interactive-search.tsx`** - Интерактивный поиск
+- **`search-bar.tsx`** - Строка поиска
+- **`filters/case-filters.tsx`** - Фильтры для кейсов
+
+**Анимации:**
+- **`page-transition.tsx`** - Переходы между страницами
+- **`section-animation.tsx`** - Анимации секций
+
+**Другие:**
+- **`gcs-video.tsx`** - Компонент видео с Google Cloud Storage
+- **`icons/icon.tsx`** - Универсальный компонент иконок
+- **`image-with-fallback.tsx`** - Изображение с резервным вариантом
+- **`recently-viewed-cases.tsx`** - Недавно просмотренные кейсы
+- **`solution-switcher.tsx`** - Переключатель решений
+
+### src/lib/
+
+#### data/
+- **`case-studies.ts`** - Данные кейсов и проектов
+
+#### seo/
+- **`favicon-metadata.tsx`** - Метаданные для favicon
+- **`metadata.ts`** - SEO метаданные для страниц
+- **`schema.tsx`** - Schema.org разметка для поисковиков
+- **`service-metadata.tsx`** - Метаданные для страниц услуг
+
+#### services/
+- **`monday-service.ts`** - Интеграция с Monday.com CRM
+
+#### utils/
+- **`animation.ts`** - Утилиты для анимаций
+- **`common.ts`** - Общие вспомогательные функции
+- **`device-detection.ts`** - Определение типа устройства
+- **`utils.ts`** - Основные утилиты (cn, форматирование)
+- **`validation.ts`** - Валидация форм и данных

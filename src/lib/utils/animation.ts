@@ -1,4 +1,3 @@
-// src/lib/utils/animation.ts
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from 'react';
@@ -83,7 +82,7 @@ export const slideUpFadeInVariants = {
   }
 };
 
-// Хук для выбора вариантов анимации в зависимости от производительности устройства
+// Выбор анимации по типу и устройству
 export function useAdaptiveAnimationVariants(animationType: string) {
   const { isMobile, isLowPerformance } = useDeviceDetection();
   
@@ -170,7 +169,6 @@ export function useScrollAnimation(
   
   useEffect(() => {
     const currentRef = ref.current;
-    
     if (!currentRef) return;
     
     // Состояние для отслеживания запущенного таймера
@@ -210,9 +208,9 @@ export function useScrollAnimation(
         rootMargin,
       }
     );
-    
+
     observer.observe(currentRef);
-    
+
     return () => {
       if (currentRef) observer.unobserve(currentRef);
       if (animationTimer) clearTimeout(animationTimer);
@@ -309,7 +307,7 @@ export function createStaggeredAnimations(
   }));
 }
 
-// Хук для получения адаптивных настроек анимации в зависимости от устройства
+// Настройки анимации в зависимости от устройства
 export function useAnimationSettings() {
   const { isMobile, isTablet, isLowPerformance } = useDeviceDetection();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -349,8 +347,7 @@ export function useAnimationSettings() {
       reduceMotion: true,
     };
   }
-  
-  // Настройки для мобильных устройств
+
   if (isMobile) {
     return {
       ...baseSettings,
@@ -359,8 +356,7 @@ export function useAnimationSettings() {
       delayChildren: 0.06,
     };
   }
-  
-  // Настройки для планшетов
+
   if (isTablet) {
     return {
       ...baseSettings,
@@ -369,12 +365,11 @@ export function useAnimationSettings() {
       delayChildren: 0.08,
     };
   }
-  
-  // Вернуть базовые настройки для десктопов (или по умолчанию)
+
   return baseSettings;
 }
 
-// Упрощенная функция проверки поддержки Web Animations API
+// Проверка поддержки Web Animations API
 export function supportsWebAnimations(): boolean {
   return typeof Element !== 'undefined' && 'animate' in Element.prototype;
 }
@@ -450,8 +445,8 @@ export function shouldEnableAnimations(): boolean {
   // Определяем маломощность устройства без использования хука
   const ua = navigator.userAgent.toLowerCase();
   const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
-  const isOldBrowser = 
-    /msie\s[1-8]|trident\/[1-6]|edge\/[1-12]/i.test(ua) || 
+  const isOldBrowser =
+    /msie\s[1-8]|trident\/[1-6]|edge\/[1-12]/i.test(ua) ||
     /firefox\/[1-50]/i.test(ua) ||
     /chrome\/[1-50]/i.test(ua);
     
