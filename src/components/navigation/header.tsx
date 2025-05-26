@@ -188,7 +188,7 @@ export default function Header({
       <motion.header 
         className={cn(
           "mx-auto rounded-xl transition-all duration-300 py-4", 
-          isScrolled ? "bg-[#12071A]/90 backdrop-blur-sm shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
+          isScrolled ? "bg-[#12071A]/95 shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
           "max-w-[1400px]", 
           className
         )}
@@ -455,26 +455,15 @@ export default function Header({
           )}
         </AnimatePresence>
         
-        {/* Полноэкранный поиск */}
+        {/* Полноэкранный поиск БЕЗ дублирующего blur фона */}
         <AnimatePresence>
           {showSearch && isSearchOpen && (
-            <>
-              {/* Блюр фон */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-md z-[60]"
-                onClick={toggleSearch}
-              />
-              <SearchBar 
-                variant="overlay" 
-                isExpanded={true} 
-                onToggle={toggleSearch}
-                placeholder="Search is here..."
-              />
-            </>
+            <SearchBar 
+              variant="overlay" 
+              isExpanded={true} 
+              onToggle={toggleSearch}
+              placeholder="Search is here..."
+            />
           )}
         </AnimatePresence>
       </motion.header>

@@ -98,7 +98,12 @@ export function CaseCard({
     }
   }, [id, href]);
 
-  const cardHeight = isCompact ? 'auto' : 'min-h-[380px] sm:min-h-[420px]';
+  // Уменьшенная высота для мобильных устройств
+  const cardHeight = isCompact 
+    ? 'auto' 
+    : isMobile 
+      ? 'min-h-[280px]' // Уменьшено с 380px до 280px для мобильных
+      : 'min-h-[380px] sm:min-h-[420px]';
 
   const cardContent = (
     <motion.div
@@ -145,16 +150,19 @@ export function CaseCard({
         ))}
       </div>
 
-      {/* Теги */}
+      {/* Теги - уменьшенные отступы для мобильных */}
       <div className={cn(
         "relative z-10",
-        isMobile ? "pt-3 px-3 pb-3" : "pt-5 px-4 pb-5"
+        isMobile ? "pt-2 px-3 pb-2" : "pt-5 px-4 pb-5"
       )}>
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-0.5 sm:py-1 rounded-md border border-white/10"
+              className={cn(
+                "bg-black/60 backdrop-blur-sm text-white rounded-md border border-white/10",
+                isMobile ? "text-xs px-1.5 py-0.5" : "text-xs px-2 py-0.5 sm:py-1"
+              )}
             >
               {tag}
             </span>
@@ -162,22 +170,22 @@ export function CaseCard({
         </div>
       </div>
 
-      {/* Контент */}
+      {/* Контент - уменьшенные отступы для мобильных */}
       <div className={cn(
         "flex-grow z-10",
-        isMobile ? "pl-4 pr-5 py-3" : "pl-6 pr-8 py-5"
+        isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-8 py-5"
       )}>
         <h3 className={cn(
           "font-semibold text-white leading-tight",
-          isMobile ? "text-lg mb-3" : "text-2xl mb-6"
+          isMobile ? "text-base mb-2" : "text-2xl mb-6"
         )}>
           {title}
         </h3>
 
         {description && !isCompact && (
           <p className={cn(
-            "text-light-gray mb-3 line-clamp-3",
-            isMobile ? "text-xs" : "text-md"
+            "text-light-gray line-clamp-3",
+            isMobile ? "text-xs mb-2" : "text-md mb-3"
           )}>
             {description}
           </p>
@@ -185,19 +193,22 @@ export function CaseCard({
 
         {results && results.length > 0 && !isCompact && (
           <div className={cn(
-            isMobile ? "mb-3" : "mb-5"
+            isMobile ? "mb-2" : "mb-5"
           )}>
             <h4 className={cn(
               "font-medium text-secondary",
-              isMobile ? "text-xs mb-2" : "text-sm mb-4"
+              isMobile ? "text-xs mb-1" : "text-sm mb-4"
             )}>Key results:</h4>
             <ul className={cn(
               "text-light-gray space-y-0.5",
               isMobile ? "text-xs" : "text-md"
             )}>
-              {results.slice(0, isMobile ? 3 : 4).map((result, index) => (
+              {results.slice(0, isMobile ? 2 : 4).map((result, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-secondary mr-1.5 sm:mr-2">•</span>
+                  <span className={cn(
+                    "text-secondary flex-shrink-0",
+                    isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
+                  )}>•</span>
                   <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
                     __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                   }} />
@@ -208,16 +219,19 @@ export function CaseCard({
         )}
       </div>
 
-      {/* Footer */}
+      {/* Footer - уменьшенные отступы для мобильных */}
       <div className={cn(
         "border-t border-medium-gray/40 mt-auto z-10",
-        isMobile ? "px-4 pb-4 pt-3" : "px-6 pb-6 pt-4"
+        isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-6 pt-4"
       )}>
         <p className={cn(
           "text-white flex items-center",
-          isMobile ? "text-xs mb-1.5" : "text-sm mb-2"
+          isMobile ? "text-xs mb-1" : "text-sm mb-2"
         )}>
-          <span className="text-light-gray mr-1.5 sm:mr-2">Company:</span>
+          <span className={cn(
+            "text-light-gray flex-shrink-0",
+            isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
+          )}>Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
 
@@ -229,8 +243,8 @@ export function CaseCard({
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={cn(
-                "mr-1 text-secondary flex-shrink-0",
-                isMobile ? "h-3 w-3" : "h-4 w-4"
+                "text-secondary flex-shrink-0",
+                isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-1 sm:mr-1.5"
               )}
               fill="none"
               viewBox="0 0 24 24"
