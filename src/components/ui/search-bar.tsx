@@ -352,7 +352,7 @@ export function SearchBar({
       <div className="fixed inset-0 z-50">
         {/* Фиолетовое затемнение с блюром */}
         <motion.div
-          className="fixed inset-0 bg-gradient-to-br from-[#1F0A2E]/95 via-[#180033]/90 to-[#121212]/85"
+          className="fixed inset-0 bg-black/30"
           style={{
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)'
