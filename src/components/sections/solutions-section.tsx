@@ -422,8 +422,8 @@ const SolutionContent = ({
   Key Features:
 </motion.h4>
               
-              {/* Улучшенные bullet points с эффектом свечения */}
-              <motion.ul 
+ {/* Улучшенные bullet points с эффектом свечения */}
+ <motion.ul 
                 className="space-y-3"
                 variants={{
                   hidden: { opacity: 0 },
@@ -447,12 +447,12 @@ const SolutionContent = ({
   {solution.href && (
     <Link href={solution.href}>
       <motion.div
-        initial={{ opacity: 0, x: 40 }} // Начинаем справа вне экрана
-        animate={{ opacity: 1, x: 0 }} // Анимация влево
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ 
           duration: 1,
-          delay: 0.3 + (solution.features.length * 0.15) + 0.2, // Задержка после последнего буллита
-          ease: [0.1, 0.6, 0.3, 1] // Та же кривая анимации, что у буллитов
+          delay: 0.3 + (solution.features.length * 0.15) + 0.2,
+          ease: [0.1, 0.6, 0.3, 1]
         }}
         whileHover={{ 
           scale: 1.05,
@@ -460,44 +460,52 @@ const SolutionContent = ({
         }}
         className="relative"
       >
-        {/* Эффект свечения для кнопки - зеленый акцент */}
-        <motion.div 
-  className="absolute inset-0 bg-secondary/30 rounded-full blur-lg z-0"
-  animate={{ 
-    opacity: [0.5, 0.8, 0.5],
-    boxShadow: [
-      "0 0 15px 3px rgba(176, 255, 116, 0.4)",
-      "0 0 30px 6px rgba(176, 255, 116, 0.6)",
-      "0 0 15px 3px rgba(176, 255, 116, 0.4)"
-    ]
-  }}
-  transition={{ 
-    duration: 3, 
-    repeat: Infinity,
-    ease: "easeInOut",
-    delay: 0.3 + (solution.features.length * 0.15) + 0.2
-  }}
-/>
-        
         <Button 
           size="lg" 
-          className="bg-secondary text-gray-900 hover:bg-opacity-100 px-8 py-5 text-lg focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none relative z-10"
+          className="text-base py-3 px-6 transition-all duration-300 relative overflow-hidden group"
+          style={{
+            background: 'linear-gradient(135deg, #170A24 0%, #150920 50%, #12071A 100%)',
+            border: '1px solid rgba(119, 71, 207, 0.2)',
+          }}
         >
-          Learn More
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-6 ml-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          {/* Пульсирующее свечение */}
+          <motion.div 
+            className="absolute inset-0 rounded-lg pointer-events-none"
+            animate={{ 
+              boxShadow: [
+                '0 0 10px rgba(119,71,207,0.3), 0 0 20px rgba(178,75,243,0.2)',
+                '0 0 15px rgba(119,71,207,0.5), 0 0 30px rgba(178,75,243,0.3)',
+                '0 0 10px rgba(119,71,207,0.3), 0 0 20px rgba(178,75,243,0.2)'
+              ]
+            }}
+            transition={{ 
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          
+          {/* Зеркальный эффект */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+          />
+          <span className="flex items-center relative z-10">
+            Learn More
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </span>
         </Button>
       </motion.div>
     </Link>
