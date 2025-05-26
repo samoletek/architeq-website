@@ -237,6 +237,40 @@
     display: none;
   }
   
+
+/* Анимация плавания для карточек */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-10px);
+  }
+}
+
+/* Класс для анимации плавания */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Варианты с разными задержками для множественных карточек */
+.animate-float-delayed-1 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+.animate-float-delayed-2 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.animate-float-delayed-3 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+
+
   /* Градиентные границы */
   .gradient-border {
     position: relative;
