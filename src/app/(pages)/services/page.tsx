@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
+import EnhancedProcessSection from '@/components/sections/enhanced-process-section';
 
 // Данные о услугах
 const services = [
@@ -662,79 +663,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Process section */}
-      <section className="section-benefits bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="text-center section-content-spacing">
-            <h2 className="section-title-large font-bold section-title-spacing-large">
-              Our Automation Flow:<br />From Discovery to Deployment
-            </h2>
-            <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
-              A sharp, proven framework — designed to deliver fast<br />and integrate deep into your ops.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto section-content-spacing-large">
-            <div className="relative space-y-12">
-              {/* Vertical line */}
-              <div className="absolute left-5 top-5 bottom-0 w-0.5 bg-primary" />
-              
-              {/* Steps */}
-              {[
-                {
-                  title: "Align on Scope. Kick Things Off",
-                  description: "We start by signing an NDA and holding a kickoff meeting to clarify your objectives and expectations. This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning."
-                },
-                {
-                  title: "Understand Your Reality",
-                  description: "We dive deep into understanding your business operations through stakeholder interviews and process discovery. We observe your current workflows, uncover inefficiencies, and identify where automation can add the most value."
-                },
-                {
-                  title: "Map the Process. Spot the Gaps",
-                  description: "We document your existing business processes in detail, mapping every step, role, and decision point. This step helps us highlight pain points, overlaps, and areas where automation can be implemented effectively."
-                },
-                {
-                  title: "Design the Future Flow",
-                  description: "Based on our analysis, we design a custom solution that will optimize your processes. We define what your future workflows should look like and ensure that the solution is tailored to meet your specific needs, with an emphasis on improving efficiency and reducing complexity."
-                },
-                {
-                  title: "Plan the Rollout. Set the Timeline",
-                  description: "We create a detailed implementation plan, including the specific steps, timelines, and resources required to get the solution up and running. Our team sets clear milestones to ensure timely delivery and success at each stage of the project."
-                },
-                {
-                  title: "Implement, Test, Iterate",
-                  description: "We deploy the solution, ensuring minimal disruption to your daily operations. During this phase, we rigorously test the system to ensure everything functions as expected. If necessary, we make adjustments and improvements before the full-scale launch."
-                },
-                {
-                  title: "Data Migration & System Integration",
-                  description: "After the solution has been tested and confirmed, we migrate your existing data and integrate the new system with your other tools. This ensures smooth data transfer, seamless workflows, and full compatibility with your existing infrastructure."
-                },
-                {
-                  title: "Train the Team. Support the Growth",
-                  description: "Once the solution is live, we provide comprehensive training to ensure your team can fully leverage the new system. We offer ongoing support to address any challenges and make adjustments as your business continues to evolve."
-                }
-              ].map((step, index) => (
-                <div 
-                  key={index}
-                  className="relative flex group"
-                >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center z-10 group-hover:bg-primary transition-colors duration-300">
-                    <span className="font-bold text-white">{index + 1}</span>
-                  </div>
-                  <div className="ml-6">
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
-                      {step.title}
-                    </h3>
-                    <p className="text-light-gray group-hover:text-gray-200 transition-colors duration-300">
-                      {step.description}
-                      </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+{/* Enhanced Process section */}
+<EnhancedProcessSection />
       
       {/* CTA section */}
       <section className="section-cta bg-dark-gradient">
