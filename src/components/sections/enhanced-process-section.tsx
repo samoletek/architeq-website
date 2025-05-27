@@ -149,7 +149,7 @@ export default function EnhancedProcessSection() {
 
         <div className="max-w-5xl mx-auto relative">
           
-          {/* Navigation Menu - Fixed position, only visible in section with delay */}
+          {/* Navigation Menu - Fixed position, centered vertically */}
           <AnimatePresence>
             {showNavigation && navigationDelayComplete && (
               <motion.div 
@@ -157,7 +157,11 @@ export default function EnhancedProcessSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="fixed right-40 top-1/2 transform -translate-y-1/2 z-30"
+                className="fixed right-40 z-30"
+                style={{ 
+                  top: '35%',
+                  transform: 'translateY(-50%)'
+                }}
               >
                 <div className="bg-dark-gray/80 backdrop-blur-sm rounded-lg p-3 border border-white/10">
                   <div className="space-y-2">
@@ -182,23 +186,23 @@ export default function EnhancedProcessSection() {
             )}
           </AnimatePresence>
 
-          {/* Progress Line - Behind everything with blur and glow effects */}
+          {/* Progress Line - Enhanced with more volume and glow */}
           <div className="absolute left-1/2 top-0 transform -translate-x-0.5 z-[-10]" style={{ height: '100%' }}>
-            {/* Background line */}
-            <div className="w-1.5 bg-gray-700/20 h-full" />
-            
-            {/* Blur effect at start of line */}
+            {/* Background line with shadow for depth */}
             <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-16 rounded-full"
+              className="w-2 bg-gray-700/30 h-full rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(178, 75, 243, 0.5) 0%, rgba(178, 75, 243, 0.3) 50%, transparent 100%)',
-                filter: 'blur(10px)',
+                boxShadow: `
+                  inset 2px 0 4px rgba(0, 0, 0, 0.3),
+                  inset -2px 0 4px rgba(0, 0, 0, 0.3),
+                  0 0 10px rgba(0, 0, 0, 0.2)
+                `
               }}
             />
             
-            {/* Active progress line with adaptive brightness */}
+            {/* Active progress line with enhanced volume and glow */}
             <motion.div 
-              className="absolute top-0 left-0 w-1.5 overflow-hidden"
+              className="absolute top-0 left-0 w-2 overflow-hidden rounded-full"
               animate={{ 
                 height: `${scrollProgress * 100}%`,
               }}
@@ -207,55 +211,85 @@ export default function EnhancedProcessSection() {
                 ease: "easeOut"
               }}
             >
-              {/* Main gradient line with dynamic opacity based on active step */}
+              {/* Main gradient line with enhanced volume and glow */}
               <motion.div
-                className="w-full h-full relative"
+                className="w-full h-full relative rounded-full"
                 style={{
-                  background: 'linear-gradient(180deg, #B24BF3 0%, #8B5CF6 50%, #7C3AED 100%)',
+                  background: 'linear-gradient(180deg, #B24BF3 0%, #8B5CF6 30%, #7C3AED 70%, #6D28D9 100%)',
                   boxShadow: `
-                    0 0 15px rgba(178, 75, 243, 0.8),
-                    0 0 30px rgba(178, 75, 243, 0.5),
-                    0 0 45px rgba(178, 75, 243, 0.3)
+                    inset 1px 0 2px rgba(255, 255, 255, 0.3),
+                    inset -1px 0 2px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(178, 75, 243, 0.9),
+                    0 0 40px rgba(178, 75, 243, 0.6),
+                    0 0 60px rgba(178, 75, 243, 0.4),
+                    0 0 80px rgba(178, 75, 243, 0.2)
                   `,
                 }}
               />
               
-              {/* Blur effect at start of progress */}
+              {/* Enhanced blur effect at start of progress */}
               <div 
-                className="absolute top-0 left-0 w-full h-16"
+                className="absolute top-0 left-0 w-full h-20"
                 style={{
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(178, 75, 243, 0.8) 100%)',
-                  filter: 'blur(8px)'
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(178, 75, 243, 0.9) 100%)',
+                  filter: 'blur(12px)'
                 }}
               />
               
-              {/* Enhanced glow effect at end - illuminates the card */}
+              {/* Enhanced radial glow at end - significantly brighter */}
               <div 
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-24 rounded-full"
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(178, 75, 243, 0.6) 0%, rgba(178, 75, 243, 0.3) 40%, transparent 70%)',
-                  filter: 'blur(12px)',
+                  background: 'radial-gradient(circle, rgba(178, 75, 243, 0.9) 0%, rgba(178, 75, 243, 0.6) 30%, rgba(178, 75, 243, 0.3) 60%, transparent 100%)',
+                  filter: 'blur(18px)',
                 }}
               />
               
-              {/* Blur effect at end */}
+              {/* Additional intense glow at line end */}
               <div 
-                className="absolute bottom-0 left-0 w-full h-16"
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(178, 75, 243, 0.8) 0%, transparent 100%)',
-                  filter: 'blur(8px)'
+                  background: 'radial-gradient(circle, rgba(178, 75, 243, 1) 0%, rgba(178, 75, 243, 0.7) 50%, transparent 100%)',
+                  filter: 'blur(8px)',
+                }}
+              />
+              
+              {/* Enhanced blur effect at end */}
+              <div 
+                className="absolute bottom-0 left-0 w-full h-20"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(178, 75, 243, 0.9) 0%, transparent 100%)',
+                  filter: 'blur(12px)'
                 }}
               />
             </motion.div>
             
             {/* Fading line for completed steps */}
             <motion.div 
-              className="absolute top-0 left-0 w-1.5 bg-gray-600/40"
+              className="absolute top-0 left-0 w-2 bg-gray-600/40 rounded-full"
               animate={{ 
                 height: `${activeStep > 0 ? (activeStep / steps.length) * 100 : 0}%`,
                 opacity: activeStep > 0 ? 0.4 : 0
               }}
               transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+            
+            {/* Radial glow at the start of line - overlays the line */}
+            <div 
+              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-20 rounded-full z-10"
+              style={{
+                background: 'radial-gradient(circle, rgba(178, 75, 243, 0.8) 0%, rgba(178, 75, 243, 0.5) 50%, transparent 100%)',
+                filter: 'blur(15px)',
+              }}
+            />
+            
+            {/* Radial glow at the end of line - overlays the line */}
+            <div 
+              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-20 rounded-full z-10"
+              style={{
+                background: 'radial-gradient(circle, rgba(178, 75, 243, 0.8) 0%, rgba(178, 75, 243, 0.5) 50%, transparent 100%)',
+                filter: 'blur(15px)',
+              }}
             />
           </div>
 
@@ -273,23 +307,22 @@ export default function EnhancedProcessSection() {
               if (isActive) opacity = 1;
               
               return (
-                <motion.div 
+                <div 
                   key={index}
                   data-step={index}
                   className="relative flex items-center justify-center min-h-[60vh]"
-                  animate={{ opacity }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  style={{ opacity }}
                 >
                   {/* Content Card */}
                   <div className="w-full max-w-4xl">
-                    <motion.div 
+                    <div 
                       className={`
                         rounded-2xl p-10 transition-all duration-700
                         ${isActive
-                          ? 'bg-gradient-to-br from-purple-500/12 to-purple-600/4 border border-purple-500/25'
+                          ? 'bg-gradient-to-br from-purple-500/12 to-purple-600/4 border border-purple-500/30'
                           : (isCompleted 
-                            ? 'bg-gradient-to-br from-gray-600/15 to-gray-700/5 border border-gray-600/20'
-                            : 'bg-gradient-to-br from-white/2 to-white/0 border border-white/5'
+                            ? 'bg-gradient-to-br from-gray-600/15 to-gray-700/5 border border-gray-600/25'
+                            : 'bg-gradient-to-br from-white/2 to-white/0'
                           )
                         }
                       `}
@@ -297,29 +330,17 @@ export default function EnhancedProcessSection() {
                         backdropFilter: 'blur(25px)',
                         WebkitBackdropFilter: 'blur(25px)',
                         animation: 'float 4s ease-in-out infinite',
-                        animationDelay: `${index * 0.6}s`
-                      }}
-                      animate={{
+                        animationDelay: `${index * 0.6}s`,
                         boxShadow: isActive 
-                          ? [
-                              '0 10px 40px rgba(178, 75, 243, 0.15), inset 0 1px 0 rgba(178, 75, 243, 0.1)',
-                              '0 15px 50px rgba(178, 75, 243, 0.25), inset 0 1px 0 rgba(178, 75, 243, 0.2)',
-                              '0 10px 40px rgba(178, 75, 243, 0.15), inset 0 1px 0 rgba(178, 75, 243, 0.1)'
-                            ]
+                          ? '0 8px 30px rgba(178, 75, 243, 0.2), inset 0 1px 0 rgba(178, 75, 243, 0.1), 0 0 20px rgba(178, 75, 243, 0.15)'
                           : isCompleted
-                            ? '0 5px 20px rgba(0, 0, 0, 0.1)'
+                            ? '0 5px 20px rgba(0, 0, 0, 0.1), 0 0 10px rgba(156, 163, 175, 0.05)'
                             : '0 3px 15px rgba(0, 0, 0, 0.05)',
-                        y: isActive ? -8 : 0,
-                        scale: isActive ? 1.02 : 1
-                      }}
-                      transition={{ 
-                        boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                        background: { duration: 0.7 },
-                        y: { duration: 0.6, ease: "easeOut" },
-                        scale: { duration: 0.6, ease: "easeOut" }
+                        transform: isActive ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                        transition: 'transform 0.6s ease-out, box-shadow 0.7s ease'
                       }}
                     >
-                      <motion.h3 
+                      <h3 
                         className={`
                           text-3xl font-bold mb-6 transition-all duration-700
                           ${isActive 
@@ -327,16 +348,15 @@ export default function EnhancedProcessSection() {
                             : (isCompleted ? 'text-gray-300' : 'text-gray-400')
                           }
                         `}
-                        animate={{
+                        style={{
                           textShadow: isActive 
-                            ? '0 0 12px rgba(178, 75, 243, 0.4)'
+                            ? '0 0 15px rgba(178, 75, 243, 0.6), 0 0 30px rgba(178, 75, 243, 0.3)'
                             : '0 0 0px rgba(178, 75, 243, 0.0)'
                         }}
-                        transition={{ duration: 0.7 }}
                       >
                         {step.title}
-                      </motion.h3>
-                      <motion.p 
+                      </h3>
+                      <p 
                         className={`
                           leading-relaxed text-xl transition-colors duration-700
                           ${isActive 
@@ -346,10 +366,10 @@ export default function EnhancedProcessSection() {
                         `}
                       >
                         {step.description}
-                      </motion.p>
-                    </motion.div>
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
