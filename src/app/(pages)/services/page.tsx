@@ -494,7 +494,7 @@ export default function ServicesPage() {
   const [isHovered, setIsHovered] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Обработчик прокрутки с полным скрытием Hero
   useEffect(() => {
