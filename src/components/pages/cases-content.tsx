@@ -60,12 +60,14 @@ export default function CasesContent() {
     });
   }, []);
   
-  // Обработчик для поискового запроса
+  // Обработчик для поискового запроса - ИСПРАВЛЕН
   const handleSearchChange = useCallback((query: string) => {
-    if (query.trim()) {
+    // Убираем лишние пробелы, но не требуем пробел в конце
+    const trimmedQuery = query.trim();
+    if (trimmedQuery || query === '') {
       setHasUserInteraction(true);
     }
-    setSearchQuery(query);
+    setSearchQuery(query); // Сохраняем оригинальное значение для инпута
   }, []);
   
   // Сброс всех фильтров
@@ -76,7 +78,7 @@ export default function CasesContent() {
     setSearchQuery('');
   }, []);
   
-  // Фильтрация кейсов с учетом дефолтных значений - ИСПРАВЛЕНО
+  // Фильтрация кейсов с учетом дефолтных значений - ИСПРАВЛЕНА ЛОГИКА ПОИСКА
   const filteredCases = useMemo(() => {
     // Определяем активные индустрии
     const activeIndustries = hasUserInteraction || searchQuery.trim() 
@@ -88,13 +90,14 @@ export default function CasesContent() {
       ? selectedFunctions.filter(id => id !== 'custom-solutions')
       : [];
     
-    // Если нет поискового запроса и пользователь не взаимодействовал с фильтрами, показываем все кейсы
+    // Если нет поискового запроса (включая пустую строку) и пользователь не взаимодействовал с фильтрами, показываем все кейсы
     if (!searchQuery.trim() && !hasUserInteraction) {
       return allCaseStudies;
     }
     
+    // Используем trimmed query для поиска
     return filterCasesByMatrix({
-      searchQuery,
+      searchQuery: searchQuery.trim(),
       industries: activeIndustries.length > 0 ? activeIndustries : [],
       functions: activeFunctions.length > 0 ? activeFunctions : []
     });
@@ -179,9 +182,9 @@ export default function CasesContent() {
               {/* Main Content Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-16 max-w-7xl mx-auto">
                 
-                {/* Left Sidebar - ИСПРАВЛЕНО ПОЗИЦИОНИРОВАНИЕ */}
+                {/* Left Sidebar - ПРАВИЛЬНОЕ ВЫРАВНИВАНИЕ И STICKY */}
                 <div className="lg:col-span-1">
-                  <div className="sticky top-6 space-y-8 z-10">
+                  <div className="sticky top-32 space-y-8 z-20">
                     
                     {/* Function Filters */}
                     <FunctionFilters

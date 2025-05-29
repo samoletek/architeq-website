@@ -90,6 +90,16 @@ export function IntegratedSearchFilters({
     return result;
   };
 
+  // Определяем цвет для типа фильтра (как в оригинале)
+  const getFilterColor = (type: 'search' | 'industry' | 'function') => {
+    switch (type) {
+      case 'search': return 'bg-secondary/20 text-secondary';
+      case 'industry': return 'bg-medium-gray/20 text-light-gray';
+      case 'function': return 'bg-medium-gray/20 text-light-gray';
+      default: return 'bg-medium-gray/20 text-light-gray';
+    }
+  };
+
   const activeFilters = getActiveFilters();
 
   return (
@@ -160,10 +170,10 @@ export function IntegratedSearchFilters({
                 </div>
               </div>
               
-              {/* Дополнительная кнопка Clear all в активных фильтрах - БЕЗ БЕЛОЙ ОКАНТОВКИ */}
+              {/* Дополнительная кнопка Clear all в активных фильтрах */}
               <button
                 onClick={onClearAll}
-                className="text-xs text-light-gray hover:text-white transition-colors focus:outline-none"
+                className="text-xs text-light-gray hover:text-white transition-colors"
               >
                 Clear all
               </button>

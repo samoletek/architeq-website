@@ -353,22 +353,55 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Стили для карточек кейсов */
+/* Стили для всех карточек кейсов - ЗЕЛЕНЫЕ */
 .case-card-enhanced {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   position: relative;
-  border: 1.3px solid rgba(176, 255, 116, 0.55);
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6);
+  border: 1.3px solid rgba(176, 255, 116, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6) !important;
 }
 
-/* Стили при наведении */
-.case-card-enhanced.case-card-hovered {
-  border-color: rgba(176, 255, 116, 0.5);
-  transform: translateY(-10px);
+/* Стили при наведении для обычных карточек кейсов */
+.case-card-enhanced.case-card-hovered,
+.case-card-enhanced:hover {
+  border-color: rgba(176, 255, 116, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(176, 255, 116, 0.3), 
-    0 0 30px rgba(176, 255, 116, 0.2);
+    0 0 30px rgba(176, 255, 116, 0.2) !important;
+}
+
+/* Стили для Service Cards - ФИОЛЕТОВЫЕ */
+[class*="service-card-enhanced"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+[class*="service-card-enhanced"]:hover,
+[class*="service-card-enhanced"].service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Стили для Contact Card - БЕЗ HOVER ЭФФЕКТОВ */
+.contact-case-card {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* НЕТ HOVER ЭФФЕКТОВ для Contact Card */
+.contact-case-card:hover {
+  /* Никаких изменений при hover */
+  border-color: rgba(178, 75, 243, 0.55) !important;
+  transform: none !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
 }
 
 /* Тени для обычного состояния */
@@ -378,24 +411,11 @@ html {
     0 0 20px rgba(176, 255, 116, 0.1);
 }
 
-
-/* Принудительно для всех карточек на странице services и contact card */
-[class*="service-card-enhanced"],
-[class*="contact-case-card"] {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-[class*="service-card-enhanced"]:hover,
-[class*="service-card-enhanced"].service-card-hovered,
-[class*="contact-case-card"]:hover {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
+/* Тени для фиолетового свечения */
+.shadow-neon-purple-glow {
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
+    0 0 10px rgba(178, 75, 243, 0.2), 
+    0 0 20px rgba(178, 75, 243, 0.1) !important;
 }
 
 /* Альтернативный вариант через data-атрибут */

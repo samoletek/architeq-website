@@ -46,7 +46,7 @@ export function FunctionFilters({
     return selectedFunctions.includes(functionId);
   };
 
-  // Анимационные варианты для тегов
+  // Анимационные варианты для тегов - БЕЗ ВЫДВИЖЕНИЯ
   const tagVariants = {
     initial: { x: -20, opacity: 0 },
     animate: { 
@@ -55,7 +55,7 @@ export function FunctionFilters({
       transition: { duration: 0.3, ease: "easeOut" }
     },
     hover: { 
-      x: 5,
+      // Убираем сдвиг по x
       transition: { duration: 0.2, ease: "easeInOut" }
     },
     tap: { 
@@ -99,9 +99,10 @@ export function FunctionFilters({
         >
           <h3 className="text-lg font-semibold text-white flex items-center">
             By Function
-            {selectedFunctions.length > 0 && (
+            {/* Исключаем дефолтные теги из счетчика */}
+            {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
               <span className="ml-2 bg-secondary text-gray-900 text-xs px-2 py-1 rounded-full font-medium shadow-neon-green-glow">
-                {selectedFunctions.length}
+                {selectedFunctions.filter(id => id !== 'custom-solutions').length}
               </span>
             )}
           </h3>
@@ -184,14 +185,14 @@ export function FunctionFilters({
         )}
       </AnimatePresence>
 
-      {/* Компактный вид при сворачивании */}
-      {isCollapsed && selectedFunctions.length > 0 && (
+      {/* Компактный вид при сворачивании - БЕЗ ДЕФОЛТНЫХ ТЕГОВ */}
+      {isCollapsed && selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-wrap gap-1"
         >
-          {selectedFunctions.slice(0, 3).map(functionId => (
+          {selectedFunctions.filter(id => id !== 'custom-solutions').slice(0, 3).map(functionId => (
             <span 
               key={functionId}
               className="text-xs bg-secondary/20 text-secondary px-2 py-1 rounded-md"
@@ -199,9 +200,9 @@ export function FunctionFilters({
               {FUNCTION_CATEGORIES[functionId]}
             </span>
           ))}
-          {selectedFunctions.length > 3 && (
+          {selectedFunctions.filter(id => id !== 'custom-solutions').length > 3 && (
             <span className="text-xs text-light-gray">
-              +{selectedFunctions.length - 3} more
+              +{selectedFunctions.filter(id => id !== 'custom-solutions').length - 3} more
             </span>
           )}
         </motion.div>

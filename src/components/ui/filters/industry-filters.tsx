@@ -43,7 +43,7 @@ export function IndustryFilters({
     return selectedIndustries.includes(industryId);
   };
 
-  // Анимационные варианты для тегов
+  // Анимационные варианты для тегов - БЕЗ ВЫДВИЖЕНИЯ
   const tagVariants = {
     initial: { scale: 0.95, opacity: 0 },
     animate: { 
@@ -52,7 +52,7 @@ export function IndustryFilters({
       transition: { duration: 0.2, ease: "easeOut" }
     },
     hover: { 
-      scale: 1.05,
+      // Убираем сдвиг по x и scale
       transition: { duration: 0.15, ease: "easeInOut" }
     },
     tap: { 
@@ -85,9 +85,10 @@ export function IndustryFilters({
         >
           <h3 className="text-lg font-semibold text-white flex items-center">
             By Industry
-            {selectedIndustries.length > 0 && (
+            {/* Исключаем дефолтные теги из счетчика */}
+            {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
               <span className="ml-2 bg-primary text-white text-xs px-2 py-1 rounded-full font-medium">
-                {selectedIndustries.length}
+                {selectedIndustries.filter(id => id !== 'your-industry').length}
               </span>
             )}
           </h3>
@@ -170,14 +171,14 @@ export function IndustryFilters({
         )}
       </AnimatePresence>
 
-      {/* Компактный вид при сворачивании - добавляем отображение активных тегов */}
-      {isCollapsed && selectedIndustries.length > 0 && (
+      {/* Компактный вид при сворачивании - БЕЗ ДЕФОЛТНЫХ ТЕГОВ */}
+      {isCollapsed && selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="flex flex-wrap gap-1"
         >
-          {selectedIndustries.slice(0, 3).map(industryId => (
+          {selectedIndustries.filter(id => id !== 'your-industry').slice(0, 3).map(industryId => (
             <span 
               key={industryId}
               className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-md"
@@ -185,9 +186,9 @@ export function IndustryFilters({
               {INDUSTRY_CATEGORIES[industryId]}
             </span>
           ))}
-          {selectedIndustries.length > 3 && (
+          {selectedIndustries.filter(id => id !== 'your-industry').length > 3 && (
             <span className="text-xs text-light-gray">
-              +{selectedIndustries.length - 3} more
+              +{selectedIndustries.filter(id => id !== 'your-industry').length - 3} more
             </span>
           )}
         </motion.div>

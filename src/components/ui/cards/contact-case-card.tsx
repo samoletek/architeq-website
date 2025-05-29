@@ -40,7 +40,7 @@ export function ContactCaseCard({
   index = 0,
   isVisible = true
 }: ContactCaseCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  // Убираем состояние isHovered так как не используем hover
 
   const gradientKey = "Your Company" + "Create Your Custom Solution";
   const [color1, color2] = getTwoColors(gradientKey);
@@ -67,65 +67,48 @@ export function ContactCaseCard({
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
       className={cn(
-        'relative group transition-all duration-500 ease-out',
+        'relative transition-all duration-500 ease-out',
         'min-h-[480px] h-full overflow-hidden',
         className
       )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      // Убираем hover обработчики
     >
       <Link href="/contacts" className="block h-full">
         <div
           className={cn(
             'relative bg-dark-gradient rounded-xl p-8 h-full',
-            'border-2 border-primary/30 hover:border-primary/50',
-            'hover:transform hover:scale-[1.02] hover:-translate-y-2',
+            'border-2 border-primary/30',
             'transition-all duration-500 ease-out',
-            // Добавляем классы для единообразия с обычными карточками  
-            'service-card-enhanced'
+            // Убираем hover эффекты - только базовые классы
+            'contact-case-card'
           )}
           style={{
-            boxShadow: isHovered 
-              ? '0 20px 40px rgba(0, 0, 0, 0.15), 0 0 15px rgba(178, 75, 243, 0.3), 0 0 30px rgba(178, 75, 243, 0.2)'
-              : '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6)',
+            // Убираем hover стили - только базовое состояние
+            boxShadow: '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6)',
           }}
         >
-          {/* Фиолетовый градиент внизу карточки */}
+          {/* Фиолетовый градиент внизу карточки - БЕЗ HOVER */}
           <div 
-            className={`
-              absolute inset-x-0 bottom-0 h-20 
-              bg-gradient-to-t from-primary/20 via-primary/10 to-transparent
-              transition-opacity duration-500
-              ${isHovered ? 'opacity-100' : 'opacity-50'}
-            `} 
+            className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent opacity-50"
           />
 
-          {/* Внутреннее свечение при hover */}
+          {/* Внутреннее свечение - БЕЗ HOVER */}
           <div 
-            className={`
-              absolute inset-0 rounded-xl 
-              bg-gradient-to-br from-primary/5 via-transparent to-primary/5
-              transition-opacity duration-500
-              ${isHovered ? 'opacity-100' : 'opacity-0'}
-            `} 
+            className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-0"
           />
 
-          {/* Фиолетовые пятна свечения снизу */}
+          {/* Фиолетовые пятна свечения снизу - БЕЗ HOVER */}
           <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
             {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: isHovered ? 0.9 : 0.3, 
-                  height: isHovered ? '280px' : '220px' 
-                }}
-                transition={{ duration: 0.4 }}
                 style={{
                   position: 'absolute',
                   bottom: 0,
                   left: `${spot.left}%`,
                   width: `220px`,
+                  height: '220px', // Фиксированная высота
+                  opacity: 0.3, // Фиксированная прозрачность
                   transform: 'translate(-50%, 50%)',
                   borderRadius: '9999px',
                   filter: 'blur(100px)',

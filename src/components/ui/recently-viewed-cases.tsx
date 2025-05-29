@@ -56,18 +56,15 @@ export function RecentlyViewedCases({
   return (
     <div className={cn("bg-dark-gray/50 backdrop-blur-sm rounded-lg p-4 border border-medium-gray/30", className)}>
       
-      {/* Заголовок */}
+      {/* Заголовок - ПОЛНОСТЬЮ БЕЗ СЧЕТЧИКА */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white flex items-center">
+        <h3 className="text-lg font-semibold text-white">
           Recently Viewed
-          <span className="ml-2 bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium">
-            {recentCases.length}
-          </span>
         </h3>
         
         <button
           onClick={clearHistory}
-          className="text-xs text-light-gray hover:text-white transition-colors focus:outline-none" // Убрано подчеркивание и белая окантовка при фокусе
+          className="text-xs text-light-gray hover:text-white transition-colors focus:outline-none"
         >
           Clear viewing history
         </button>
@@ -141,7 +138,7 @@ export function RecentlyViewedCases({
       {hasMoreItems && (
         <motion.button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full mt-4 py-2 px-4 text-sm text-light-gray hover:text-white transition-colors rounded-lg hover:bg-medium-gray/20 focus:outline-none" // Убрана белая окантовка при фокусе
+          className="w-full mt-4 py-2 px-4 text-sm text-light-gray hover:text-white transition-colors rounded-lg hover:bg-medium-gray/20 focus:outline-none"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
