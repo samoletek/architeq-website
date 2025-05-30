@@ -24,11 +24,10 @@ import {
 
 // Основной компонент страницы кейсов
 export default function CasesContent() {
-  // Состояние для новой системы фильтров - ИСПРАВЛЯЕМ ДЕФОЛТНЫЕ ЗНАЧЕНИЯ
+  // Состояние для системы фильтров
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndustries, setSelectedIndustries] = useState<IndustryCategory[]>(['your-industry']);
   const [selectedFunctions, setSelectedFunctions] = useState<FunctionCategory[]>(['custom-solutions']);
-  const [hasUserInteraction, setHasUserInteraction] = useState(false);
   
   // Состояние для мобильной версии
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -39,85 +38,86 @@ export default function CasesContent() {
   
   const { isMobile } = useDeviceDetection();
   
-  // Обработчики для изменения фильтров - ИСПРАВЛЯЕМ ЛОГИКУ ФИЛЬТРАЦИИ
+  // УПРОЩЕННЫЕ обработчики для изменения фильтров
   const handleIndustryChange = useCallback((industry: IndustryCategory) => {
-    setHasUserInteraction(true);
     setSelectedIndustries(prev => {
-      // Если это дефолтное значение, убираем его и добавляем новое
+      // Если выбираем "your-industry", сбрасываем все остальные
       if (industry === 'your-industry') {
         return ['your-industry'];
       }
       
-      // Убираем дефолтное значение при выборе любого другого
+      // Убираем "your-industry" при выборе любого другого
       const withoutDefaults = prev.filter(id => id !== 'your-industry');
       
-      // Toggle логика для не-дефолтных значений
-      return withoutDefaults.includes(industry) 
-        ? withoutDefaults.filter(i => i !== industry)
-        : [...withoutDefaults, industry];
+      // Toggle логика
+      if (withoutDefaults.includes(industry)) {
+        const filtered = withoutDefaults.filter(i => i !== industry);
+        return filtered.length === 0 ? ['your-industry'] : filtered;
+      } else {
+        return [...withoutDefaults, industry];
+      }
     });
   }, []);
   
   const handleFunctionChange = useCallback((functionCategory: FunctionCategory) => {
-    setHasUserInteraction(true);
     setSelectedFunctions(prev => {
-      // Если это дефолтное значение, убираем его и добавляем новое
+      // Если выбираем "custom-solutions", сбрасываем все остальные
       if (functionCategory === 'custom-solutions') {
         return ['custom-solutions'];
       }
       
-      // Убираем дефолтное значение при выборе любого другого
+      // Убираем "custom-solutions" при выборе любого другого
       const withoutDefaults = prev.filter(id => id !== 'custom-solutions');
       
-      // Toggle логика для не-дефолтных значений
-      return withoutDefaults.includes(functionCategory) 
-        ? withoutDefaults.filter(f => f !== functionCategory)
-        : [...withoutDefaults, functionCategory];
+      // Toggle логика
+      if (withoutDefaults.includes(functionCategory)) {
+        const filtered = withoutDefaults.filter(f => f !== functionCategory);
+        return filtered.length === 0 ? ['custom-solutions'] : filtered;
+      } else {
+        return [...withoutDefaults, functionCategory];
+      }
     });
   }, []);
   
-  // Обработчик для поискового запроса - ИСПРАВЛЕН
+  // Обработчик для поискового запроса
   const handleSearchChange = useCallback((query: string) => {
-    // Убираем лишние пробелы, но не требуем пробел в конце
-    const trimmedQuery = query.trim();
-    if (trimmedQuery || query === '') {
-      setHasUserInteraction(true);
-    }
-    setSearchQuery(query); // Сохраняем оригинальное значение для инпута
+    setSearchQuery(query);
   }, []);
   
   // Сброс всех фильтров
   const clearAllFilters = useCallback(() => {
-    setHasUserInteraction(false);
     setSelectedIndustries(['your-industry']);
     setSelectedFunctions(['custom-solutions']);
     setSearchQuery('');
   }, []);
   
-  // Фильтрация кейсов с учетом дефолтных значений - ИСПРАВЛЕНА ЛОГИКА ПОИСКА
+  // УПРОЩЕННАЯ логика фильтрации кейсов
   const filteredCases = useMemo(() => {
-    // Определяем активные индустрии
-    const activeIndustries = hasUserInteraction || searchQuery.trim() 
-      ? selectedIndustries.filter(id => id !== 'your-industry')
-      : [];
-      
-    // Определяем активные функции  
-    const activeFunctions = hasUserInteraction || searchQuery.trim() 
-      ? selectedFunctions.filter(id => id !== 'custom-solutions')
-      : [];
+    // Получаем активные фильтры (исключаем дефолтные значения)
+    const activeIndustries = selectedIndustries.filter(id => id !== 'your-industry');
+    const activeFunctions = selectedFunctions.filter(id => id !== 'custom-solutions');
+    const hasSearch = searchQuery.trim().length > 0;
+    const hasFilters = activeIndustries.length > 0 || activeFunctions.length > 0;
     
-    // Если нет поискового запроса (включая пустую строку) и пользователь не взаимодействовал с фильтрами, показываем все кейсы
-    if (!searchQuery.trim() && !hasUserInteraction) {
+    // Если нет поиска и нет активных фильтров - показываем все
+    if (!hasSearch && !hasFilters) {
       return allCaseStudies;
     }
     
-    // Используем trimmed query для поиска
-    return filterCasesByMatrix({
+    // Применяем фильтрацию
+    const filtered = filterCasesByMatrix({
       searchQuery: searchQuery.trim(),
-      industries: activeIndustries.length > 0 ? activeIndustries : [],
-      functions: activeFunctions.length > 0 ? activeFunctions : []
+      industries: activeIndustries,
+      functions: activeFunctions
     });
-  }, [searchQuery, selectedIndustries, selectedFunctions, hasUserInteraction]);
+    
+    // ИСКЛЮЧАЕМ специальную карточку при активном поиске
+    if (hasSearch) {
+      return filtered.filter(caseItem => !caseItem.isSpecialCard);
+    }
+    
+    return filtered;
+  }, [searchQuery, selectedIndustries, selectedFunctions]);
   
   // Разделяем обычные кейсы и специальную карточку
   const { regularCases, hasContactCard } = useMemo(() => {

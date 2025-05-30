@@ -112,7 +112,7 @@ export function IndustryFilters({
         {/* Удаляем подсказку */}
       </div>
 
-      {/* Горизонтальные теги - ИСПРАВЛЕНО */}
+      {/* Вертикальные теги как у Functions - ИСПРАВЛЕНО */}
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
@@ -121,8 +121,8 @@ export function IndustryFilters({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
             className={cn(
-              "flex flex-wrap gap-3",
-              isMobile ? "gap-2" : "gap-3"
+              "space-y-2", // Вертикальное расположение как у Functions
+              isMobile && "space-y-1"
             )}
           >
             {filteredIndustries.map(({ id: industryId, label, count }, index) => {
@@ -139,8 +139,8 @@ export function IndustryFilters({
                   onClick={() => handleTagClick(industryId)}
                   disabled={disabled}
                   className={cn(
-                    // Базовые стили - СТАНДАРТИЗИРОВАННЫЕ РАЗМЕРЫ И ВЫРАВНИВАНИЕ ПО ЛЕВОМУ КРАЮ
-                    "relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 min-w-[120px] h-[40px]",
+                    // Базовые стили - ФИКСИРОВАННАЯ ШИРИНА КАК У FUNCTION FILTERS
+                    "relative w-full px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 h-[40px]",
                     "focus:outline-none flex items-center text-left",
                     showCounts ? "justify-between" : "justify-start",
                     
@@ -158,8 +158,8 @@ export function IndustryFilters({
                     // Состояние отключения
                     disabled && "opacity-50 cursor-not-allowed",
                     
-                    // Мобильные стили - СТАНДАРТИЗИРОВАННЫЕ С ВЫРАВНИВАНИЕМ ПО ЛЕВОМУ КРАЮ
-                    isMobile && "text-xs px-3 py-1.5 min-w-[100px] h-[36px] justify-start"
+                    // Мобильные стили - СТАНДАРТИЗИРОВАННЫЕ
+                    isMobile && "text-xs px-3 py-1.5 h-[36px]"
                   )}
                   style={{
                     animationDelay: `${index * 0.05}s`

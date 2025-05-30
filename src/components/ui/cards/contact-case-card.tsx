@@ -1,6 +1,7 @@
 // src/components/ui/cards/contact-case-card.tsx
 "use client";
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
@@ -39,7 +40,8 @@ export function ContactCaseCard({
   index = 0,
   isVisible = true
 }: ContactCaseCardProps) {
-  // Убрали неиспользуемое состояние useState
+  // Добавляем состояние hover
+  const [isHovered, setIsHovered] = useState(false);
 
   const gradientKey = "Your Company" + "Create Your Custom Solution";
   const [color1, color2] = getTwoColors(gradientKey);
@@ -70,6 +72,8 @@ export function ContactCaseCard({
         'min-h-[480px] h-full overflow-hidden',
         className
       )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Link href="/contacts" className="block h-full">
         <div
@@ -176,7 +180,10 @@ export function ContactCaseCard({
             
             {/* Описание - растет по содержимому */}
             <div className="mb-auto flex-grow">
-              <p className="text-light-gray leading-relaxed text-base mb-8 line-clamp-4">
+              <p className={cn(
+                "leading-relaxed text-base mb-8 line-clamp-4 transition-colors duration-300",
+                isHovered ? "text-white" : "text-light-gray"
+              )}>
                 Tell us about your business challenges, and we&apos;ll create a tailored automation solution that fits your specific needs and goals.
               </p>
               
@@ -190,7 +197,10 @@ export function ContactCaseCard({
                     <span className="text-primary mr-3 mt-1 flex-shrink-0 text-lg">
                       •
                     </span>
-                    <span className="text-light-gray text-sm leading-relaxed">
+                    <span className={cn(
+                      "text-sm leading-relaxed transition-colors duration-300",
+                      isHovered ? "text-white" : "text-light-gray"
+                    )}>
                       <span className="text-primary">Personalized solution design</span> based on your specific workflow
                     </span>
                   </li>
@@ -198,7 +208,10 @@ export function ContactCaseCard({
                     <span className="text-primary mr-3 mt-1 flex-shrink-0 text-lg">
                       •
                     </span>
-                    <span className="text-light-gray text-sm leading-relaxed">
+                    <span className={cn(
+                      "text-sm leading-relaxed transition-colors duration-300",
+                      isHovered ? "text-white" : "text-light-gray"
+                    )}>
                       <span className="text-primary">Expert consultation included</span> with our automation specialists
                     </span>
                   </li>
@@ -206,7 +219,10 @@ export function ContactCaseCard({
                     <span className="text-primary mr-3 mt-1 flex-shrink-0 text-lg">
                       •
                     </span>
-                    <span className="text-light-gray text-sm leading-relaxed">
+                    <span className={cn(
+                      "text-sm leading-relaxed transition-colors duration-300",
+                      isHovered ? "text-white" : "text-light-gray"
+                    )}>
                       <span className="text-primary">Tailored to your specific needs</span> and industry requirements
                     </span>
                   </li>

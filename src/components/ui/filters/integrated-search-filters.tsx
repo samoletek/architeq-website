@@ -95,9 +95,9 @@ export function IntegratedSearchFilters({
   return (
     <div className={cn("bg-dark-gray rounded-lg", className)}>
       
-      {/* Поисковая строка - выравнивание по левому краю с фильтрами */}
-      <div className="p-4"> {/* Стандартные отступы для выравнивания */}
-        <div className="flex items-center gap-4 max-w-full"> {/* Стандартный gap */}
+      {/* Поисковая строка - убираем отступы для выравнивания с заголовками фильтров */}
+      <div className="p-0 pt-4"> {/* Убираем px-4, оставляем только верхний отступ */}
+        <div className="flex items-center gap-4 max-w-full">
           <div className="relative flex-grow">
             <input
               type="text"
@@ -130,13 +130,13 @@ export function IntegratedSearchFilters({
         </div>
       </div>
 
-      {/* Активные фильтры - выравнивание с поисковой строкой */}
+      {/* Активные фильтры - убираем отступы для выравнивания с заголовками фильтров */}
       {hasActiveFilters && (
-        <div className="px-4 pb-4"> {/* Стандартные отступы для выравнивания */}
+        <div className="py-4"> {/* Убираем px-4, оставляем только вертикальные отступы */}
           <div className="p-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <span className="text-sm text-light-gray mr-2">Active filters:</span>
+              <div className="flex items-center flex-wrap">
+                <span className="text-sm text-light-gray mr-2 whitespace-nowrap">Active filters:</span>
                 <div className="flex flex-wrap gap-1">
                   {activeFilters.map(filter => (
                     <motion.span 
@@ -163,7 +163,7 @@ export function IntegratedSearchFilters({
               {/* Дополнительная кнопка Clear all в активных фильтрах */}
               <button
                 onClick={onClearAll}
-                className="text-xs text-light-gray hover:text-white transition-colors"
+                className="text-xs text-light-gray hover:text-white transition-colors whitespace-nowrap ml-4"
               >
                 Clear all
               </button>
@@ -172,8 +172,8 @@ export function IntegratedSearchFilters({
         </div>
       )}
 
-      {/* Счетчик результатов */}
-      <div className="px-4 pb-6 text-sm text-light-gray"> {/* Стандартные отступы для выравнивания */}
+      {/* Счетчик результатов - убираем отступы для выравнивания с заголовками фильтров */}
+      <div className="pb-6 text-sm text-light-gray"> {/* Убираем px-4, оставляем только нижний отступ */}
         {resultCount} {resultCount === 1 ? 'result' : 'results'} found
       </div>
     </div>

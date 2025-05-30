@@ -245,7 +245,10 @@ export function CaseCard({
         {/* Описание - растет по содержимому */}
         <div className="mb-auto flex-grow">
           {description && !isCompact && (
-            <p className="text-light-gray leading-relaxed text-base mb-8 line-clamp-4">
+            <p className={cn(
+              "leading-relaxed text-base mb-8 line-clamp-4 transition-colors duration-300",
+              isHovered ? "text-white" : "text-light-gray"
+            )}>
               {description}
             </p>
           )}
@@ -263,7 +266,10 @@ export function CaseCard({
                       •
                     </span>
                     <span 
-                      className="text-light-gray text-sm leading-relaxed"
+                      className={cn(
+                        "text-sm leading-relaxed transition-colors duration-300",
+                        isHovered ? "text-white" : "text-light-gray"
+                      )}
                       dangerouslySetInnerHTML={{ 
                         __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                       }} 
