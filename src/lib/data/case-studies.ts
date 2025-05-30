@@ -1,9 +1,5 @@
 // src/lib/data/case-studies.ts
 
-/**
- * НОВЫЕ КОНСТАНТЫ ДЛЯ СИСТЕМЫ ФИЛЬТРАЦИИ
- */
-
 // Фильтры по отраслям (By Industry) - горизонтальные белые теги
 export const INDUSTRY_CATEGORIES = {
   'your-industry': 'Your Industry',
@@ -1217,5 +1213,74 @@ export function filterCases({
     searchQuery,
     industries: industriesNew,
     functions: functionsNew
+  });
+}
+
+/**
+ * Функция для получения всех уникальных тегов определенного типа
+ */
+export function getUniqueTagsByType(tagType: 'function' | 'industry' | 'technology' | 'company' | 'location'): string[] {
+  const tags = new Set<string>();
+  
+  allCaseStudies.forEach(caseStudy => {
+    switch (tagType) {
+      case 'function':
+        if (caseStudy.functionCategory !== 'custom-solutions') {
+          tags.add(FUNCTION_CATEGORIES[caseStudy.functionCategory]);
+        }
+        break;
+      case 'industry':
+        if (caseStudy.industryCategory !== 'your-industry') {
+          tags.add(INDUSTRY_CATEGORIES[caseStudy.industryCategory]);
+        }
+        break;
+      case 'technology':
+        caseStudy.technologies.forEach(tech => tags.add(tech));
+        break;
+      case 'company':
+        caseStudy.clickableTags?.companies?.forEach(company => tags.add(company));
+        break;
+      case 'location':
+        caseStudy.clickableTags?.locations?.forEach(location => tags.add(location));
+        break;
+    }
+  });
+  
+  return Array.from(tags).sort();
+}
+
+/**
+ * Функция для поиска кейсов по тегу
+ */
+export function getCasesByTag(tagValue: string, tagType?: 'function' | 'industry' | 'technology' | 'company' | 'location'): CaseStudy[] {
+  return allCaseStudies.filter(caseStudy => {
+    // Поиск в функциях
+    if (!tagType || tagType === 'function') {
+      const functionName = FUNCTION_CATEGORIES[caseStudy.functionCategory];
+      if (functionName === tagValue) return true;
+    }
+    
+    // Поиск в индустриях
+    if (!tagType || tagType === 'industry') {
+      const industryName = INDUSTRY_CATEGORIES[caseStudy.industryCategory];
+      if (industryName === tagValue) return true;
+    }
+    
+    // Поиск в технологиях
+    if (!tagType || tagType === 'technology') {
+      if (caseStudy.technologies.includes(tagValue)) return true;
+    }
+    
+    // Поиск в компаниях
+    if (!tagType || tagType === 'company') {
+      if (caseStudy.clickableTags?.companies?.includes(tagValue)) return true;
+    }
+    
+    // Поиск в локациях
+    if (!tagType || tagType === 'location') {
+      if (caseStudy.clickableTags?.locations?.includes(tagValue)) return true;
+    }
+    
+    return false;
   });
 }
