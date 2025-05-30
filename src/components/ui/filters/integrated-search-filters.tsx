@@ -90,16 +90,6 @@ export function IntegratedSearchFilters({
     return result;
   };
 
-  // Определяем цвет для типа фильтра (как в оригинале)
-  const getFilterColor = (type: 'search' | 'industry' | 'function') => {
-    switch (type) {
-      case 'search': return 'bg-secondary/20 text-secondary';
-      case 'industry': return 'bg-medium-gray/20 text-light-gray';
-      case 'function': return 'bg-medium-gray/20 text-light-gray';
-      default: return 'bg-medium-gray/20 text-light-gray';
-    }
-  };
-
   const activeFilters = getActiveFilters();
 
   return (

@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { INDUSTRY_CATEGORIES, IndustryCategory } from '@/lib/data/case-studies';
+import { INDUSTRY_CATEGORIES, IndustryCategory, getFilterCounts } from '@/lib/data/case-studies';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface IndustryFiltersProps {
@@ -12,13 +12,15 @@ export interface IndustryFiltersProps {
   onIndustryChange: (industry: IndustryCategory) => void;
   className?: string;
   disabled?: boolean;
+  showCounts?: boolean; // Добавляем свойство showCounts
 }
 
 export function IndustryFilters({
   selectedIndustries,
   onIndustryChange,
   className,
-  disabled = false
+  disabled = false,
+  showCounts = false // Значение по умолчанию
 }: IndustryFiltersProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -31,6 +33,9 @@ export function IndustryFilters({
     }, 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Получаем данные с подсчетом
+  const { industries } = getFilterCounts();
 
   // Обработчик клика по тегу (toggle логика)
   const handleTagClick = (industryId: IndustryCategory) => {
@@ -73,7 +78,7 @@ export function IndustryFilters({
   }
 
   // Фильтруем "your-industry" из списка
-  const filteredIndustries = Object.entries(INDUSTRY_CATEGORIES).filter(([industryId]) => industryId !== 'your-industry');
+  const filteredIndustries = industries.filter(({ id }) => id !== 'your-industry');
 
   return (
     <div className={cn("w-full", className)}>
@@ -120,9 +125,8 @@ export function IndustryFilters({
               isMobile ? "gap-2" : "gap-3"
             )}
           >
-            {filteredIndustries.map(([industryId, label], index) => {
-              const typedIndustryId = industryId as IndustryCategory;
-              const selected = isSelected(typedIndustryId);
+            {filteredIndustries.map(({ id: industryId, label, count }, index) => {
+              const selected = isSelected(industryId);
 
               return (
                 <motion.button
@@ -132,12 +136,13 @@ export function IndustryFilters({
                   animate="animate"
                   whileHover={disabled ? undefined : "hover"}
                   whileTap={disabled ? undefined : "tap"}
-                  onClick={() => handleTagClick(typedIndustryId)}
+                  onClick={() => handleTagClick(industryId)}
                   disabled={disabled}
                   className={cn(
                     // Базовые стили - СТАНДАРТИЗИРОВАННЫЕ РАЗМЕРЫ И ВЫРАВНИВАНИЕ ПО ЛЕВОМУ КРАЮ
                     "relative px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 min-w-[120px] h-[40px]",
-                    "focus:outline-none flex items-center justify-start text-left",
+                    "focus:outline-none flex items-center text-left",
+                    showCounts ? "justify-between" : "justify-start",
                     
                     // Состояние по умолчанию (ФИОЛЕТОВЫЕ цвета)
                     !selected && [
@@ -164,6 +169,18 @@ export function IndustryFilters({
                   <span className="relative z-10 text-left leading-none">
                     {label}
                   </span>
+
+                  {/* Счетчик случаев (если showCounts=true) */}
+                  {showCounts && (
+                    <span className={cn(
+                      "text-xs px-2 py-1 rounded-full ml-2",
+                      selected 
+                        ? "bg-primary/30 text-primary" 
+                        : "bg-medium-gray/30 text-light-gray"
+                    )}>
+                      {count}
+                    </span>
+                  )}
                 </motion.button>
               );
             })}

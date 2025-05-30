@@ -1,7 +1,6 @@
 // src/components/ui/cards/contact-case-card.tsx
 "use client";
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
@@ -40,7 +39,7 @@ export function ContactCaseCard({
   index = 0,
   isVisible = true
 }: ContactCaseCardProps) {
-  // Убираем состояние isHovered так как не используем hover
+  // Убрали неиспользуемое состояние useState
 
   const gradientKey = "Your Company" + "Create Your Custom Solution";
   const [color1, color2] = getTwoColors(gradientKey);
@@ -71,7 +70,6 @@ export function ContactCaseCard({
         'min-h-[480px] h-full overflow-hidden',
         className
       )}
-      // Убираем hover обработчики
     >
       <Link href="/contacts" className="block h-full">
         <div
@@ -79,11 +77,11 @@ export function ContactCaseCard({
             'relative bg-dark-gradient rounded-xl p-8 h-full',
             'border-2 border-primary/30',
             'transition-all duration-500 ease-out',
-            // Убираем hover эффекты - только базовые классы
+            // Убраны hover эффекты - только базовые классы
             'contact-case-card'
           )}
           style={{
-            // Убираем hover стили - только базовое состояние
+            // Убраны hover стили - только базовое состояние
             boxShadow: '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6)',
           }}
         >

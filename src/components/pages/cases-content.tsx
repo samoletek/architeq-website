@@ -24,7 +24,7 @@ import {
 
 // Основной компонент страницы кейсов
 export default function CasesContent() {
-  // Состояние для новой системы фильтров
+  // Состояние для новой системы фильтров - ИСПРАВЛЯЕМ ДЕФОЛТНЫЕ ЗНАЧЕНИЯ
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndustries, setSelectedIndustries] = useState<IndustryCategory[]>(['your-industry']);
   const [selectedFunctions, setSelectedFunctions] = useState<FunctionCategory[]>(['custom-solutions']);
@@ -39,11 +39,19 @@ export default function CasesContent() {
   
   const { isMobile } = useDeviceDetection();
   
-  // Обработчики для изменения фильтров
+  // Обработчики для изменения фильтров - ИСПРАВЛЯЕМ ЛОГИКУ ФИЛЬТРАЦИИ
   const handleIndustryChange = useCallback((industry: IndustryCategory) => {
     setHasUserInteraction(true);
     setSelectedIndustries(prev => {
+      // Если это дефолтное значение, убираем его и добавляем новое
+      if (industry === 'your-industry') {
+        return ['your-industry'];
+      }
+      
+      // Убираем дефолтное значение при выборе любого другого
       const withoutDefaults = prev.filter(id => id !== 'your-industry');
+      
+      // Toggle логика для не-дефолтных значений
       return withoutDefaults.includes(industry) 
         ? withoutDefaults.filter(i => i !== industry)
         : [...withoutDefaults, industry];
@@ -53,7 +61,15 @@ export default function CasesContent() {
   const handleFunctionChange = useCallback((functionCategory: FunctionCategory) => {
     setHasUserInteraction(true);
     setSelectedFunctions(prev => {
+      // Если это дефолтное значение, убираем его и добавляем новое
+      if (functionCategory === 'custom-solutions') {
+        return ['custom-solutions'];
+      }
+      
+      // Убираем дефолтное значение при выборе любого другого
       const withoutDefaults = prev.filter(id => id !== 'custom-solutions');
+      
+      // Toggle логика для не-дефолтных значений
       return withoutDefaults.includes(functionCategory) 
         ? withoutDefaults.filter(f => f !== functionCategory)
         : [...withoutDefaults, functionCategory];

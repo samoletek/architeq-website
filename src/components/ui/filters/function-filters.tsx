@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { FUNCTION_CATEGORIES, FunctionCategory } from '@/lib/data/case-studies';
+import { FUNCTION_CATEGORIES, FunctionCategory, getFilterCounts } from '@/lib/data/case-studies';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface FunctionFiltersProps {
@@ -14,6 +14,7 @@ export interface FunctionFiltersProps {
   disabled?: boolean;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  showCounts?: boolean; // Добавляем свойство showCounts
 }
 
 export function FunctionFilters({
@@ -22,7 +23,8 @@ export function FunctionFilters({
   className,
   disabled = false,
   isCollapsed = false,
-  onToggleCollapse
+  onToggleCollapse,
+  showCounts = false // Значение по умолчанию
 }: FunctionFiltersProps) {
   const [isLoading, setIsLoading] = useState(true);
   const { isMobile } = useDeviceDetection();
@@ -34,6 +36,9 @@ export function FunctionFilters({
     }, 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Получаем данные с подсчетом
+  const { functions } = getFilterCounts();
 
   // Обработчик клика по тегу
   const handleTagClick = (functionId: FunctionCategory) => {
@@ -86,7 +91,7 @@ export function FunctionFilters({
   }
 
   // Фильтруем "custom-solutions" из списка
-  const filteredFunctions = Object.entries(FUNCTION_CATEGORIES).filter(([functionId]) => functionId !== 'custom-solutions');
+  const filteredFunctions = functions.filter(({ id }) => id !== 'custom-solutions');
 
   return (
     <div className={cn("w-full", className)}>
@@ -136,9 +141,8 @@ export function FunctionFilters({
               isMobile && "space-y-1"
             )}
           >
-            {filteredFunctions.map(([functionId, label], index) => {
-              const typedFunctionId = functionId as FunctionCategory;
-              const selected = isSelected(typedFunctionId);
+            {filteredFunctions.map(({ id: functionId, label, count }, index) => {
+              const selected = isSelected(functionId);
 
               return (
                 <motion.button
@@ -146,11 +150,11 @@ export function FunctionFilters({
                   variants={tagVariants}
                   whileHover={disabled ? undefined : "hover"}
                   whileTap={disabled ? undefined : "tap"}
-                  onClick={() => handleTagClick(typedFunctionId)}
+                  onClick={() => handleTagClick(functionId)}
                   disabled={disabled}
                   className={cn(
                     // Базовые стили - СТАНДАРТИЗИРОВАННЫЕ РАЗМЕРЫ И ВЫРАВНИВАНИЕ
-                    "relative w-full flex items-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 h-[40px]",
+                    "relative w-full flex items-center justify-between px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 h-[40px]",
                     "focus:outline-none text-left",
                     
                     // Состояние по умолчанию (цвета как у Industry - зеленые)
@@ -178,6 +182,18 @@ export function FunctionFilters({
                   <div className="relative z-10 flex items-center">
                     <span className="text-left leading-tight">{label}</span>
                   </div>
+
+                  {/* Счетчик случаев (если showCounts=true) */}
+                  {showCounts && (
+                    <span className={cn(
+                      "text-xs px-2 py-1 rounded-full",
+                      selected 
+                        ? "bg-secondary/30 text-secondary" 
+                        : "bg-medium-gray/30 text-light-gray"
+                    )}>
+                      {count}
+                    </span>
+                  )}
                 </motion.button>
               );
             })}
