@@ -43,107 +43,204 @@ import {
   };
   
   /**
-   * Маппинг для сокращенных названий тегов
+   * ИСПРАВЛЕННЫЙ маппинг для сокращенных названий тегов
    */
   export const TAG_DISPLAY_NAMES: Record<string, string> = {
     // Functions - используем сокращения
     'CRM Integrations': 'CRM',
-    'Documents & Web Forms': 'Documents',
-    'System & Infrastructure Integrations': 'Systems',
+    'Documents & Web Forms': 'Web Forms', // ИСПРАВЛЕНО: Documents → Web Forms
+    'System & Infrastructure Integrations': 'Custom',
     'AI-Powered Solutions': 'AI',
-    'Industry-Specific Products': 'Industry',
-    'Finance & Accounting': 'Finance',
+    'Industry-Specific Products': 'Custom',
+    'Finance & Accounting': 'Finance', // ВОЗВРАЩАЕМ Finance
     'Custom Solutions': 'Custom',
     
-    // Industries - используем сокращения
+    // Industries - используем сокращения, УБИРАЕМ Automotive
     'Financial Services': 'Finance',
     'Dispatching Services': 'Dispatching',
-    'Car Hauling': 'Automotive',
+    'Car Hauling': 'Car Hauling', // ИСПРАВЛЕНО: убрали Automotive
     'Commercial Music Production': 'Music',
     'Healthcare & Medical Supplies': 'Healthcare',
     'Cabinetry & Coatings': 'Cabinetry',
     'Furniture Manufacturing Industry': 'Manufacturing',
     'Your Industry': 'Custom',
     
-    // Technologies - сокращения для популярных
-    'Monday CRM': 'Monday',
+    // Technologies - ИСПРАВЛЕННЫЕ сокращения
+    'Monday CRM': 'CRM',
+    'Monday': 'CRM',
     'API integrations': 'API',
     'Google Workspace API': 'Google API',
-    'Google Data Studio': 'Analytics',
+    'Google Data Studio': 'Dashboards',
     'Google Docs API': 'Docs API',
-    'Google Sheets': 'Sheets',
-    'GoogleSheets': 'Sheets',
-    'GoogleDrive': 'Drive',
     'Tailwind CSS': 'Tailwind',
     'Iron Session': 'Sessions',
     'React Select': 'React',
     'QuickBooks': 'QB',
     'Email API': 'Email',
-    'OpenAI Whisper': 'Whisper',
+    'OpenAI': 'AI',
     'Google Speech-to-Text API': 'Speech API',
     'ElevenLabs': 'Voice AI',
     'CabinetVision': 'CAD',
-    'Next.js': 'Next.js',
     'TypeScript': 'TS',
     'JavaScript': 'JS',
+    'JotForm': 'Web Forms', // ИСПРАВЛЕНО: Web Form → Web Forms
+    'DocuSign': 'E-Sign',
+    'Twilio': 'VoIP',
     
-    // Дополнительные сокращения
-    'Make': 'Make',
+    // УБИРАЕМ эти теги (не отображаем)
+    'Make': '',
+    'Drive': '',
+    'Sheets': '',
+    'GoogleSheets': '',
+    'GoogleDrive': '',
+    'Analytics': '',
+    'Industry': '',
+    'Whisper': '',
+    'OpenAI Whisper': '',
+    'Systems': '',
+    'Next.js': '', // УБИРАЕМ Next.js
+    
+    // Дополнительные теги остаются
     'Zapier': 'Zapier',
     'Stripe': 'Stripe',
-    'DocuSign': 'DocuSign',
-    'JotForm': 'JotForm',
-    'Twilio': 'Twilio',
     'Slack': 'Slack',
     'Telegram': 'Telegram'
+  };
+  
+  /**
+   * ИСПРАВЛЕННЫЕ СПЕЦИАЛЬНЫЕ ТЕГИ ПО КЕЙСАМ
+   */
+  export const SPECIAL_CASE_TAGS: Record<string, string[]> = {
+    // Finance теги (УБРАЛИ Accounting)
+    'stripe-invoicing': ['Finance', 'Invoice'],
+    'quickbooks-integration': ['Finance'],
+    'financial-calculations': ['Finance'],
+    
+    // Transport Quote
+    'broker-calculator': ['Transport Quote'],
+    
+    // Factoring
+    'factoring-automation': ['Factoring'],
+    
+    // VoIP
+    'telephony-integration': ['VoIP'],
+    
+    // E-Sign
+    'electronic-signatures': ['E-Sign'],
+    
+    // Web Forms (ИСПРАВЛЕНО)
+    'web-forms-integration': ['Web Forms'],
+    
+    // Dashboards
+    'dashboards-creation': ['Dashboards']
   };
   
   /**
    * Функция для получения отображаемого имени тега
    */
   export function getTagDisplayName(originalName: string): string {
-    return TAG_DISPLAY_NAMES[originalName] || originalName;
+    const displayName = TAG_DISPLAY_NAMES[originalName];
+    
+    // Если displayName пустая строка, скрываем тег
+    if (displayName === '') {
+      return '';
+    }
+    
+    return displayName || originalName;
   }
   
   /**
-   * Генерация тегов для кейса (упрощенная версия без clickableTags)
+   * Проверка, должен ли тег быть скрыт
+   */
+  export function shouldHideTag(originalName: string): boolean {
+    return TAG_DISPLAY_NAMES[originalName] === '';
+  }
+  
+  /**
+   * УЛУЧШЕННАЯ генерация тегов для кейса с предотвращением дублирования
    */
   export function generateCaseTags(
     caseStudy: CaseStudy, 
     config: TagDisplayConfig = DEFAULT_CARD_TAG_CONFIG
   ): TagConfig[] {
     const tags: TagConfig[] = [];
+    const usedDisplayNames = new Set<string>(); // Для предотвращения дублирования
     
     // 1. Function tag (высший приоритет)
     if (caseStudy.functionCategory && caseStudy.functionCategory !== 'custom-solutions') {
       const functionName = FUNCTION_CATEGORIES[caseStudy.functionCategory];
-      tags.push({
-        value: functionName,
-        type: 'function',
-        displayName: getTagDisplayName(functionName),
-        priority: 1
+      const displayName = getTagDisplayName(functionName);
+      if (displayName && !usedDisplayNames.has(displayName)) {
+        tags.push({
+          value: functionName,
+          type: 'function',
+          displayName,
+          priority: 1
+        });
+        usedDisplayNames.add(displayName);
+      }
+    }
+    
+    // 2. Специальные теги для конкретных кейсов (второй приоритет)
+    if (SPECIAL_CASE_TAGS[caseStudy.id]) {
+      SPECIAL_CASE_TAGS[caseStudy.id].forEach((specialTag, index) => {
+        if (!usedDisplayNames.has(specialTag)) {
+          tags.push({
+            value: specialTag,
+            type: 'technology',
+            displayName: specialTag,
+            priority: 1.5 + index * 0.1
+          });
+          usedDisplayNames.add(specialTag);
+        }
       });
     }
     
-    // 2. Industry tag (второй приоритет)
+    // 3. Industry tag (третий приоритет)
     if (caseStudy.industryCategory && caseStudy.industryCategory !== 'your-industry') {
       const industryName = INDUSTRY_CATEGORIES[caseStudy.industryCategory];
-      tags.push({
-        value: industryName,
-        type: 'industry',
-        displayName: getTagDisplayName(industryName),
-        priority: 2
-      });
+      const displayName = getTagDisplayName(industryName);
+      if (displayName && !usedDisplayNames.has(displayName)) {
+        tags.push({
+          value: industryName,
+          type: 'industry',
+          displayName,
+          priority: 2
+        });
+        usedDisplayNames.add(displayName);
+      }
     }
     
-    // 3. Technology tags (третий приоритет)
-    caseStudy.technologies.slice(0, 3).forEach((tech, index) => {
-      tags.push({
-        value: tech,
-        type: 'technology',
-        displayName: getTagDisplayName(tech),
-        priority: 3 + index * 0.1 // 3.0, 3.1, 3.2
-      });
+    // 4. Technology tags (четвертый приоритет) - фильтруем скрытые и дубли
+    const filteredTechnologies = caseStudy.technologies
+      .map(tech => ({ original: tech, display: getTagDisplayName(tech) }))
+      .filter(({ display }) => display && !shouldHideTag(display) && !usedDisplayNames.has(display))
+      .slice(0, 3);
+    
+    filteredTechnologies.forEach(({ original, display }, index) => {
+      // Проверяем конфликты тегов
+      const hasDocuSign = caseStudy.technologies.includes('DocuSign');
+      const hasMonday = caseStudy.technologies.some(t => t.includes('Monday'));
+      
+      // Скипаем Web Forms если есть DocuSign
+      if (display === 'Web Forms' && hasDocuSign) {
+        return;
+      }
+      
+      // Скипаем CRM если есть Monday (кроме самого Monday)
+      if (display === 'CRM' && hasMonday && original !== 'Monday CRM' && !original.includes('Monday')) {
+        return;
+      }
+      
+      if (!usedDisplayNames.has(display)) {
+        tags.push({
+          value: original,
+          type: 'technology',
+          displayName: display,
+          priority: 3 + index * 0.1
+        });
+        usedDisplayNames.add(display);
+      }
     });
     
     // Фильтрация по приоритетным типам
@@ -161,7 +258,7 @@ import {
    * Преобразование тегов в формат для карточек (обратная совместимость)
    */
   export function tagsToCardFormat(tags: TagConfig[]): string[] {
-    return tags.map(tag => tag.displayName);
+    return tags.map(tag => tag.displayName).filter(name => name);
   }
   
   /**

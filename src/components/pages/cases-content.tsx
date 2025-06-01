@@ -12,7 +12,6 @@ import { IntegratedSearchFilters } from '@/components/ui/filters/integrated-sear
 import { MobileFiltersPanel } from '@/components/ui/filters/mobile-filters-panel';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { cn } from '@/lib/utils/utils';
 
 import { 
   allCaseStudies, 
@@ -31,10 +30,6 @@ export default function CasesContent() {
   
   // Состояние для мобильной версии
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [functionsCollapsed, setFunctionsCollapsed] = useState(false);
-  
-  // Состояние для hover эффектов
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   
   const { isMobile } = useDeviceDetection();
   
@@ -174,15 +169,15 @@ export default function CasesContent() {
       </section>
 
       {/* Main filters and cases section */}
-      <section className="py-12 bg-site-bg">
+      <section className="py-28 bg-site-bg">
         <div className="container mx-auto px-8">
           
           {/* Desktop Layout */}
           {!isMobile ? (
             <div className="space-y-12">
               
-              {/* Integrated Search and Filters */}
-              <div className="max-w-full mx-auto">
+              {/* ПОЛНОШИРИННАЯ поисковая строка */}
+              <div className="max-w-7xl mx-auto">
                 <IntegratedSearchFilters
                   searchQuery={searchQuery}
                   onSearchChange={handleSearchChange}
@@ -195,19 +190,17 @@ export default function CasesContent() {
                 />
               </div>
               
-              {/* Main Content Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-16 max-w-7xl mx-auto">
+              {/* Контейнер с фильтрами слева ОТ основного контента */}
+              <div className="relative max-w-7xl mx-auto">
                 
-                {/* Left Sidebar - ПРАВИЛЬНОЕ ВЫРАВНИВАНИЕ И STICKY */}
-                <div className="lg:col-span-1">
+                {/* Фильтры ВЫНЕСЕНЫ ЛЕВЕЕ основного контейнера */}
+                <div className="absolute left-[-240px] top-0 w-64">
                   <div className="sticky top-32 space-y-8 z-20">
                     
                     {/* Function Filters */}
                     <FunctionFilters
                       selectedFunctions={selectedFunctions}
                       onFunctionChange={handleFunctionChange}
-                      isCollapsed={functionsCollapsed}
-                      onToggleCollapse={() => setFunctionsCollapsed(!functionsCollapsed)}
                     />
                     
                     {/* Industry Filters */}
@@ -218,8 +211,8 @@ export default function CasesContent() {
                   </div>
                 </div>
                 
-                {/* Right Content - Cases Grid */}
-                <div className="lg:col-span-3">
+                {/* ПОЛНОШИРИННЫЙ контент */}
+                <div className="w-full">
                   
                   {/* Recently Viewed Cases */}
                   <div className="mb-8">
@@ -229,95 +222,79 @@ export default function CasesContent() {
                     />
                   </div>
                   
-                  {/* Cases Grid */}
+                  {/* ПОЛНОШИРИННАЯ Cases Grid - ВСЕГДА 3 КОЛОНКИ */}
                   {filteredCases.length > 0 ? (
-                    <motion.div
-                      variants={gridVariants}
-                      initial="hidden"
-                      animate="visible"
-                      className={cn(
-                        "grid gap-6",
-                        hasContactCard 
-                          ? "grid-cols-1 xl:grid-cols-2"
-                          : "grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-                      )}
-                      onMouseLeave={() => setHoveredCardId(null)}
-                    >
-                      <AnimatePresence>
-                        {/* Специальная карточка Contact Us (если есть) */}
-                        {hasContactCard && (
-                          <motion.div
-                            key="contact-card"
-                            variants={cardVariants}
-                            className={cn(
-                              "transition-all duration-500",
-                              hoveredCardId && hoveredCardId !== 'contact-us-card' && "opacity-50 blur-sm scale-95"
-                            )}
-                            onMouseEnter={() => setHoveredCardId('contact-us-card')}
-                          >
-                            <ContactCaseCard index={0} />
-                          </motion.div>
-                        )}
-                        
-                        {/* Обычные карточки кейсов */}
-                        {regularCases.map((caseItem, index) => {
-                          const cardData = toCaseCardFormat(caseItem);
-                          const adjustedIndex = hasContactCard ? index + 1 : index;
-                          
-                          return (
-                            <motion.div
-                              key={caseItem.id}
-                              variants={cardVariants}
-                              className={cn(
-                                "transition-all duration-500",
-                                hoveredCardId && hoveredCardId !== caseItem.id && "opacity-50 blur-sm scale-95"
-                              )}
-                              onMouseEnter={() => setHoveredCardId(caseItem.id)}
-                            >
-                              <CaseCard 
-                                id={cardData.id}
-                                title={cardData.title}
-                                description={cardData.description}
-                                industry={cardData.industry}
-                                company={cardData.company}
-                                location={cardData.location}
-                                results={cardData.results}
-                                image={cardData.image}
-                                tags={cardData.tags}
-                                href={`/cases/${cardData.id}`}
-                                index={adjustedIndex}
-                              />
-                            </motion.div>
-                          );
-                        })}
-                      </AnimatePresence>
-                    </motion.div>
-                  ) : (
-                    /* Empty State */
-                    <div className="bg-dark-gray rounded-lg p-12 text-center max-w-2xl mx-auto">
                       <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
+                        variants={gridVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-3 gap-6"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 515.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <h3 className="text-2xl font-semibold mb-4">No Cases Found</h3>
-                        <p className="text-light-gray mb-6 leading-relaxed">
-                          We could not find any cases that match your current filters. Try adjusting your search criteria or explore different categories.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                          <Button variant="secondary" onClick={clearAllFilters}>
-                            Clear All Filters
-                          </Button>
-                          <Button variant="primary" href="/contacts">
-                            Discuss Your Project
-                          </Button>
-                        </div>
+                        <AnimatePresence>
+                          {/* Специальная карточка Contact Us (если есть) */}
+                          {hasContactCard && (
+                            <motion.div
+                              key="contact-card"
+                              variants={cardVariants}
+                            >
+                              <ContactCaseCard index={0} />
+                            </motion.div>
+                          )}
+                          
+                          {/* Обычные карточки кейсов БЕЗ BLUR эффектов */}
+                          {regularCases.map((caseItem, index) => {
+                            const cardData = toCaseCardFormat(caseItem);
+                            const adjustedIndex = hasContactCard ? index + 1 : index;
+                            
+                            return (
+                              <motion.div
+                                key={caseItem.id}
+                                variants={cardVariants}
+                              >
+                                <CaseCard 
+                                  id={cardData.id}
+                                  title={cardData.title}
+                                  description={cardData.description}
+                                  industry={cardData.industry}
+                                  company={cardData.company}
+                                  location={cardData.location}
+                                  results={cardData.results}
+                                  image={cardData.image}
+                                  tags={cardData.tags}
+                                  href={`/cases/${cardData.id}`}
+                                  index={adjustedIndex}
+                                />
+                              </motion.div>
+                            );
+                          })}
+                        </AnimatePresence>
                       </motion.div>
-                    </div>
-                  )}
+                    ) : (
+                      /* Empty State */
+                      <div className="bg-dark-gray rounded-lg p-12 text-center max-w-2xl mx-auto">
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 515.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <h3 className="text-2xl font-semibold mb-4">No Cases Found</h3>
+                          <p className="text-light-gray mb-6 leading-relaxed">
+                            We could not find any cases that match your current filters. Try adjusting your search criteria or explore different categories.
+                          </p>
+                          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <Button variant="secondary" onClick={clearAllFilters}>
+                              Clear All Filters
+                            </Button>
+                            <Button variant="primary" href="/contacts">
+                              Discuss Your Project
+                            </Button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>

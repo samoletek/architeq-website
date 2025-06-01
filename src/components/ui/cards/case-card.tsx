@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
+import { generateCardTags } from '@/lib/utils/tag-utils';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface CaseCardProps {
   id?: string;
@@ -16,7 +18,7 @@ export interface CaseCardProps {
   location?: string;
   results?: string[];
   image?: string;
-  tags: string[];
+  tags?: string[]; // Оставляем для обратной совместимости
   href: string;
   className?: string;
   isCompact?: boolean;
@@ -67,10 +69,26 @@ export function CaseCard({
   isVisible = true
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [displayTags, setDisplayTags] = useState<string[]>([]);
 
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
   const [left1, left2] = getTwoOffsets(gradientKey);
+
+  // Генерируем теги с помощью новой системы
+  useEffect(() => {
+    if (id) {
+      const caseStudy = getCaseStudyById(id);
+      if (caseStudy) {
+        const generatedTags = generateCardTags(caseStudy);
+        setDisplayTags(generatedTags);
+      } else if (tags) {
+        setDisplayTags(tags);
+      }
+    } else if (tags) {
+      setDisplayTags(tags);
+    }
+  }, [id, tags]);
 
   useEffect(() => {
     if (id && typeof window !== 'undefined') {
@@ -184,10 +202,10 @@ export function CaseCard({
       {/* Контент карточки */}
       <div className="relative z-10 h-full flex flex-col">
         
-        {/* Теги */}
+        {/* ОБНОВЛЕННЫЕ Теги */}
         <div className="mb-6 flex-shrink-0">
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
+            {displayTags.map((tag, index) => (
               <span
                 key={index}
                 className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"

@@ -93,10 +93,10 @@ export function IntegratedSearchFilters({
   const activeFilters = getActiveFilters();
 
   return (
-    <div className={cn("bg-dark-gray rounded-lg", className)}>
+    <div className={cn("", className)}>
       
-      {/* Поисковая строка - убираем отступы для выравнивания с заголовками фильтров */}
-      <div className="p-0 pt-4"> {/* Убираем px-4, оставляем только верхний отступ */}
+      {/* Поисковая строка */}
+      <div className="p-0 pt-4">
         <div className="flex items-center gap-4 max-w-full">
           <div className="relative flex-grow">
             <input
@@ -130,50 +130,40 @@ export function IntegratedSearchFilters({
         </div>
       </div>
 
-      {/* Активные фильтры - убираем отступы для выравнивания с заголовками фильтров */}
+      {/* УПРОЩЕННЫЕ Активные фильтры - БЕЗ ФОНА И РАМКИ */}
       {hasActiveFilters && (
-        <div className="py-4"> {/* Убираем px-4, оставляем только вертикальные отступы */}
-          <div className="p-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center flex-wrap">
-                <span className="text-sm text-light-gray mr-2 whitespace-nowrap">Active filters:</span>
-                <div className="flex flex-wrap gap-1">
-                  {activeFilters.map(filter => (
-                    <motion.span 
-                      key={`${filter.type}-${filter.id}`}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className={cn(filter.color, "text-xs px-2 py-1 rounded-md flex items-center")}
+        <div className="py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center flex-wrap">
+              <span className="text-sm text-light-gray mr-2 whitespace-nowrap">Active filters:</span>
+              <div className="flex flex-wrap gap-1">
+                {activeFilters.map(filter => (
+                  <motion.span 
+                    key={`${filter.type}-${filter.id}`}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className={cn(filter.color, "text-xs px-2 py-1 rounded-md flex items-center")}
+                  >
+                    {filter.label}
+                    <button 
+                      onClick={filter.onRemove}
+                      className="ml-1 focus:outline-none hover:opacity-80 transition-opacity"
                     >
-                      {filter.label}
-                      <button 
-                        onClick={filter.onRemove}
-                        className="ml-1 focus:outline-none hover:opacity-80 transition-opacity"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </motion.span>
-                  ))}
-                </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </motion.span>
+                ))}
               </div>
-              
-              {/* Дополнительная кнопка Clear all в активных фильтрах */}
-              <button
-                onClick={onClearAll}
-                className="text-xs text-light-gray hover:text-white transition-colors whitespace-nowrap ml-4"
-              >
-                Clear all
-              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Счетчик результатов - убираем отступы для выравнивания с заголовками фильтров */}
-      <div className="pb-6 text-sm text-light-gray"> {/* Убираем px-4, оставляем только нижний отступ */}
+      {/* Счетчик результатов */}
+      <div className="pb-6 text-sm text-light-gray">
         {resultCount} {resultCount === 1 ? 'result' : 'results'} found
       </div>
     </div>

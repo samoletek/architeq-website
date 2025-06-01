@@ -12,9 +12,7 @@ export interface FunctionFiltersProps {
   onFunctionChange: (functionCategory: FunctionCategory) => void;
   className?: string;
   disabled?: boolean;
-  isCollapsed?: boolean;
-  onToggleCollapse?: () => void;
-  showCounts?: boolean; // Добавляем свойство showCounts
+  showCounts?: boolean;
 }
 
 export function FunctionFilters({
@@ -22,11 +20,10 @@ export function FunctionFilters({
   onFunctionChange,
   className,
   disabled = false,
-  isCollapsed = false,
-  onToggleCollapse,
-  showCounts = false // Значение по умолчанию
+  showCounts = false
 }: FunctionFiltersProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { isMobile } = useDeviceDetection();
 
   // Загружаем данные (имитация загрузки)
@@ -40,8 +37,8 @@ export function FunctionFilters({
   // Получаем данные с подсчетом
   const { functions } = getFilterCounts();
 
-  // Обработчик клика по тегу
-  const handleTagClick = (functionId: FunctionCategory) => {
+  // Обработчик клика по toggle (toggle логика)
+  const handleToggleChange = (functionId: FunctionCategory) => {
     if (disabled) return;
     onFunctionChange(functionId);
   };
@@ -51,17 +48,17 @@ export function FunctionFilters({
     return selectedFunctions.includes(functionId);
   };
 
-  // Анимационные варианты для тегов - БЕЗ ВЫДВИЖЕНИЯ
-  const tagVariants = {
-    initial: { x: -20, opacity: 0 },
+  // Анимационные варианты для toggle
+  const toggleVariants = {
+    initial: { scale: 0.95, opacity: 0 },
     animate: { 
-      x: 0, 
+      scale: 1, 
       opacity: 1,
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.2, ease: "easeOut" }
     },
     hover: { 
-      // Убираем сдвиг по x
-      transition: { duration: 0.2, ease: "easeInOut" }
+      scale: 1.02,
+      transition: { duration: 0.15, ease: "easeInOut" }
     },
     tap: { 
       scale: 0.98,
@@ -69,21 +66,11 @@ export function FunctionFilters({
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
   if (isLoading) {
     return (
       <div className={cn("flex items-center justify-center py-4", className)}>
         <div className="flex items-center space-x-2 text-light-gray">
-          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
           <span className="text-sm">Loading functions...</span>
         </div>
       </div>
@@ -95,129 +82,195 @@ export function FunctionFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* Заголовок секции с возможностью сворачивания */}
+      {/* Заголовок секции с toggle */}
       <div className="mb-6">
         <button
-          onClick={onToggleCollapse}
+          onClick={() => setIsCollapsed(!isCollapsed)}
           className="w-full flex items-center justify-between text-left group focus:outline-none"
-          disabled={!onToggleCollapse}
         >
-          <h3 className="text-lg font-semibold text-white flex items-center">
+          <h3 className="text-lg font-semibold text-white flex items-center min-h-[28px]">
             By Function
-            {/* Исключаем дефолтные теги из счетчика */}
-            {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
-              <span className="ml-2 bg-secondary text-gray-900 text-xs px-2 py-1 rounded-full font-medium shadow-neon-green-glow">
-                {selectedFunctions.filter(id => id !== 'custom-solutions').length}
-              </span>
-            )}
+            {/* Зарезервированное место для счетчика */}
+            <span className="ml-2 inline-flex items-center justify-center min-w-[24px] h-[24px]">
+              {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
+                <span className="bg-secondary/20 text-secondary text-xs px-2 py-1 rounded-full font-medium border border-secondary/30">
+                  {selectedFunctions.filter(id => id !== 'custom-solutions').length}
+                </span>
+              )}
+            </span>
           </h3>
           
-          {onToggleCollapse && (
-            <motion.div
-              animate={{ rotate: isCollapsed ? 0 : 180 }}
-              transition={{ duration: 0.2 }}
-              className="text-light-gray group-hover:text-white transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-          )}
+          <motion.div
+            animate={{ rotate: isCollapsed ? 0 : 180 }}
+            transition={{ duration: 0.2 }}
+            className="text-light-gray group-hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
         </button>
-        
-        {/* Удаляем подсказку */}
       </div>
 
-      {/* Вертикальные теги - СТАНДАРТИЗИРОВАННЫЕ РАЗМЕРЫ */}
+      {/* TOGGLE-СТИЛЬ для функций */}
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
             className={cn(
               "space-y-2",
-              isMobile && "space-y-1"
+              isMobile && "space-y-1.5"
             )}
           >
             {filteredFunctions.map(({ id: functionId, label, count }, index) => {
               const selected = isSelected(functionId);
 
               return (
-                <motion.button
+                <motion.div
                   key={functionId}
-                  variants={tagVariants}
+                  variants={toggleVariants}
+                  initial="initial"
+                  animate="animate"
                   whileHover={disabled ? undefined : "hover"}
                   whileTap={disabled ? undefined : "tap"}
-                  onClick={() => handleTagClick(functionId)}
-                  disabled={disabled}
                   className={cn(
-                    // Базовые стили - СТАНДАРТИЗИРОВАННЫЕ РАЗМЕРЫ И ВЫРАВНИВАНИЕ
-                    "relative w-full flex items-center justify-between px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 h-[40px]",
-                    "focus:outline-none text-left",
-                    
-                    // Состояние по умолчанию (цвета как у Industry - зеленые)
-                    !selected && [
-                      "bg-secondary/20 text-secondary",
-                      "hover:text-secondary hover:bg-secondary/30"
-                    ],
-                    
-                    // Выбранное состояние (зеленые со свечением)
-                    selected && [
-                      "text-secondary shadow-neon-green-glow"
-                    ],
-                    
-                    // Состояние отключения
-                    disabled && "opacity-50 cursor-not-allowed",
-                    
-                    // Мобильные стили - СТАНДАРТИЗИРОВАННЫЕ
-                    isMobile && "px-3 py-1.5 text-xs h-[36px]"
+                    "relative w-full transition-all duration-300",
+                    isMobile ? "min-h-[32px]" : "min-h-[36px]"
                   )}
                   style={{
-                    animationDelay: `${index * 0.1}s`
+                    animationDelay: `${index * 0.05}s`
                   }}
                 >
-                  {/* Левая часть - название с правильным выравниванием */}
-                  <div className="relative z-10 flex items-center">
-                    <span className="text-left leading-tight">{label}</span>
-                  </div>
-
-                  {/* Счетчик случаев (если showCounts=true) */}
-                  {showCounts && (
-                    <span className={cn(
-                      "text-xs px-2 py-1 rounded-full",
+                  <div
+                    className={cn(
+                      "group flex items-center justify-between w-full px-3 py-2 rounded-lg transition-all duration-300",
+                      "outline-none focus:outline-none active:outline-none",
                       selected 
-                        ? "bg-secondary/30 text-secondary" 
-                        : "bg-medium-gray/30 text-light-gray"
-                    )}>
-                      {count}
-                    </span>
-                  )}
-                </motion.button>
+                        ? "bg-gradient-to-r from-secondary/20 to-secondary/10 border border-secondary/30 shadow-sm" 
+                        : "bg-transparent hover:bg-secondary/5 border border-transparent hover:border-secondary/20",
+                      disabled && "opacity-50",
+                      isMobile && "text-xs px-2 py-1.5"
+                    )}
+                    style={{ outline: 'none', boxShadow: 'none' }}
+                    tabIndex={-1}
+                    onFocus={(e) => e.preventDefault()}
+                    onMouseDown={(e) => e.preventDefault()}
+                  >
+                    {/* Левая часть - название */}
+                    <div 
+                      className="flex items-center flex-grow pointer-events-none"
+                      style={{ outline: 'none', userSelect: 'none' }}
+                    >
+                      <span className={cn(
+                        "text-left leading-none font-medium transition-colors duration-200 select-none pointer-events-none",
+                        selected ? "text-secondary" : "text-white"
+                      )}
+                      style={{ outline: 'none', userSelect: 'none' }}
+                      >
+                        {label}
+                      </span>
+                    </div>
+
+                    {/* Правая часть - toggle switch + счетчик */}
+                    <div 
+                      className="flex items-center space-x-2 flex-shrink-0"
+                      style={{ outline: 'none' }}
+                    >
+                      {/* Счетчик случаев (если showCounts=true) */}
+                      {showCounts && (
+                        <span className={cn(
+                          "text-xs px-2 py-0.5 rounded-full transition-colors duration-200 pointer-events-none select-none",
+                          selected 
+                            ? "bg-secondary/25 text-secondary" 
+                            : "bg-white/10 text-light-gray"
+                        )}
+                        style={{ outline: 'none', userSelect: 'none' }}
+                        >
+                          {count}
+                        </span>
+                      )}
+
+                      {/* Toggle Switch */}
+                      <div 
+                        className="relative cursor-pointer outline-none focus:outline-none active:outline-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleToggleChange(functionId);
+                        }}
+                        onMouseDown={(e) => e.preventDefault()}
+                        style={{ outline: 'none', boxShadow: 'none' }}
+                        tabIndex={-1}
+                      >
+                        <div 
+                          className={cn(
+                            "w-10 h-5 rounded-full transition-all duration-300 relative overflow-hidden outline-none",
+                            selected
+                              ? "bg-secondary shadow-lg shadow-secondary/25" 
+                              : "bg-white/20 hover:bg-secondary/30"
+                          )}
+                          style={{ outline: 'none', boxShadow: selected ? '0 4px 12px rgba(176, 255, 116, 0.4)' : 'none' }}
+                        >
+                          {/* Toggle Circle */}
+                          <motion.div
+                            animate={{
+                              x: selected ? 18 : 2
+                            }}
+                            transition={{ 
+                              type: "spring", 
+                              stiffness: 500, 
+                              damping: 30 
+                            }}
+                            className={cn(
+                              "absolute top-0.5 w-4 h-4 rounded-full transition-colors duration-300",
+                              selected 
+                                ? "bg-white shadow-md" 
+                                : "bg-white/80 group-hover:bg-white"
+                            )}
+                          />
+                          
+                          {/* Внутреннее свечение при активном состоянии */}
+                          <AnimatePresence>
+                            {selected && (
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                className="absolute inset-0 rounded-full bg-secondary/30 blur-sm"
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               );
             })}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Компактный вид при сворачивании - БЕЗ ДЕФОЛТНЫХ ТЕГОВ */}
+      {/* Компактный вид при сворачивании */}
       {isCollapsed && selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-wrap gap-1"
+          className="flex flex-wrap gap-1.5"
         >
           {selectedFunctions.filter(id => id !== 'custom-solutions').slice(0, 3).map(functionId => (
             <span 
               key={functionId}
-              className="text-xs bg-secondary/20 text-secondary px-2 py-1 rounded-md"
+              className="text-xs bg-secondary/15 text-secondary px-2 py-1 rounded-md border border-secondary/25"
             >
               {FUNCTION_CATEGORIES[functionId]}
             </span>
           ))}
           {selectedFunctions.filter(id => id !== 'custom-solutions').length > 3 && (
-            <span className="text-xs text-light-gray">
+            <span className="text-xs text-light-gray px-2 py-1">
               +{selectedFunctions.filter(id => id !== 'custom-solutions').length - 3} more
             </span>
           )}

@@ -37,7 +37,6 @@ export function MobileFiltersPanel({
   className
 }: MobileFiltersPanelProps) {
   const [activeTab, setActiveTab] = useState<'industries' | 'functions'>('industries');
-  const [functionsCollapsed, setFunctionsCollapsed] = useState(false);
 
   // Подсчитываем активные фильтры
   const totalActiveFilters = selectedIndustries.length + selectedFunctions.length + (searchQuery.trim() ? 1 : 0);
@@ -295,8 +294,6 @@ export function MobileFiltersPanel({
                         selectedFunctions={selectedFunctions}
                         onFunctionChange={onFunctionChange}
                         showCounts={true}
-                        isCollapsed={functionsCollapsed}
-                        onToggleCollapse={() => setFunctionsCollapsed(!functionsCollapsed)}
                       />
                     </motion.div>
                   )}
