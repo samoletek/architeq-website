@@ -1,4 +1,4 @@
-// src/app/(pages)/services/page.tsx - Исправленная версия с улучшенными анимациями
+// src/app/(pages)/services/page.tsx - Версия с исправленными типами
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -7,9 +7,18 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
 import EnhancedProcessSection from '@/components/sections/enhanced-process-section';
+import ParallaxAuraBackground from '@/components/ui/effects/parallax-aura-background';
+
+// Типы для данных о услугах
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  features: string[];
+}
 
 // Данные о услугах
-const services = [
+const services: Service[] = [
   {
     id: 'business-process',
     title: 'Workflow Design & Automation',
@@ -85,23 +94,23 @@ const services = [
 ];
 
 interface ServiceNavigationProps {
-  services: typeof services;
+  services: Service[];
   activeIndex: number;
   onServiceClick: (index: number) => void;
   scrollProgress: number;
 }
 
-// Компонент левой навигации с анимацией следования за курсором
+// Улучшенная навигация с дополнительными эффектами
 function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgress }: ServiceNavigationProps) {
-  const [, setHoveredIndex] = useState(-1);
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
   const navItemHeight = 48;
   const navItemSpacing = 24;
   const totalHeight = (navItemHeight + navItemSpacing) * (services.length - 1);
   
   return (
-    <div className="h-full flex flex-col p-8">
+    <div className="h-full flex flex-col p-8 relative z-10">
       <div className="relative flex-1 flex items-center">
-        {/* Проценты ближе к навигационной линии */}
+        {/* Проценты с усиленным свечением */}
         <div 
           className="absolute left-[-60px] text-center z-20 w-12"
           style={{
@@ -117,14 +126,15 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
             style={{
-              textShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4)'
+              textShadow: '0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8), 0 0 100px rgba(255, 255, 255, 0.6)',
+              filter: 'drop-shadow(0 0 20px rgba(178, 75, 243, 0.8))'
             }}
           >
             {Math.round(scrollProgress * 100)}%
           </motion.div>
         </div>
 
-        {/* Навигационные элементы */}
+        {/* Навигационные элементы с улучшенными эффектами */}
         <nav className="relative ml-12 flex-1 flex flex-col justify-center">
           <div className="space-y-6">
             {services.map((service, index) => (
@@ -136,14 +146,13 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(-1)}
                 whileHover={{ 
-                  x: 8,
+                  x: 12,
                   transition: {
                     type: "spring",
-                    stiffness: 800,
-                    damping: 15,
-                    mass: 0.2,
-                    velocity: 10,
-                    restDelta: 0.001,
+                    stiffness: 1000,
+                    damping: 20,
+                    mass: 0.3,
+                    velocity: 15,
                     duration: 0
                   }
                 }}
@@ -151,14 +160,19 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
                 <div className="flex-1 flex items-center">
                   <motion.h4 
                     className={`
-                      font-sans font-normal text-base leading-relaxed transition-all duration-300
+                      font-sans font-medium text-base leading-relaxed transition-all duration-300
                       ${activeIndex === index 
                         ? 'text-white' 
-                        : 'text-gray-500'
+                        : hoveredIndex === index
+                          ? 'text-gray-300'
+                          : 'text-gray-500'
                       }
                     `}
                     style={activeIndex === index ? {
-                      textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6)'
+                      textShadow: '0 0 20px rgba(255,255,255,0.9), 0 0 40px rgba(255,255,255,0.7), 0 0 60px rgba(178,75,243,0.5)',
+                      filter: 'drop-shadow(0 0 10px rgba(178, 75, 243, 0.6))'
+                    } : hoveredIndex === index ? {
+                      textShadow: '0 0 10px rgba(255,255,255,0.6), 0 0 20px rgba(178,75,243,0.4)'
                     } : {}}
                   >
                     {service.title}
@@ -169,41 +183,43 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
           </div>
         </nav>
 
-        {/* Белая навигационная линия */}
+        {/* Улучшенная навигационная линия с дополнительными эффектами */}
         <div 
           className="absolute left-4 w-0.5 rounded-full"
           style={{ 
             height: `${totalHeight}px`,
             top: `calc(50% - ${totalHeight/2}px)`,
-            backgroundColor: 'rgba(255, 255, 255, 1)',
-            boxShadow: '0 0 8px rgba(255,255,255,0.6), 0 0 16px rgba(255,255,255,0.4)'
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.3) 100%)',
+            boxShadow: '0 0 12px rgba(255,255,255,0.8), 0 0 24px rgba(178,75,243,0.6), inset 0 0 6px rgba(255,255,255,0.4)',
+            filter: 'drop-shadow(0 0 8px rgba(178, 75, 243, 0.8))'
           }}
         />
         
-        {/* Белый светящийся круг-индикатор */}
+        {/* Усиленный светящийся индикатор */}
         <motion.div 
-          className="absolute w-4 h-4 rounded-full z-10"
+          className="absolute w-5 h-5 rounded-full z-10"
           style={{
-            left: `${16 - 10}px`,
+            left: `${16 - 10}px`, // Центрируем: 16px (центр линии) - 10px (половина ширины кружка)
             top: `calc(50% - ${totalHeight/2}px)`,
-            backgroundColor: 'rgba(255, 255, 255, 1)'
+            background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 40%, rgba(178,75,243,0.8) 100%)'
           }}
           animate={{ 
             y: `${scrollProgress * totalHeight}px`,
             boxShadow: [
-              '0 0 25px rgba(178,75,243,1), 0 0 50px rgba(178,75,243,0.9), 0 0 75px rgba(178,75,243,0.7), 0 0 100px rgba(178,75,243,0.5)',
-              '0 0 35px rgba(178,75,243,1), 0 0 70px rgba(178,75,243,1), 0 0 105px rgba(178,75,243,0.8), 0 0 140px rgba(178,75,243,0.6)',
-              '0 0 25px rgba(178,75,243,1), 0 0 50px rgba(178,75,243,0.9), 0 0 75px rgba(178,75,243,0.7), 0 0 100px rgba(178,75,243,0.5)'
-            ]
+              '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(178,75,243,1), 0 0 60px rgba(178,75,243,0.8), 0 0 80px rgba(178,75,243,0.6)',
+              '0 0 30px rgba(255,255,255,1), 0 0 60px rgba(178,75,243,1), 0 0 90px rgba(178,75,243,0.9), 0 0 120px rgba(178,75,243,0.7)',
+              '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(178,75,243,1), 0 0 60px rgba(178,75,243,0.8), 0 0 80px rgba(178,75,243,0.6)'
+            ],
+            scale: [1, 1.2, 1]
           }}
           transition={{ 
-            y: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-            boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+            y: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+            boxShadow: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+            scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
           }}
-          onMouseEnter={() => setHoveredIndex(activeIndex)}
-          onMouseLeave={() => setHoveredIndex(-1)}
         >
-          <div className="absolute inset-0.5 rounded-full bg-white" />
+          <div className="absolute inset-1 rounded-full bg-white opacity-90" />
+          <div className="absolute inset-2 rounded-full bg-white" />
         </motion.div>
       </div>
     </div>
@@ -211,20 +227,20 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
 }
 
 interface HorizontalServiceCardProps {
-  service: typeof services[0];
+  service: Service;
   isActive: boolean;
   direction: 'up' | 'down' | 'none';
   isHovered: boolean;
   onHover: (hovered: boolean) => void;
 }
 
-// Карточка с исправленной синхронизацией заднего слоя
+// Улучшенная карточка с совместимостью с аура-эффектом
 function HorizontalServiceCard({ service, isActive, direction, isHovered, onHover }: HorizontalServiceCardProps) {
   const cardVariants = {
     enter: () => ({
       opacity: 0,
-      scale: 1,
-      y: 5
+      scale: 0.98,
+      y: 8
     }),
     center: {
       opacity: 1,
@@ -233,25 +249,24 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
     },
     exit: () => ({
       opacity: 0,
-      scale: 1,
-      y: -5
+      scale: 0.98,
+      y: -8
     }),
   };
 
-  // Анимация hover эффекта только для верхней карточки
   const hoverAnimation = {
-    y: isHovered ? -2 : 0,
-    scale: isHovered ? 1.01 : 1,
+    y: isHovered ? -3 : 0,
+    scale: isHovered ? 1.015 : 1,
   };
 
   return (
     <motion.div 
-      className="relative w-full" 
+      className="relative w-full z-10" 
       style={{ height: '560px' }}
       animate={hoverAnimation}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Нижний слой - движется синхронно с основной карточкой */}
+      {/* Фоновый слой - теперь более прозрачный для совместимости с аурой */}
       <motion.div
         key={`${service.id}-bg`}
         custom={direction}
@@ -260,10 +275,10 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
         animate="center"
         exit="exit"
         transition={{ 
-          duration: 0.4,
+          duration: 0.5,
           ease: [0.4, 0, 0.2, 1],
-          opacity: { duration: 0.3 },
-          y: { duration: 0.4 }
+          opacity: { duration: 0.4 },
+          y: { duration: 0.5 }
         }}
         className="absolute inset-0 rounded-2xl overflow-hidden -z-10"
         style={{
@@ -272,69 +287,23 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
           right: '-8px',
           bottom: '-8px',
           background: `
-            radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.4) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.2) 0%, transparent 50%),
-            linear-gradient(135deg, #170A24 0%, #150920 50%, #12071A 100%)
+            radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+            linear-gradient(135deg, rgba(23, 10, 36, 0.6) 0%, rgba(21, 9, 32, 0.7) 50%, rgba(18, 7, 26, 0.8) 100%)
           `,
-          border: '1px solid rgba(119, 71, 207, 0.2)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(119, 71, 207, 0.15)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
           boxShadow: `
-            0 8px 32px rgba(119, 71, 207, 0.3),
-            0 0 64px rgba(178, 75, 243, 0.2),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1)
+            0 8px 32px rgba(119, 71, 207, 0.2),
+            0 0 64px rgba(178, 75, 243, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05)
           `,
         }}
-      >
-        {/* Хаотичное анимированное свечение */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{ 
-            background: [
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`,
-              `radial-gradient(circle at 80% 20%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 20% 80%, rgba(178, 75, 243, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.3) 0%, transparent 40%)`,
-              `radial-gradient(circle at 10% 30%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 90% 70%, rgba(178, 75, 243, 0.2) 0%, transparent 40%),
-               radial-gradient(circle at 40% 50%, rgba(139, 92, 246, 0.4) 0%, transparent 40%)`,
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`
-            ]
-          }}
-          transition={{ 
-            duration: 12, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "reverse"
-          }}
-        />
-        
-        {/* Дополнительное свечение по краям с хаотичной анимацией */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            boxShadow: [
-              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`,
-              `inset 0 0 60px rgba(178, 75, 243, 0.3), inset 0 0 100px rgba(119, 71, 207, 0.15), 0 0 80px rgba(178, 75, 243, 0.4)`,
-              `inset 0 0 50px rgba(139, 92, 246, 0.25), inset 0 0 90px rgba(178, 75, 243, 0.12), 0 0 70px rgba(119, 71, 207, 0.35)`,
-              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`
-            ]
-          }}
-          transition={{ 
-            duration: 8, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "reverse"
-          }}
-        />
-      </motion.div>
+      />
 
-      {/* Верхний слой - стеклянная карточка с плавными переходами */}
+      {/* Основная карточка - еще более стеклянная */}
       <motion.div
         key={service.id}
         custom={direction}
@@ -343,10 +312,10 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
         animate="center"
         exit="exit"
         transition={{ 
-          duration: 0.4,
+          duration: 0.5,
           ease: [0.4, 0, 0.2, 1],
-          opacity: { duration: 0.3 },
-          y: { duration: 0.4 }
+          opacity: { duration: 0.4 },
+          y: { duration: 0.5 }
         }}
         className={`
           relative rounded-2xl p-12 overflow-hidden group w-full
@@ -355,34 +324,40 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
         style={{
           height: '560px',
           width: '100%',
-          background: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(25px)',
-          WebkitBackdropFilter: 'blur(25px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          animation: 'float 6s ease-in-out infinite',
+          background: 'rgba(255, 255, 255, 0.02)',
+          backdropFilter: 'blur(35px)',
+          WebkitBackdropFilter: 'blur(35px)',
+          border: '1px solid rgba(255, 255, 255, 0.06)',
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         }}
         onMouseEnter={() => onHover(true)}
         onMouseLeave={() => onHover(false)}
       >
-        {/* Контент карточки - увеличенные отступы сверху и снизу для центрирования */}
+        {/* Контент карточки */}
         <div className="relative z-10 h-full flex flex-col justify-center py-8">
-          {/* Заголовок и подзаголовок - выровнены по центру */}
+          {/* Заголовок и подзаголовок */}
           <div className="mb-8 text-center">
-            <h3 className="text-3xl font-bold leading-tight text-white mb-6">
+            <h3 className="text-3xl font-bold leading-tight text-white mb-6"
+                style={{
+                  textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                }}>
               {service.title}
             </h3>
-            <p className="text-white text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white text-lg leading-relaxed max-w-2xl mx-auto opacity-90">
               {service.description}
             </p>
           </div>
           
-          {/* Возможности - выровнены по левому краю */}
+          {/* Возможности */}
           <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-xl font-bold mb-6 text-white text-left">
+            <h4 className="text-xl font-bold mb-6 text-white text-left"
+                style={{
+                  textShadow: '0 0 15px rgba(255,255,255,0.6)'
+                }}>
               Core Capabilities:
             </h4>
             <div className="space-y-4 max-w-xl w-full">
-              {service.features.slice(0, 4).map((feature, index) => (
+              {service.features.slice(0, 4).map((feature: string, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -391,13 +366,13 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                     x: isActive ? 0 : -20
                   }}
                   transition={{ 
-                    duration: 0.4, 
-                    delay: isActive ? index * 0.1 + 0.3 : 0,
+                    duration: 0.5, 
+                    delay: isActive ? index * 0.12 + 0.3 : 0,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
                   className="flex items-start"
                 >
-                  {/* Пульсирующие буллиты с свечением */}
+                  {/* Улучшенные буллиты с аура-эффектом */}
                   <motion.div 
                     className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0"
                     initial={{ scale: 0 }}
@@ -405,30 +380,31 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                       scale: isActive ? 1 : 0
                     }}
                     transition={{ 
-                      scale: { duration: 0.3, delay: isActive ? index * 0.1 + 0.4 : 0, ease: "backOut" }
+                      scale: { duration: 0.4, delay: isActive ? index * 0.12 + 0.4 : 0, ease: "backOut" }
                     }}
                     style={{
-                      boxShadow: isActive ? '0 0 8px rgba(178,75,243,0.6), 0 0 16px rgba(178,75,243,0.4)' : 'none'
+                      boxShadow: isActive ? '0 0 12px rgba(178,75,243,0.8), 0 0 24px rgba(178,75,243,0.5)' : 'none',
+                      background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
                     }}
                   >
                     <motion.div 
                       className="w-1.5 h-1.5 rounded-full bg-primary" 
                       initial={{ scale: 0 }}
                       animate={{ 
-                        scale: isActive ? [1, 1.4, 1] : 0
+                        scale: isActive ? [1, 1.5, 1] : 0
                       }}
                       transition={{ 
-                        duration: isActive ? 1.5 : 0.2, 
-                        delay: isActive ? index * 0.1 + 0.5 : 0,
+                        duration: isActive ? 2 : 0.3, 
+                        delay: isActive ? index * 0.12 + 0.5 : 0,
                         ease: "easeInOut",
                         repeat: isActive ? Infinity : 0
                       }}
                       style={{
-                        boxShadow: isActive ? '0 0 6px rgba(178,75,243,0.8), 0 0 12px rgba(178,75,243,0.6)' : 'none'
+                        boxShadow: isActive ? '0 0 8px rgba(178,75,243,1), 0 0 16px rgba(178,75,243,0.8)' : 'none'
                       }}
                     />
                   </motion.div>
-                  <span className="text-white text-base leading-relaxed text-left">
+                  <span className="text-white text-base leading-relaxed text-left opacity-95">
                     {feature}
                   </span>
                 </motion.div>
@@ -436,7 +412,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
             </div>
           </div>
           
-          {/* Кнопка CTA с зеркальным эффектом */}
+          {/* CTA кнопка с улучшенными эффектами */}
           <div className="mt-8 flex justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -444,23 +420,28 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                 opacity: isHovered ? 1 : 0,
                 y: isHovered ? 0 : 20
               }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <Link href={`/services/${service.id}`}>
                 <Button 
                   variant="primary" 
                   className="text-base py-3 px-6 transition-all duration-300 relative overflow-hidden group"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
+                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.25) 100%)',
+                    backdropFilter: 'blur(15px)',
+                    WebkitBackdropFilter: 'blur(15px)',
+                    border: '1px solid rgba(178, 75, 243, 0.4)',
+                    boxShadow: '0 0 20px rgba(178, 75, 243, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  {/* Зеркальный эффект */}
+                  {/* Улучшенный зеркальный эффект */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-in-out"
                   />
-                  <span className="flex items-center relative z-10">
+                  <span className="flex items-center relative z-10"
+                        style={{
+                          textShadow: '0 0 10px rgba(255,255,255,0.5)'
+                        }}>
                     Learn More
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -496,7 +477,7 @@ export default function ServicesPage() {
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Обработчик прокрутки с полным скрытием Hero
+  // Обработчик прокрутки (тот же самый)
   useEffect(() => {
     if (!sectionRef.current) return;
     
@@ -505,35 +486,29 @@ export default function ServicesPage() {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          if (!sectionRef.current) return;
+          if (!sectionRef.current || isScrollingRef.current) return;
           
           const rect = sectionRef.current.getBoundingClientRect();
           const sectionHeight = rect.height;
           const windowHeight = window.innerHeight;
           
-          // Определяем, находимся ли мы в секции
           const inSection = rect.top <= 0 && rect.bottom >= windowHeight;
           
-          if (inSection && !isScrollingRef.current) {
-            // Вычисляем прогресс на основе позиции в секции
+          if (inSection) {
             const scrolled = Math.abs(rect.top);
             const totalScrollable = sectionHeight - windowHeight;
             const progress = Math.min(scrolled / totalScrollable, 1);
             
-            // Корректировка: первые 15% скролла скрывают hero, остальные 85% - переключение карточек
             if (progress <= 0.15) {
-              // В первых 15% скролла остаемся на первой карточке
               setScrollProgress(0);
               if (activeIndex !== 0) {
                 setDirection('up');
                 setActiveIndex(0);
               }
             } else {
-              // В остальных 85% переключаем карточки
-              const adjustedProgress = (progress - 0.15) / 0.85; // Нормализуем к 0-1
+              const adjustedProgress = (progress - 0.15) / 0.85;
               setScrollProgress(adjustedProgress);
               
-              // Исправленная формула: показываем все решения
               const newIndex = Math.min(
                 Math.floor(adjustedProgress * services.length),
                 services.length - 1
@@ -553,14 +528,14 @@ export default function ServicesPage() {
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Вызываем сразу для инициализации
+    handleScroll();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [activeIndex]);
   
-  // Обработчик клика по навигации
+  // Обработчик клика по навигации (тот же самый)
   const handleServiceClick = (index: number) => {
     if (index === activeIndex) return;
     
@@ -568,30 +543,58 @@ export default function ServicesPage() {
     setDirection(index > activeIndex ? 'down' : 'up');
     setActiveIndex(index);
     
-    // Вычисляем нужную позицию скролла
     const newProgress = index / (services.length - 1);
     setScrollProgress(newProgress);
     
-    // Сбрасываем блокировку
+    if (sectionRef.current) {
+      const rect = sectionRef.current.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const windowHeight = window.innerHeight;
+      const totalScrollable = sectionHeight - windowHeight;
+      
+      const heroProgress = 0.15;
+      const cardProgress = (1 - heroProgress) * newProgress;
+      const targetProgress = heroProgress + cardProgress;
+      
+      const currentScrollTop = window.pageYOffset;
+      const sectionTop = currentScrollTop + rect.top;
+      const targetScrollTop = sectionTop + (totalScrollable * targetProgress);
+      
+      window.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth'
+      });
+    }
+    
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
     
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-    }, 600);
+    }, 1000);
   };
   
   return (
     <SiteLayout>
-      {/* Hero section - будет скрываться при скролле */}
-      <section className="section-hero bg-dark-gray">
+      {/* Parallax Aura Background - глобальный фоновый эффект для всей страницы */}
+      <ParallaxAuraBackground 
+        scrollProgress={scrollProgress}
+        activeIndex={activeIndex}
+        className="opacity-80"
+      />
+
+      {/* Hero section */}
+      <section className="section-hero bg-transparent relative z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">
+            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
+                style={{
+                  textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                }}>
               How We Architect
             </h1>
-            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
+            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing opacity-90">
               We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             <div className="flex flex-col sm:flex-row justify-center button-gap-large">
@@ -608,31 +611,32 @@ export default function ServicesPage() {
 
       <section 
         ref={sectionRef}
-        className="relative bg-dark-gray"
+        className="relative bg-transparent"
         style={{ 
           height: `${150 + services.length * 130}vh`,
           minHeight: '900vh'
         }}
       >
-        {/* Заголовки с применением стилей из globals.css */}
+        {/* Заголовки */}
         <div className="absolute top-16 left-0 right-0 z-10 text-center">
-          <h3 className="section-title-large font-bold text-white mb-4">
+          <h3 className="section-title-large font-bold text-white mb-4"
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}>
             Solutions
           </h3>
-          <p className="section-subtitle-large text-light-gray">
+          <p className="section-subtitle-large text-light-gray opacity-80">
             Scroll to explore our services
           </p>
         </div>
 
         {/* Sticky контейнер */}
         <div className="sticky top-0 h-screen overflow-hidden">
-          
-          {/* Основной контент */}
           <div className="absolute inset-0 pt-32 pb-16">
             <div className="container mx-auto px-4 h-full flex items-center">
               <div className="w-full grid grid-cols-12 gap-12">
                 
-                {/* Левая навигация - 40% */}
+                {/* Левая навигация */}
                 <div className="col-span-5">
                   <ServiceNavigation 
                     services={services}
@@ -642,7 +646,7 @@ export default function ServicesPage() {
                   />
                 </div>
                 
-                {/* Правая область карточек - 60% - фиксированная высота */}
+                {/* Правая область карточек */}
                 <div className="col-span-7 flex items-center">
                   <div className="relative w-full max-w-4xl">
                     <AnimatePresence mode="wait" custom={direction}>
@@ -663,14 +667,19 @@ export default function ServicesPage() {
         </div>
       </section>
 
-{/* Enhanced Process section */}
-<EnhancedProcessSection />
+      {/* Enhanced Process section */}
+      <EnhancedProcessSection />
       
       {/* CTA section */}
-      <section className="section-cta bg-dark-gradient">
+      <section className="section-cta bg-transparent relative z-10">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="section-title-medium font-bold section-title-spacing">Ready to Streamline the Flow?</h2>
-          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
+          <h2 className="section-title-medium font-bold section-title-spacing"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
+              }}>
+            Ready to Streamline the Flow?
+          </h2>
+          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing opacity-90">
             Trust our team to map your processes and<br />uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center button-gap-default">

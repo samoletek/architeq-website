@@ -90,7 +90,7 @@ export const CONTACT_CASE_CARD: CaseStudy = {
   technologies: ['Consultation', 'Custom Development', 'Integration'],
   results: [
     'Personalized solution design',
-    'Expert consultation included',
+    'Consultation included',
     'Tailored to your specific needs'
   ],
   clickableTags: {
@@ -119,7 +119,7 @@ const tagDisplayNames: Record<string, string> = {
   'Your Industry': 'Custom',
   'Financial Services': 'Finance',
   'Dispatching Services': 'Dispatching',
-  'Car Hauling': 'Automotive',
+  'Car Hauling': 'Car Hauling',
   'Commercial Music Production': 'Music',
   'Healthcare & Medical Supplies': 'Healthcare',
   'Cabinetry & Coatings': 'Cabinetry',
@@ -130,16 +130,13 @@ const tagDisplayNames: Record<string, string> = {
   'API integrations': 'API',
   'Google Workspace API': 'Google API',
   'Google Data Studio': 'Analytics',
-  'Google Docs API': 'Docs API',
-  'Google Sheets': 'Sheets',
-  'GoogleSheets': 'Sheets',
-  'GoogleDrive': 'Drive',
+  'Google Docs API': 'Google API',
+  'Google Sheets': 'Google API',
+  'GoogleSheets': 'Google API',
+  'GoogleDrive': 'Google API',
   'Tailwind CSS': 'Tailwind',
-  'Iron Session': 'Sessions',
-  'React Select': 'React',
   'QuickBooks': 'QB',
-  'Email API': 'Email',
-  'OpenAI Whisper': 'Whisper',
+  'Email API': 'Email API',
   'Google Speech-to-Text API': 'Speech API',
   'ElevenLabs': 'Voice AI',
   'CabinetVision': 'CAD',
@@ -230,10 +227,10 @@ export const allCaseStudies: CaseStudy[] = [
       'Email quote delivery system with unique quote tracking',
       'Adaptive, optimized web application for different types of devices'
     ],
-    technologies: ['Next.js', 'React', 'TypeScript', 'API integrations', 'Tailwind CSS', 'EmailJS', 'Iron Session', 'React Select'],
+    technologies: ['Next.js', 'TypeScript', 'API integrations', 'Tailwind CSS', 'EmailJS', 'Iron Session'],
     clickableTags: {
       companies: ['Car Haul Direct'],
-      technologies: ['Next.js', 'React', 'TypeScript', 'API integrations'],
+      technologies: ['React', 'TypeScript', 'API integrations'],
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
