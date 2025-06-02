@@ -1,4 +1,3 @@
-// src/app/(pages)/services/page.tsx - Версия с исправленными типами
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -199,7 +198,7 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
         <motion.div 
           className="absolute w-5 h-5 rounded-full z-10"
           style={{
-            left: `${16 - 10}px`, // Центрируем: 16px (центр линии) - 10px (половина ширины кружка)
+            left: `${16 - 10}px`,
             top: `calc(50% - ${totalHeight/2}px)`,
             background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 40%, rgba(178,75,243,0.8) 100%)'
           }}
@@ -266,7 +265,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Фоновый слой - теперь более прозрачный для совместимости с аурой */}
+      {/* Фоновый слой - с анимированными сферами из исходного файла */}
       <motion.div
         key={`${service.id}-bg`}
         custom={direction}
@@ -301,7 +300,53 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
             inset 0 1px 0 rgba(255, 255, 255, 0.05)
           `,
         }}
-      />
+      >
+        {/* Хаотичное анимированное свечение - сохранено из исходного файла */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{ 
+            background: [
+              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
+               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`,
+              `radial-gradient(circle at 80% 20%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 20% 80%, rgba(178, 75, 243, 0.4) 0%, transparent 40%),
+               radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.3) 0%, transparent 40%)`,
+              `radial-gradient(circle at 10% 30%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
+               radial-gradient(circle at 90% 70%, rgba(178, 75, 243, 0.2) 0%, transparent 40%),
+               radial-gradient(circle at 40% 50%, rgba(139, 92, 246, 0.4) 0%, transparent 40%)`,
+              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
+               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`
+            ]
+          }}
+          transition={{ 
+            duration: 12, 
+            repeat: Infinity,
+            ease: "easeInOut",
+            repeatType: "reverse"
+          }}
+        />
+        
+        {/* Дополнительное свечение по краям с хаотичной анимацией - сохранено */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            boxShadow: [
+              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`,
+              `inset 0 0 60px rgba(178, 75, 243, 0.3), inset 0 0 100px rgba(119, 71, 207, 0.15), 0 0 80px rgba(178, 75, 243, 0.4)`,
+              `inset 0 0 50px rgba(139, 92, 246, 0.25), inset 0 0 90px rgba(178, 75, 243, 0.12), 0 0 70px rgba(119, 71, 207, 0.35)`,
+              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`
+            ]
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity,
+            ease: "easeInOut",
+            repeatType: "reverse"
+          }}
+        />
+      </motion.div>
 
       {/* Основная карточка - еще более стеклянная */}
       <motion.div
@@ -412,7 +457,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
             </div>
           </div>
           
-          {/* CTA кнопка с улучшенными эффектами */}
+          {/* CTA кнопка с улучшенными эффектами - сохранено из исходного файла */}
           <div className="mt-8 flex justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -427,16 +472,16 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                   variant="primary" 
                   className="text-base py-3 px-6 transition-all duration-300 relative overflow-hidden group"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.25) 100%)',
-                    backdropFilter: 'blur(15px)',
-                    WebkitBackdropFilter: 'blur(15px)',
-                    border: '1px solid rgba(178, 75, 243, 0.4)',
-                    boxShadow: '0 0 20px rgba(178, 75, 243, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 8px 32px rgba(119, 71, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  {/* Улучшенный зеркальный эффект */}
+                  {/* Зеркальный эффект */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-in-out"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
                   />
                   <span className="flex items-center relative z-10"
                         style={{
@@ -477,7 +522,7 @@ export default function ServicesPage() {
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Обработчик прокрутки (тот же самый)
+  // Обработчик прокрутки с полным скрытием Hero
   useEffect(() => {
     if (!sectionRef.current) return;
     
@@ -492,23 +537,29 @@ export default function ServicesPage() {
           const sectionHeight = rect.height;
           const windowHeight = window.innerHeight;
           
+          // Определяем, находимся ли мы в секции
           const inSection = rect.top <= 0 && rect.bottom >= windowHeight;
           
           if (inSection) {
+            // Вычисляем прогресс на основе позиции в секции
             const scrolled = Math.abs(rect.top);
             const totalScrollable = sectionHeight - windowHeight;
             const progress = Math.min(scrolled / totalScrollable, 1);
             
+            // Корректировка: первые 15% скролла скрывают hero, остальные 85% - переключение карточек
             if (progress <= 0.15) {
+              // В первых 15% скролла остаемся на первой карточке
               setScrollProgress(0);
               if (activeIndex !== 0) {
                 setDirection('up');
                 setActiveIndex(0);
               }
             } else {
-              const adjustedProgress = (progress - 0.15) / 0.85;
+              // В остальных 85% переключаем карточки
+              const adjustedProgress = (progress - 0.15) / 0.85; // Нормализуем к 0-1
               setScrollProgress(adjustedProgress);
               
+              // Исправленная формула: показываем все решения
               const newIndex = Math.min(
                 Math.floor(adjustedProgress * services.length),
                 services.length - 1
@@ -527,52 +578,67 @@ export default function ServicesPage() {
       }
     };
     
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Добавляем немедленный вызов и более частое обновление
     handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Дополнительно отслеживаем изменения размера окна
+    window.addEventListener('resize', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
-  }, [activeIndex]);
+  }, [activeIndex]); // Убрали services.length - это константа
   
-  // Обработчик клика по навигации (тот же самый)
+  // ИСПРАВЛЕННЫЙ обработчик клика по навигации с синхронизацией скролла
   const handleServiceClick = (index: number) => {
     if (index === activeIndex) return;
     
+    // Блокируем обработчик скролла
     isScrollingRef.current = true;
+    
+    // Устанавливаем новое состояние
     setDirection(index > activeIndex ? 'down' : 'up');
     setActiveIndex(index);
     
+    // Вычисляем нужную позицию скролла и синхронизируем
     const newProgress = index / (services.length - 1);
     setScrollProgress(newProgress);
     
+    // Программно прокручиваем страницу до соответствующей позиции
     if (sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
       const totalScrollable = sectionHeight - windowHeight;
       
+      // Вычисляем целевую позицию скролла
+      // Учитываем что первые 15% - это hero, остальные 85% - карточки
       const heroProgress = 0.15;
       const cardProgress = (1 - heroProgress) * newProgress;
       const targetProgress = heroProgress + cardProgress;
       
+      // Вычисляем абсолютную позицию скролла
       const currentScrollTop = window.pageYOffset;
       const sectionTop = currentScrollTop + rect.top;
       const targetScrollTop = sectionTop + (totalScrollable * targetProgress);
       
+      // Плавно прокручиваем к целевой позиции
       window.scrollTo({
         top: targetScrollTop,
         behavior: 'smooth'
       });
     }
     
+    // Сбрасываем блокировку с увеличенной задержкой для завершения анимации
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
     
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-    }, 1000);
+    }, 1000); // Увеличили до 1 секунды для надежности
   };
   
   return (
