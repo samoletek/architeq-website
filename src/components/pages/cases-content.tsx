@@ -231,20 +231,42 @@ export default function CasesContent() {
                         className="grid grid-cols-3 gap-6"
                       >
                         <AnimatePresence>
-                          {/* Специальная карточка Contact Us (если есть) */}
+                          {/* Первый обычный кейс */}
+                          {regularCases.length > 0 && (
+                            <motion.div
+                              key={regularCases[0].id}
+                              variants={cardVariants}
+                            >
+                              <CaseCard 
+                                id={toCaseCardFormat(regularCases[0]).id}
+                                title={toCaseCardFormat(regularCases[0]).title}
+                                description={toCaseCardFormat(regularCases[0]).description}
+                                industry={toCaseCardFormat(regularCases[0]).industry}
+                                company={toCaseCardFormat(regularCases[0]).company}
+                                location={toCaseCardFormat(regularCases[0]).location}
+                                results={toCaseCardFormat(regularCases[0]).results}
+                                image={toCaseCardFormat(regularCases[0]).image}
+                                tags={toCaseCardFormat(regularCases[0]).tags}
+                                href={`/cases/${toCaseCardFormat(regularCases[0]).id}`}
+                                index={0}
+                              />
+                            </motion.div>
+                          )}
+                          
+                          {/* Специальная карточка Contact Us на ВТОРОЙ позиции */}
                           {hasContactCard && (
                             <motion.div
                               key="contact-card"
                               variants={cardVariants}
                             >
-                              <ContactCaseCard index={0} />
+                              <ContactCaseCard index={1} />
                             </motion.div>
                           )}
                           
-                          {/* Обычные карточки кейсов БЕЗ BLUR эффектов */}
-                          {regularCases.map((caseItem, index) => {
+                          {/* Остальные обычные карточки кейсов начиная со второго */}
+                          {regularCases.slice(1).map((caseItem, index) => {
                             const cardData = toCaseCardFormat(caseItem);
-                            const adjustedIndex = hasContactCard ? index + 1 : index;
+                            const adjustedIndex = hasContactCard ? index + 2 : index + 1;
                             
                             return (
                               <motion.div

@@ -82,23 +82,26 @@ export function IndustryFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* Заголовок секции с toggle */}
+      {/* Заголовок секции с зарезервированным местом ДО заголовка */}
       <div className="mb-6">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="w-full flex items-center justify-between text-left group focus:outline-none"
         >
-          <h3 className="text-lg font-semibold text-white flex items-center min-h-[28px]">
-            By Industry
-            {/* Зарезервированное место для счетчика */}
-            <span className="ml-2 inline-flex items-center justify-center min-w-[24px] h-[24px]">
+          <div className="flex items-center">
+            {/* ЗАРЕЗЕРВИРОВАННОЕ место для счетчика ПЕРЕД заголовком - всегда присутствует */}
+            <div className="w-[32px] h-[24px] flex items-center justify-center mr-2">
               {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
                 <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded-full font-medium border border-primary/30">
                   {selectedIndustries.filter(id => id !== 'your-industry').length}
                 </span>
               )}
-            </span>
-          </h3>
+            </div>
+            
+            <h3 className="text-lg font-semibold text-white">
+              By Industry
+            </h3>
+          </div>
           
           <motion.div
             animate={{ rotate: isCollapsed ? 0 : 180 }}

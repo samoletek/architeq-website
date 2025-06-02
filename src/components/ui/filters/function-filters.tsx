@@ -90,10 +90,10 @@ export function FunctionFilters({
         >
           <h3 className="text-lg font-semibold text-white flex items-center min-h-[28px]">
             By Function
-            {/* Зарезервированное место для счетчика */}
-            <span className="ml-2 inline-flex items-center justify-center min-w-[24px] h-[24px]">
+            {/* Фиксированное место для счетчика - точная ширина */}
+            <span className="ml-2 inline-flex items-center justify-center w-[48px] h-[24px]">
               {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
-                <span className="bg-secondary/20 text-secondary text-xs px-2 py-1 rounded-full font-medium border border-secondary/30">
+                <span className="bg-secondary/20 text-secondary text-xs px-2 py-1 rounded-full font-medium border border-secondary/30 whitespace-nowrap">
                   {selectedFunctions.filter(id => id !== 'custom-solutions').length}
                 </span>
               )}
