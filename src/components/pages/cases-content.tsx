@@ -19,10 +19,7 @@ import {
   allCaseStudies, 
   filterCasesByMatrix,
   IndustryCategory,
-  FunctionCategory,
-  getFilterCounts,
-  INDUSTRY_CATEGORIES,
-  FUNCTION_CATEGORIES
+  FunctionCategory
 } from '@/lib/data/case-studies';
 
 // Простое создание тегов для карточек
@@ -106,7 +103,7 @@ export default function CasesContent() {
   // Состояние для мобильной версии
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   
-  const { isMobile, isTablet, isDesktop } = useDeviceDetection();
+  const { isMobile, isTablet } = useDeviceDetection();
   
   // Обработчики для изменения фильтров
   const handleIndustryChange = useCallback((industry: IndustryCategory) => {

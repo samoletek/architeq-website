@@ -586,7 +586,7 @@ export default function ServicesPage() {
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const { isMobile, isTablet, isDesktop } = useDeviceDetection();
+  const { isMobile, isDesktop } = useDeviceDetection();
   
   // Обработчик прокрутки с полным скрытием Hero (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {

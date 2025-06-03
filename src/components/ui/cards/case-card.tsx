@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
-import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface CaseCardProps {
   id?: string;

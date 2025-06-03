@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { IndustryCategory, FunctionCategory, getFilterCounts, INDUSTRY_CATEGORIES, FUNCTION_CATEGORIES } from '@/lib/data/case-studies';
+import { IndustryCategory, FunctionCategory, getFilterCounts } from '@/lib/data/case-studies';
 
 export interface MobileFiltersPanelProps {
   selectedIndustries: IndustryCategory[];
@@ -136,10 +136,8 @@ function SimpleMobileFunctionFilters({
 export function MobileFiltersPanel({
   selectedIndustries,
   selectedFunctions,
-  searchQuery,
   onIndustryChange,
   onFunctionChange,
-  onSearchChange,
   onClearAll,
   isOpen,
   onToggle,

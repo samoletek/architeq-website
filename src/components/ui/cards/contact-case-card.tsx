@@ -84,7 +84,7 @@ export function ContactCaseCard({
               "leading-relaxed text-sm line-clamp-3 transition-colors duration-300",
               isHovered ? "text-white" : "text-light-gray"
             )}>
-              Tell us about your business challenges, and we'll create a tailored automation solution that fits your specific needs and goals.
+              Tell us about your business challenges, and we will create a tailored automation solution that fits your specific needs and goals.
             </p>
           </div>
           
