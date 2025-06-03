@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GCSVideo } from '@/components/ui/gcs-video';
 import { getCaseStudyById, getRelatedCases, type CaseStudy } from '@/lib/data/case-studies';
+import UnifiedCTASection from '@/components/sections/unified-cta-section';
 
 export default function CaseStudyPage() {
   // Используем хук usePathname для получения URL
@@ -307,23 +308,8 @@ export default function CaseStudyPage() {
         </section>
       )}
       
-      {/* CTA Section */}
-      <section className="py-16 bg-dark-gradient">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business Operations?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Contact us today to discuss how our automation solutions can help streamline your operations and boost efficiency.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button variant="primary" size="lg" href="/contacts">
-              Book a Free Consultation
-            </Button>
-            <Button variant="secondary" size="lg" href="/cases">
-              View More Case Studies
-            </Button>
-          </div>
-        </div>
-      </section>
+{/* CTA Section */}
+<UnifiedCTASection preset="caseDetail" />
     </SiteLayout>
   );
 }

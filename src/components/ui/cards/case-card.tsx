@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
+import { generateCardTags } from '@/lib/utils/tag-utils';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface CaseCardProps {
   id?: string;
@@ -16,15 +18,17 @@ export interface CaseCardProps {
   location?: string;
   results?: string[];
   image?: string;
-  tags: string[];
+  tags?: string[];
   href: string;
   className?: string;
   isCompact?: boolean;
   priority?: boolean;
   onClick?: () => void;
+  index?: number;
+  isVisible?: boolean;
 }
 
-// Меняем теплую палитру на акцентную зеленую палитру
+// Акцентная зеленая палитра
 const greenPalette = ['#B0FF74', '#9AFF6D', '#8BFF50', '#7CFF33', '#6DFF16', '#5EFF00', '#50E000'];
 
 const getHash = (str: string) =>
@@ -59,10 +63,13 @@ export function CaseCard({
   href,
   className,
   isCompact = false,
-  onClick
+  onClick,
+  index = 0,
+  isVisible = true
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [displayTags, setDisplayTags] = useState<string[]>([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -78,6 +85,21 @@ export function CaseCard({
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
   const [left1, left2] = getTwoOffsets(gradientKey);
+
+  // Генерируем теги с помощью новой системы
+  useEffect(() => {
+    if (id) {
+      const caseStudy = getCaseStudyById(id);
+      if (caseStudy) {
+        const generatedTags = generateCardTags(caseStudy);
+        setDisplayTags(generatedTags);
+      } else if (tags) {
+        setDisplayTags(tags);
+      }
+    } else if (tags) {
+      setDisplayTags(tags);
+    }
+  }, [id, tags]);
 
   useEffect(() => {
     if (id && typeof window !== 'undefined') {
@@ -98,15 +120,32 @@ export function CaseCard({
     }
   }, [id, href]);
 
+  // Анимационные варианты для карточек
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.2, 0.65, 0.3, 0.9],
+        delay: 0.1 + index * 0.1
+      }
+    }
+  };
+
   // Уменьшенная высота для мобильных устройств
   const cardHeight = isCompact 
     ? 'auto' 
     : isMobile 
-      ? 'min-h-[280px]' // Уменьшено с 380px до 280px для мобильных
+      ? 'min-h-[280px]'
       : 'min-h-[380px] sm:min-h-[420px]';
 
   const cardContent = (
     <motion.div
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={cardVariants}
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
@@ -115,6 +154,11 @@ export function CaseCard({
         cardHeight,
         className
       )}
+      style={{
+        boxShadow: isHovered 
+          ? '0 20px 40px rgba(0, 0, 0, 0.15), 0 0 15px rgba(176, 255, 116, 0.25), 0 0 30px rgba(176, 255, 116, 0.15)'
+          : '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.3)',
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -156,7 +200,7 @@ export function CaseCard({
         isMobile ? "pt-2 px-3 pb-2" : "pt-5 px-4 pb-5"
       )}>
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {tags.map((tag, index) => (
+          {displayTags.map((tag, index) => (
             <span
               key={index}
               className={cn(

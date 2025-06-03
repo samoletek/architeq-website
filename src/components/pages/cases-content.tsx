@@ -1,244 +1,422 @@
+// src/components/pages/cases-content.tsx
 "use client";
 
-import { useState, useMemo } from 'react';
-import { CaseCard } from '@/components/ui/cards/case-card';
-import { Button } from '@/components/ui/button';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CaseFilters, FilterGroup } from '@/components/ui/filters/case-filters';
+import { CaseCard } from '@/components/ui/cards/case-card';
+import { ContactCaseCard } from '@/components/ui/cards/contact-case-card';
+import { Button } from '@/components/ui/button';
+import { IndustryFilters } from '@/components/ui/filters/industry-filters';
+import { FunctionFilters } from '@/components/ui/filters/function-filters';
+import { IntegratedSearchFilters } from '@/components/ui/filters/integrated-search-filters';
+import { MobileFiltersPanel } from '@/components/ui/filters/mobile-filters-panel';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
-import { Icon } from '@/components/ui/icons/icon';
+import UnifiedCTASection from '@/components/sections/unified-cta-section';
+
 import { 
   allCaseStudies, 
-  getUniqueValues, 
-  filterCases,
-  toCaseCardFormat
+  filterCasesByMatrix,
+  toCaseCardFormat,
+  IndustryCategory,
+  FunctionCategory
 } from '@/lib/data/case-studies';
 
 // Основной компонент страницы кейсов
 export default function CasesContent() {
-  // Состояние для фильтров
+  // Состояние для системы фильтров
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
-  const [selectedSolutionTypes, setSelectedSolutionTypes] = useState<string[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<IndustryCategory[]>(['your-industry']);
+  const [selectedFunctions, setSelectedFunctions] = useState<FunctionCategory[]>(['custom-solutions']);
   
-  // Состояние для мобильного представления
-  const [showFilterSection, setShowFilterSection] = useState<boolean>(false);
+  // Состояние для мобильной версии
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  
   const { isMobile } = useDeviceDetection();
   
-  // Данные для фильтрации
-  const allIndustries = useMemo(() => getUniqueValues('industry'), []);
-  const allSolutionTypes = useMemo(() => getUniqueValues('solutionType'), []);
-  
-  // Формируем группы для фильтров
-  const filterGroups: FilterGroup[] = [
-    {
-      id: 'industry',
-      label: 'By Industry',
-      options: allIndustries.map(industry => ({ 
-        id: industry, 
-        label: industry,
-        count: allCaseStudies.filter(c => c.industry === industry).length
-      })),
-      icon: <Icon name="industry" className="w-5 h-5" />,
-      initialOpen: true
-    },
-    {
-      id: 'solutionType',
-      label: 'By Solution Type',
-      options: allSolutionTypes.map(type => ({ 
-        id: type, 
-        label: type,
-        count: allCaseStudies.filter(c => c.solutionType === type).length
-      })),
-      icon: <Icon name="process" className="w-5 h-5" />,
-      initialOpen: isMobile ? false : true
-    }
-  ];
-  
-  // Состояние для выбранных фильтров
-  const selectedOptions = {
-    industry: selectedIndustries,
-    solutionType: selectedSolutionTypes
-  };
-  
-  // Фильтрация кейсов
-  const filteredCases = useMemo(() => {
-    return filterCases({
-      searchQuery,
-      industries: selectedIndustries,
-      solutionTypes: selectedSolutionTypes
+  // УПРОЩЕННЫЕ обработчики для изменения фильтров
+  const handleIndustryChange = useCallback((industry: IndustryCategory) => {
+    setSelectedIndustries(prev => {
+      // Если выбираем "your-industry", сбрасываем все остальные
+      if (industry === 'your-industry') {
+        return ['your-industry'];
+      }
+      
+      // Убираем "your-industry" при выборе любого другого
+      const withoutDefaults = prev.filter(id => id !== 'your-industry');
+      
+      // Toggle логика
+      if (withoutDefaults.includes(industry)) {
+        const filtered = withoutDefaults.filter(i => i !== industry);
+        return filtered.length === 0 ? ['your-industry'] : filtered;
+      } else {
+        return [...withoutDefaults, industry];
+      }
     });
-  }, [
-    searchQuery, 
-    selectedIndustries, 
-    selectedSolutionTypes
-  ]);
+  }, []);
   
-  // Обработчик для выбора фильтра
-  const handleFilterChange = (groupId: string, optionId: string) => {
-    switch (groupId) {
-      case 'industry':
-        setSelectedIndustries(prev => 
-          prev.includes(optionId) ? prev.filter(i => i !== optionId) : [...prev, optionId]
-        );
-        break;
-      case 'solutionType':
-        setSelectedSolutionTypes(prev => 
-          prev.includes(optionId) ? prev.filter(t => t !== optionId) : [...prev, optionId]
-        );
-        break;
-    }
-  };
+  const handleFunctionChange = useCallback((functionCategory: FunctionCategory) => {
+    setSelectedFunctions(prev => {
+      // Если выбираем "custom-solutions", сбрасываем все остальные
+      if (functionCategory === 'custom-solutions') {
+        return ['custom-solutions'];
+      }
+      
+      // Убираем "custom-solutions" при выборе любого другого
+      const withoutDefaults = prev.filter(id => id !== 'custom-solutions');
+      
+      // Toggle логика
+      if (withoutDefaults.includes(functionCategory)) {
+        const filtered = withoutDefaults.filter(f => f !== functionCategory);
+        return filtered.length === 0 ? ['custom-solutions'] : filtered;
+      } else {
+        return [...withoutDefaults, functionCategory];
+      }
+    });
+  }, []);
   
   // Обработчик для поискового запроса
-  const handleSearchChange = (query: string) => {
+  const handleSearchChange = useCallback((query: string) => {
     setSearchQuery(query);
-  };
+  }, []);
   
   // Сброс всех фильтров
-  const clearAllFilters = () => {
-    setSelectedIndustries([]);
-    setSelectedSolutionTypes([]);
+  const clearAllFilters = useCallback(() => {
+    setSelectedIndustries(['your-industry']);
+    setSelectedFunctions(['custom-solutions']);
     setSearchQuery('');
+  }, []);
+  
+  // УПРОЩЕННАЯ логика фильтрации кейсов
+  const filteredCases = useMemo(() => {
+    // Получаем активные фильтры (исключаем дефолтные значения)
+    const activeIndustries = selectedIndustries.filter(id => id !== 'your-industry');
+    const activeFunctions = selectedFunctions.filter(id => id !== 'custom-solutions');
+    const hasSearch = searchQuery.trim().length > 0;
+    const hasFilters = activeIndustries.length > 0 || activeFunctions.length > 0;
+    
+    // Если нет поиска и нет активных фильтров - показываем все
+    if (!hasSearch && !hasFilters) {
+      return allCaseStudies;
+    }
+    
+    // Применяем фильтрацию
+    const filtered = filterCasesByMatrix({
+      searchQuery: searchQuery.trim(),
+      industries: activeIndustries,
+      functions: activeFunctions
+    });
+    
+    // ИСКЛЮЧАЕМ специальную карточку при активном поиске
+    if (hasSearch) {
+      return filtered.filter(caseItem => !caseItem.isSpecialCard);
+    }
+    
+    return filtered;
+  }, [searchQuery, selectedIndustries, selectedFunctions]);
+  
+  // Разделяем обычные кейсы и специальную карточку
+  const { regularCases, hasContactCard } = useMemo(() => {
+    const regular = filteredCases.filter(c => !c.isSpecialCard);
+    const hasContact = filteredCases.some(c => c.isSpecialCard);
+    return { regularCases: regular, hasContactCard: hasContact };
+  }, [filteredCases]);
+
+  // Анимационные варианты для сетки
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
+    }
   };
 
   return (
     <>
       {/* Hero section */}
-      <section className="py-20 md:py-28 bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Отключаем анимацию при первом рендеринге и включаем ее через useEffect */}
+      <section className="section-hero bg-dark-gray">
+        <div className="container mx-auto px-8">
+          <div className="max-w-4xl mx-auto text-center">
             <div data-animate="fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Case Studies</h1>
-              <p className="text-xl text-light-gray mb-6">
+              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">
+                Case Studies
+              </h1>
+              <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
                 Explore how we have helped companies across various industries optimize their processes and achieve significant results.
               </p>
-              <Button variant="primary" size="lg" href="/contacts">
-                Request a Similar Solution
-              </Button>
+              <div className="flex flex-col sm:flex-row justify-center button-gap-large">
+              <Button variant="secondary" size="lg" href="/contacts">
+              Request a Similar Solution
+             </Button>
+            </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Filters and case studies */}
-      <section className="py-12 bg-site-bg">
-        <div className="container mx-auto px-4">
+      {/* Main filters and cases section */}
+      <section className="py-28 bg-site-bg">
+        <div className="container mx-auto px-8">
           
-          {/* Мобильная кнопка фильтров */}
-          {isMobile && (
-            <div className="mb-6">
-              <Button 
-                variant={showFilterSection ? "primary" : "secondary"}
-                className="w-full flex items-center justify-center gap-2 mb-4"
-                onClick={() => setShowFilterSection(!showFilterSection)}
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
+          {/* Desktop Layout */}
+          {!isMobile ? (
+            <div className="space-y-12">
+              
+              {/* ПОЛНОШИРИННАЯ поисковая строка */}
+              <div className="max-w-7xl mx-auto">
+                <IntegratedSearchFilters
+                  searchQuery={searchQuery}
+                  onSearchChange={handleSearchChange}
+                  selectedIndustries={selectedIndustries}
+                  selectedFunctions={selectedFunctions}
+                  onRemoveIndustry={handleIndustryChange}
+                  onRemoveFunction={handleFunctionChange}
+                  onClearAll={clearAllFilters}
+                  resultCount={filteredCases.length}
+                />
+              </div>
+              
+              {/* Контейнер с фильтрами слева ОТ основного контента */}
+              <div className="relative max-w-7xl mx-auto">
+                
+                {/* Фильтры ВЫНЕСЕНЫ ЛЕВЕЕ основного контейнера */}
+                <div className="absolute left-[-240px] top-0 w-64">
+                  <div className="sticky top-32 space-y-8 z-20">
+                    
+                    {/* Function Filters */}
+                    <FunctionFilters
+                      selectedFunctions={selectedFunctions}
+                      onFunctionChange={handleFunctionChange}
+                    />
+                    
+                    {/* Industry Filters */}
+                    <IndustryFilters
+                      selectedIndustries={selectedIndustries}
+                      onIndustryChange={handleIndustryChange}
+                    />
+                  </div>
+                </div>
+                
+                {/* ПОЛНОШИРИННЫЙ контент */}
+                <div className="w-full">
+                  
+                  {/* Recently Viewed Cases */}
+                  <div className="mb-8">
+                    <RecentlyViewedCases 
+                      allCases={allCaseStudies} 
+                      className="mb-8"
+                    />
+                  </div>
+                  
+                  {/* ПОЛНОШИРИННАЯ Cases Grid - ВСЕГДА 3 КОЛОНКИ */}
+                  {filteredCases.length > 0 ? (
+                      <motion.div
+                        variants={gridVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-3 gap-6"
+                      >
+                        <AnimatePresence>
+                          {/* Первый обычный кейс */}
+                          {regularCases.length > 0 && (
+                            <motion.div
+                              key={regularCases[0].id}
+                              variants={cardVariants}
+                            >
+                              <CaseCard 
+                                id={toCaseCardFormat(regularCases[0]).id}
+                                title={toCaseCardFormat(regularCases[0]).title}
+                                description={toCaseCardFormat(regularCases[0]).description}
+                                industry={toCaseCardFormat(regularCases[0]).industry}
+                                company={toCaseCardFormat(regularCases[0]).company}
+                                location={toCaseCardFormat(regularCases[0]).location}
+                                results={toCaseCardFormat(regularCases[0]).results}
+                                image={toCaseCardFormat(regularCases[0]).image}
+                                tags={toCaseCardFormat(regularCases[0]).tags}
+                                href={`/cases/${toCaseCardFormat(regularCases[0]).id}`}
+                                index={0}
+                              />
+                            </motion.div>
+                          )}
+                          
+                          {/* Специальная карточка Contact Us на ВТОРОЙ позиции */}
+                          {hasContactCard && (
+                            <motion.div
+                              key="contact-card"
+                              variants={cardVariants}
+                            >
+                              <ContactCaseCard index={1} />
+                            </motion.div>
+                          )}
+                          
+                          {/* Остальные обычные карточки кейсов начиная со второго */}
+                          {regularCases.slice(1).map((caseItem, index) => {
+                            const cardData = toCaseCardFormat(caseItem);
+                            const adjustedIndex = hasContactCard ? index + 2 : index + 1;
+                            
+                            return (
+                              <motion.div
+                                key={caseItem.id}
+                                variants={cardVariants}
+                              >
+                                <CaseCard 
+                                  id={cardData.id}
+                                  title={cardData.title}
+                                  description={cardData.description}
+                                  industry={cardData.industry}
+                                  company={cardData.company}
+                                  location={cardData.location}
+                                  results={cardData.results}
+                                  image={cardData.image}
+                                  tags={cardData.tags}
+                                  href={`/cases/${cardData.id}`}
+                                  index={adjustedIndex}
+                                />
+                              </motion.div>
+                            );
+                          })}
+                        </AnimatePresence>
+                      </motion.div>
+                    ) : (
+                      /* Empty State */
+                      <div className="bg-dark-gray rounded-lg p-12 text-center max-w-2xl mx-auto">
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 515.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <h3 className="text-2xl font-semibold mb-4">No Cases Found</h3>
+                          <p className="text-light-gray mb-6 leading-relaxed">
+                            We could not find any cases that match your current filters. Try adjusting your search criteria or explore different categories.
+                          </p>
+                          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <Button variant="secondary" onClick={clearAllFilters}>
+                              Clear All Filters
+                            </Button>
+                            <Button variant="primary" href="/contacts">
+                              Discuss Your Project
+                            </Button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Mobile Layout */
+            <div className="space-y-6">
+              
+              {/* Mobile Integrated Search and Filters */}
+              <IntegratedSearchFilters
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
+                selectedIndustries={selectedIndustries}
+                selectedFunctions={selectedFunctions}
+                onRemoveIndustry={handleIndustryChange}
+                onRemoveFunction={handleFunctionChange}
+                onClearAll={clearAllFilters}
+                resultCount={filteredCases.length}
+              />
+              
+              {/* Mobile Filters Panel */}
+              <MobileFiltersPanel
+                selectedIndustries={selectedIndustries}
+                selectedFunctions={selectedFunctions}
+                searchQuery={searchQuery}
+                onIndustryChange={handleIndustryChange}
+                onFunctionChange={handleFunctionChange}
+                onSearchChange={handleSearchChange}
+                onClearAll={clearAllFilters}
+                isOpen={showMobileFilters}
+                onToggle={() => setShowMobileFilters(!showMobileFilters)}
+                resultCount={filteredCases.length}
+              />
+              
+              {/* Recently Viewed (Mobile) */}
+              <RecentlyViewedCases 
+                allCases={allCaseStudies}
+              />
+              
+              {/* Mobile Cases Grid */}
+              {filteredCases.length > 0 ? (
+                <motion.div
+                  variants={gridVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="grid grid-cols-1 gap-6"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" 
-                  />
-                </svg>
-                {showFilterSection ? 'Hide Filters' : 'Show Filters'}
-              </Button>
+                  <AnimatePresence>
+                    {/* Специальная карточка для мобильных */}
+                    {hasContactCard && (
+                      <motion.div key="contact-card-mobile" variants={cardVariants}>
+                        <ContactCaseCard index={0} />
+                      </motion.div>
+                    )}
+                    
+                    {regularCases.map((caseItem, index) => {
+                      const cardData = toCaseCardFormat(caseItem);
+                      const adjustedIndex = hasContactCard ? index + 1 : index;
+                      
+                      return (
+                        <motion.div key={caseItem.id} variants={cardVariants}>
+                          <CaseCard 
+                            {...cardData}
+                            href={`/cases/${cardData.id}`}
+                            index={adjustedIndex}
+                            isCompact={true}
+                          />
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                </motion.div>
+              ) : (
+                /* Mobile Empty State */
+                <div className="bg-dark-gray rounded-lg p-8 text-center">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 515.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
+                    <p className="text-light-gray mb-4 text-sm">
+                      No cases match your filters. Try different criteria.
+                    </p>
+                    <Button variant="secondary" onClick={clearAllFilters} size="sm">
+                      Clear Filters
+                    </Button>
+                  </motion.div>
+                </div>
+              )}
             </div>
           )}
-          
-          {/* Фильтры (горизонтальные) */}
-          <div className={`${isMobile && !showFilterSection ? 'hidden' : 'mb-8'}`}>
-            <CaseFilters 
-              groups={filterGroups}
-              selectedOptions={selectedOptions}
-              searchQuery={searchQuery}
-              onFilterChange={handleFilterChange}
-              onSearchChange={handleSearchChange}
-              onClearFilters={clearAllFilters}
-              filterCount={filteredCases.length}
-              isCompact={isMobile}
-              layout="horizontal"
-            />
-          </div>
-          
-          {/* Основной контент с кейсами */}
-          <div>
-            {/* Недавно просмотренные кейсы */}
-            <RecentlyViewedCases 
-              allCases={allCaseStudies} 
-              className="mb-8" 
-            />
-            
-            {/* Сетка с кейсами */}
-            {filteredCases.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                <AnimatePresence>
-                  {filteredCases.map((caseItem, index) => {
-                    const cardData = toCaseCardFormat(caseItem);
-                    return (
-                      <motion.div
-                        key={caseItem.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        layout
-                      >
-                        <CaseCard 
-                          id={cardData.id}
-                          title={cardData.title}
-                          description={cardData.description}
-                          industry={cardData.industry}
-                          company={cardData.company}
-                          location={cardData.location}
-                          results={cardData.results}
-                          image={cardData.image}
-                          tags={cardData.tags}
-                          href={`/cases/${cardData.id}`}
-                        />
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <div className="bg-dark-gray rounded-lg p-8 text-center max-w-2xl mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-light-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3 className="text-xl font-semibold mb-2">No Cases Found</h3>
-                <p className="text-light-gray mb-4">
-                  We could not find any cases that match your current filters.
-                </p>
-                <Button variant="secondary" onClick={clearAllFilters}>
-                  Clear All Filters
-                </Button>
-              </div>
-            )}
-          </div>
         </div>
       </section>
       
-      {/* CTA section */}
-      <section className="py-16 bg-dark-gradient">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Want to achieve similar results?</h2>
-          <p className="text-light-gray max-w-2xl mx-auto mb-8">
-            Get in touch with us today to discuss how our automation solutions can help your business achieve optimal efficiency and growth.
-          </p>
-          <Button variant="primary" size="lg" href="/contacts">
-            Free Consultation
-          </Button>
-        </div>
-      </section>
+{/* CTA section */}
+<UnifiedCTASection preset="cases" />
     </>
   );
 }

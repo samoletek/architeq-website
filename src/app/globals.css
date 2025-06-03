@@ -93,38 +93,131 @@
     @apply py-12 md:py-24;
   }
   
-  /* Обновленные секции с оптимизированными отступами */
+  /* ========== ЕДИНЫЙ СТАНДАРТ ДИЗАЙНА (РЕАЛЬНЫЕ ЗНАЧЕНИЯ) ========== */
+
+/* Отступы секций - точные значения с главной страницы */
+.section-hero {
+  @apply pt-40 pb-48;
+}
+
+.section-benefits {
+  @apply pt-40 pb-48;
+}
+
+.section-solutions {
+  @apply pt-24 pb-32;
+  min-height: 60vh;
+}
+
+.section-cases {
+  @apply pt-48 pb-64;
+}
+
+.section-testimonials {
+  @apply pt-48 pb-20;
+}
+
+.section-cta {
+  @apply pt-72 pb-48;
+}
+
+/* Адаптивные отступы для мобильных устройств */
+@media (max-width: 768px) {
   .section-hero {
-    @apply pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16 lg:pt-40 lg:pb-48;
+    @apply pt-24 pb-8;
     min-height: 70vh;
   }
 
   .section-benefits {
-    @apply py-10 sm:py-14 md:py-16 lg:pt-40 lg:pb-48;
+    @apply py-10;
   }
 
   .section-solutions {
-    @apply py-12 sm:py-16 md:py-20 lg:py-28;
+    @apply py-12;
     min-height: auto;
-  }
-  
-  @media (min-width: 768px) {
-    .section-solutions {
-      min-height: 60vh;
-    }
   }
 
   .section-cases {
-    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    @apply py-12;
   }
 
   .section-testimonials {
-    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    @apply py-12;
   }
 
   .section-cta {
-    @apply py-12 sm:py-16 md:py-20 lg:py-24;
+    @apply py-12;
   }
+}
+
+/* Стандартные размеры заголовков */
+.hero-title {
+  @apply text-4xl md:text-6xl lg:text-7xl;
+}
+
+.hero-subtitle {
+  @apply text-xl md:text-2xl lg:text-3xl;
+}
+
+.section-title-large {
+  @apply text-4xl md:text-5xl lg:text-6xl;
+}
+
+.section-title-medium {
+  @apply text-3xl md:text-4xl lg:text-5xl;
+}
+
+.section-subtitle-large {
+  @apply text-base md:text-lg;
+}
+
+.section-subtitle-medium {
+  @apply text-lg md:text-2xl;
+}
+
+.section-subtitle-small {
+  @apply text-lg;
+}
+
+/* Стандартные отступы заголовков */
+.hero-title-spacing {
+  @apply mb-6;
+}
+
+.hero-subtitle-spacing {
+  @apply mb-8;
+}
+
+.section-title-spacing {
+  @apply mb-8;
+}
+
+.section-title-spacing-large {
+  @apply mb-12;
+}
+
+.section-content-spacing {
+  @apply mb-20;
+}
+
+.section-content-spacing-large {
+  @apply mt-24;
+}
+
+.section-button-spacing {
+  @apply mb-16;
+}
+
+/* Расстояния между кнопками */
+.button-gap-default {
+  @apply gap-4;
+}
+
+.button-gap-large {
+  @apply gap-6;
+}
+
+/* ============================================= */
 
   /* Градиентный текст для выделения слов */
   .accent-text {
@@ -265,6 +358,37 @@
     display: none;
   }
   
+  /* Анимация плавания для карточек */
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px);
+    }
+    50% { 
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Класс для анимации плавания */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Варианты с разными задержками для множественных карточек */
+  .animate-float-delayed-1 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -1s;
+  }
+
+  .animate-float-delayed-2 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  .animate-float-delayed-3 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+
   /* Z-index утилиты для правильного наложения слоев */
   .z-35 {
     z-index: 35;
@@ -360,22 +484,55 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Стили для карточек кейсов */
+/* Стили для всех карточек кейсов - ЗЕЛЕНЫЕ */
 .case-card-enhanced {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   position: relative;
-  border: 1.3px solid rgba(176, 255, 116, 0.55);
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6);
+  border: 1.3px solid rgba(176, 255, 116, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6) !important;
 }
 
-/* Стили при наведении */
-.case-card-enhanced.case-card-hovered {
-  border-color: rgba(176, 255, 116, 0.5);
-  transform: translateY(-10px);
+/* Стили при наведении для обычных карточек кейсов */
+.case-card-enhanced.case-card-hovered,
+.case-card-enhanced:hover {
+  border-color: rgba(176, 255, 116, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(176, 255, 116, 0.3), 
-    0 0 30px rgba(176, 255, 116, 0.2);
+    0 0 30px rgba(176, 255, 116, 0.2) !important;
+}
+
+/* Стили для Service Cards - ФИОЛЕТОВЫЕ */
+[class*="service-card-enhanced"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+[class*="service-card-enhanced"]:hover,
+[class*="service-card-enhanced"].service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Стили для Contact Card - БЕЗ HOVER ЭФФЕКТОВ */
+.contact-case-card {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* НЕТ HOVER ЭФФЕКТОВ для Contact Card */
+.contact-case-card:hover {
+  /* Никаких изменений при hover */
+  border-color: rgba(178, 75, 243, 0.55) !important;
+  transform: none !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
 }
 
 /* Тени для обычного состояния */
@@ -383,6 +540,58 @@ html {
   box-shadow: 
     0 0 10px rgba(176, 255, 116, 0.2), 
     0 0 20px rgba(176, 255, 116, 0.1);
+}
+
+/* Тени для фиолетового свечения */
+.shadow-neon-purple-glow {
+  box-shadow: 
+    0 0 10px rgba(178, 75, 243, 0.2), 
+    0 0 20px rgba(178, 75, 243, 0.1) !important;
+}
+
+/* Альтернативный вариант через data-атрибут */
+[data-card-type="service"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+/* Стили для карточек услуг (фиолетовые) */
+.service-card-enhanced {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+/* Стили при наведении для карточек услуг */
+.service-card-enhanced.service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Принудительно для всех карточек на странице services */
+[class*="service-card-enhanced"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+[class*="service-card-enhanced"]:hover,
+[class*="service-card-enhanced"].service-card-hovered {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Альтернативный вариант через data-атрибут */
+[data-card-type="service"] {
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
 }
 
 /* Стили для sticky секций и плавного скролла */

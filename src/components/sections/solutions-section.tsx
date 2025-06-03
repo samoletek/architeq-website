@@ -336,16 +336,14 @@ const GlowingBulletPoint = ({ text, index = 0, isMobile }: { text: string; index
       />
     </motion.li>
   );
-};
+}
 
 // Компонент для отдельного решения - адаптирован для мобильных
 const SolutionContent = ({ 
-  solution, 
-  isActive = false,
+  solution,
   isMobile = false
 }: { 
   solution: Solution;
-  isActive: boolean;
   isMobile: boolean;
 }) => {
   const contentVariants = {
@@ -364,7 +362,7 @@ const SolutionContent = ({
         ease: "easeOut"
       }
     },
-    exit: { 
+    exit: () => ({
       opacity: 0,
       x: -40,
       y: 0,
@@ -373,188 +371,182 @@ const SolutionContent = ({
         duration: 0.3,
         ease: "easeIn"
       }
-    }
+    })
   };
 
   return (
-    <div 
-      className="w-full h-full" 
-      style={{ display: isActive ? 'block' : 'none' }}
+    <motion.div 
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={contentVariants}
+      className={cn(
+        "w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] bg-gradient-to-bl from-[#12071A] to-[#170A24] backdrop-blur-sm h-full relative overflow-hidden",
+        isMobile ? "p-6" : "p-14"
+      )}
     >
-      <motion.div
-        key={solution.id}
-        variants={contentVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className={cn(
-          "w-full rounded-xl border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)] bg-gradient-to-bl from-[#12071A] to-[#170A24] backdrop-blur-sm h-full relative overflow-hidden",
-          isMobile ? "p-6" : "p-14"
-        )}
-      >
-        {/* Насыщенное темное свечение */}
-        <div className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-xl -z-10"></div>
-        <motion.div 
-          className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-xl blur-xl -z-10"
-          animate={{ 
-            opacity: [0.6, 0.9, 0.6] 
-          }}
-          transition={{ 
-            duration: 4, 
-            repeat: Infinity,
-            ease: "easeInOut" 
-          }}
-        />
-        
-        <div className="flex flex-col h-full relative z-10">
-          <div className={cn(
-            "space-y-6 sm:space-y-8",
-            isMobile ? "" : "px-2"
+      {/* Насыщенное темное свечение */}
+      <div className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/40 via-[#180033]/35 to-[#121212]/50 rounded-xl blur-xl -z-10"></div>
+      <motion.div 
+        className="absolute -inset-2 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-xl blur-xl -z-10"
+        animate={{ 
+          opacity: [0.6, 0.9, 0.6] 
+        }}
+        transition={{ 
+          duration: 4, 
+          repeat: Infinity,
+          ease: "easeInOut" 
+        }}
+      />
+      
+      <div className="flex flex-col h-full relative z-10">
+        <div className={cn(
+          "space-y-6 sm:space-y-8",
+          isMobile ? "" : "px-2"
+        )}>
+          {/* Заголовок */}
+          <h3 className={cn(
+            "font-bold text-white",
+            isMobile ? "text-xl sm:text-2xl mb-4" : "text-3xl mb-8"
           )}>
-            {/* Заголовок */}
-            <h3 className={cn(
-              "font-bold text-white",
-              isMobile ? "text-xl sm:text-2xl mb-4" : "text-3xl mb-8"
-            )}>
-              {solution.label}
-            </h3>
-            
-            {/* Описание */}
-            <p className={cn(
-              "text-white/90 leading-relaxed",
-              isMobile ? "text-sm sm:text-base" : "text-xl"
-            )}>
-              {solution.description}
-            </p>
-            
-            <div className={isMobile ? "mt-6" : "mt-8"}>
-              {/* Подзаголовок */}
-              <motion.h4 
-                className={cn(
-                  "font-semibold text-white",
-                  isMobile ? "text-lg mb-4" : "text-2xl mb-8"
-                )}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ 
-                  duration: 0.4,
-                  delay: 0.2,
-                  ease: [0.25, 0.4, 0.3, 1]
-                }}
-              >
-                Key Features:
-              </motion.h4>
-              
-              {/* Список возможностей */}
-              <motion.ul 
-                className="space-y-3"
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.1
-                    }
-                  }
-                }}
-                initial="hidden"
-                animate="show"
-              >
-                {solution.features.map((feature, index) => (
-                  <GlowingBulletPoint 
-                    key={index} 
-                    text={feature} 
-                    index={index} 
-                    isMobile={isMobile}
-                  />
-                ))}
-              </motion.ul>
-            </div>
-          </div>
+            {solution.label}
+          </h3>
           
-          <div className={cn(
-            "mt-auto flex",
-            isMobile ? "justify-center pt-6" : "justify-end pt-10 px-2"
+          {/* Описание */}
+          <p className={cn(
+            "text-white/90 leading-relaxed",
+            isMobile ? "text-sm sm:text-base" : "text-xl"
           )}>
-            {solution.href && (
-              <Link href={solution.href}>
-                <motion.div
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  whileHover={!isMobile ? { 
-                    scale: 1.05,
-                    filter: "brightness(1.1)"
-                  } : undefined}
-                  whileTap={!isMobile ? { 
-                    scale: 0.98 
-                  } : undefined}
-                  transition={{ 
-                    initial: {
-                      duration: 1,
-                      delay: 0.3 + (solution.features.length * 0.15) + 0.2,
-                      ease: [0.1, 0.6, 0.3, 1]
-                    },
-                    whileHover: {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 25,
-                      mass: 0.5
-                    }
-                  }}
-                  className="relative"
-                >
-                  {/* Эффект свечения для кнопки */}
-                  <motion.div 
-                    className="absolute inset-0 bg-secondary/30 rounded-full blur-lg z-0"
-                    animate={{ 
-                      opacity: [0.5, 0.8, 0.5],
-                      boxShadow: [
-                        "0 0 15px 3px rgba(176, 255, 116, 0.4)",
-                        "0 0 30px 6px rgba(176, 255, 116, 0.6)",
-                        "0 0 15px 3px rgba(176, 255, 116, 0.4)"
-                      ]
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.3 + (solution.features.length * 0.15) + 0.2
-                    }}
-                  />
-                  
-                  <Button 
-                    size={isMobile ? "default" : "lg"} 
-                    className={cn(
-                      "bg-secondary text-gray-900 hover:bg-opacity-100 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none relative z-10",
-                      isMobile ? "px-6 py-3 text-sm" : "px-8 py-5 text-lg"
-                    )}
-                  >
-                    Learn More
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={cn(
-                        "ml-2",
-                        isMobile ? "h-3 w-5" : "h-3 w-6"
-                      )}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Button>
-                </motion.div>
-              </Link>
-            )}
+            {solution.description}
+          </p>
+          
+          <div className={isMobile ? "mt-6" : "mt-8"}>
+            {/* Подзаголовок */}
+            <motion.h4 
+              className={cn(
+                "font-semibold text-white",
+                isMobile ? "text-lg mb-4" : "text-2xl mb-8"
+              )}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ 
+                duration: 0.4,
+                delay: 0.2,
+                ease: [0.25, 0.4, 0.3, 1]
+              }}
+            >
+              Key Features:
+            </motion.h4>
+            
+            {/* Список возможностей */}
+            <motion.ul 
+              className="space-y-3"
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1
+                  }
+                }
+              }}
+              initial="hidden"
+              animate="show"
+            >
+              {solution.features.map((feature, index) => (
+                <GlowingBulletPoint 
+                  key={index} 
+                  text={feature} 
+                  index={index} 
+                  isMobile={isMobile}
+                />
+              ))}
+            </motion.ul>
           </div>
         </div>
-      </motion.div>
-    </div>
+        
+        <div className={cn(
+          "mt-auto flex",
+          isMobile ? "justify-center pt-6" : "justify-end pt-10 px-2"
+        )}>
+          {solution.href && (
+            <Link href={solution.href}>
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                whileHover={!isMobile ? { 
+                  scale: 1.05,
+                  filter: "brightness(1.1)"
+                } : undefined}
+                whileTap={!isMobile ? { 
+                  scale: 0.98 
+                } : undefined}
+                transition={{ 
+                  initial: {
+                    duration: 1,
+                    delay: 0.3 + (solution.features.length * 0.15) + 0.2,
+                    ease: [0.1, 0.6, 0.3, 1]
+                  },
+                  whileHover: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                    mass: 0.5
+                  }
+                }}
+                className="relative"
+              >
+                {/* Эффект свечения для кнопки */}
+                <motion.div 
+                  className="absolute inset-0 bg-secondary/30 rounded-full blur-lg z-0"
+                  animate={{ 
+                    opacity: [0.5, 0.8, 0.5],
+                    boxShadow: [
+                      "0 0 15px 3px rgba(176, 255, 116, 0.4)",
+                      "0 0 30px 6px rgba(176, 255, 116, 0.6)",
+                      "0 0 15px 3px rgba(176, 255, 116, 0.4)"
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.3 + (solution.features.length * 0.15) + 0.2
+                  }}
+                />
+                
+                <Button 
+                  size={isMobile ? "default" : "lg"} 
+                  className={cn(
+                    "bg-secondary text-gray-900 hover:bg-opacity-100 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 active:outline-none relative z-10",
+                    isMobile ? "px-6 py-3 text-sm" : "px-8 py-5 text-lg"
+                  )}
+                >
+                  Learn More
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={cn(
+                      "ml-2",
+                      isMobile ? "h-3 w-5" : "h-3 w-6"
+                    )}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Button>
+              </motion.div>
+            </Link>
+          )}
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -641,10 +633,10 @@ export function SolutionsSection({
   };
 
   const contentVariants = {
-    hidden: { opacity: 0, x: 30 },
+    hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      x: 0,
+      y: 0,
       transition: { 
         duration: 1.2,
         delay: 0.5,
@@ -659,7 +651,6 @@ export function SolutionsSection({
       className={cn("section-solutions relative overflow-hidden", className)}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
-        {/* Декоративные элементы фона */}
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
         <div className="absolute -bottom-16 -left-16 w-80 h-80 bg-secondary/5 rounded-full blur-3xl opacity-20"></div>
       </div>
@@ -712,7 +703,6 @@ export function SolutionsSection({
                     <SolutionContent
                       key={solution.id}
                       solution={solution}
-                      isActive={true}
                       isMobile={true}
                     />
                   )
@@ -776,7 +766,6 @@ export function SolutionsSection({
                         <SolutionContent
                           key={solution.id}
                           solution={solution}
-                          isActive={true}
                           isMobile={false}
                         />
                       )
@@ -792,7 +781,7 @@ export function SolutionsSection({
   );
 }
 
-// Компактная версия с отображением только карточек решений
+// Компактная версия
 export function CompactSolutionsSection({
   solutions = defaultSolutions.slice(0, 4),
   className,
