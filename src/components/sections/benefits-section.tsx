@@ -95,7 +95,6 @@ export default function BenefitsSection({
     className
   );
 
-  // Варианты анимации для заголовка и подзаголовка
   const titleVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -108,7 +107,6 @@ export default function BenefitsSection({
     }
   };
 
-  // Варианты анимации для карточек преимуществ
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (index: number) => ({
@@ -155,20 +153,20 @@ export default function BenefitsSection({
       ref={ref}
       className={sectionClasses}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16 md:mb-20"
           initial="hidden"
           animate={titleControls}
           variants={titleVariants}
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
-          <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto">
+          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
+          <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
             {subtitle}
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -177,27 +175,27 @@ export default function BenefitsSection({
               animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
             >
-<div className="relative rounded-lg p-8 h-full transition-all duration-500 overflow-hidden
-          bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-          before:absolute before:content-[''] before:inset-0 
-          before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
-          backdrop-blur-sm group
-          border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
-          hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-          hover:border-primary/40">
+              <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
+                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
+                before:absolute before:content-[''] before:inset-0 
+                before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
+                backdrop-blur-sm group
+                border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
+                hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                hover:border-primary/40">
                 
-                {/* Эффект свечения для активного элемента - фиолетовый акцент */}
+                {/* Эффект свечения для активного элемента */}
                 <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
-                animate={{ 
-                opacity: [0.5, 0.7, 0.5], 
-               }}
-               transition={{ 
-               duration: 3, 
-               repeat: Infinity,
-               ease: "easeInOut" 
-              }}
-              />
+                  className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
+                  animate={{ 
+                    opacity: [0.5, 0.7, 0.5], 
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity,
+                    ease: "easeInOut" 
+                  }}
+                />
                 
                 {/* Анимированное свечение */}
                 <motion.div 
@@ -212,23 +210,23 @@ export default function BenefitsSection({
                   }}
                 />
 
-               {/* Свечение при наведении */}
-<motion.div 
-  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/0 via-[#180033]/0 to-[#121212]/0 rounded-lg blur-3xl -z-10 opacity-0 group-hover:opacity-100"
-  whileHover={{
-    opacity: 1,
-    background: "radial-gradient(circle, rgba(31,10,46,0.6) 0%, rgba(24,0,51,0.4) 50%, rgba(18,7,26,0.3) 100%)",
-    transition: { duration: 0.3 }
-  }}
-/>
+                {/* Свечение при наведении */}
+                <motion.div 
+                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/0 via-[#180033]/0 to-[#121212]/0 rounded-lg blur-3xl -z-10 opacity-0 group-hover:opacity-100"
+                  whileHover={{
+                    opacity: 1,
+                    background: "radial-gradient(circle, rgba(31,10,46,0.6) 0%, rgba(24,0,51,0.4) 50%, rgba(18,7,26,0.3) 100%)",
+                    transition: { duration: 0.3 }
+                  }}
+                />
                 
                 <div className="relative z-10">
                   <div className="text-white mb-4">
-                  <Icon name={benefit.icon} className="h-6 w-6" />
+                    <Icon name={benefit.icon} className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                   
                   <motion.h3 
-                    className="text-xl md:text-2xl font-semibold mb-8 whitespace-pre-line"
+                    className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line"
                     custom={index}
                     initial="hidden"
                     animate={hasAnimated ? "visible" : "hidden"}
@@ -238,7 +236,7 @@ export default function BenefitsSection({
                   </motion.h3>
                   
                   <motion.p 
-                    className="text-light-gray text-base md:text-lg font-sans"
+                    className="text-light-gray text-sm sm:text-base md:text-lg font-sans"
                     custom={index}
                     initial="hidden"
                     animate={hasAnimated ? "visible" : "hidden"}
@@ -264,7 +262,7 @@ export function CompactBenefitsSection({
 }: Omit<BenefitsSectionProps, 'variant' | 'subtitle'>) {
   return (
     <div className={cn("py-10", className)}>
-      <h3 className="text-2xl font-bold mb-6">{title}</h3>
+      <h3 className="text-xl sm:text-2xl font-bold mb-6">{title}</h3>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {benefits?.map((benefit, index) => (
@@ -282,8 +280,8 @@ export function CompactBenefitsSection({
                 <Icon name={benefit.icon} className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-lg font-semibold mb-1">{benefit.title}</h4>
-                <p className="text-light-gray text-sm font-sans">{benefit.description}</p>
+                <h4 className="text-base sm:text-lg font-semibold mb-1">{benefit.title}</h4>
+                <p className="text-light-gray text-xs sm:text-sm font-sans">{benefit.description}</p>
               </div>
             </div>
           </div>
@@ -306,7 +304,7 @@ export function HorizontalBenefits({
       {benefits.map((benefit, index) => (
         <div 
           key={index}
-          className="relative flex-1 rounded-lg p-6 transition-all duration-300 overflow-hidden group
+          className="relative flex-1 rounded-lg p-5 sm:p-6 transition-all duration-300 overflow-hidden group
                     bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
                     border border-primary/10 hover:border-primary/30"
         >
@@ -315,12 +313,12 @@ export function HorizontalBenefits({
           
           <div className="relative z-10">
             <div className="text-secondary group-hover:text-white transition-colors duration-300 mb-4">
-              <Icon name={benefit.icon} className="h-6 w-6" />
+              <Icon name={benefit.icon} className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <h4 className="text-xl font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">
+            <h4 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">
               {benefit.title}
             </h4>
-            <p className="text-light-gray font-sans">{benefit.description}</p>
+            <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
           </div>
         </div>
       ))}

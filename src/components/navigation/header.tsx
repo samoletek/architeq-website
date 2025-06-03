@@ -64,7 +64,7 @@ export default function Header({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false); // Состояние для анимации появления
+  const [isLoaded, setIsLoaded] = useState(false);
   const { isMobile } = useDeviceDetection();
   const pathname = usePathname();
   
@@ -89,7 +89,7 @@ export default function Header({
     
     // Анимация появления хедера - с задержкой только для домашней страницы
     const isHomePage = pathname === '/';
-    const delay = isHomePage ? 800 : 50; // 800мс для главной, 50мс для других страниц
+    const delay = isHomePage ? 800 : 50;
     
     const timer = setTimeout(() => {
       setIsLoaded(true);
@@ -134,13 +134,6 @@ export default function Header({
     }
   };
   
-  // Обработчик клика на элемент с выпадающим меню на мобильных
-  const handleDropdownToggle = (name: string) => {
-    if (isMobile) {
-      setActiveDropdown(activeDropdown === name ? null : name);
-    }
-  };
-  
   // Обработчик открытия/закрытия поиска
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -150,6 +143,19 @@ export default function Header({
     }
   };
 
+  // Блокировка скролла при открытом мобильном меню
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   // Анимационные варианты для контейнера выпадающего меню
   const menuVariants = {
     hidden: { opacity: 0, y: -10 },
@@ -157,14 +163,14 @@ export default function Header({
     exit: { opacity: 0, y: -10, transition: { duration: 0.2 } }
   };
   
-  // Анимационные варианты для элементов выпадающего меню (поочередная анимация сверху вниз)
+  // Анимационные варианты для элементов выпадающего меню
   const itemVariants = {
     hidden: { opacity: 0, y: -8 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.06, // увеличенная задержка для более заметной поочередной анимации
+        delay: i * 0.06,
         duration: 0.2,
         ease: "easeOut"
       }
@@ -182,13 +188,13 @@ export default function Header({
       <motion.header 
         className={cn(
           "mx-auto rounded-xl transition-all duration-300 py-4", 
-          isScrolled ? "bg-[#12071A]/90 backdrop-blur-sm shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
+          isScrolled ? "bg-[#12071A]/95 shadow-[0_0_15px_rgba(119,71,207,0.2)]" : "bg-transparent",
           "max-w-[1400px]", 
           className
         )}
       >
         <div className="container mx-auto px-4 flex items-center justify-between">
-          {/* Логотип с анимацией градиента и неоновым свечением */}
+          {/* Логотип */}
           <Link 
             href="/" 
             className="text-2xl font-bold"
@@ -248,7 +254,7 @@ export default function Header({
                       </span>
                     </div>
                     
-                    {/* Невидимый мост, соединяющий кнопку и выпадающее меню */}
+                    {/* Невидимый мост */}
                     <div 
                       className="absolute w-full h-3 bottom-0 left-0 transform translate-y-full" 
                       onMouseEnter={() => handleMouseEnter(item.name)}
@@ -272,12 +278,12 @@ export default function Header({
               </div>
             ))}
             
-            {/* Поиск на десктопе, если включен */}
+            {/* Поиск на десктопе */}
             {showSearch && (
               <div className="relative flex items-center">
                 <button
                   onClick={toggleSearch}
-                  className="text-white hover:text-secondary transition-colors mt-0.5" 
+                  className="text-white/70 hover:text-white hover:text-shadow-white-soft transition-all duration-300 mt-0.5" 
                   aria-label="Search"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -295,12 +301,12 @@ export default function Header({
             </GlowingTextButton>
           </div>
 
-          {/* Мобильные кнопки (поиск и меню) */}
-          <div className="flex items-center space-x-4 md:hidden">
-            {/* Поиск на мобильном, если включен */}
+          {/* Мобильные кнопки */}
+          <div className="flex items-center space-x-3 md:hidden">
+            {/* Поиск на мобильном */}
             {showSearch && (
               <button 
-                className="text-white hover:text-secondary p-2"
+                className="text-white/70 hover:text-white hover:text-shadow-white-soft transition-all duration-300 p-2"
                 onClick={toggleSearch}
                 aria-label="Search"
               >
@@ -334,130 +340,122 @@ export default function Header({
           </div>
         </div>
 
-        {/* Мобильное меню - выдвижная панель */}
+        {/* Обновленное мобильное меню - полноэкранное */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.div
-              className="md:hidden fixed inset-0 bg-[#12071A]/95 backdrop-blur-md z-40 pt-20"
-              initial={{ opacity: 0, x: '100%' }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: '100%' }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="container mx-auto px-4 flex flex-col space-y-5 py-8">
-                {navigation.map((item) => (
-                  <div key={item.name} className="border-b border-primary/20 pb-4">
-                    {item.children ? (
-                      <div>
-                        <div className="flex items-center justify-between w-full py-2">
+            <>
+              {/* Полноэкранный фон */}
+              <motion.div
+                className="md:hidden fixed inset-0 bg-[#0A0014] z-40"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+              
+              {/* Контент меню */}
+              <motion.div
+                className="md:hidden fixed inset-0 z-50 flex flex-col"
+                initial={{ opacity: 0, y: "100%" }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+              >
+                {/* Верхняя панель с логотипом и кнопкой закрытия */}
+                <div className="flex items-center justify-between p-6 border-b border-white/10">
+                  <Link 
+                    href="/" 
+                    className="text-xl font-bold text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Architeq
+                  </Link>
+                  <button 
+                    className="text-white/60 hover:text-white p-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    aria-label="Close menu"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                {/* Навигационные ссылки */}
+                <nav className="flex-1 overflow-y-auto px-6 py-8">
+                  <div className="space-y-1">
+                    {navigation.map((item, index) => (
+                      <motion.div
+                        key={item.name}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        {/* Пропускаем выпадающие меню на мобильных */}
+                        {!item.children ? (
                           <Link
                             href={item.href}
                             className={cn(
-                              "font-medium transition-colors",
+                              "block text-3xl font-semibold py-3 transition-colors",
                               isActive(item.href) 
-                                ? "text-secondary text-shadow-green-soft" 
-                                : "text-white hover:text-secondary"
+                                ? "text-secondary" 
+                                : "text-white/90 hover:text-white"
+                            )}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            target={item.isExternal ? "_blank" : undefined}
+                            rel={item.isExternal ? "noopener noreferrer" : undefined}
+                          >
+                            {item.name}
+                          </Link>
+                        ) : (
+                          // Для Services просто ссылка без подменю
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              "block text-3xl font-semibold py-3 transition-colors",
+                              isActive(item.href) 
+                                ? "text-secondary" 
+                                : "text-white/90 hover:text-white"
                             )}
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {item.name}
                           </Link>
-                          <button
-                            className="text-white"
-                            onClick={() => handleDropdownToggle(item.name)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className={`h-5 w-5 transition-transform ${activeDropdown === item.name ? 'rotate-180' : ''}`}
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </button>
-                        </div>
-                        <AnimatePresence>
-                          {activeDropdown === item.name && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden ml-4 mt-2 space-y-2"
-                            >
-                              {item.children.map((child, index) => (
-                                <motion.div
-                                  key={child.name}
-                                  custom={index}
-                                  variants={itemVariants}
-                                  initial="hidden"
-                                  animate="visible"
-                                  exit="exit"
-                                >
-                                  <Link
-                                    href={child.href}
-                                    className={cn(
-                                      "block py-1.5 px-2 transition-colors relative overflow-hidden",
-                                      isActive(child.href) 
-                                        ? "text-secondary text-shadow-green-soft" 
-                                        : "text-white hover:text-secondary"
-                                    )}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    target={child.isExternal ? "_blank" : undefined}
-                                    rel={child.isExternal ? "noopener noreferrer" : undefined}
-                                  >
-                                    <span className="relative z-10">{child.name}</span>
-                                    <motion.span 
-                                      className="absolute inset-0 bg-primary/10 -z-0"
-                                      initial={{ x: '100%', opacity: 0 }}
-                                      whileHover={{ x: 0, opacity: 1 }}
-                                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    />
-                                  </Link>
-                                </motion.div>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          "block py-2 font-medium transition-colors",
-                          isActive(item.href) 
-                            ? "text-secondary text-shadow-green-soft" 
-                            : "text-white hover:text-secondary"
                         )}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        target={item.isExternal ? "_blank" : undefined}
-                        rel={item.isExternal ? "noopener noreferrer" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
+                      </motion.div>
+                    ))}
                   </div>
-                ))}
-                
-                {/* CTA кнопка в мобильном меню */}
-                <Link 
-                  href={ctaButton.href} 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block"
-                >
-                  <Button 
-                    variant="secondary" 
-                    className="w-full mt-4"
+                  
+                  {/* CTA кнопка */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: navigation.length * 0.05 + 0.1 }}
+                    className="mt-12"
                   >
-                    {ctaButton.text}
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
+                    <Link 
+                      href={ctaButton.href} 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="inline-block"
+                    >
+                      <Button 
+                        variant="secondary" 
+                        className="text-lg px-8 py-4"
+                      >
+                        {ctaButton.text}
+                      </Button>
+                    </Link>
+                  </motion.div>
+                </nav>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
         
-        {/* Полноэкранный поиск */}
+        {/* Полноэкранный поиск БЕЗ дублирующего blur фона */}
         <AnimatePresence>
           {showSearch && isSearchOpen && (
             <SearchBar 
@@ -470,7 +468,7 @@ export default function Header({
         </AnimatePresence>
       </motion.header>
       
-      {/* Выпадающее меню как отдельный слой */}
+      {/* Выпадающее меню для десктопа */}
       <AnimatePresence>
         {activeDropdown && dropdownPosition && (
           <motion.div

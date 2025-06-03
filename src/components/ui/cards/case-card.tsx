@@ -18,18 +18,17 @@ export interface CaseCardProps {
   location?: string;
   results?: string[];
   image?: string;
-  tags?: string[]; // Оставляем для обратной совместимости
+  tags?: string[];
   href: string;
   className?: string;
   isCompact?: boolean;
   priority?: boolean;
   onClick?: () => void;
-  // Новые пропсы для анимаций как в Services
   index?: number;
   isVisible?: boolean;
 }
 
-// Меняем теплую палитру на акцентную зеленую палитру
+// Акцентная зеленая палитра
 const greenPalette = ['#B0FF74', '#9AFF6D', '#8BFF50', '#7CFF33', '#6DFF16', '#5EFF00', '#50E000'];
 
 const getHash = (str: string) =>
@@ -69,7 +68,19 @@ export function CaseCard({
   isVisible = true
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [displayTags, setDisplayTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
@@ -109,7 +120,7 @@ export function CaseCard({
     }
   }, [id, href]);
 
-  // Анимационные варианты для карточек (из Services)
+  // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -123,7 +134,12 @@ export function CaseCard({
     }
   };
 
-  const cardHeight = isCompact ? 'auto' : 'min-h-[480px]';
+  // Уменьшенная высота для мобильных устройств
+  const cardHeight = isCompact 
+    ? 'auto' 
+    : isMobile 
+      ? 'min-h-[280px]'
+      : 'min-h-[380px] sm:min-h-[420px]';
 
   const cardContent = (
     <motion.div
@@ -131,11 +147,10 @@ export function CaseCard({
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
       className={cn(
-        'relative group transition-all duration-500 ease-out',
-        'bg-dark-gradient rounded-xl p-8',
-        'border-2 border-secondary/30 hover:border-secondary/50',
-        'hover:transform hover:scale-[1.02] hover:-translate-y-2',
-        'h-full overflow-hidden',
+        'bg-dark-gray rounded-xl overflow-hidden border',
+        'transition-all duration-300 flex flex-col relative',
+        'case-card-enhanced',
+        isHovered ? 'case-card-hovered' : '',
         cardHeight,
         className
       )}
@@ -147,27 +162,7 @@ export function CaseCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Зеленый градиент внизу карточки (из Services) */}
-      <div 
-        className={`
-          absolute inset-x-0 bottom-0 h-20 
-          bg-gradient-to-t from-secondary/20 via-secondary/10 to-transparent
-          transition-opacity duration-500
-          ${isHovered ? 'opacity-100' : 'opacity-50'}
-        `} 
-      />
-
-      {/* Внутреннее свечение при hover (из Services) */}
-      <div 
-        className={`
-          absolute inset-0 rounded-xl 
-          bg-gradient-to-br from-secondary/5 via-transparent to-secondary/5
-          transition-opacity duration-500
-          ${isHovered ? 'opacity-100' : 'opacity-0'}
-        `} 
-      />
-
-      {/* Зеленые пятна свечения снизу (твоя оригинальная логика) */}
+      {/* Зеленые пятна свечения снизу */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, index) => (
           <motion.div
@@ -199,105 +194,125 @@ export function CaseCard({
         ))}
       </div>
 
-      {/* Контент карточки */}
-      <div className="relative z-10 h-full flex flex-col">
-        
-        {/* ОБНОВЛЕННЫЕ Теги */}
-        <div className="mb-6 flex-shrink-0">
-          <div className="flex flex-wrap gap-2">
-            {displayTags.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+      {/* Теги - уменьшенные отступы для мобильных */}
+      <div className={cn(
+        "relative z-10",
+        isMobile ? "pt-2 px-3 pb-2" : "pt-5 px-4 pb-5"
+      )}>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          {displayTags.map((tag, index) => (
+            <span
+              key={index}
+              className={cn(
+                "bg-black/60 backdrop-blur-sm text-white rounded-md border border-white/10",
+                isMobile ? "text-xs px-1.5 py-0.5" : "text-xs px-2 py-0.5 sm:py-1"
+              )}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
+      </div>
 
-        {/* Заголовок */}
-        <div className="mb-4 flex-shrink-0">
-          <h3 className="text-2xl font-bold leading-tight text-white line-clamp-2">
-            {title}
-          </h3>
-        </div>
+      {/* Контент - уменьшенные отступы для мобильных */}
+      <div className={cn(
+        "flex-grow z-10",
+        isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-8 py-5"
+      )}>
+        <h3 className={cn(
+          "font-semibold text-white leading-tight",
+          isMobile ? "text-base mb-2" : "text-2xl mb-6"
+        )}>
+          {title}
+        </h3>
 
-        {/* Компания и локация */}
-        <div className="mb-6 flex-shrink-0">
-          <p className="text-white text-xs flex items-center mb-2">
-            <span className="text-light-gray mr-2">Company:</span>
-            <span className="font-medium truncate">{company}</span>
+        {description && !isCompact && (
+          <p className={cn(
+            "text-light-gray line-clamp-3",
+            isMobile ? "text-xs mb-2" : "text-md mb-3"
+          )}>
+            {description}
           </p>
+        )}
 
-          {(location || industry) && (
-            <p className="text-white/80 text-xs flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3 mr-1 text-secondary flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {location ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                )}
-              </svg>
-              <span className="truncate">{location || industry}</span>
-            </p>
-          )}
-        </div>
-        
-        {/* Описание - растет по содержимому */}
-        <div className="mb-auto flex-grow">
-          {description && !isCompact && (
-            <p className={cn(
-              "leading-relaxed text-base mb-8 line-clamp-4 transition-colors duration-300",
-              isHovered ? "text-white" : "text-light-gray"
+        {results && results.length > 0 && !isCompact && (
+          <div className={cn(
+            isMobile ? "mb-2" : "mb-5"
+          )}>
+            <h4 className={cn(
+              "font-medium text-secondary",
+              isMobile ? "text-xs mb-1" : "text-sm mb-4"
+            )}>Key results:</h4>
+            <ul className={cn(
+              "text-light-gray space-y-0.5",
+              isMobile ? "text-xs" : "text-md"
             )}>
-              {description}
-            </p>
-          )}
-          
-          {/* Key Results - выравниваются по нижнему краю описания */}
-          {results && results.length > 0 && !isCompact && (
-            <div className="mt-auto">
-              <h4 className="text-base font-semibold mb-4 text-secondary">
-                Key Results:
-              </h4>
-              <ul className="space-y-2">
-                {results.slice(0, 3).map((result, rIndex) => (
-                  <li key={rIndex} className="flex items-start">
-                    <span className="text-secondary mr-3 mt-1 flex-shrink-0 text-lg">
-                      •
-                    </span>
-                    <span 
-                      className={cn(
-                        "text-sm leading-relaxed transition-colors duration-300",
-                        isHovered ? "text-white" : "text-light-gray"
-                      )}
-                      dangerouslySetInnerHTML={{ 
-                        __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
-                      }} 
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+              {results.slice(0, isMobile ? 2 : 4).map((result, index) => (
+                <li key={index} className="flex items-start">
+                  <span className={cn(
+                    "text-secondary flex-shrink-0",
+                    isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
+                  )}>•</span>
+                  <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
+                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                  }} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Footer - уменьшенные отступы для мобильных */}
+      <div className={cn(
+        "border-t border-medium-gray/40 mt-auto z-10",
+        isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-6 pt-4"
+      )}>
+        <p className={cn(
+          "text-white flex items-center",
+          isMobile ? "text-xs mb-1" : "text-sm mb-2"
+        )}>
+          <span className={cn(
+            "text-light-gray flex-shrink-0",
+            isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
+          )}>Company:</span>
+          <span className="font-medium truncate">{company}</span>
+        </p>
+
+        {(location || industry) && (
+          <p className={cn(
+            "text-white/80 flex items-center",
+            isMobile ? "text-xs" : "text-sm"
+          )}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={cn(
+                "text-secondary flex-shrink-0",
+                isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-1 sm:mr-1.5"
+              )}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {location ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              )}
+            </svg>
+            <span className="truncate">{location || industry}</span>
+          </p>
+        )}
       </div>
     </motion.div>
   );

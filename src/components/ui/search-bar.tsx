@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils/utils';
 import { usePathname } from 'next/navigation';
 import { allCaseStudies } from '@/lib/data/case-studies';
 
-// Типы результатов поиска остаются без изменений
+// Типы результатов поиска
 export interface SearchResult {
   id: string;
   title: string;
@@ -20,7 +20,7 @@ export interface SearchResult {
   iconName?: string;
 }
 
-// Интерфейс для параметров (без изменений)
+// Интерфейс для параметров
 interface SearchBarProps {
   className?: string;
   placeholder?: string;
@@ -33,7 +33,7 @@ interface SearchBarProps {
   maxResults?: number;
 }
 
-// Предопределенные результаты поиска (без изменений)
+// Предопределенные результаты поиска
 const SERVICES = [
   { id: 'business-process', title: 'Business Process Automation', type: 'service' as const, url: '/services/business-process', description: 'Automate complex business processes by connecting different systems, eliminating manual data entry, and creating workflows.' },
   { id: 'crm-integration', title: 'CRM Integration', type: 'service' as const, url: '/services/crm-integration', description: 'Connect your CRM system with other business tools to create a unified information environment.' },
@@ -50,7 +50,7 @@ const PAGES = [
   { id: 'contacts', title: 'Contact Us', type: 'page' as const, url: '/contacts', description: 'Get in touch with our team for a consultation.' },
 ];
 
-// Функция для преобразования кейсов в результаты поиска (без изменений)
+// Функция для преобразования кейсов в результаты поиска
 function casesToSearchResults(): SearchResult[] {
   return allCaseStudies.map(cs => ({
     id: cs.id,
@@ -64,7 +64,7 @@ function casesToSearchResults(): SearchResult[] {
 
 export function SearchBar({
   className,
-  placeholder = 'Start typing...', // Изменен текст плейсхолдера
+  placeholder = 'Start typing...',
   onSearch,
   isLoading = false,
   isExpanded = false,
@@ -80,12 +80,26 @@ export function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
   
-  // Обработка клика вне компонента - обновлено для закрытия окна поиска
+  // Обработка клика вне компонента и скролла
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowResults(false);
-        // Добавляем закрытие всего поискового оверлея при клике вне
+        if (variant === 'overlay' && isExpanded && onToggle) {
+          onToggle();
+        }
+      }
+    };
+
+    const handleScroll = () => {
+      if (variant === 'overlay' && isExpanded && onToggle) {
+        onToggle();
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowResults(false);
         if (variant === 'overlay' && isExpanded && onToggle) {
           onToggle();
         }
@@ -93,23 +107,26 @@ export function SearchBar({
     };
     
     document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('scroll', handleScroll);
+    document.addEventListener('keydown', handleEscape);
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, [variant, isExpanded, onToggle]);
   
-  // Сброс поиска при изменении маршрута (без изменений)
+  // Сброс поиска при изменении маршрута
   useEffect(() => {
     setSearchQuery('');
     setSearchResults([]);
     setShowResults(false);
   }, [pathname]);
   
-  // Выполнение поиска при изменении запроса (без изменений)
+  // Выполнение поиска при изменении запроса
   useEffect(() => {
-    // Функция поиска
     const performSearch = (query: string) => {
-      // Если запрос пустой, возвращаем пустой массив
       if (!query.trim()) {
         setSearchResults([]);
         return;
@@ -153,14 +170,14 @@ export function SearchBar({
     }
   }, [searchQuery, onSearch]);
   
-  // Обработчик ввода (без изменений)
+  // Обработчик ввода
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
     setShowResults(value.length > 0);
   };
   
-  // Обработчик фокуса (без изменений)
+  // Обработчик фокуса
   const handleFocus = () => {
     setInputFocused(true);
     if (searchQuery.length > 0) {
@@ -168,10 +185,9 @@ export function SearchBar({
     }
   };
   
-  // Обработчик потери фокуса (без изменений)
+  // Обработчик потери фокуса
   const handleBlur = () => {
     setInputFocused(false);
-    // Не скрываем результаты сразу, так как пользователь может кликнуть по результату
     setTimeout(() => {
       if (!searchRef.current?.contains(document.activeElement)) {
         setShowResults(false);
@@ -179,7 +195,7 @@ export function SearchBar({
     }, 200);
   };
   
-  // Функция для очистки поиска (без изменений)
+  // Функция для очистки поиска
   const clearSearch = () => {
     setSearchQuery('');
     setSearchResults([]);
@@ -192,18 +208,17 @@ export function SearchBar({
     }
   };
   
-  // Функция для установки заданного запроса (без изменений)
+  // Функция для установки заданного запроса
   const setSearchTerm = (term: string) => {
-    // Создаем искусственное событие изменения
     handleInputChange({ target: { value: term } } as React.ChangeEvent<HTMLInputElement>);
   };
   
-  // Фильтрация и ограничение результатов (без изменений)
+  // Фильтрация и ограничение результатов
   const displayResults = searchResults.slice(0, maxResults);
   const hasResults = displayResults.length > 0;
   const hasMoreResults = searchResults.length > maxResults;
   
-  // Отображение результатов поиска (без изменений)
+  // Отображение результатов поиска для обычной версии
   const renderResults = () => {
     if (!showResults) return null;
     
@@ -214,10 +229,7 @@ export function SearchBar({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
           transition={{ duration: 0.2 }}
-          className={cn(
-            "absolute top-full mt-2 left-0 right-0 search-dropdown border border-medium-gray rounded-lg shadow-lg z-50 overflow-hidden",
-            variant === 'overlay' ? "max-h-[70vh] overflow-y-auto" : "max-h-80 overflow-y-auto"
-          )}
+          className="absolute top-full mt-2 left-0 right-0 bg-[#12071A] border border-gray-600 rounded-lg shadow-lg z-50 overflow-hidden"
         >
           {isLoading ? (
             <div className="p-4 text-center">
@@ -231,14 +243,14 @@ export function SearchBar({
                   <Link 
                     key={`${result.type}-${result.id}`} 
                     href={result.url}
-                    className="block px-4 py-2 hover:bg-medium-gray/50 transition-colors"
+                    className="block px-4 py-2 hover:bg-gray-700 transition-colors"
                     onClick={() => setShowResults(false)}
                   >
                     <div className="flex items-start">
                       <div className="flex-grow">
-                        <div className="font-medium">{result.title}</div>
+                        <div className="font-medium text-white">{result.title}</div>
                         {result.description && (
-                          <p className="text-light-gray text-sm line-clamp-1">{result.description}</p>
+                          <p className="text-gray-300 text-sm line-clamp-1">{result.description}</p>
                         )}
                         {result.tags && result.tags.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-1">
@@ -259,7 +271,7 @@ export function SearchBar({
               </div>
               
               {hasMoreResults && (
-                <div className="border-t border-medium-gray p-3 text-center">
+                <div className="border-t border-gray-600 p-3 text-center">
                   <Link 
                     href={`/search?q=${encodeURIComponent(searchQuery)}`}
                     className="text-primary text-sm hover:underline"
@@ -272,9 +284,9 @@ export function SearchBar({
             </div>
           ) : searchQuery.length > 0 ? (
             <div className="p-4 text-center">
-              <p className="text-light-gray">Nothing was found for &quot;{searchQuery}&quot;</p>
+              <p className="text-gray-300">Nothing was found for &quot;{searchQuery}&quot;</p>
               <div className="mt-3">
-                <p className="text-sm text-light-gray mb-2">Try these popular searches:</p>
+                <p className="text-sm text-gray-400 mb-2">Try these popular searches:</p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   <Button 
                     variant="secondary" 
@@ -299,7 +311,7 @@ export function SearchBar({
     );
   };
   
-  // Разные варианты отображения
+  // Вариант minimal
   if (variant === 'minimal') {
     return (
       <div className={cn("relative", className)} ref={searchRef}>
@@ -316,6 +328,7 @@ export function SearchBar({
     );
   }
   
+  // Кнопка для overlay когда не развернут
   if (variant === 'overlay' && !isExpanded) {
     return (
       <button
@@ -333,150 +346,167 @@ export function SearchBar({
     );
   }
   
+  // Улучшенный overlay с фиолетовым блюром
   if (variant === 'overlay' && isExpanded) {
     return (
-      <motion.div 
-        className="fixed inset-0 z-[9990] flex items-start justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onToggle}
-      >
-        {/* Фоновое затемнение с размытием */}
-        <div className="search-backdrop" />
-        
-        {/* Контейнер модального окна */}
+      <div className="fixed inset-0 z-50">
+        {/* Фиолетовое затемнение с блюром */}
         <motion.div
-          className="w-full max-w-2xl mt-20 mx-4 rounded-lg shadow-xl overflow-hidden border border-primary/20 search-content"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -50, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          onClick={(e) => e.stopPropagation()}
-          ref={searchRef}
-        >
-          <div className="p-4 flex items-center border-b border-medium-gray">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-light-gray mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              ref={inputRef}
-              type="text"
-              className="flex-grow bg-transparent border-none outline-none text-white placeholder-light-gray/50"
-              placeholder={placeholder}
-              value={searchQuery}
-              onChange={handleInputChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              autoFocus
-            />
-            <button
-              onClick={onToggle}
-              className="ml-2 text-light-gray hover:text-white p-1 rounded-full focus:outline-none"
-              aria-label="Close search"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          className="fixed inset-0 bg-black/30"
+          style={{
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)'
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ 
+            duration: 0.4,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+          onClick={onToggle}
+        />
+        
+        {/* Поисковое окно */}
+        <div className="fixed inset-0 flex items-start justify-center pointer-events-none">
+          <motion.div
+            className="w-full max-w-2xl mt-20 mx-4 bg-[#12071A]/95 rounded-lg shadow-2xl border border-purple-500/30 pointer-events-auto"
+            style={{
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)'
+            }}
+            initial={{ y: -50, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -50, opacity: 0, scale: 0.95 }}
+            transition={{ 
+              duration: 0.4,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            onClick={(e) => e.stopPropagation()}
+            ref={searchRef}
+          >
+            <div className="p-4 flex items-center border-b border-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </button>
-          </div>
-          
-          {/* Результаты отображаются прямо здесь, без выпадающего меню */}
-          {(searchQuery.length > 0 || isLoading) && (
-            <div className="max-h-[60vh] overflow-y-auto">
-              {isLoading ? (
-                <div className="p-4 text-center">
-                  <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  <p className="mt-2 text-light-gray">Search...</p>
-                </div>
-              ) : hasResults ? (
-                <div>
-                  <div className="py-2">
-                    {displayResults.map((result) => (
-                      <Link 
-                        key={`${result.type}-${result.id}`} 
-                        href={result.url}
-                        className="block px-4 py-3 hover:bg-medium-gray/50 transition-colors"
-                        onClick={onToggle}
-                      >
-                        <div className="flex items-start">
-                          <div>
-                            <div className="font-medium">{result.title}</div>
-                            {result.description && (
-                              <p className="text-light-gray text-sm line-clamp-2 mt-1">{result.description}</p>
-                            )}
-                            {result.tags && result.tags.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mt-2">
-                                {result.tags.slice(0, 3).map((tag, index) => (
-                                  <span 
-                                    key={index}
-                                    className="inline-flex text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+              <input
+                ref={inputRef}
+                type="text"
+                className="flex-grow bg-transparent border-none outline-none text-white placeholder-gray-400"
+                placeholder={placeholder}
+                value={searchQuery}
+                onChange={handleInputChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                autoFocus
+              />
+              <button
+                onClick={onToggle}
+                className="ml-2 text-gray-400 hover:text-white p-1 rounded-full focus:outline-none transition-colors"
+                aria-label="Close search"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Результаты поиска */}
+            {(searchQuery.length > 0 || isLoading) && (
+              <div>
+                {isLoading ? (
+                  <div className="p-4 text-center">
+                    <div className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <p className="mt-2 text-gray-300">Search...</p>
                   </div>
-                  
-                  {hasMoreResults && (
-                    <div className="border-t border-medium-gray p-4 text-center">
-                      <Link 
-                        href={`/search?q=${encodeURIComponent(searchQuery)}`}
-                        className="text-primary hover:underline"
-                        onClick={onToggle}
-                      >
-                        Show all results ({searchResults.length})
-                      </Link>
+                ) : hasResults ? (
+                  <div>
+                    <div className="py-2">
+                      {displayResults.map((result) => (
+                        <Link 
+                          key={`${result.type}-${result.id}`} 
+                          href={result.url}
+                          className="block px-4 py-3 hover:bg-gray-700 transition-colors"
+                          onClick={onToggle}
+                        >
+                          <div className="flex items-start">
+                            <div>
+                              <div className="font-medium text-white">{result.title}</div>
+                              {result.description && (
+                                <p className="text-gray-300 text-sm line-clamp-2 mt-1">{result.description}</p>
+                              )}
+                              {result.tags && result.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {result.tags.slice(0, 3).map((tag, index) => (
+                                    <span 
+                                      key={index}
+                                      className="inline-flex text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div className="p-6 text-center">
-                  <p className="text-light-gray mb-4">Nothing was found for &quot;{searchQuery}&quot;</p>
-                  <p className="text-sm text-light-gray/70">
-                    Try different keywords or check the correct spelling.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-          
-          {!searchQuery && !isLoading && (
-            <div className="p-6">
-              {/* Удалена строка "Start typing your search query" */}
-              {/* Популярные поисковые запросы */}
-              <div className="flex flex-wrap gap-2 justify-center">
-                <Button 
-                  variant="secondary" 
-                  size="sm" 
-                  onClick={() => setSearchTerm("CRM")}
-                >
-                  CRM Integration
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  size="sm" 
-                  onClick={() => setSearchTerm("Document")}
-                >
-                  Document Automation
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  size="sm" 
-                  onClick={() => setSearchTerm("AI")}
-                >
-                  AI Solutions
-                </Button>
+                    
+                    {hasMoreResults && (
+                      <div className="border-t border-gray-600 p-4 text-center">
+                        <Link 
+                          href={`/search?q=${encodeURIComponent(searchQuery)}`}
+                          className="text-primary hover:underline"
+                          onClick={onToggle}
+                        >
+                          Show all results ({searchResults.length})
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-6 text-center">
+                    <p className="text-gray-300 mb-4">Nothing was found for &quot;{searchQuery}&quot;</p>
+                    <p className="text-sm text-gray-400">
+                      Try different keywords or check the correct spelling.
+                    </p>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
-        </motion.div>
-      </motion.div>
+            )}
+            
+            {/* Популярные поиски когда нет запроса */}
+            {!searchQuery && !isLoading && (
+              <div className="p-6">
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => setSearchTerm("CRM")}
+                  >
+                    CRM Integration
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => setSearchTerm("Document")}
+                  >
+                    Document Automation
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => setSearchTerm("AI")}
+                  >
+                    AI Solutions
+                  </Button>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </div>
     );
   }
   

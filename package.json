@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "structure": "node scripts/generate-structure.js"
   },
   "dependencies": {
     "@types/three": "^0.176.0",
