@@ -340,12 +340,10 @@ const GlowingBulletPoint = ({ text, index = 0, isMobile }: { text: string; index
 
 // Компонент для отдельного решения - адаптирован для мобильных
 const SolutionContent = ({ 
-  solution, 
-  isActive = false,
+  solution,
   isMobile = false
 }: { 
   solution: Solution;
-  isActive: boolean;
   isMobile: boolean;
 }) => {
   const contentVariants = {
@@ -705,7 +703,6 @@ export function SolutionsSection({
                     <SolutionContent
                       key={solution.id}
                       solution={solution}
-                      isActive={true}
                       isMobile={true}
                     />
                   )
@@ -769,7 +766,6 @@ export function SolutionsSection({
                         <SolutionContent
                           key={solution.id}
                           solution={solution}
-                          isActive={true}
                           isMobile={false}
                         />
                       )
@@ -785,7 +781,7 @@ export function SolutionsSection({
   );
 }
 
-// Компактная версия остается без изменений
+// Компактная версия
 export function CompactSolutionsSection({
   solutions = defaultSolutions.slice(0, 4),
   className,
