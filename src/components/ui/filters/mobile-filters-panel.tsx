@@ -4,10 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { IndustryCategory, FunctionCategory } from '@/lib/data/case-studies';
-import { IndustryFilters } from './industry-filters';
-import { FunctionFilters } from './function-filters';
-import { ActiveFiltersDisplay } from './active-filters-display';
+import { IndustryCategory, FunctionCategory, getFilterCounts } from '@/lib/data/case-studies';
 
 export interface MobileFiltersPanelProps {
   selectedIndustries: IndustryCategory[];
@@ -23,13 +20,124 @@ export interface MobileFiltersPanelProps {
   className?: string;
 }
 
+// Простые фильтры без сворачивания для мобильных
+function SimpleMobileIndustryFilters({
+  selectedIndustries,
+  onIndustryChange
+}: {
+  selectedIndustries: IndustryCategory[];
+  onIndustryChange: (industry: IndustryCategory) => void;
+}) {
+  const { industries } = getFilterCounts();
+  const filteredIndustries = industries.filter(({ id }) => id !== 'your-industry');
+
+  return (
+    <div className="w-full">
+      <div className="space-y-3">
+        {filteredIndustries.map(({ id: industryId, label }) => {
+          const selected = selectedIndustries.includes(industryId);
+          
+          return (
+            <div
+              key={industryId}
+              className="flex items-center justify-between p-3 rounded-lg bg-transparent border border-transparent hover:border-primary/20 transition-all duration-200"
+            >
+              <span className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                selected ? "text-primary" : "text-white"
+              )}>
+                {label}
+              </span>
+              
+              <div 
+                className="relative cursor-pointer"
+                onClick={() => onIndustryChange(industryId)}
+              >
+                <div className={cn(
+                  "w-10 h-5 rounded-full transition-all duration-300 relative overflow-hidden",
+                  selected
+                    ? "bg-primary shadow-lg shadow-primary/25" 
+                    : "bg-white/20 hover:bg-primary/30"
+                )}>
+                  <motion.div
+                    animate={{ x: selected ? 18 : 2 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className={cn(
+                      "absolute top-0.5 w-4 h-4 rounded-full transition-colors duration-300",
+                      selected ? "bg-white shadow-md" : "bg-white/80"
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function SimpleMobileFunctionFilters({
+  selectedFunctions,
+  onFunctionChange
+}: {
+  selectedFunctions: FunctionCategory[];
+  onFunctionChange: (functionCategory: FunctionCategory) => void;
+}) {
+  const { functions } = getFilterCounts();
+  const filteredFunctions = functions.filter(({ id }) => id !== 'custom-solutions');
+
+  return (
+    <div className="w-full">
+      <div className="space-y-3">
+        {filteredFunctions.map(({ id: functionId, label }) => {
+          const selected = selectedFunctions.includes(functionId);
+          
+          return (
+            <div
+              key={functionId}
+              className="flex items-center justify-between p-3 rounded-lg bg-transparent border border-transparent hover:border-secondary/20 transition-all duration-200"
+            >
+              <span className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                selected ? "text-secondary" : "text-white"
+              )}>
+                {label}
+              </span>
+              
+              <div 
+                className="relative cursor-pointer"
+                onClick={() => onFunctionChange(functionId)}
+              >
+                <div className={cn(
+                  "w-10 h-5 rounded-full transition-all duration-300 relative overflow-hidden",
+                  selected
+                    ? "bg-secondary shadow-lg shadow-secondary/25" 
+                    : "bg-white/20 hover:bg-secondary/30"
+                )}>
+                  <motion.div
+                    animate={{ x: selected ? 18 : 2 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className={cn(
+                      "absolute top-0.5 w-4 h-4 rounded-full transition-colors duration-300",
+                      selected ? "bg-white shadow-md" : "bg-white/80"
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function MobileFiltersPanel({
   selectedIndustries,
   selectedFunctions,
-  searchQuery,
   onIndustryChange,
   onFunctionChange,
-  onSearchChange,
   onClearAll,
   isOpen,
   onToggle,
@@ -38,8 +146,10 @@ export function MobileFiltersPanel({
 }: MobileFiltersPanelProps) {
   const [activeTab, setActiveTab] = useState<'industries' | 'functions'>('industries');
 
-  // Подсчитываем активные фильтры
-  const totalActiveFilters = selectedIndustries.length + selectedFunctions.length + (searchQuery.trim() ? 1 : 0);
+  // Подсчитываем активные фильтры (исключаем дефолтные)
+  const activeIndustries = selectedIndustries.filter(id => id !== 'your-industry').length;
+  const activeFunctions = selectedFunctions.filter(id => id !== 'custom-solutions').length;
+  const totalActiveFilters = activeIndustries + activeFunctions;
 
   // Закрываем панель при клике вне её
   useEffect(() => {
@@ -52,7 +162,6 @@ export function MobileFiltersPanel({
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      // Предотвращаем скролл страницы когда панель открыта
       document.body.style.overflow = 'hidden';
     }
 
@@ -88,21 +197,7 @@ export function MobileFiltersPanel({
     closed: { opacity: 0 },
     open: { 
       opacity: 1,
-      transition: { duration: 0.3 }
-    }
-  };
-
-  const tabVariants = {
-    inactive: { 
-      backgroundColor: 'rgba(51, 51, 51, 0.5)',
-      color: 'rgba(170, 170, 170, 1)',
-      scale: 0.98
-    },
-    active: { 
-      backgroundColor: 'rgba(119, 71, 207, 0.2)',
-      color: 'rgba(119, 71, 207, 1)',
-      scale: 1,
-      boxShadow: '0 0 15px rgba(119, 71, 207, 0.3)'
+      transition: { duration: 0.2 }
     }
   };
 
@@ -110,13 +205,13 @@ export function MobileFiltersPanel({
     <>
       {/* Кнопка открытия фильтров */}
       <motion.button
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.98 }}
         onClick={onToggle}
         className={cn(
-          "w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-300",
+          "w-full flex items-center justify-between p-4 rounded-lg border transition-all duration-200",
           isOpen 
-            ? "bg-primary/20 border-primary/50 text-white" 
-            : "bg-dark-gray/70 border-medium-gray/50 text-light-gray hover:text-white hover:border-medium-gray/70",
+            ? "bg-primary/10 border-primary/40 text-white" 
+            : "bg-dark-gray/80 border-medium-gray/40 text-light-gray hover:text-white hover:border-medium-gray/60",
           className
         )}
       >
@@ -124,20 +219,18 @@ export function MobileFiltersPanel({
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          <span className="font-medium">
-            {isOpen ? 'Close Filters' : 'Show Filters'}
-          </span>
+          <span className="font-medium">Filters</span>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
           {totalActiveFilters > 0 && (
-            <span className="bg-secondary text-gray-900 text-xs px-2 py-1 rounded-full font-medium">
+            <span className="bg-secondary text-gray-900 text-xs px-2 py-1 rounded-full font-semibold">
               {totalActiveFilters}
             </span>
           )}
           {resultCount !== undefined && (
             <span className="text-xs text-light-gray">
-              {resultCount} results
+              {resultCount}
             </span>
           )}
           <motion.div
@@ -151,7 +244,7 @@ export function MobileFiltersPanel({
         </div>
       </motion.button>
 
-      {/* Фоновое затемнение */}
+      {/* Фоновое затемнение - БЕЗ ЗАЗОРА СВЕРХУ */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -159,7 +252,8 @@ export function MobileFiltersPanel({
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            style={{ top: 0, left: 0, right: 0, bottom: 0 }}
             onClick={onToggle}
           />
         )}
@@ -174,14 +268,13 @@ export function MobileFiltersPanel({
             animate="open"
             exit="closed"
             data-mobile-filters
-            className="fixed bottom-0 left-0 right-0 bg-dark-gray border-t-2 border-primary/30 rounded-t-2xl z-[60] max-h-[85vh] overflow-hidden"
+            className="fixed bottom-0 left-0 right-0 bg-dark-gray border-t border-primary/20 rounded-t-xl z-[60] max-h-[80vh] overflow-hidden"
           >
             {/* Шапка панели */}
-            <div className="p-4 border-b border-medium-gray/30 bg-dark-gray/95 backdrop-blur-md">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-4 border-b border-medium-gray/20">
+              <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white flex items-center">
-                  <span className="mr-2">🔍</span>
-                  Filter Cases
+                  Filters
                   {totalActiveFilters > 0 && (
                     <span className="ml-2 bg-secondary text-gray-900 text-xs px-2 py-1 rounded-full font-medium">
                       {totalActiveFilters}
@@ -189,11 +282,11 @@ export function MobileFiltersPanel({
                   )}
                 </h3>
                 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   {totalActiveFilters > 0 && (
                     <button
                       onClick={onClearAll}
-                      className="text-sm text-light-gray hover:text-white transition-colors underline"
+                      className="text-sm text-secondary hover:text-white transition-colors"
                     >
                       Clear All
                     </button>
@@ -202,7 +295,7 @@ export function MobileFiltersPanel({
                     onClick={onToggle}
                     className="text-light-gray hover:text-white transition-colors p-1"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -210,90 +303,67 @@ export function MobileFiltersPanel({
               </div>
 
               {/* Табы */}
-              <div className="flex space-x-2">
-                <motion.button
-                  variants={tabVariants}
-                  animate={activeTab === 'industries' ? 'active' : 'inactive'}
+              <div className="flex mt-4 bg-medium-gray/30 rounded-lg p-1">
+                <button
                   onClick={() => setActiveTab('industries')}
-                  className="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none"
+                  className={cn(
+                    "flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200",
+                    activeTab === 'industries'
+                      ? "bg-primary text-white shadow-sm"
+                      : "text-light-gray hover:text-white"
+                  )}
                 >
-                  <span className="flex items-center justify-center">
-                    <span className="mr-2">🏭</span>
-                    Industries
-                    {selectedIndustries.length > 0 && (
-                      <span className="ml-2 bg-current/20 text-current text-xs px-1.5 py-0.5 rounded-full">
-                        {selectedIndustries.length}
-                      </span>
-                    )}
-                  </span>
-                </motion.button>
+                  Industries
+                  {activeIndustries > 0 && (
+                    <span className="ml-1 text-xs opacity-75">({activeIndustries})</span>
+                  )}
+                </button>
                 
-                <motion.button
-                  variants={tabVariants}
-                  animate={activeTab === 'functions' ? 'active' : 'inactive'}
+                <button
                   onClick={() => setActiveTab('functions')}
-                  className="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none"
+                  className={cn(
+                    "flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200",
+                    activeTab === 'functions'
+                      ? "bg-secondary text-gray-900 shadow-sm"
+                      : "text-light-gray hover:text-white"
+                  )}
                 >
-                  <span className="flex items-center justify-center">
-                    <span className="mr-2">⚙️</span>
-                    Functions
-                    {selectedFunctions.length > 0 && (
-                      <span className="ml-2 bg-current/20 text-current text-xs px-1.5 py-0.5 rounded-full">
-                        {selectedFunctions.length}
-                      </span>
-                    )}
-                  </span>
-                </motion.button>
+                  Functions
+                  {activeFunctions > 0 && (
+                    <span className="ml-1 text-xs opacity-75">({activeFunctions})</span>
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Контент панели */}
-            <div className="overflow-y-auto max-h-[calc(85vh-120px)]">
-              <div className="p-4 space-y-6">
-                
-                {/* Активные фильтры */}
-                {totalActiveFilters > 0 && (
-                  <ActiveFiltersDisplay
-                    selectedIndustries={selectedIndustries}
-                    selectedFunctions={selectedFunctions}
-                    searchQuery={searchQuery}
-                    onRemoveIndustry={onIndustryChange}
-                    onRemoveFunction={onFunctionChange}
-                    onClearSearch={() => onSearchChange('')}
-                    onClearAll={onClearAll}
-                    resultCount={resultCount}
-                    isCompact={true}
-                  />
-                )}
-
-                {/* Контент табов */}
+            {/* Контент панели - БЕЗ СВОРАЧИВАНИЯ */}
+            <div className="overflow-y-auto max-h-[calc(80vh-140px)]">
+              <div className="p-4">
                 <AnimatePresence mode="wait">
                   {activeTab === 'industries' ? (
                     <motion.div
                       key="industries"
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
+                      exit={{ opacity: 0, x: 10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <IndustryFilters
+                      <SimpleMobileIndustryFilters
                         selectedIndustries={selectedIndustries}
                         onIndustryChange={onIndustryChange}
-                        showCounts={true}
                       />
                     </motion.div>
                   ) : (
                     <motion.div
                       key="functions"
-                      initial={{ opacity: 0, x: 20 }}
+                      initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
+                      exit={{ opacity: 0, x: -10 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <FunctionFilters
+                      <SimpleMobileFunctionFilters
                         selectedFunctions={selectedFunctions}
                         onFunctionChange={onFunctionChange}
-                        showCounts={true}
                       />
                     </motion.div>
                   )}
@@ -301,23 +371,23 @@ export function MobileFiltersPanel({
               </div>
             </div>
 
-            {/* Нижняя панель с действиями */}
-            <div className="p-4 border-t border-medium-gray/30 bg-dark-gray/95 backdrop-blur-md">
+            {/* Нижняя панель */}
+            <div className="p-4 border-t border-medium-gray/20 bg-dark-gray/95">
               <div className="flex items-center justify-between">
                 <div className="text-sm text-light-gray">
                   {resultCount !== undefined && (
                     <span>
-                      {resultCount} {resultCount === 1 ? 'case' : 'cases'} found
+                      {resultCount} result{resultCount !== 1 ? 's' : ''}
                     </span>
                   )}
                 </div>
                 
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={onToggle}
-                  className="bg-secondary text-gray-900 px-6 py-2 rounded-lg font-medium text-sm hover:bg-secondary/90 transition-colors shadow-neon-green-glow"
+                  className="bg-secondary text-gray-900 px-6 py-2 rounded-lg font-medium text-sm hover:bg-secondary/90 transition-colors"
                 >
-                  Apply Filters
+                  Apply
                 </motion.button>
               </div>
             </div>

@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
-import { generateCardTags } from '@/lib/utils/tag-utils';
-import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface CaseCardProps {
   id?: string;
@@ -69,7 +67,6 @@ export function CaseCard({
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [displayTags, setDisplayTags] = useState<string[]>([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -85,21 +82,6 @@ export function CaseCard({
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
   const [left1, left2] = getTwoOffsets(gradientKey);
-
-  // Генерируем теги с помощью новой системы
-  useEffect(() => {
-    if (id) {
-      const caseStudy = getCaseStudyById(id);
-      if (caseStudy) {
-        const generatedTags = generateCardTags(caseStudy);
-        setDisplayTags(generatedTags);
-      } else if (tags) {
-        setDisplayTags(tags);
-      }
-    } else if (tags) {
-      setDisplayTags(tags);
-    }
-  }, [id, tags]);
 
   useEffect(() => {
     if (id && typeof window !== 'undefined') {
@@ -194,67 +176,71 @@ export function CaseCard({
         ))}
       </div>
 
-      {/* Теги - уменьшенные отступы для мобильных */}
+      {/* Теги - ОТОБРАЖАЮТСЯ ЕСЛИ ЕСТЬ */}
       <div className={cn(
         "relative z-10",
-        isMobile ? "pt-2 px-3 pb-2" : "pt-5 px-4 pb-5"
+        isMobile ? "pt-2 px-3 pb-2" : "pt-4 px-6 pb-4"
       )}>
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {displayTags.map((tag, index) => (
-            <span
-              key={index}
-              className={cn(
-                "bg-black/60 backdrop-blur-sm text-white rounded-md border border-white/10",
-                isMobile ? "text-xs px-1.5 py-0.5" : "text-xs px-2 py-0.5 sm:py-1"
-              )}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Контент - уменьшенные отступы для мобильных */}
+      {/* Контент */}
       <div className={cn(
         "flex-grow z-10",
-        isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-8 py-5"
+        isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-6 py-4"
       )}>
+        {/* ЗАГОЛОВОК - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
         <h3 className={cn(
           "font-semibold text-white leading-tight",
-          isMobile ? "text-base mb-2" : "text-2xl mb-6"
+          isMobile ? "text-base mb-2" : "text-xl mb-4"  // КАК В CONTACT КАРТОЧКЕ!
         )}>
           {title}
         </h3>
 
+        {/* ОПИСАНИЕ - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
         {description && !isCompact && (
           <p className={cn(
-            "text-light-gray line-clamp-3",
-            isMobile ? "text-xs mb-2" : "text-md mb-3"
+            "text-light-gray line-clamp-3 leading-relaxed transition-colors duration-300",
+            isMobile ? "text-xs mb-2" : "text-sm mb-4",  // КАК В CONTACT КАРТОЧКЕ!
+            isHovered ? "text-white" : "text-light-gray"
           )}>
             {description}
           </p>
         )}
 
+        {/* KEY RESULTS - ЗЕЛЕНЫЕ ЦВЕТА */}
         {results && results.length > 0 && !isCompact && (
           <div className={cn(
-            isMobile ? "mb-2" : "mb-5"
+            isMobile ? "mb-2" : "mb-4"
           )}>
             <h4 className={cn(
-              "font-medium text-secondary",
-              isMobile ? "text-xs mb-1" : "text-sm mb-4"
-            )}>Key results:</h4>
-            <ul className={cn(
-              "text-light-gray space-y-0.5",
-              isMobile ? "text-xs" : "text-md"
+              "font-semibold text-secondary",  // ЗЕЛЕНЫЙ ЦВЕТ!
+              isMobile ? "text-xs mb-1" : "text-sm mb-3"
             )}>
-              {results.slice(0, isMobile ? 2 : 4).map((result, index) => (
+              Key Results:
+            </h4>
+            <ul className="space-y-1.5">
+              {results.slice(0, isMobile ? 2 : 3).map((result, index) => (
                 <li key={index} className="flex items-start">
+                  <span className="text-secondary mr-2 mt-1 flex-shrink-0 text-sm">•</span>  {/* ЗЕЛЕНЫЙ ЦВЕТ! */}
                   <span className={cn(
-                    "text-secondary flex-shrink-0",
-                    isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
-                  )}>•</span>
-                  <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
-                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                    "leading-relaxed transition-colors duration-300",
+                    isMobile ? "text-xs" : "text-xs",
+                    isHovered ? "text-white" : "text-light-gray"
+                  )} 
+                  dangerouslySetInnerHTML={{ 
+                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')  // ЗЕЛЕНЫЙ ЦВЕТ!
                   }} />
                 </li>
               ))}
@@ -263,19 +249,16 @@ export function CaseCard({
         )}
       </div>
 
-      {/* Footer - уменьшенные отступы для мобильных */}
+      {/* Footer - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
       <div className={cn(
-        "border-t border-medium-gray/40 mt-auto z-10",
-        isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-6 pt-4"
+        "border-t border-medium-gray/40 mt-auto z-10 flex-shrink-0",
+        isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-4 pt-4"
       )}>
         <p className={cn(
           "text-white flex items-center",
           isMobile ? "text-xs mb-1" : "text-sm mb-2"
         )}>
-          <span className={cn(
-            "text-light-gray flex-shrink-0",
-            isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
-          )}>Company:</span>
+          <span className="text-light-gray flex-shrink-0 mr-2">Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
 
@@ -286,29 +269,17 @@ export function CaseCard({
           )}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={cn(
-                "text-secondary flex-shrink-0",
-                isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-1 sm:mr-1.5"
-              )}
+              className="h-4 w-4 mr-2 text-secondary flex-shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {location ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              )}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
             </svg>
             <span className="truncate">{location || industry}</span>
           </p>

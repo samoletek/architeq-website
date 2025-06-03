@@ -38,7 +38,7 @@ export interface CaseStudy {
   company: string;             // Название компании-клиента
   location: string;            // Местоположение клиента
   
-  // НОВЫЕ ПОЛЯ ДЛЯ ФИЛЬТРАЦИИ
+  // ПОЛЯ ДЛЯ ФИЛЬТРАЦИИ
   industryCategory: IndustryCategory;  // Категория отрасли
   functionCategory: FunctionCategory;  // Категория функции
   
