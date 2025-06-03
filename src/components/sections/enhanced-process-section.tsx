@@ -186,117 +186,149 @@ export default function EnhancedProcessSection() {
             )}
           </AnimatePresence>
 
-          {/* Progress Line - Enhanced with more volume and glow */}
-          <div className="absolute left-1/2 top-0 transform -translate-x-0.5 z-[-10]" style={{ height: '100%' }}>
-            {/* Background line with shadow for depth */}
-            <div 
-              className="w-2 bg-gray-700/30 h-full rounded-full"
-              style={{
-                boxShadow: `
-                  inset 2px 0 4px rgba(0, 0, 0, 0.3),
-                  inset -2px 0 4px rgba(0, 0, 0, 0.3),
-                  0 0 10px rgba(0, 0, 0, 0.2)
-                `
-              }}
-            />
-            
-            {/* Active progress line with enhanced volume and glow */}
-            <motion.div 
-              className="absolute top-0 left-0 w-2 overflow-hidden rounded-full"
-              animate={{ 
-                height: `${scrollProgress * 100}%`,
-              }}
-              transition={{ 
-                duration: 0.3,
-                ease: "easeOut"
-              }}
-            >
-              {/* Main gradient line with enhanced volume and glow */}
-              <motion.div
-                className="w-full h-full relative rounded-full"
-                style={{
-                  background: 'linear-gradient(180deg, #B24BF3 0%, #8B5CF6 30%, #7C3AED 70%, #6D28D9 100%)',
-                  boxShadow: `
-                    inset 1px 0 2px rgba(255, 255, 255, 0.3),
-                    inset -1px 0 2px rgba(0, 0, 0, 0.3),
-                    0 0 20px rgba(178, 75, 243, 0.9),
-                    0 0 40px rgba(178, 75, 243, 0.6),
-                    0 0 60px rgba(178, 75, 243, 0.4),
-                    0 0 80px rgba(178, 75, 243, 0.2)
-                  `,
+          {/* Улучшенная прогресс линия с стрелкой */}
+          <AnimatePresence>
+            {scrollProgress > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, scaleY: 0 }}
+                animate={{ opacity: 1, scaleY: 1 }}
+                exit={{ opacity: 0, scaleY: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="absolute left-1/2 top-0 transform -translate-x-0.5 z-[5]" 
+                style={{ 
+                  height: '100%',
+                  transformOrigin: 'top'
                 }}
-              />
-              
-              {/* Enhanced blur effect at start of progress */}
-              <div 
-                className="absolute top-0 left-0 w-full h-20"
-                style={{
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(178, 75, 243, 0.9) 100%)',
-                  filter: 'blur(12px)'
-                }}
-              />
-              
-              {/* Enhanced radial glow at end - significantly brighter */}
-              <div 
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-full"
-                style={{
-                  background: 'radial-gradient(circle, rgba(178, 75, 243, 0.9) 0%, rgba(178, 75, 243, 0.6) 30%, rgba(178, 75, 243, 0.3) 60%, transparent 100%)',
-                  filter: 'blur(18px)',
-                }}
-              />
-              
-              {/* Additional intense glow at line end */}
-              <div 
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full"
-                style={{
-                  background: 'radial-gradient(circle, rgba(178, 75, 243, 1) 0%, rgba(178, 75, 243, 0.7) 50%, transparent 100%)',
-                  filter: 'blur(8px)',
-                }}
-              />
-              
-              {/* Enhanced blur effect at end */}
-              <div 
-                className="absolute bottom-0 left-0 w-full h-20"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(178, 75, 243, 0.9) 0%, transparent 100%)',
-                  filter: 'blur(12px)'
-                }}
-              />
-            </motion.div>
-            
-            {/* Fading line for completed steps */}
-            <motion.div 
-              className="absolute top-0 left-0 w-2 bg-gray-600/40 rounded-full"
-              animate={{ 
-                height: `${activeStep > 0 ? (activeStep / steps.length) * 100 : 0}%`,
-                opacity: activeStep > 0 ? 0.4 : 0
-              }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-            
-            {/* Radial glow at the start of line - overlays the line */}
-            <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-20 rounded-full z-10"
-              style={{
-                background: 'radial-gradient(circle, rgba(178, 75, 243, 0.8) 0%, rgba(178, 75, 243, 0.5) 50%, transparent 100%)',
-                filter: 'blur(15px)',
-              }}
-            />
-            
-            {/* Radial glow at the end of line - overlays the line */}
-            <div 
-              className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-20 rounded-full z-10"
-              style={{
-                background: 'radial-gradient(circle, rgba(178, 75, 243, 0.8) 0%, rgba(178, 75, 243, 0.5) 50%, transparent 100%)',
-                filter: 'blur(15px)',
-              }}
-            />
-          </div>
+              >
+                {/* Единая светящаяся линия */}
+                <motion.div 
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 overflow-hidden"
+                  animate={{ 
+                    height: `${scrollProgress * 100}%`,
+                  }}
+                  transition={{ 
+                    duration: 0.2,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    background: `
+                      linear-gradient(180deg, 
+                        rgba(178, 75, 243, 0.6) 0%, 
+                        rgba(178, 75, 243, 0.8) 30%, 
+                        rgba(178, 75, 243, 1) 70%, 
+                        rgba(168, 85, 247, 1) 100%
+                      )`,
+                    borderRadius: '0.5px',
+                    boxShadow: `
+                      0 0 8px rgba(178, 75, 243, 1),
+                      0 0 16px rgba(178, 75, 243, 0.8),
+                      0 0 24px rgba(178, 75, 243, 0.6),
+                      0 0 32px rgba(178, 75, 243, 0.4)
+                    `
+                  }}
+                />
+
+                {/* Многослойная аура для объема */}
+                <motion.div 
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 w-6 overflow-hidden"
+                  animate={{ 
+                    height: `${scrollProgress * 100}%`,
+                  }}
+                  transition={{ 
+                    duration: 0.2,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    background: 'radial-gradient(ellipse 100% 95% at 50% 50%, rgba(178, 75, 243, 0.4) 0%, rgba(178, 75, 243, 0.2) 50%, rgba(178, 75, 243, 0.5) 100%)',
+                    borderRadius: '50% 50% 60% 60% / 30% 30% 70% 70%',
+                    filter: 'blur(8px)',
+                  }}
+                />
+                
+                <motion.div 
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 overflow-hidden"
+                  animate={{ 
+                    height: `${scrollProgress * 100}%`,
+                  }}
+                  transition={{ 
+                    duration: 0.2,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    background: 'radial-gradient(ellipse 100% 90% at 50% 50%, rgba(178, 75, 243, 0.25) 0%, rgba(178, 75, 243, 0.08) 50%, rgba(178, 75, 243, 0.3) 100%)',
+                    borderRadius: '50% 50% 70% 70% / 20% 20% 80% 80%',
+                    filter: 'blur(15px)',
+                  }}
+                />
+                
+                {/* Стрелка на конце линии */}
+                <motion.div 
+                  className="absolute left-1/2 transform -translate-x-1/2"
+                  animate={{ 
+                    top: `${scrollProgress * 100}%`,
+                  }}
+                  transition={{ 
+                    duration: 0.2,
+                    ease: "easeOut"
+                  }}
+                  style={{
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                >
+                  {/* Стрелка - основная форма */}
+                  <div 
+                    style={{
+                      width: '0',
+                      height: '0',
+                      borderLeft: '6px solid transparent',
+                      borderRight: '6px solid transparent',
+                      borderTop: '12px solid rgba(178, 75, 243, 1)',
+                      position: 'absolute',
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      filter: 'drop-shadow(0 0 8px rgba(178, 75, 243, 1)) drop-shadow(0 0 16px rgba(178, 75, 243, 0.8))',
+                    }}
+                  />
+                  
+                  {/* Стрелка - свечение */}
+                  <div 
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      background: 'radial-gradient(circle, rgba(178, 75, 243, 0.6) 0%, rgba(178, 75, 243, 0.3) 40%, transparent 70%)',
+                      borderRadius: '50%',
+                      position: 'absolute',
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      filter: 'blur(4px)'
+                    }}
+                  />
+                  
+                  {/* Стрелка - дополнительное свечение */}
+                  <div 
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      background: 'radial-gradient(circle, rgba(178, 75, 243, 0.4) 0%, rgba(178, 75, 243, 0.2) 30%, transparent 60%)',
+                      borderRadius: '50%',
+                      position: 'absolute',
+                      left: '50%',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      filter: 'blur(8px)'
+                    }}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Steps Container - Normal scroll */}
           <div 
             ref={stepsContainerRef}
-            className="relative z-30 space-y-14"
+            className="relative z-20 space-y-14"
           >
             {steps.map((step, index) => {
               const isActive = index === activeStep;

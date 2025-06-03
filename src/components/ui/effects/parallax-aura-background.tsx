@@ -41,7 +41,7 @@ const ParallaxAuraBackground: React.FC<ParallaxAuraBackgroundProps> = ({
       const scene = new THREE.Scene();
       sceneRef.current = scene;
 
-      // Enhanced Shader Material with scroll-responsive animation
+      // Shader Material
       const fragmentShader = `
         precision highp float;
         uniform vec2 iResolution;
@@ -68,7 +68,7 @@ const ParallaxAuraBackground: React.FC<ParallaxAuraBackgroundProps> = ({
             return vec2(l - sd, l + sd);
         }
         
-        vec4 SphereBall(vec3 rd, vec3 p, float radius, float blur, vec3 color, float intensity) {
+        vec4 SphereBall(vec3 rd, vec3 p, float radius, float blur, vec3 color) {
             vec2 d = RaySphere(rd, p, radius);
             vec4 col = vec4(0.0);
             
@@ -76,139 +76,149 @@ const ParallaxAuraBackground: React.FC<ParallaxAuraBackgroundProps> = ({
                 float sd = length(cross(p, rd));
                 float edge = S(radius, mix(radius, 0.05, blur), sd);
                 
-                // Enhanced aura with scroll-responsive size
-                float auraMultiplier = 1.5 + iScrollProgress * 1.0;
-                float auraRadius = radius * auraMultiplier;
+                // Massive aura effect with intense blur
+                float auraRadius = radius * 4.0;
                 float auraEdge = S(auraRadius, radius * 0.3, sd);
-                float aura = auraEdge * intensity * (0.8 - blur * 0.1);
+                float aura = auraEdge * 0.8 * (1.0 - blur * 0.3);
                 
-                float mask = edge * 0.5 + aura;
+                float mask = edge * 0.6 + aura;
                 
                 vec3 lightDir = normalize(vec3(0.3, -0.5, -0.8));
                 vec3 normal = normalize(p - rd * d.x);
-                float light = sat(dot(lightDir, normal) * 0.8 + 0.9);
+                float light = sat(dot(lightDir, normal) * 0.7 + 0.8);
                 
-                // Dynamic color mixing based on active index
-                float colorShift = sin(iActiveIndex * 0.5 + iTime * 0.1) * 0.3;
-                vec3 coreColor = mix(color, vec3(1.0, 0.98, 1.0), edge * 0.5);
-                vec3 auraColor = mix(color, color * 1.2, colorShift);
-                vec3 finalColor = mix(auraColor, coreColor, edge * 0.7);
+                // Architeq color palette
+                vec3 coreColor = mix(color, vec3(1.0, 0.95, 1.0), edge * 0.4);
+                vec3 auraColor = color * 0.9;
+                vec3 finalColor = mix(auraColor, coreColor, edge * 0.6);
                 
-                col = vec4(light * finalColor * intensity, mask);
+                col = vec4(light * finalColor, mask);
             }
             return col;
         }
         
         void main() {
             vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
-            float t = iTime * 0.25; // Slower base animation
+            float t = iTime * 0.2;
             
-            // Scroll-responsive camera movement
-            float scrollInfluence = iScrollProgress * 2.0;
-            vec3 rd = normalize(vec3(uv, 1.0 + scrollInfluence * 0.1));
+            // Enhanced parallax effect based on scroll
+            float cameraY = iScrollProgress * 5.0;
+            uv.y += cameraY;
+            
+            vec3 rd = normalize(vec3(uv, 1.0));
             
             vec4 col = vec4(0.0);
             
-            // Architeq enhanced color palette with scroll responsiveness
+            // Architeq color palette - только фиолетовые и белые тона
             vec3 primaryColor = mix(
-                vec3(0.46, 0.29, 0.95),  // #7747CF
-                vec3(0.7, 0.29, 0.95),   // #B24BF3
-                sin(t * 0.3 + iScrollProgress * 2.0) * 0.5 + 0.5
+                vec3(0.46, 0.29, 0.95),  // Основной фиолетовый #7747CF
+                vec3(0.7, 0.29, 0.95),   // Акцентный фиолетовый #B24BF3
+                sin(t * 0.2) * 0.5 + 0.5  // Убрали зависимость от activeIndex
             );
             
             vec3 secondaryColor = mix(
-                vec3(0.92, 0.92, 1.0),   // Almost white with purple tint
-                vec3(1.0, 1.0, 1.0),     // Pure white
-                cos(t * 0.2 + iScrollProgress * 1.5) * 0.5 + 0.5
+                vec3(0.9, 0.9, 1.0),     // Почти белый с фиолетовым оттенком
+                vec3(1.0, 1.0, 1.0),     // Чистый белый
+                cos(t * 0.15) * 0.5 + 0.5  // Убрали зависимость от activeIndex
             );
             
-            // Main floating spheres - with scroll-responsive intensity
-            float globalIntensity = 0.7 + iScrollProgress * 0.4;
-            
-            for(float i = 0.0; i < 10.0; i++) {
+            // Large main aura spheres - массивные сферы
+            for(float i = 0.0; i < 12.0; i++) {
                 float hashX = fract(sin(i * 536.3) * 7464.4);
                 float hashY = fract(sin(i * 234.5) * 8573.2);
                 float hashZ = fract(sin(i * 657.8) * 9456.3);
                 
-                // Enhanced movement with scroll influence
-                float x = (hashX * 2.0 - 1.0) * (30.0 + scrollInfluence * 10.0);
-                float y = (hashY * 2.0 - 1.0) * (30.0 + scrollInfluence * 10.0);
-                float z = mix(15.0, 3.0, i / 10.0) + scrollInfluence * 5.0;
+                float x = (hashX * 2.0 - 1.0) * 25.0;
+                float baseY = (hashY * 2.0 - 1.0) * 30.0;
                 
-                // More dynamic movement
-                x += sin(t * 0.5 + hashY * 4.0 + i * 1.5 + scrollInfluence) * 12.0;
-                y += cos(t * 0.4 + hashX * 3.5 + i * 1.2 + scrollInfluence) * 8.0;
-                z += sin(t * 0.3 + i * 0.8 + scrollInfluence * 0.5) * 3.0;
+                // Enhanced parallax movement based on depth
+                float depth = i / 12.0;
+                float parallaxSpeed = mix(1.5, 0.1, depth);
+                float y = mod(baseY - iScrollOffset * parallaxSpeed, 60.0) - 30.0;
                 
-                float sphereRadius = mix(2.5, 7.0, hashZ) * (1.0 + scrollInfluence * 0.3);
-                float blur = mix(0.5, 0.85, hashZ);
+                float z = mix(25.0, 2.0, depth);
                 
-                // Active index color influence
-                float activeInfluence = sin(iActiveIndex + i * 0.7) * 0.4 + 0.6;
+                // Slow floating animation
+                x += sin(t * 0.4 + hashY * 4.0) * 4.0;
+                y += cos(t * 0.3 + hashX * 3.0) * 3.0;
+                
+                float depthFactor = 1.0 - (z - 2.0) / 23.0;
+                float sphereRadius = mix(3.0, 8.0, depthFactor);
+                
+                // Heavy blur for that dreamy effect - убрали зависимость от activeIndex
+                float blur = mix(0.6, 0.9, depth) * (1.0 + sin(t * 0.25) * 0.2);
+                
+                // Color variation based on sphere position - только фиолетово-белые тона
                 vec3 sphereColor = mix(primaryColor, secondaryColor, 
-                    sin(hashX * 5.0 + t * 0.4 + i * 0.6) * 0.5 + 0.5) * activeInfluence;
+                    sin(hashX * 6.0 + t * 0.3) * 0.5 + 0.5);
                 
-                vec4 sphere = SphereBall(rd, vec3(x, y, z), sphereRadius, blur, sphereColor, globalIntensity);
+                vec4 sphere = SphereBall(rd, vec3(x, y, z), sphereRadius, blur, sphereColor);
                 
-                // Enhanced blending
-                sphere.a *= 0.8;
-                col = mix(col, sphere, sphere.a * (1.0 - col.a * 0.7));
+                // Enhanced alpha for more intensity
+                float alphaMultiplier = mix(0.8, 1.2, 1.0 - depth * 0.4);
+                sphere.a *= alphaMultiplier;
+                
+                col = mix(col, sphere, sphere.a * (1.0 - col.a * 0.6));
             }
             
-            // Smaller floating particles with more dynamism
+            // Medium floating aura spheres
             for(float i = 0.0; i < 20.0; i++) {
                 float hashX = fract(sin(i * 1234.5) * 5432.1);
                 float hashY = fract(sin(i * 6543.2) * 3210.9);
                 float hashZ = fract(sin(i * 9876.5) * 2109.8);
                 
-                float x = (hashX * 2.0 - 1.0) * (40.0 + scrollInfluence * 15.0);
-                float y = (hashY * 2.0 - 1.0) * (40.0 + scrollInfluence * 15.0);
-                float z = mix(20.0, 1.0, hashZ) + scrollInfluence * 8.0;
+                float x = (hashX * 2.0 - 1.0) * 40.0;
+                float fallSpeed = hashZ * 0.2 + 0.05;
+                float baseY = (hashY * 2.0 - 1.0) * 40.0;
+                float timeY = mod(baseY - t * fallSpeed, 80.0) - 40.0;
                 
-                // Enhanced particle movement
-                x += sin(t * 0.3 + hashY * 8.0 + i * 0.9 + scrollInfluence * 1.2) * 8.0;
-                y += cos(t * 0.25 + hashX * 7.0 + i * 1.1 + scrollInfluence * 1.1) * 6.0;
-                z += sin(t * 0.2 + i * 0.6 + scrollInfluence * 0.8) * 2.0;
+                float dustDepth = hashZ;
+                float dustParallaxSpeed = mix(1.0, 0.05, dustDepth);
+                float y = mod(timeY - iScrollOffset * dustParallaxSpeed, 80.0) - 40.0;
                 
-                float dustRadius = mix(0.8, 3.0, 1.0 - hashZ) * (1.0 + scrollInfluence * 0.2);
-                float blur = 0.8;
+                float z = mix(30.0, 1.0, dustDepth);
                 
-                vec3 dustColor = mix(primaryColor * 0.7, secondaryColor * 0.9, hashZ) * globalIntensity;
+                // Enhanced floating motion
+                x += sin(t * 0.25 + hashY * 8.0) * 6.0;
+                y += cos(t * 0.2 + hashX * 6.0) * 4.0;
                 
-                vec4 dust = SphereBall(rd, vec3(x, y, z), dustRadius, blur, dustColor, globalIntensity * 0.6);
+                float dustRadius = mix(1.5, 4.0, 1.0 - dustDepth);
+                float blur = mix(0.7, 0.95, dustDepth);
+                
+                vec3 dustColor = mix(primaryColor, secondaryColor, hashZ);
+                dustColor *= mix(0.6, 0.9, 1.0 - dustDepth);
+                
+                vec4 dust = SphereBall(rd, vec3(x, y, z), dustRadius, blur, dustColor);
                 dust.a *= 0.4;
                 
-                col = mix(col, dust, dust.a * (1.0 - col.a * 0.85));
+                col = mix(col, dust, dust.a * (1.0 - col.a));
             }
             
-            // Enhanced color grading with scroll influence
-            float tint = t * 0.08 + iScrollProgress * 0.5;
+            // Enhanced color grading with Architeq palette - убрали зависимость от скролла
+            float tint = t * 0.08;  // Только зависимость от времени
             vec3 tintColor = mix(
-                vec3(1.0, 0.96, 1.08),   // Purple tint
-                vec3(0.99, 0.99, 1.02),  // White tint
+                vec3(1.0, 0.95, 1.05), // Слегка фиолетовый тинт
+                vec3(0.98, 0.98, 1.0), // Слегка белый тинт
                 sin(tint) * 0.5 + 0.5
             );
             col.rgb *= tintColor;
             
-            // Dynamic global aura with scroll responsiveness
-            float globalAura = length(col.rgb) * (0.18 + iScrollProgress * 0.12);
+            // Dynamic global aura - независимая анимация
+            float globalAura = length(col.rgb) * 0.25;
             vec3 auraGlow = mix(primaryColor, secondaryColor, 
-                sin(t * 0.4 + iScrollProgress * 2.0) * 0.5 + 0.5);
+                sin(t * 0.4) * 0.5 + 0.5);  // Убрали зависимость от activeIndex
             col.rgb += globalAura * auraGlow;
             
-            // Enhanced film grain with scroll influence
-            float noise = hash(uv + t * 0.1 + iScrollProgress * 0.05) * 0.015;
+            // Subtle film grain
+            float noise = hash(uv + t * 0.08) * 0.015;
             col.rgb += noise - 0.0075;
             
-            // Scroll-responsive intensity
-            col.rgb *= 1.0 + iScrollProgress * 0.3;
-            
-            // Enhanced edge fade
-            float edgeFade = smoothstep(0.0, 0.25, min(
+            // Softer edge fade for better integration
+            float edgeFade = smoothstep(0.0, 0.2, min(
                 min(gl_FragCoord.x / iResolution.x, 1.0 - gl_FragCoord.x / iResolution.x),
                 min(gl_FragCoord.y / iResolution.y, 1.0 - gl_FragCoord.y / iResolution.y)
             ));
-            col.a *= edgeFade * (0.85 + iScrollProgress * 0.15);
+            col.a *= edgeFade * 0.95;
             
             gl_FragColor = col;
         }
@@ -293,7 +303,7 @@ const ParallaxAuraBackground: React.FC<ParallaxAuraBackgroundProps> = ({
   useEffect(() => {
     if (materialRef.current) {
       materialRef.current.uniforms.iScrollProgress.value = scrollProgress;
-      materialRef.current.uniforms.iScrollOffset.value = scrollProgress * 15;
+      materialRef.current.uniforms.iScrollOffset.value = scrollProgress * 10;
       materialRef.current.uniforms.iActiveIndex.value = activeIndex;
     }
   }, [scrollProgress, activeIndex]);
@@ -305,7 +315,7 @@ const ParallaxAuraBackground: React.FC<ParallaxAuraBackgroundProps> = ({
       style={{
         width: '100%',
         height: '100%',
-        opacity: 0.75
+        opacity: 0.6
       }}
     />
   );
