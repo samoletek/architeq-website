@@ -664,13 +664,10 @@ export default function ServicesPage() {
               We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             <div className="flex flex-col sm:flex-row justify-center button-gap-large">
-              <Button variant="primary" size="lg" href="/contacts">
-                See How It Works 
-              </Button>
-              <Button variant="secondary" size="lg" href="/cases">
-                View Case Studies
-              </Button>
-            </div>
+            <Button variant="secondary" size="lg" href="/contacts">
+            See How It Works 
+           </Button>
+           </div>
           </div>
         </div>
       </section>
@@ -749,12 +746,9 @@ export default function ServicesPage() {
             Trust our team to map your processes and<br />uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center button-gap-default">
-            <Button variant="primary" size="lg" href="/contacts">
-              See How It Works
-            </Button>
-            <Button variant="secondary" size="lg" href="/cases">
-              View Our Case Studies
-            </Button>
+          <Button variant="secondary" size="lg" href="/contacts">
+          See How It Works
+          </Button>
           </div>
         </div>
       </section>

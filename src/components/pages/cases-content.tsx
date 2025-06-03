@@ -12,6 +12,7 @@ import { IntegratedSearchFilters } from '@/components/ui/filters/integrated-sear
 import { MobileFiltersPanel } from '@/components/ui/filters/mobile-filters-panel';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import UnifiedCTASection from '@/components/sections/unified-cta-section';
 
 import { 
   allCaseStudies, 
@@ -159,10 +160,10 @@ export default function CasesContent() {
                 Explore how we have helped companies across various industries optimize their processes and achieve significant results.
               </p>
               <div className="flex flex-col sm:flex-row justify-center button-gap-large">
-                <Button variant="primary" size="lg" href="/contacts">
-                  Request a Similar Solution
-                </Button>
-              </div>
+              <Button variant="secondary" size="lg" href="/contacts">
+              Request a Similar Solution
+             </Button>
+            </div>
             </div>
           </div>
         </div>
@@ -414,32 +415,8 @@ export default function CasesContent() {
         </div>
       </section>
       
-      {/* CTA section */}
-      <section className="section-cta bg-dark-gradient">
-        <div className="container mx-auto px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            viewport={{ once: true }}
-          >
-            <h2 className="section-title-medium font-bold section-title-spacing">
-              Ready to Get Similar Results?
-            </h2>
-            <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
-              Let our team analyze your processes and design a custom automation solution for your business.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center button-gap-default">
-              <Button variant="primary" size="lg" href="/contacts">
-                Start Your Project
-              </Button>
-              <Button variant="secondary" size="lg" href="/services">
-                Explore Our Services
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+{/* CTA section */}
+<UnifiedCTASection preset="cases" />
     </>
   );
 }
