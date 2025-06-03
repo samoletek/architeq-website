@@ -10,6 +10,13 @@
     --gradient-text: linear-gradient(90deg, #B0FF74 0%, #4DADFF 100%);
   }
   
+  html {
+    background: linear-gradient(135deg, #121212 0%, #180033 100%);
+    background-attachment: fixed;
+    overscroll-behavior: auto;
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply bg-site-bg text-white font-sans;
     background: linear-gradient(135deg, #121212 0%, #180033 100%);
@@ -19,12 +26,6 @@
   }
   
   /* Предотвращение белой полосы при оверскролле */
-  html {
-    background: linear-gradient(135deg, #121212 0%, #180033 100%);
-    background-attachment: fixed;
-    overscroll-behavior: auto;
-  }
-  
   body::before {
     content: '';
     position: fixed;
@@ -51,7 +52,7 @@
     @apply font-heading font-bold;
   }
   
-  /* Обновленные размеры заголовков с лучшей адаптивностью */
+  /* Адаптивные размеры заголовков */
   h1 {
     @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
   }
@@ -93,131 +94,129 @@
     @apply py-12 md:py-24;
   }
   
-  /* ========== ЕДИНЫЙ СТАНДАРТ ДИЗАЙНА (РЕАЛЬНЫЕ ЗНАЧЕНИЯ) ========== */
+  /* ========== ЕДИНЫЙ СТАНДАРТ ДИЗАЙНА ========== */
 
-/* Отступы секций - точные значения с главной страницы */
-.section-hero {
-  @apply pt-40 pb-48;
-}
-
-.section-benefits {
-  @apply pt-40 pb-48;
-}
-
-.section-solutions {
-  @apply pt-24 pb-32;
-  min-height: 60vh;
-}
-
-.section-cases {
-  @apply pt-48 pb-64;
-}
-
-.section-testimonials {
-  @apply pt-48 pb-20;
-}
-
-.section-cta {
-  @apply pt-72 pb-48;
-}
-
-/* Адаптивные отступы для мобильных устройств */
-@media (max-width: 768px) {
+  /* Отступы секций */
   .section-hero {
-    @apply pt-24 pb-8;
-    min-height: 70vh;
+    @apply pt-40 pb-48;
   }
 
   .section-benefits {
-    @apply py-10;
+    @apply pt-40 pb-48;
   }
 
   .section-solutions {
-    @apply py-12;
-    min-height: auto;
+    @apply pt-24 pb-32;
+    min-height: 60vh;
   }
 
   .section-cases {
-    @apply py-12;
+    @apply pt-48 pb-64;
   }
 
   .section-testimonials {
-    @apply py-12;
+    @apply pt-48 pb-20;
   }
 
   .section-cta {
-    @apply py-12;
+    @apply pt-72 pb-48;
   }
-}
 
-/* Стандартные размеры заголовков */
-.hero-title {
-  @apply text-4xl md:text-6xl lg:text-7xl;
-}
+  /* Адаптивные отступы для мобильных устройств */
+  @media (max-width: 768px) {
+    .section-hero {
+      @apply pt-24 pb-8;
+      min-height: 70vh;
+    }
 
-.hero-subtitle {
-  @apply text-xl md:text-2xl lg:text-3xl;
-}
+    .section-benefits {
+      @apply py-10;
+    }
 
-.section-title-large {
-  @apply text-4xl md:text-5xl lg:text-6xl;
-}
+    .section-solutions {
+      @apply py-12;
+      min-height: auto;
+    }
 
-.section-title-medium {
-  @apply text-3xl md:text-4xl lg:text-5xl;
-}
+    .section-cases {
+      @apply py-12;
+    }
 
-.section-subtitle-large {
-  @apply text-base md:text-lg;
-}
+    .section-testimonials {
+      @apply py-12;
+    }
 
-.section-subtitle-medium {
-  @apply text-lg md:text-2xl;
-}
+    .section-cta {
+      @apply py-12;
+    }
+  }
 
-.section-subtitle-small {
-  @apply text-lg;
-}
+  /* Стандартные размеры заголовков */
+  .hero-title {
+    @apply text-4xl md:text-6xl lg:text-7xl;
+  }
 
-/* Стандартные отступы заголовков */
-.hero-title-spacing {
-  @apply mb-6;
-}
+  .hero-subtitle {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
 
-.hero-subtitle-spacing {
-  @apply mb-8;
-}
+  .section-title-large {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
 
-.section-title-spacing {
-  @apply mb-8;
-}
+  .section-title-medium {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
 
-.section-title-spacing-large {
-  @apply mb-12;
-}
+  .section-subtitle-large {
+    @apply text-base md:text-lg;
+  }
 
-.section-content-spacing {
-  @apply mb-20;
-}
+  .section-subtitle-medium {
+    @apply text-lg md:text-2xl;
+  }
 
-.section-content-spacing-large {
-  @apply mt-24;
-}
+  .section-subtitle-small {
+    @apply text-lg;
+  }
 
-.section-button-spacing {
-  @apply mb-16;
-}
+  /* Стандартные отступы заголовков */
+  .hero-title-spacing {
+    @apply mb-6;
+  }
 
-/* Расстояния между кнопками */
-.button-gap-default {
-  @apply gap-4;
-}
+  .hero-subtitle-spacing {
+    @apply mb-8;
+  }
 
-.button-gap-large {
-  @apply gap-6;
-}
+  .section-title-spacing {
+    @apply mb-8;
+  }
 
-/* ============================================= */
+  .section-title-spacing-large {
+    @apply mb-12;
+  }
+
+  .section-content-spacing {
+    @apply mb-20;
+  }
+
+  .section-content-spacing-large {
+    @apply mt-24;
+  }
+
+  .section-button-spacing {
+    @apply mb-16;
+  }
+
+  /* Расстояния между кнопками */
+  .button-gap-default {
+    @apply gap-4;
+  }
+
+  .button-gap-large {
+    @apply gap-6;
+  }
 
   /* Градиентный текст для выделения слов */
   .accent-text {
@@ -230,7 +229,7 @@
     background-image: var(--gradient-primary);
   }
   
-  /* Кнопки в стиле скриншотов */
+  /* Кнопки в стиле проекта */
   .btn-primary {
     @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
     box-shadow: 0 0 15px rgba(176, 255, 116, 0.3);
@@ -257,95 +256,6 @@
   .neon-green-glow {
     filter: drop-shadow(0 0 8px rgba(176, 255, 116, 0.4));
   }
-  
-  /* СТИЛИ ДЛЯ СТРАНИЦЫ КЕЙСА */
-  .video-button-glow {
-    @apply relative;
-    box-shadow: 
-      0 0 15px rgba(119, 71, 207, 0.7), 
-      0 0 40px rgba(119, 71, 207, 0.5), 
-      0 0 80px rgba(119, 71, 207, 0.2);
-  }
-  
-  .video-purple-intense-glow::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 0.5rem;
-    padding: 3px;
-    background: linear-gradient(
-      to bottom right, 
-      rgba(178, 75, 243, 0.8), 
-      rgba(77, 173, 255, 0.6)
-    );
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.9;
-  }
-  
-  .shadow-neon-glow-intense {
-    box-shadow: 
-      0 0 20px rgba(178, 75, 243, 0.6),
-      0 0 40px rgba(178, 75, 243, 0.4),
-      0 0 60px rgba(178, 75, 243, 0.3),
-      0 0 80px rgba(119, 71, 207, 0.2);
-  }
-  
-  /* Адаптивная типографика */
-  @media (max-width: 640px) {
-    .text-responsive-sm {
-      @apply text-sm;
-    }
-    
-    .text-responsive-base {
-      @apply text-sm;
-    }
-    
-    .text-responsive-lg {
-      @apply text-base;
-    }
-    
-    .text-responsive-xl {
-      @apply text-lg;
-    }
-    
-    .text-responsive-2xl {
-      @apply text-xl;
-    }
-    
-    .text-responsive-3xl {
-      @apply text-2xl;
-    }
-  }
-  
-  @media (min-width: 641px) {
-    .text-responsive-sm {
-      @apply text-sm;
-    }
-    
-    .text-responsive-base {
-      @apply text-base;
-    }
-    
-    .text-responsive-lg {
-      @apply text-lg;
-    }
-    
-    .text-responsive-xl {
-      @apply text-xl;
-    }
-    
-    .text-responsive-2xl {
-      @apply text-2xl;
-    }
-    
-    .text-responsive-3xl {
-      @apply text-3xl;
-    }
-  }
 }
 
 @layer utilities {
@@ -368,12 +278,10 @@
     }
   }
 
-  /* Класс для анимации плавания */
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
 
-  /* Варианты с разными задержками для множественных карточек */
   .animate-float-delayed-1 {
     animation: float 6s ease-in-out infinite;
     animation-delay: -1s;
@@ -389,7 +297,7 @@
     animation-delay: -3s;
   }
 
-  /* Z-index утилиты для правильного наложения слоев */
+  /* Z-index утилиты */
   .z-35 {
     z-index: 35;
   }
@@ -428,22 +336,15 @@
   
   /* Стили для светящегося текста */
   .text-shadow-white {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4), 0 0 90px rgba(255, 255, 255, 0.2);
-  }
-  
-  .text-shadow-white-soft {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.3), 0 0 45px rgba(255, 255, 255, 0.2);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4);
   }
   
   .text-shadow-green {
-    text-shadow: 0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.6), 0 0 60px rgba(176, 255, 116, 0.4), 0 0 90px rgba(176, 255, 116, 0.2);
-  }
-  
-  .text-shadow-green-soft {
-    text-shadow: 0 0 5px rgba(176, 255, 116, 0.5), 0 0 15px rgba(176, 255, 116, 0.4), 0 0 30px rgba(176, 255, 116, 0.3), 0 0 45px rgba(176, 255, 116, 0.2);
+    text-shadow: 0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.6), 0 0 60px rgba(176, 255, 116, 0.4);
   }
 }
 
+/* Базовые стили без конфликтов */
 .no-focus-outline {
   outline: none !important;
   box-shadow: none !important;
@@ -457,11 +358,102 @@
   border-color: transparent !important;
 }
 
+/* ========== КАРТОЧКИ КЕЙСОВ - ЗЕЛЕНЫЕ ========== */
+.case-card-enhanced {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(176, 255, 116, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6) !important;
+}
+
+.case-card-enhanced:hover {
+  border-color: rgba(176, 255, 116, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(176, 255, 116, 0.3), 
+    0 0 30px rgba(176, 255, 116, 0.2) !important;
+}
+
+/* ========== КАРТОЧКИ УСЛУГ - ФИОЛЕТОВЫЕ ========== */
+.service-card-enhanced {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+.service-card-enhanced:hover {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* ========== КОНТАКТНАЯ КАРТОЧКА - ОБЫЧНАЯ ФИОЛЕТОВАЯ ========== */
+.contact-case-card {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+.contact-case-card:hover {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Стили для карточек кейсов - СТАНДАРТИЗИРОВАНЫ ПО ФИОЛЕТОВОЙ КАРТОЧКЕ */
+@media (min-width: 1024px) {
+  .desktop-case-cards .case-card-enhanced h3 {
+    @apply text-xl font-semibold leading-tight; /* Как в фиолетовой карточке */
+  }
+  
+  .desktop-case-cards .case-card-enhanced p {
+    @apply text-sm leading-relaxed; /* Описание как в фиолетовой */
+  }
+  
+  .desktop-case-cards .case-card-enhanced .case-card-results li {
+    @apply text-xs leading-relaxed; /* Results как в фиолетовой */
+  }
+  
+  .desktop-case-cards .case-card-enhanced .case-card-footer p {
+    @apply text-sm; /* Footer как в фиолетовой */
+  }
+  
+  /* Теги стандартные */
+  .desktop-case-cards .case-card-enhanced span[class*="text-xs"] {
+    @apply text-xs px-2 py-1; /* Стандартные теги */
+  }
+}
+
 /* Медиа-запросы для адаптивности */
 @media (max-width: 768px) {
   .case-video-container {
     height: 250px;
     min-height: 250px;
+  }
+  
+  /* Меньше padding для мобильных устройств */
+  .container {
+    @apply px-4;
+  }
+  
+  /* Уменьшенные отступы для секций на мобильных */
+  .section {
+    @apply py-8;
+  }
+  
+  /* Уменьшенные кнопки на мобильных */
+  .btn-primary,
+  .btn-secondary {
+    @apply px-4 py-2 text-sm;
   }
 }
 
@@ -479,204 +471,17 @@
   }
 }
 
-/* Плавный скролл для всей страницы */
-html {
-  scroll-behavior: smooth;
+/* Оптимизация для анимаций на мобильных устройствах */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* Стили для всех карточек кейсов - ЗЕЛЕНЫЕ */
-.case-card-enhanced {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  position: relative;
-  border: 1.3px solid rgba(176, 255, 116, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.6) !important;
-}
-
-/* Стили при наведении для обычных карточек кейсов */
-.case-card-enhanced.case-card-hovered,
-.case-card-enhanced:hover {
-  border-color: rgba(176, 255, 116, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(176, 255, 116, 0.3), 
-    0 0 30px rgba(176, 255, 116, 0.2) !important;
-}
-
-/* Стили для Service Cards - ФИОЛЕТОВЫЕ */
-[class*="service-card-enhanced"] {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-[class*="service-card-enhanced"]:hover,
-[class*="service-card-enhanced"].service-card-hovered {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
-}
-
-/* Стили для Contact Card - БЕЗ HOVER ЭФФЕКТОВ */
-.contact-case-card {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-/* НЕТ HOVER ЭФФЕКТОВ для Contact Card */
-.contact-case-card:hover {
-  /* Никаких изменений при hover */
-  border-color: rgba(178, 75, 243, 0.55) !important;
-  transform: none !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-/* Тени для обычного состояния */
-.shadow-neon-green-glow {
-  box-shadow: 
-    0 0 10px rgba(176, 255, 116, 0.2), 
-    0 0 20px rgba(176, 255, 116, 0.1);
-}
-
-/* Тени для фиолетового свечения */
-.shadow-neon-purple-glow {
-  box-shadow: 
-    0 0 10px rgba(178, 75, 243, 0.2), 
-    0 0 20px rgba(178, 75, 243, 0.1) !important;
-}
-
-/* Альтернативный вариант через data-атрибут */
-[data-card-type="service"] {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-/* Стили для карточек услуг (фиолетовые) */
-.service-card-enhanced {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  position: relative;
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-/* Стили при наведении для карточек услуг */
-.service-card-enhanced.service-card-hovered {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
-}
-
-/* Принудительно для всех карточек на странице services */
-[class*="service-card-enhanced"] {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-[class*="service-card-enhanced"]:hover,
-[class*="service-card-enhanced"].service-card-hovered {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
-}
-
-/* Альтернативный вариант через data-атрибут */
-[data-card-type="service"] {
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-/* Стили для sticky секций и плавного скролла */
-.sticky-element {
-  position: sticky !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  transform-style: preserve-3d;
-  transition: opacity 0.5s ease;
-}
-
-/* Поддержка CSS Scroll Snap для плавной прокрутки от секции к секции */
-html.has-smooth-scroll {
-  scroll-behavior: smooth;
-}
-
-.snap-y {
-  scroll-snap-type: y mandatory;
-}
-
-.snap-mandatory > [data-section-index] {
-  scroll-snap-align: start;
-}
-
-/* ===== Дополнительные стили для оптимизации анимаций ===== */
-
-/* Классы для стабилизации контента при гидратации */
-.content-visibility-auto {
-  content-visibility: auto;
-}
-
-.stabilize-content {
-  min-height: 1px;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  transform: translateZ(0);
-  will-change: opacity, transform;
-}
-
-/* Плавные анимации при скролле */
-.animate-on-scroll {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.animate-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Класс для предотвращения дёргания при загрузке */
-.prevent-flash {
-  opacity: 0.99999;
-}
-
-/* Улучшенные эффекты hover */
-.hover-lift {
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-5px);
-}
-
-/* ===== Исправленные стили для поискового оверлея ===== */
-.search-content {
-  background: rgba(18, 7, 26, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(119, 71, 207, 0.3);
-  box-shadow: 0 0 30px rgba(119, 71, 207, 0.2);
-}
-
-.search-dropdown {
-  background: rgba(18, 7, 26, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 51, 51, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
+/* Анимации появления */
 .fade-in-1 {
   animation: fadeIn 0.8s ease forwards;
 }
@@ -704,79 +509,5 @@ html.has-smooth-scroll {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Фиксированный скролл при загрузке для предотвращения скачков */
-html.is-loading {
-  overflow: hidden;
-}
-
-html.is-ready {
-  transition: opacity 0.3s ease;
-}
-
-/* Оптимизация для анимаций на мобильных устройствах */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  .animate-on-scroll {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Улучшенные скроллинг-эффекты */
-.snap-scroll {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100vh;
-}
-
-.snap-scroll > section {
-  scroll-snap-align: start;
-  height: 100vh;
-}
-
-/* Плавные переходы между секциями */
-.section-transition {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-/* Задержка для загрузки шрифтов */
-.fonts-loaded {
-  transition: opacity 0.5s ease;
-}
-
-.fonts-loading {
-  opacity: 0.98;
-}
-
-/* Мобильная оптимизация */
-@media (max-width: 640px) {
-  /* Меньше padding для мобильных устройств */
-  .container {
-    @apply px-4;
-  }
-  
-  /* Уменьшенные отступы для секций */
-  .section {
-    @apply py-8;
-  }
-  
-  /* Оптимизация размеров текста */
-  .lead-text {
-    @apply text-base;
-  }
-  
-  /* Уменьшенные кнопки */
-  .btn-primary,
-  .btn-secondary {
-    @apply px-4 py-2 text-sm;
   }
 }

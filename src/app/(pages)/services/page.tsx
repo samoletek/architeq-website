@@ -7,6 +7,7 @@ import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
 import EnhancedProcessSection from '@/components/sections/enhanced-process-section';
 import ParallaxAuraBackground from '@/components/ui/effects/parallax-aura-background';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 // Типы для данных о услугах
 interface Service {
@@ -99,7 +100,7 @@ interface ServiceNavigationProps {
   scrollProgress: number;
 }
 
-// Улучшенная навигация с дополнительными эффектами
+// Восстановленная навигация с анимациями
 function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgress }: ServiceNavigationProps) {
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const navItemHeight = 48;
@@ -233,7 +234,7 @@ interface HorizontalServiceCardProps {
   onHover: (hovered: boolean) => void;
 }
 
-// Улучшенная карточка с совместимостью с аура-эффектом
+// Восстановленная карточка с полными анимациями
 function HorizontalServiceCard({ service, isActive, direction, isHovered, onHover }: HorizontalServiceCardProps) {
   const cardVariants = {
     enter: () => ({
@@ -265,7 +266,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      {/* Фоновый слой - с анимированными сферами из исходного файла */}
+      {/* Фоновый слой с анимированными сферами */}
       <motion.div
         key={`${service.id}-bg`}
         custom={direction}
@@ -301,7 +302,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
           `,
         }}
       >
-        {/* Хаотичное анимированное свечение - сохранено из исходного файла */}
+        {/* Хаотичное анимированное свечение */}
         <motion.div 
           className="absolute inset-0"
           animate={{ 
@@ -328,7 +329,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
           }}
         />
         
-        {/* Дополнительное свечение по краям с хаотичной анимацией - сохранено */}
+        {/* Дополнительное свечение по краям */}
         <motion.div 
           className="absolute inset-0"
           animate={{
@@ -348,7 +349,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
         />
       </motion.div>
 
-      {/* Основная карточка - еще более стеклянная */}
+      {/* Основная карточка - стеклянная */}
       <motion.div
         key={service.id}
         custom={direction}
@@ -457,7 +458,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
             </div>
           </div>
           
-          {/* CTA кнопка с улучшенными эффектами - сохранено из исходного файла */}
+          {/* CTA кнопка */}
           <div className="mt-8 flex justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -513,6 +514,69 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
   );
 }
 
+// Простой компонент карточки для мобильных
+function MobileServiceCard({ service, index }: { service: Service; index: number }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="bg-dark-gray rounded-xl p-6 border border-medium-gray/30"
+    >
+      <div 
+        className="flex items-center justify-between cursor-pointer"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <h3 className="text-lg font-semibold text-white">{service.title}</h3>
+        <motion.div
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          className="text-light-gray"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </motion.div>
+      </div>
+
+      <p className="text-light-gray mt-3 text-sm leading-relaxed">
+        {service.description}
+      </p>
+
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 pt-4 border-t border-medium-gray/30">
+              <h4 className="text-sm font-semibold text-secondary mb-3">Key Features:</h4>
+              <ul className="space-y-2 mb-4">
+                {service.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="flex items-start">
+                    <span className="text-secondary mr-2 mt-1 text-xs">•</span>
+                    <span className="text-light-gray text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              
+              <Link href={`/services/${service.id}`}>
+                <Button variant="secondary" size="sm" className="w-full">
+                  Learn More
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export default function ServicesPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -522,8 +586,12 @@ export default function ServicesPage() {
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Обработчик прокрутки с полным скрытием Hero
+  const { isMobile, isTablet, isDesktop } = useDeviceDetection();
+  
+  // Обработчик прокрутки с полным скрытием Hero (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {
+    if (isMobile) return; // Отключаем сложную логику для мобильных
+    
     if (!sectionRef.current) return;
     
     let ticking = false;
@@ -537,29 +605,23 @@ export default function ServicesPage() {
           const sectionHeight = rect.height;
           const windowHeight = window.innerHeight;
           
-          // Определяем, находимся ли мы в секции
           const inSection = rect.top <= 0 && rect.bottom >= windowHeight;
           
           if (inSection) {
-            // Вычисляем прогресс на основе позиции в секции
             const scrolled = Math.abs(rect.top);
             const totalScrollable = sectionHeight - windowHeight;
             const progress = Math.min(scrolled / totalScrollable, 1);
             
-            // Корректировка: первые 15% скролла скрывают hero, остальные 85% - переключение карточек
             if (progress <= 0.15) {
-              // В первых 15% скролла остаемся на первой карточке
               setScrollProgress(0);
               if (activeIndex !== 0) {
                 setDirection('up');
                 setActiveIndex(0);
               }
             } else {
-              // В остальных 85% переключаем карточки
-              const adjustedProgress = (progress - 0.15) / 0.85; // Нормализуем к 0-1
+              const adjustedProgress = (progress - 0.15) / 0.85;
               setScrollProgress(adjustedProgress);
               
-              // Исправленная формула: показываем все решения
               const newIndex = Math.min(
                 Math.floor(adjustedProgress * services.length),
                 services.length - 1
@@ -578,81 +640,70 @@ export default function ServicesPage() {
       }
     };
     
-    // Добавляем немедленный вызов и более частое обновление
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Дополнительно отслеживаем изменения размера окна
     window.addEventListener('resize', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, [activeIndex]); // Убрали services.length - это константа
+  }, [activeIndex, isMobile]);
   
-  // ИСПРАВЛЕННЫЙ обработчик клика по навигации с синхронизацией скролла
+  // Обработчик клика по навигации (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   const handleServiceClick = (index: number) => {
-    if (index === activeIndex) return;
+    if (isMobile || index === activeIndex) return;
     
-    // Блокируем обработчик скролла
     isScrollingRef.current = true;
-    
-    // Устанавливаем новое состояние
     setDirection(index > activeIndex ? 'down' : 'up');
     setActiveIndex(index);
     
-    // Вычисляем нужную позицию скролла и синхронизируем
     const newProgress = index / (services.length - 1);
     setScrollProgress(newProgress);
     
-    // Программно прокручиваем страницу до соответствующей позиции
     if (sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
       const totalScrollable = sectionHeight - windowHeight;
       
-      // Вычисляем целевую позицию скролла
-      // Учитываем что первые 15% - это hero, остальные 85% - карточки
       const heroProgress = 0.15;
       const cardProgress = (1 - heroProgress) * newProgress;
       const targetProgress = heroProgress + cardProgress;
       
-      // Вычисляем абсолютную позицию скролла
       const currentScrollTop = window.pageYOffset;
       const sectionTop = currentScrollTop + rect.top;
       const targetScrollTop = sectionTop + (totalScrollable * targetProgress);
       
-      // Плавно прокручиваем к целевой позиции
       window.scrollTo({
         top: targetScrollTop,
         behavior: 'smooth'
       });
     }
     
-    // Сбрасываем блокировку с увеличенной задержкой для завершения анимации
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
     
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-    }, 1000); // Увеличили до 1 секунды для надежности
+    }, 1000);
   };
   
   return (
     <SiteLayout>
-      {/* Parallax Aura Background - глобальный фоновый эффект для всей страницы */}
-      <ParallaxAuraBackground 
-        scrollProgress={scrollProgress}
-        activeIndex={activeIndex}
-        className="opacity-80"
-      />
+      {/* Parallax Aura Background - только для десктопа */}
+      {isDesktop && (
+        <ParallaxAuraBackground 
+          scrollProgress={scrollProgress}
+          activeIndex={activeIndex}
+          className="opacity-80"
+        />
+      )}
 
       {/* Hero section */}
       <section className="section-hero bg-transparent relative z-10">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
                 style={{
@@ -664,78 +715,110 @@ export default function ServicesPage() {
               We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             <div className="flex flex-col sm:flex-row justify-center button-gap-large">
-            <Button variant="secondary" size="lg" href="/contacts">
-            See How It Works 
-           </Button>
-           </div>
+              <Button variant="secondary" size="lg" href="/contacts">
+                See How It Works 
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section 
-        ref={sectionRef}
-        className="relative bg-transparent"
-        style={{ 
-          height: `${150 + services.length * 130}vh`,
-          minHeight: '900vh'
-        }}
-      >
-        {/* Заголовки */}
-        <div className="absolute top-16 left-0 right-0 z-10 text-center">
-          <h3 className="section-title-large font-bold text-white mb-4"
-              style={{
-                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
-              }}>
-            Solutions
-          </h3>
-          <p className="section-subtitle-large text-light-gray opacity-80">
-            Scroll to explore our services
-          </p>
-        </div>
+      {/* МОБИЛЬНАЯ ВЕРСИЯ - простые карточки */}
+      {isMobile && (
+        <section className="py-16 bg-transparent relative z-10">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="section-title-large font-bold text-white mb-6"
+                  style={{
+                    textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                  }}>
+                Our Solutions
+              </h2>
+              <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
+                Comprehensive automation solutions designed to transform your business operations
+              </p>
+            </div>
 
-        {/* Sticky контейнер */}
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <div className="absolute inset-0 pt-32 pb-16">
-            <div className="container mx-auto px-4 h-full flex items-center">
-              <div className="w-full grid grid-cols-12 gap-12">
-                
-                {/* Левая навигация */}
-                <div className="col-span-5">
-                  <ServiceNavigation 
-                    services={services}
-                    activeIndex={activeIndex}
-                    onServiceClick={handleServiceClick}
-                    scrollProgress={scrollProgress}
-                  />
-                </div>
-                
-                {/* Правая область карточек */}
-                <div className="col-span-7 flex items-center">
-                  <div className="relative w-full max-w-4xl">
-                    <AnimatePresence mode="wait" custom={direction}>
-                      <HorizontalServiceCard
-                        key={activeIndex}
-                        service={services[activeIndex]}
-                        isActive={true}
-                        direction={direction}
-                        isHovered={isHovered}
-                        onHover={setIsHovered}
-                      />
-                    </AnimatePresence>
+            <div className="space-y-4">
+              {services.map((service, index) => (
+                <MobileServiceCard 
+                  key={service.id} 
+                  service={service} 
+                  index={index} 
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ДЕСКТОПНАЯ ВЕРСИЯ - с полными анимациями */}
+      {!isMobile && (
+        <section 
+          ref={sectionRef}
+          className="relative bg-transparent"
+          style={{ 
+            height: `${150 + services.length * 130}vh`,
+            minHeight: '900vh'
+          }}
+        >
+          {/* Заголовки */}
+          <div className="absolute top-16 left-0 right-0 z-10 text-center">
+            <h3 className="section-title-large font-bold text-white mb-4"
+                style={{
+                  textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                }}>
+              Solutions
+            </h3>
+            <p className="section-subtitle-large text-light-gray opacity-80">
+              Scroll to explore our services
+            </p>
+          </div>
+
+          {/* Sticky контейнер */}
+          <div className="sticky top-0 h-screen overflow-hidden">
+            <div className="absolute inset-0 pt-32 pb-16">
+              <div className="container mx-auto px-4 h-full flex items-center">
+                <div className="w-full grid grid-cols-12 gap-12">
+                  
+                  {/* Левая навигация */}
+                  <div className="col-span-5">
+                    <ServiceNavigation 
+                      services={services}
+                      activeIndex={activeIndex}
+                      onServiceClick={handleServiceClick}
+                      scrollProgress={scrollProgress}
+                    />
+                  </div>
+                  
+                  {/* Правая область карточек */}
+                  <div className="col-span-7 flex items-center">
+                    <div className="relative w-full max-w-4xl">
+                      <AnimatePresence mode="wait" custom={direction}>
+                        <HorizontalServiceCard
+                          key={activeIndex}
+                          service={services[activeIndex]}
+                          isActive={true}
+                          direction={direction}
+                          isHovered={isHovered}
+                          onHover={setIsHovered}
+                        />
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Enhanced Process section */}
       <EnhancedProcessSection />
       
       {/* CTA section */}
       <section className="section-cta bg-transparent relative z-10">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="section-title-medium font-bold section-title-spacing"
               style={{
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
@@ -746,9 +829,9 @@ export default function ServicesPage() {
             Trust our team to map your processes and<br />uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center button-gap-default">
-          <Button variant="secondary" size="lg" href="/contacts">
-          See How It Works
-          </Button>
+            <Button variant="secondary" size="lg" href="/contacts">
+              See How It Works
+            </Button>
           </div>
         </div>
       </section>
