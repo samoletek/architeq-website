@@ -19,11 +19,12 @@ import {
   allCaseStudies, 
   filterCasesByMatrix,
   IndustryCategory,
-  FunctionCategory
+  FunctionCategory,
+  CaseStudy
 } from '@/lib/data/case-studies';
 
 // Простое создание тегов для карточек
-function createCaseCardTags(caseStudy: any): string[] {
+function createCaseCardTags(caseStudy: CaseStudy): string[] {
   const tags: string[] = [];
   
   // Простой мапинг для коротких названий
@@ -78,7 +79,7 @@ function createCaseCardTags(caseStudy: any): string[] {
 }
 
 // Формат карточки кейса
-function formatCaseCard(caseStudy: any) {
+function formatCaseCard(caseStudy: CaseStudy) {
   return {
     id: caseStudy.id,
     title: caseStudy.title,
