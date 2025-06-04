@@ -44,7 +44,7 @@ export function IntegratedSearchFilters({
   const totalActiveFilters = selectedIndustries.length + selectedFunctions.length + (searchQuery.trim() ? 1 : 0);
   const hasActiveFilters = totalActiveFilters > 0;
 
-  // Получаем все активные фильтры для отображения (исключаем дефолтные)
+  // Получаем все активные фильтры для отображения
   const getActiveFilters = () => {
     const result: Array<{ 
       id: string; 
@@ -65,25 +65,25 @@ export function IntegratedSearchFilters({
       });
     }
     
-    // Индустрии (исключаем your-industry)
+    // Индустрии
     selectedIndustries.filter(id => id !== 'your-industry').forEach(industryId => {
       result.push({
         id: industryId,
         label: INDUSTRY_CATEGORIES[industryId],
         type: 'industry',
         onRemove: () => onRemoveIndustry(industryId),
-        color: 'bg-primary/20 text-primary' // Фиолетовый цвет для Industries
+        color: 'bg-primary/20 text-primary'
       });
     });
     
-    // Функции (исключаем custom-solutions)
+    // Функции
     selectedFunctions.filter(id => id !== 'custom-solutions').forEach(functionId => {
       result.push({
         id: functionId,
         label: FUNCTION_CATEGORIES[functionId],
         type: 'function',
         onRemove: () => onRemoveFunction(functionId),
-        color: 'bg-secondary/20 text-secondary' // Зеленый цвет для Functions
+        color: 'bg-secondary/20 text-secondary'
       });
     });
     
@@ -130,7 +130,7 @@ export function IntegratedSearchFilters({
         </div>
       </div>
 
-      {/* УПРОЩЕННЫЕ Активные фильтры - БЕЗ ФОНА И РАМКИ */}
+      {/* Активные фильтры */}
       {hasActiveFilters && (
         <div className="py-4">
           <div className="flex items-center justify-between">

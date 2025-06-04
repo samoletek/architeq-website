@@ -82,25 +82,23 @@ export function FunctionFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКА - как у Industry */}
+      {/* ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКА */}
       <div className="mb-4">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-between text-left group focus:outline-none"
+          className="w-full flex items-center justify-between text-left group focus:outline-none px-2.5 py-1.5 rounded-md hover:bg-white/5 transition-colors duration-200"
         >
           <div className="flex items-center">
-            {/* ЗАРЕЗЕРВИРОВАННОЕ место для счетчика ПЕРЕД заголовком */}
-            <div className="w-[28px] h-[20px] flex items-center justify-center mr-2">
-              {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
-                <span className="bg-secondary/20 text-secondary text-xs px-1.5 py-0.5 rounded-full font-medium border border-secondary/30 text-[10px]">
-                  {selectedFunctions.filter(id => id !== 'custom-solutions').length}
-                </span>
-              )}
-            </div>
-            
             <h3 className="text-base font-semibold text-white">
               By Function
             </h3>
+            
+            {/* Счетчик справа от заголовка */}
+            {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
+              <span className="bg-secondary/20 text-secondary text-xs px-1.5 py-0.5 rounded-full font-medium border border-secondary/30 text-[10px] ml-2">
+                {selectedFunctions.filter(id => id !== 'custom-solutions').length}
+              </span>
+            )}
           </div>
           
           <motion.div
