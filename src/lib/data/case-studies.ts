@@ -1048,3 +1048,80 @@ export function getFeaturedCases(limit: number = 3): CaseStudy[] {
 
   return featuredCases.slice(0, limit);
 }
+
+/**
+ * Маппинг для красивого отображения тегов
+ */
+const tagDisplayNames: Record<string, string> = {
+  // Solution Types - все возможные варианты из твоих кейсов
+  'Custom Solutions': 'Custom',
+  'CRM Integrations': 'CRM',
+  'Documents & Web Forms': 'Documents',
+  'System Integrations': 'Systems',
+  'System & Infrastructure Integrations': 'Systems',
+  'AI-Powered Solutions': 'AI',
+  'Industry-Specific': 'Industry',
+  'Industry-Specific Products': 'Industry',
+  'Finance & Accounting': 'Finance',
+  
+  // Technologies
+  'Monday CRM': 'Monday',
+  'Monday': 'Monday',
+  'API integrations': 'API',
+  'QuickBooks': 'QB',
+  'Make': 'Make',
+  'Zapier': 'Zapier',
+  'OpenAI': 'OpenAI',
+  'Twilio': 'Twilio',
+  'Stripe': 'Stripe',
+  'Next.js': 'Next.js',
+  'TypeScript': 'TypeScript',
+  'DocuSign': 'DocuSign',
+  'JotForm': 'JotForm',
+  'Slack': 'Slack',
+  'Google Sheets': 'Sheets',
+  'GoogleSheets': 'Sheets',
+  'Google Workspace API': 'Google API',
+  'Google Data Studio': 'Analytics',
+  'Google Docs API': 'Google API',
+  'Google API': 'Google API',
+  'ElevenLabs': 'Voice AI',
+  'CabinetVision': 'CAD',
+  'GoogleDrive': 'Drive',
+  'Google Workspace': 'Google',
+  'PlayHT': 'Voice AI',
+  'Retool': 'Retool',
+  'OpenAI Whisper': 'AI Speech',
+  'Email API': 'Email',
+  'Jira': 'Jira',
+  'Bill': 'Bill',
+  'PandaDoc': 'PandaDoc'
+};
+
+/**
+ * Функция для форматирования тегов для отображения
+ */
+function formatTagForDisplay(tag: string): string {
+  return tagDisplayNames[tag] || tag;
+}
+
+/**
+ * Преобразование кейса в формат карточки для featured секции
+ */
+export function toCaseCardFormat(caseStudy: CaseStudy) {
+  return {
+    id: caseStudy.id,
+    title: caseStudy.title,
+    description: caseStudy.description,
+    industry: caseStudy.industry,
+    company: caseStudy.company,
+    location: caseStudy.location,
+    results: caseStudy.results,
+    image: caseStudy.image,
+    tags: [
+      formatTagForDisplay(caseStudy.solutionType), 
+      ...caseStudy.technologies.slice(0, 2).map(formatTagForDisplay)
+    ],
+    isSpecialCard: caseStudy.isSpecialCard
+  };
+}
