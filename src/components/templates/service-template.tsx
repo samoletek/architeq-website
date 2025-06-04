@@ -54,6 +54,7 @@ export interface ServiceTemplateProps {
     title: string;
     description: ReactNode;
     features?: string[];
+    featuresTitle?: string; // Добавляем возможность кастомизировать заголовок Features
   };
   benefits?: ServiceBenefit[];
   features?: ServiceFeature[];
@@ -242,10 +243,11 @@ export default function ServiceTemplate({
           title={overview.title}
           description={overview.description}
           features={overview.features}
+          featuresTitle={overview.featuresTitle}
         />
       )}
 
-      {/* Benefits section - НОВЫЙ СТИЛЬ БЕЗ ИКОНОК */}
+      {/* Benefits section - ТОЧНО КАК НА ГЛАВНОЙ СТРАНИЦЕ */}
       {benefits && benefits.length > 0 && (
         <BenefitsSection 
           title="Key Benefits"
@@ -254,7 +256,7 @@ export default function ServiceTemplate({
         />
       )}
 
-      {/* Features section - НОВЫЙ LAYOUT ПО КАРТИНКЕ */}
+      {/* Features section - ОБНОВЛЕННЫЙ LAYOUT С УВЕЛИЧЕННЫМИ ТЕКСТАМИ */}
       {features && features.length > 0 && (
         <FeaturesSection 
           title="Our Solutions"
@@ -273,7 +275,7 @@ export default function ServiceTemplate({
         />
       )}
 
-      {/* Case Studies section */}
+      {/* Case Studies section - ТОЧНО КАК FEATURED CASES НА ГЛАВНОЙ */}
       {caseStudies && caseStudies.length > 0 && (
         <CaseStudiesSection 
           title="Success Stories"
@@ -301,15 +303,17 @@ export default function ServiceTemplate({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ OVERVIEW с новым layout и заголовком Features
+// ОБНОВЛЕННАЯ СЕКЦИЯ OVERVIEW с кастомизируемым заголовком Features
 function OverviewSection({ 
   title, 
   description, 
-  features 
+  features,
+  featuresTitle = "Key Features" // Значение по умолчанию
 }: { 
   title: string; 
   description: ReactNode; 
-  features?: string[]; 
+  features?: string[];
+  featuresTitle?: string;
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -380,14 +384,14 @@ function OverviewSection({
               </div>
             </div>
             
-            {/* Features на всю ширину ниже с заголовком */}
+            {/* Features на всю ширину ниже с кастомизируемым заголовком */}
             {features && features.length > 0 && (
               <div className="text-center">
                 <h3 className="text-2xl md:text-3xl font-bold mb-12 text-white"
                     style={{
                       textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
                     }}>
-                  Key Features
+                  {featuresTitle}
                 </h3>
                 
                 <motion.div
@@ -445,7 +449,7 @@ function OverviewSection({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ BENEFITS БЕЗ ИКОНОК С ЭФФЕКТАМИ КАК НА ГЛАВНОЙ
+// BENEFITS СЕКЦИЯ - ТОЧНО КАК НА ГЛАВНОЙ СТРАНИЦЕ
 function BenefitsSection({ 
   title, 
   subtitle, 
@@ -507,25 +511,46 @@ function BenefitsSection({
     })
   };
 
+  const cardTitleVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.3 + index * 0.15
+      }
+    })
+  };
+
+  const cardDescriptionVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.45 + index * 0.15
+      }
+    })
+  };
+
   return (
     <section 
       ref={ref}
-      className="section-benefits bg-dark-gray relative overflow-hidden"
+      className="section-benefits relative overflow-hidden pt-40 pb-48 bg-dark-gray"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <motion.div
-          className="text-center section-content-spacing"
+          className="text-center mb-12 sm:mb-16 md:mb-20"
           initial="hidden"
           animate={titleControls}
           variants={titleVariants}
         >
-          <h2 className="section-title-medium font-bold section-title-spacing"
-              style={{
-                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-              }}>
-            {title}
-          </h2>
-          <p className="text-light-gray text-lg md:text-2xl max-w-3xl mx-auto">
+          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
+          <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
             {subtitle}
           </p>
         </motion.div>
@@ -538,53 +563,73 @@ function BenefitsSection({
               initial="hidden"
               animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
-              className="h-full"
             >
-              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
-                rounded-2xl p-6 transition-all duration-300 hover:border-primary/40 
-                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] group relative overflow-hidden h-full">
+              <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
+                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
+                before:absolute before:content-[''] before:inset-0 
+                before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
+                backdrop-blur-sm group
+                border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
+                hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
+                hover:border-primary/40">
                 
-                {/* Стильный градиентный фон */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 
-                  group-hover:from-primary/10 group-hover:to-secondary/10 transition-all duration-500 rounded-2xl"></div>
-                
-                {/* Анимированное свечение по краям */}
+                {/* Эффект свечения для активного элемента */}
                 <motion.div 
-                  className="absolute inset-0 rounded-2xl"
-                  initial={{ opacity: 0 }}
+                  className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
                   animate={{ 
-                    opacity: [0.3, 0.6, 0.3],
-                    boxShadow: [
-                      '0 0 20px rgba(178,75,243,0.0)',
-                      '0 0 30px rgba(178,75,243,0.4)',
-                      '0 0 20px rgba(178,75,243,0.0)'
-                    ]
+                    opacity: [0.5, 0.7, 0.5], 
                   }}
                   transition={{ 
                     duration: 3, 
                     repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.5
+                    ease: "easeInOut" 
+                  }}
+                />
+                
+                {/* Анимированное свечение */}
+                <motion.div 
+                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-lg blur-lg -z-10"
+                  animate={{ 
+                    opacity: [0.6, 0.9, 0.6] 
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity,
+                    ease: "easeInOut" 
+                  }}
+                />
+
+                {/* Свечение при наведении */}
+                <motion.div 
+                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/0 via-[#180033]/0 to-[#121212]/0 rounded-lg blur-3xl -z-10 opacity-0 group-hover:opacity-100"
+                  whileHover={{
+                    opacity: 1,
+                    background: "radial-gradient(circle, rgba(31,10,46,0.6) 0%, rgba(24,0,51,0.4) 50%, rgba(18,7,26,0.3) 100%)",
+                    transition: { duration: 0.3 }
                   }}
                 />
                 
                 <div className="relative z-10">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line text-white
-                    group-hover:text-primary transition-colors duration-300">
+                  <motion.h3 
+                    className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line"
+                    custom={index}
+                    initial="hidden"
+                    animate={hasAnimated ? "visible" : "hidden"}
+                    variants={cardTitleVariants}
+                  >
                     {benefit.title}
-                  </h3>
+                  </motion.h3>
                   
-                  <p className="text-light-gray text-sm sm:text-base md:text-lg font-sans opacity-90
-                    group-hover:opacity-100 transition-opacity duration-300">
+                  <motion.p 
+                    className="text-light-gray text-sm sm:text-base md:text-lg font-sans"
+                    custom={index}
+                    initial="hidden"
+                    animate={hasAnimated ? "visible" : "hidden"}
+                    variants={cardDescriptionVariants}
+                  >
                     {benefit.description}
-                  </p>
+                  </motion.p>
                 </div>
-                
-                {/* Декоративные элементы */}
-                <div className="absolute top-4 right-4 w-8 h-8 bg-primary/20 rounded-full 
-                  group-hover:bg-primary/30 transition-colors duration-300"></div>
-                <div className="absolute bottom-4 left-4 w-12 h-1 bg-gradient-to-r from-primary to-secondary 
-                  group-hover:from-secondary group-hover:to-primary transition-all duration-500"></div>
               </div>
             </motion.div>
           ))}
@@ -594,7 +639,7 @@ function BenefitsSection({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С НОВЫМ LAYOUT ПО КАРТИНКЕ
+// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С УВЕЛИЧЕННЫМИ ТЕКСТАМИ И ЗЕЛЕНОЙ ССЫЛКОЙ
 function FeaturesSection({ 
   title, 
   subtitle, 
@@ -688,7 +733,7 @@ function FeaturesSection({
               }}>
             {title}
           </h2>
-          <p className="text-light-gray text-lg md:text-2xl max-w-3xl mx-auto opacity-90">
+          <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
             {subtitle}
           </p>
         </motion.div>
@@ -705,13 +750,13 @@ function FeaturesSection({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
                 {/* Левая колонка - заголовок и описание */}
                 <div>
-                  <div className="flex items-start mb-6">
+                  <div className="flex items-start mb-8">
                     {feature.icon && (
-                      <div className="text-primary mr-4 flex-shrink-0 mt-1">
+                      <div className="text-primary mr-6 flex-shrink-0 mt-1">
                         {renderIcon(feature.icon)}
                       </div>
                     )}
-                    <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white"
+                    <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white"
                         style={{
                           textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
                         }}>
@@ -719,19 +764,19 @@ function FeaturesSection({
                     </h3>
                   </div>
                   
-                  <p className="text-light-gray text-lg md:text-xl leading-relaxed mb-8 opacity-90">
+                  <p className="text-light-gray text-xl md:text-2xl leading-relaxed mb-12 opacity-90">
                     {feature.description}
                   </p>
                   
                   {feature.caseId && (
                     <Link 
                       href={`/cases/${feature.caseId}`} 
-                      className="inline-flex items-center text-primary font-medium hover:underline transition-colors group"
+                      className="inline-flex items-center text-secondary font-medium hover:underline transition-colors group text-lg"
                     >
                       View Related Case Study
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform"
+                        className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -748,18 +793,18 @@ function FeaturesSection({
                 </div>
                 
                 {/* Правая колонка - подзаголовки и benefits */}
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {feature.benefits && feature.benefits.length > 0 && (
                     <>
-                      <h4 className="text-xl font-semibold text-white mb-4">Key Benefits:</h4>
-                      <div className="space-y-4">
+                      <h4 className="text-2xl font-semibold text-white mb-6">Key Benefits:</h4>
+                      <div className="space-y-6">
                         {feature.benefits.map((benefit, benefitIndex) => (
                           <div key={benefitIndex} className="flex items-start">
                             <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 
-                              flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                              flex items-center justify-center mr-4 mt-1 flex-shrink-0">
                               <div className="w-2 h-2 rounded-full bg-primary"></div>
                             </div>
-                            <span className="text-light-gray text-base leading-relaxed opacity-90">
+                            <span className="text-light-gray text-lg leading-relaxed opacity-90">
                               {benefit}
                             </span>
                           </div>
@@ -904,6 +949,7 @@ function ProcessSection({
   );
 }
 
+// CASE STUDIES СЕКЦИЯ - ТОЧНО КАК FEATURED CASES НА ГЛАВНОЙ
 function CaseStudiesSection({ 
   title, 
   subtitle, 
@@ -962,24 +1008,17 @@ function CaseStudiesSection({
   return (
     <section 
       ref={ref}
-      className="section-cases bg-[#121212] relative overflow-hidden"
+      className="section-cases bg-[#121212] pt-48 pb-64"
     >
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4">
         <motion.div
-          className="text-center section-content-spacing"
+          className="text-center mb-20"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
         >
-          <h2 className="section-title-medium font-bold section-title-spacing"
-              style={{
-                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-              }}>
-            {title}
-          </h2>
-          <p className="text-light-gray text-lg md:text-2xl max-w-3xl mx-auto opacity-90">
-            {subtitle}
-          </p>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
+          <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -993,7 +1032,7 @@ function CaseStudiesSection({
             >
               <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
                 overflow-hidden h-full rounded-2xl hover:border-primary/40 
-                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] transition-all duration-300">
+                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] transition-all duration-300 group">
                 
                 <div 
                   className="h-48 relative"
@@ -1009,9 +1048,9 @@ function CaseStudiesSection({
                 </div>
                 
                 <div className="p-6 relative z-10">
-                  <h3 className="text-xl font-semibold mb-2">{caseStudy.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{caseStudy.title}</h3>
                   <p className="text-secondary text-sm mb-4 font-medium">{caseStudy.company}</p>
-                  <p className="text-light-gray section-subtitle-large mb-6 opacity-90">
+                  <p className="text-light-gray text-base mb-6 opacity-90">
                     {caseStudy.description}
                   </p>
                   
@@ -1027,12 +1066,12 @@ function CaseStudiesSection({
                   
                   <Link 
                     href={`/cases/${caseStudy.id}`} 
-                    className="text-secondary font-medium text-sm flex items-center hover:underline transition-colors"
+                    className="text-secondary font-medium text-sm flex items-center hover:underline transition-colors group/link"
                   >
                     View Case Study
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
+                      className="h-4 w-4 ml-1 group-hover/link:translate-x-1 transition-transform"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -1052,7 +1091,7 @@ function CaseStudiesSection({
         </div>
         
         <motion.div 
-          className="text-center section-content-spacing-large"
+          className="mt-16 text-center"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={buttonVariants}
@@ -1153,6 +1192,7 @@ function FAQSection({
   );
 }
 
+// ОБНОВЛЕННАЯ CTA СЕКЦИЯ С НОВЫМ ТЕКСТОМ
 function CTASection() {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -1218,7 +1258,7 @@ function CTASection() {
             </h2>
           
             <p className="section-subtitle-large text-light-gray mb-16">
-              Book a free consultation to discuss how our solutions can help your business save time, reduce errors, and improve efficiency.
+              Trust our team to map your processes and<br />uncover automation potential.
             </p>
           </motion.div>
           
