@@ -82,25 +82,23 @@ export function IndustryFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКА - синхронизировано с Function */}
+      {/* ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКА */}
       <div className="mb-4">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-between text-left group focus:outline-none"
+          className="w-full flex items-center justify-between text-left group focus:outline-none px-2.5 py-1.5 rounded-md hover:bg-white/5 transition-colors duration-200"
         >
           <div className="flex items-center">
-            {/* ЗАРЕЗЕРВИРОВАННОЕ место для счетчика ПЕРЕД заголовком */}
-            <div className="w-[28px] h-[20px] flex items-center justify-center mr-2">
-              {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
-                <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full font-medium border border-primary/30 text-[10px]">
-                  {selectedIndustries.filter(id => id !== 'your-industry').length}
-                </span>
-              )}
-            </div>
-            
             <h3 className="text-base font-semibold text-white">
               By Industry
             </h3>
+            
+            {/* Счетчик справа от заголовка */}
+            {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
+              <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full font-medium border border-primary/30 text-[10px] ml-2">
+                {selectedIndustries.filter(id => id !== 'your-industry').length}
+              </span>
+            )}
           </div>
           
           <motion.div

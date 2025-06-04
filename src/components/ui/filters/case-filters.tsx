@@ -53,7 +53,7 @@ export function CaseFilters({
   filtersTitle = "Filters",
   clearButtonText = "Clear all",
   activeFiltersTitle = "Active filters:",
-  layout = 'horizontal' // По умолчанию горизонтальное расположение
+  layout = 'horizontal'
 }: CaseFiltersProps) {
   // Состояние для открытых групп фильтров
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
@@ -158,11 +158,11 @@ export function CaseFilters({
     // Вызываем основной обработчик
     onFilterChange(groupId, optionId);
     
-    // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Устанавливаем таймаут, чтобы сохранить дропдаун открытым
+    // Устанавливаем таймаут, чтобы сохранить дропдаун открытым
     setTimeout(() => {
       setOpenGroups(prev => ({
         ...prev,
-        [groupId]: true // Принудительно сохраняем открытым текущий дропдаун
+        [groupId]: true
       }));
     }, 0);
   };

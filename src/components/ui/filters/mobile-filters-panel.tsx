@@ -20,7 +20,7 @@ export interface MobileFiltersPanelProps {
   className?: string;
 }
 
-// Простые фильтры без сворачивания для мобильных
+// Фильтры для мобильных
 function SimpleMobileIndustryFilters({
   selectedIndustries,
   onIndustryChange
@@ -146,12 +146,12 @@ export function MobileFiltersPanel({
 }: MobileFiltersPanelProps) {
   const [activeTab, setActiveTab] = useState<'industries' | 'functions'>('industries');
 
-  // Подсчитываем активные фильтры (исключаем дефолтные)
+  // Подсчитываем активные фильтры
   const activeIndustries = selectedIndustries.filter(id => id !== 'your-industry').length;
   const activeFunctions = selectedFunctions.filter(id => id !== 'custom-solutions').length;
   const totalActiveFilters = activeIndustries + activeFunctions;
 
-  // Закрываем панель при клике вне её
+  // Закрываем панель при клике вне
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
@@ -244,7 +244,7 @@ export function MobileFiltersPanel({
         </div>
       </motion.button>
 
-      {/* Фоновое затемнение - БЕЗ ЗАЗОРА СВЕРХУ */}
+      {/* Фоновое затемнение */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -336,7 +336,7 @@ export function MobileFiltersPanel({
               </div>
             </div>
 
-            {/* Контент панели - БЕЗ СВОРАЧИВАНИЯ */}
+            {/* Контент панели */}
             <div className="overflow-y-auto max-h-[calc(80vh-140px)]">
               <div className="p-4">
                 <AnimatePresence mode="wait">

@@ -23,11 +23,11 @@ import {
   CaseStudy
 } from '@/lib/data/case-studies';
 
-// Простое создание тегов для карточек
+// Создание тегов для карточек
 function createCaseCardTags(caseStudy: CaseStudy): string[] {
   const tags: string[] = [];
   
-  // Простой мапинг для коротких названий
+  // Маппинг для коротких названий
   const tagNames: Record<string, string> = {
     // Solution Types
     'Custom Solutions': 'Custom',
@@ -62,12 +62,11 @@ function createCaseCardTags(caseStudy: CaseStudy): string[] {
 
   const formatTag = (tag: string): string => tagNames[tag] || tag;
   
-  // 1. Первый тег - тип решения
+  // Первый тег - тип решения + технологии
   if (caseStudy.solutionType) {
     tags.push(formatTag(caseStudy.solutionType));
   }
   
-  // 2. Остальные теги - первые 2 технологии
   if (caseStudy.technologies && Array.isArray(caseStudy.technologies) && caseStudy.technologies.length > 0) {
     const techs = caseStudy.technologies.slice(0, 2);
     techs.forEach((tech: string) => {
@@ -175,7 +174,7 @@ export default function CasesContent() {
     return filtered;
   }, [searchQuery, selectedIndustries, selectedFunctions]);
   
-  // Разделяем обычные кейсы и специальную карточку
+  // Разделяем обычные кейсы и рекламную карточку
   const { regularCases, hasContactCard } = useMemo(() => {
     const regular = filteredCases.filter(c => !c.isSpecialCard);
     const hasContact = filteredCases.some(c => c.isSpecialCard);
@@ -187,19 +186,22 @@ export default function CasesContent() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
+      transition: isMobile ? { duration: 0.2 } : {
         staggerChildren: 0.1
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    hidden: { opacity: 0, y: isMobile ? 10 : 20, scale: isMobile ? 1 : 0.95 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
+      transition: isMobile ? {
+        duration: 0.2,
+        ease: "easeOut"
+      } : {
         duration: 0.5,
         ease: [0.2, 0.65, 0.3, 0.9]
       }
@@ -232,7 +234,7 @@ export default function CasesContent() {
       {/* Main content section */}
       <section className="py-16 sm:py-20 lg:py-28 bg-site-bg">
         
-        {/* МОБИЛЬНАЯ ВЕРСИЯ */}
+        {/* Mobile */}
         {isMobile ? (
           <div className="container mx-auto px-4">
             <div className="space-y-6">
@@ -268,29 +270,46 @@ export default function CasesContent() {
                 allCases={allCaseStudies}
               />
               
-              {/* Сетка кейсов для мобильных - 1 колонка БЕЗ Contact карточки */}
+              {/* Сетка кейсов для мобильных */}
               {regularCases.length > 0 ? (
-                <motion.div
-                  variants={gridVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="grid grid-cols-1 gap-4"
-                >
-                  <AnimatePresence>
-                    {regularCases.map((caseItem, index) => {
-                      return (
-                        <motion.div key={caseItem.id} variants={cardVariants}>
-                          <CaseCard 
-                            {...formatCaseCard(caseItem)}
-                            href={`/cases/${caseItem.id}`}
-                            index={index}
-                            isCompact={true}
-                          />
-                        </motion.div>
-                      );
-                    })}
-                  </AnimatePresence>
-                </motion.div>
+                isMobile ? (
+                  /* ПРОСТАЯ СЕТКА ДЛЯ МОБИЛЬНЫХ */
+                  <div className="grid grid-cols-1 gap-4">
+                    {regularCases.map((caseItem, index) => (
+                      <div key={caseItem.id}>
+                        <CaseCard 
+                          {...formatCaseCard(caseItem)}
+                          href={`/cases/${caseItem.id}`}
+                          index={index}
+                          isCompact={true}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  /* АНИМИРОВАННАЯ СЕТКА ДЛЯ ДЕСКТОПА */
+                  <motion.div
+                    variants={gridVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="grid grid-cols-1 gap-4"
+                  >
+                    <AnimatePresence>
+                      {regularCases.map((caseItem, index) => {
+                        return (
+                          <motion.div key={caseItem.id} variants={cardVariants}>
+                            <CaseCard 
+                              {...formatCaseCard(caseItem)}
+                              href={`/cases/${caseItem.id}`}
+                              index={index}
+                              isCompact={true}
+                            />
+                          </motion.div>
+                        );
+                      })}
+                    </AnimatePresence>
+                  </motion.div>
+                )
               ) : (
                 /* Empty State для мобильных */
                 <div className="bg-dark-gray rounded-lg p-6 text-center">
@@ -315,10 +334,10 @@ export default function CasesContent() {
             </div>
           </div>
         ) : (
-          /* ДЕСКТОПНАЯ И ПЛАНШЕТНАЯ ВЕРСИЯ */
-          <div className="max-w-[1600px] mx-auto px-6 lg:px-8">
+          /* Desktop + tablet */
+          <div className="max-w-[1500px] mx-auto px-8 lg:px-12">
             
-            {/* Поисковая строка - ЕЩЕ ШИРЕ */}
+            {/* Поисковая строка */}
             <div className="mb-8 max-w-6xl mx-auto">
               <IntegratedSearchFilters
                 searchQuery={searchQuery}
@@ -342,8 +361,8 @@ export default function CasesContent() {
             {/* СЕТКА: фиксированная ширина фильтров + flex для карточек */}
             <div className="flex gap-8">
               
-              {/* ЛЕВАЯ КОЛОНКА - Фильтры (фиксированная ширина 280px) */}
-              <div className="w-[280px] flex-shrink-0">
+              {/* ЛЕВАЯ КОЛОНКА - Фильтры */}
+              <div className="w-[260px] flex-shrink-0">
                 <div className="sticky top-24 space-y-6">
                   
                   {/* Function Filters */}
@@ -361,7 +380,7 @@ export default function CasesContent() {
                 </div>
               </div>
               
-              {/* ПРАВАЯ ОБЛАСТЬ - Контент (занимает все оставшееся место) */}
+              {/* ПРАВАЯ ОБЛАСТЬ - Контент */}
               <div className="flex-1 min-w-0">
                 
                 {filteredCases.length > 0 ? (
@@ -370,55 +389,50 @@ export default function CasesContent() {
                     initial="hidden"
                     animate="visible"
                     className={cn(
-                      "grid gap-5",  // было gap-6, стало gap-5 (уменьшение на ~15%)
-                      // 3 КОЛОНКИ на десктопе, 2 на планшете
+                      "grid gap-5",
                       isTablet 
                         ? "grid-cols-2" 
                         : "grid-cols-1 lg:grid-cols-3 desktop-case-cards"
                     )}
                   >
                     <AnimatePresence>
-                      {/* Первый обычный кейс */}
-                      {regularCases.length > 0 && (
+                      {/* Первые 9 кейсов */}
+                      {regularCases.slice(0, 9).map((caseItem, index) => (
                         <motion.div
-                          key={regularCases[0].id}
+                          key={caseItem.id}
                           variants={cardVariants}
                         >
                           <CaseCard 
-                            {...formatCaseCard(regularCases[0])}
-                            href={`/cases/${regularCases[0].id}`}
-                            index={0}
+                            {...formatCaseCard(caseItem)}
+                            href={`/cases/${caseItem.id}`}
+                            index={index}
                           />
                         </motion.div>
-                      )}
+                      ))}
                       
-                      {/* Специальная карточка Contact Us на второй позиции */}
-                      {hasContactCard && (
+                      {/* Contact карточка на 10-й позиции */}
+                      {hasContactCard && regularCases.length >= 9 && (
                         <motion.div
                           key="contact-card"
                           variants={cardVariants}
                         >
-                          <ContactCaseCard index={1} />
+                          <ContactCaseCard index={9} />
                         </motion.div>
                       )}
                       
                       {/* Остальные кейсы */}
-                      {regularCases.slice(1).map((caseItem, index) => {
-                        const adjustedIndex = hasContactCard ? index + 2 : index + 1;
-                        
-                        return (
-                          <motion.div
-                            key={caseItem.id}
-                            variants={cardVariants}
-                          >
-                            <CaseCard 
-                              {...formatCaseCard(caseItem)}
-                              href={`/cases/${caseItem.id}`}
-                              index={adjustedIndex}
-                            />
-                          </motion.div>
-                        );
-                      })}
+                      {regularCases.slice(9).map((caseItem, index) => (
+                        <motion.div
+                          key={caseItem.id}
+                          variants={cardVariants}
+                        >
+                          <CaseCard 
+                            {...formatCaseCard(caseItem)}
+                            href={`/cases/${caseItem.id}`}
+                            index={index + 10}
+                          />
+                        </motion.div>
+                      ))}
                     </AnimatePresence>
                   </motion.div>
                 ) : (

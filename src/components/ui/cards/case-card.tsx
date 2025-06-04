@@ -109,9 +109,9 @@ export function CaseCard({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
-        delay: 0.1 + index * 0.1
+        duration: isMobile ? 0.2 : 0.7,
+        ease: isMobile ? "easeOut" : [0.2, 0.65, 0.3, 0.9],
+        delay: isMobile ? 0 : 0.1 + index * 0.1
       }
     }
   };
@@ -121,40 +121,40 @@ export function CaseCard({
     ? 'auto' 
     : isMobile 
       ? 'min-h-[280px]'
-      : 'min-h-[380px] sm:min-h-[420px]';
+      : 'min-h-[500px]';
 
   const cardContent = (
     <motion.div
-      initial="hidden"
-      animate={isVisible ? "visible" : "hidden"}
-      variants={cardVariants}
+      initial={isMobile ? false : "hidden"}
+      animate={isMobile ? false : (isVisible ? "visible" : "hidden")}
+      variants={isMobile ? {} : cardVariants}
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border',
         'transition-all duration-300 flex flex-col relative',
         'case-card-enhanced',
-        isHovered ? 'case-card-hovered' : '',
+        !isMobile && isHovered ? 'case-card-hovered' : '',
         cardHeight,
         className
       )}
-      style={{
+      style={!isMobile ? {
         boxShadow: isHovered 
           ? '0 20px 40px rgba(0, 0, 0, 0.15), 0 0 15px rgba(176, 255, 116, 0.25), 0 0 30px rgba(176, 255, 116, 0.15)'
           : '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.3)',
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      } : {}}
+      onMouseEnter={!isMobile ? () => setIsHovered(true) : undefined}
+      onMouseLeave={!isMobile ? () => setIsHovered(false) : undefined}
     >
       {/* Зеленые пятна свечения снизу */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0 }}
-            animate={{ 
+            initial={isMobile ? { opacity: 0.3, height: '220px' } : { opacity: 0 }}
+            animate={isMobile ? {} : { 
               opacity: isHovered ? 0.9 : 0.3, 
               height: isHovered ? '280px' : '220px' 
             }}
-            transition={{ duration: 0.4 }}
+            transition={isMobile ? {} : { duration: 0.4 }}
             style={{
               position: 'absolute',
               bottom: 0,
@@ -176,7 +176,7 @@ export function CaseCard({
         ))}
       </div>
 
-      {/* Теги - ОТОБРАЖАЮТСЯ ЕСЛИ ЕСТЬ */}
+      {/* Теги */}
       <div className={cn(
         "relative z-10",
         isMobile ? "pt-2 px-3 pb-2" : "pt-4 px-6 pb-4"
@@ -200,32 +200,33 @@ export function CaseCard({
         "flex-grow z-10",
         isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-6 py-4"
       )}>
-        {/* ЗАГОЛОВОК - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
+        {/* ЗАГОЛОВОК */}
         <h3 className={cn(
           "font-semibold text-white leading-tight",
-          isMobile ? "text-base mb-2" : "text-xl mb-4"  // КАК В CONTACT КАРТОЧКЕ!
+          isMobile ? "text-base mb-2" : "text-xl mb-4"
         )}>
           {title}
         </h3>
 
-        {/* ОПИСАНИЕ - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
+        {/* ОПИСАНИЕ */}
         {description && !isCompact && (
           <p className={cn(
-            "text-light-gray line-clamp-3 leading-relaxed transition-colors duration-300",
-            isMobile ? "text-xs mb-2" : "text-sm mb-4",  // КАК В CONTACT КАРТОЧКЕ!
-            isHovered ? "text-white" : "text-light-gray"
+            "text-light-gray line-clamp-3 leading-relaxed",
+            isMobile ? "text-xs mb-2" : "text-sm mb-4",
+            !isMobile && "transition-colors duration-300",
+            !isMobile && isHovered ? "text-white" : "text-light-gray"
           )}>
             {description}
           </p>
         )}
 
-        {/* KEY RESULTS - ЗЕЛЕНЫЕ ЦВЕТА */}
+        {/* KEY RESULTS */}
         {results && results.length > 0 && !isCompact && (
           <div className={cn(
             isMobile ? "mb-2" : "mb-4"
           )}>
             <h4 className={cn(
-              "font-semibold text-secondary",  // ЗЕЛЕНЫЙ ЦВЕТ!
+              "font-semibold text-secondary",
               isMobile ? "text-xs mb-1" : "text-sm mb-3"
             )}>
               Key Results:
@@ -235,9 +236,10 @@ export function CaseCard({
                 <li key={index} className="flex items-start">
                   <span className="text-secondary mr-2 mt-1 flex-shrink-0 text-sm">•</span>  {/* ЗЕЛЕНЫЙ ЦВЕТ! */}
                   <span className={cn(
-                    "leading-relaxed transition-colors duration-300",
+                    "leading-relaxed",
                     isMobile ? "text-xs" : "text-xs",
-                    isHovered ? "text-white" : "text-light-gray"
+                    !isMobile && "transition-colors duration-300",
+                    !isMobile && isHovered ? "text-white" : "text-light-gray"
                   )} 
                   dangerouslySetInnerHTML={{ 
                     __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')  // ЗЕЛЕНЫЙ ЦВЕТ!
@@ -249,7 +251,7 @@ export function CaseCard({
         )}
       </div>
 
-      {/* Footer - КАК В ФИОЛЕТОВОЙ КАРТОЧКЕ */}
+      {/* Footer */}
       <div className={cn(
         "border-t border-medium-gray/40 mt-auto z-10 flex-shrink-0",
         isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-4 pt-4"
