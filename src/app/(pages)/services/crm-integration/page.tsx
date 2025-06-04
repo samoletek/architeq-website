@@ -1,5 +1,3 @@
-// src/app/(pages)/services/crm-integration/page.tsx
-
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 
@@ -16,22 +14,22 @@ export default function CRMIntegrationPage() {
     {
       title: "Unified Data Environment",
       description: "Create a single source of truth by connecting your CRM with other business tools and databases.",
-      icon: "database"
+      icon: "connect"
     },
     {
       title: "Automated Workflows",
       description: "Eliminate manual data transfer and automate cross-platform processes for better efficiency.",
-      icon: "automation"
+      icon: "workflow"
     },
     {
       title: "360° Customer View",
       description: "Get a complete picture of customer interactions across all touchpoints and platforms.",
-      icon: "customer"
+      icon: "chart"
     },
     {
       title: "Real-time Insights",
       description: "Access up-to-date information and analytics for better decision-making and customer service.",
-      icon: "insights"
+      icon: "dashboard"
     }
   ];
 
@@ -46,7 +44,7 @@ export default function CRMIntegrationPage() {
         "Two-way synchronization with email clients",
         "Team chat integration with client records"
       ],
-      icon: "email"
+      icon: "connect"
     },
     {
       title: "Document Management",
@@ -69,7 +67,7 @@ export default function CRMIntegrationPage() {
         "Financial dashboard integration",
         "Expense tracking and reconciliation"
       ],
-      icon: "payment",
+      icon: "dollar",
       caseId: "quickbooks-integration"
     },
     {
@@ -81,7 +79,7 @@ export default function CRMIntegrationPage() {
         "Email marketing integration",
         "Analytics consolidation"
       ],
-      icon: "marketing"
+      icon: "analysis"
     }
   ];
 
@@ -176,111 +174,6 @@ export default function CRMIntegrationPage() {
     }
   ];
 
-  // Обзорный контент
-  const overviewSideContent = (
-    <>
-      <h3 className="text-2xl font-bold mb-4">CRM Systems We Work With</h3>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Monday.com</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>HubSpot</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Salesforce</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Zoho CRM</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Pipedrive</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Custom CRM Systems</span>
-        </div>
-      </div>
-    </>
-  );
-
-  // Функция для рендеринга иконок
-  function renderIcon(icon: string) {
-    switch (icon) {
-      case 'database':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-          </svg>
-        );
-      case 'automation':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        );
-      case 'customer':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        );
-      case 'insights':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-        );
-      case 'email':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        );
-      case 'document':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        );
-      case 'payment':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-          </svg>
-        );
-      case 'marketing':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        );
-    }
-  }
-
   return (
     <ServiceTemplate
       serviceId="crm-integration"
@@ -291,27 +184,31 @@ export default function CRMIntegrationPage() {
         title: "What Is CRM Integration?",
         description: (
           <>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               CRM integration is the process of connecting your customer relationship management system with other business applications to create a seamless flow of information across your organization.
             </p>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               By integrating your CRM with other tools, you eliminate manual data entry, reduce errors, and ensure that all departments have access to the most up-to-date customer information.
             </p>
-            <p className="text-light-gray">
+            <p>
               Our approach to CRM integration focuses on creating custom connections that align with your specific business processes and objectives, whether you are using Monday.com, HubSpot, Salesforce, or any other CRM platform.
             </p>
           </>
         ),
-        sideContent: overviewSideContent
+        features: [
+          "Monday.com",
+          "HubSpot",
+          "Salesforce",
+          "Zoho CRM",
+          "Pipedrive",
+          "Custom CRM Systems"
+        ]
       }}
       benefits={benefits}
       features={integrationOptions}
       processes={processes}
       caseStudies={caseStudies}
       faqs={faqs}
-      primaryColor="primary"
-      accentColor="primary"
-      iconRenderer={renderIcon}
     />
   );
 }

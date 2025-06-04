@@ -1,5 +1,3 @@
-// src/app/(pages)/services/finance/page.tsx
-
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 
@@ -11,17 +9,16 @@ export const metadata = generateServiceMetadata({
 });
 
 export default function FinancePage() {
-  // Преимущества
   const benefits = [
     {
       title: "Improved Cash Flow",
       description: "Accelerate payment cycles and reduce outstanding receivables through automated invoicing and payment tracking.",
-      icon: "cash"
+      icon: "dollar"
     },
     {
       title: "Reduced Administrative Costs",
       description: "Eliminate manual financial data entry and reconciliation, saving significant staff time and reducing errors.",
-      icon: "dollar"
+      icon: "clock"
     },
     {
       title: "Financial Transparency",
@@ -35,7 +32,6 @@ export default function FinancePage() {
     }
   ];
 
-  // Решения
   const financeSolutions = [
     {
       title: "Invoice Automation",
@@ -46,7 +42,7 @@ export default function FinancePage() {
         "Real-time payment tracking and status updates",
         "Automated reminders for unpaid invoices"
       ],
-      icon: "invoice",
+      icon: "document",
       caseId: "stripe-invoicing"
     },
     {
@@ -58,7 +54,7 @@ export default function FinancePage() {
         "Consolidated financial reporting across systems",
         "Elimination of double data entry"
       ],
-      icon: "accounting",
+      icon: "connect",
       caseId: "quickbooks-integration"
     },
     {
@@ -70,7 +66,7 @@ export default function FinancePage() {
         "Secure payment processing with compliance focus",
         "Reduced payment delays and improved cash flow"
       ],
-      icon: "payment"
+      icon: "dollar"
     },
     {
       title: "Financial Reports & Dashboards",
@@ -93,7 +89,7 @@ export default function FinancePage() {
         "Integration with factoring platforms for data transfer",
         "Status tracking and notification system"
       ],
-      icon: "factoring",
+      icon: "workflow",
       caseId: "factoring-automation"
     },
     {
@@ -105,12 +101,44 @@ export default function FinancePage() {
         "Automatic updates when variables change",
         "Integration with payment and accounting systems"
       ],
-      icon: "calculation",
+      icon: "analysis",
       caseId: "financial-calculations"
     }
   ];
 
-  // Кейсы
+  const processes = [
+    {
+      step: 1,
+      title: "Financial Process Assessment",
+      description: "We analyze your current financial processes, systems, and pain points to identify opportunities for automation and integration."
+    },
+    {
+      step: 2,
+      title: "Solution Design",
+      description: "We design a comprehensive financial integration solution tailored to your specific business needs and existing systems."
+    },
+    {
+      step: 3,
+      title: "Data Mapping & Workflow Setup",
+      description: "We create detailed data mapping between systems and establish automated workflows that align with your financial processes."
+    },
+    {
+      step: 4,
+      title: "Integration & Testing",
+      description: "We implement the integrations and thoroughly test all functionality to ensure accurate data flow and processing."
+    },
+    {
+      step: 5,
+      title: "Staff Training & Deployment",
+      description: "We train your team on the new integrated systems and deploy the solution with minimal disruption to your operations."
+    },
+    {
+      step: 6,
+      title: "Ongoing Support & Optimization",
+      description: "We provide continuous support and regularly optimize the solution to adapt to your evolving business needs."
+    }
+  ];
+
   const caseStudies = [
     {
       id: "stripe-invoicing",
@@ -147,19 +175,42 @@ export default function FinancePage() {
     }
   ];
 
-  // Секция интеграции
+  const faqs = [
+    {
+      question: "How will financial automation impact our current accounting practices?",
+      answer: "Financial automation enhances your existing accounting practices rather than replacing them. It eliminates manual data entry, reduces errors, and provides real-time financial visibility, allowing your accounting team to focus on analysis and strategic tasks rather than administrative work."
+    },
+    {
+      question: "Is our financial data secure during integration?",
+      answer: "Yes, security is our top priority. We implement bank-level encryption, secure API connections, and strict access controls. All integrations comply with financial industry security standards, and we can work with your IT security team to ensure all requirements are met."
+    },
+    {
+      question: "How long does it take to implement financial system integrations?",
+      answer: "Implementation time varies based on the complexity of your financial systems and processes. Simple integrations can be completed in 3-4 weeks, while more complex solutions might take 8-12 weeks. We provide a detailed timeline during our initial assessment."
+    },
+    {
+      question: "Can you integrate with our legacy financial systems?",
+      answer: "Yes, we have experience integrating with a wide range of financial systems, including legacy software. As long as your system provides some form of data access (API, database connection, file imports/exports), we can develop a solution to integrate it with your modern business tools."
+    }
+  ];
+
   const integrationSection = (
-    <section className="py-20 bg-site-bg">
+    <section className="py-20 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Financial Systems We Integrate</h2>
+          <h2 className="text-3xl font-bold mb-4"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            Financial Systems We Integrate
+          </h2>
           <p className="text-light-gray max-w-3xl mx-auto">
             We connect your CRM and operational systems with a wide range of financial platforms and services.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-dark-gray rounded-xl p-6">
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-4 text-primary">Accounting Systems</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
@@ -195,7 +246,7 @@ export default function FinancePage() {
             </ul>
           </div>
 
-          <div className="bg-dark-gray rounded-xl p-6">
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-4 text-primary">Payment Processors</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
@@ -231,7 +282,7 @@ export default function FinancePage() {
             </ul>
           </div>
 
-          <div className="bg-dark-gray rounded-xl p-6">
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-4 text-primary">Financial Services</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
@@ -271,192 +322,6 @@ export default function FinancePage() {
     </section>
   );
 
-  // Процесс внедрения
-  const processes = [
-    {
-      step: 1,
-      title: "Financial Process Assessment",
-      description: "We analyze your current financial processes, systems, and pain points to identify opportunities for automation and integration."
-    },
-    {
-      step: 2,
-      title: "Solution Design",
-      description: "We design a comprehensive financial integration solution tailored to your specific business needs and existing systems."
-    },
-    {
-      step: 3,
-      title: "Data Mapping & Workflow Setup",
-      description: "We create detailed data mapping between systems and establish automated workflows that align with your financial processes."
-    },
-    {
-      step: 4,
-      title: "Integration & Testing",
-      description: "We implement the integrations and thoroughly test all functionality to ensure accurate data flow and processing."
-    },
-    {
-      step: 5,
-      title: "Staff Training & Deployment",
-      description: "We train your team on the new integrated systems and deploy the solution with minimal disruption to your operations."
-    },
-    {
-      step: 6,
-      title: "Ongoing Support & Optimization",
-      description: "We provide continuous support and regularly optimize the solution to adapt to your evolving business needs."
-    }
-  ];
-
-  // FAQ
-  const faqs = [
-    {
-      question: "How will financial automation impact our current accounting practices?",
-      answer: "Financial automation enhances your existing accounting practices rather than replacing them. It eliminates manual data entry, reduces errors, and provides real-time financial visibility, allowing your accounting team to focus on analysis and strategic tasks rather than administrative work."
-    },
-    {
-      question: "Is our financial data secure during integration?",
-      answer: "Yes, security is our top priority. We implement bank-level encryption, secure API connections, and strict access controls. All integrations comply with financial industry security standards, and we can work with your IT security team to ensure all requirements are met."
-    },
-    {
-      question: "How long does it take to implement financial system integrations?",
-      answer: "Implementation time varies based on the complexity of your financial systems and processes. Simple integrations can be completed in 3-4 weeks, while more complex solutions might take 8-12 weeks. We provide a detailed timeline during our initial assessment."
-    },
-    {
-      question: "Can you integrate with our legacy financial systems?",
-      answer: "Yes, we have experience integrating with a wide range of financial systems, including legacy software. As long as your system provides some form of data access (API, database connection, file imports/exports), we can develop a solution to integrate it with your modern business tools."
-    }
-  ];
-
-  // Обзор
-  const overviewContent = (
-    <>
-      <p className="text-light-gray mb-4">
-        Financial systems integration is the process of connecting your financial tools—such as accounting software, payment processors, and banking platforms—with your CRM and other business systems to create a seamless flow of financial data across your organization.
-      </p>
-      <p className="text-light-gray mb-4">
-        This integration eliminates manual data entry, reduces errors, accelerates financial processes, and provides real-time financial visibility throughout your business.
-      </p>
-      <p className="text-light-gray">
-        Our approach focuses on creating secure, reliable connections between your existing financial systems and operational tools, automating financial workflows while maintaining data integrity and compliance.
-      </p>
-    </>
-  );
-
-  // Обзор боковой контент
-  const overviewSideContent = (
-    <>
-      <h3 className="text-2xl font-bold mb-4">Common Financial Challenges</h3>
-      <ul className="space-y-4">
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Manual Data Entry</h4>
-            <p className="text-light-gray">Staff spending hours entering the same data into multiple systems</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Delayed Payments</h4>
-            <p className="text-light-gray">Slow invoice delivery and lack of automatic payment reminders</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Reconciliation Errors</h4>
-            <p className="text-light-gray">Difficult and time-consuming payment reconciliation process</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Limited Visibility</h4>
-            <p className="text-light-gray">No real-time view of financial status across the organization</p>
-          </div>
-        </li>
-      </ul>
-    </>
-  );
-
-  // Функция для рендеринга иконок
-  function renderIcon(icon: string) {
-    switch (icon) {
-      case 'invoice':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        );
-      case 'accounting':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        );
-      case 'payment':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-          </svg>
-        );
-      case 'dashboard':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-        );
-      case 'factoring':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        );
-      case 'calculation':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
-        );
-      case 'cash':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        );
-      case 'dollar':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'chart':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-        );
-      case 'shield':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-    }
-  }
-
   return (
     <ServiceTemplate
       serviceId="finance"
@@ -465,8 +330,27 @@ export default function FinancePage() {
       breadcrumbTitle="Financial Systems Integration"
       overview={{
         title: "What Is Financial Systems Integration?",
-        description: overviewContent,
-        sideContent: overviewSideContent
+        description: (
+          <>
+            <p className="mb-4">
+              Financial systems integration is the process of connecting your financial tools—such as accounting software, payment processors, and banking platforms—with your CRM and other business systems to create a seamless flow of financial data across your organization.
+            </p>
+            <p className="mb-4">
+              This integration eliminates manual data entry, reduces errors, accelerates financial processes, and provides real-time financial visibility throughout your business.
+            </p>
+            <p>
+              Our approach focuses on creating secure, reliable connections between your existing financial systems and operational tools, automating financial workflows while maintaining data integrity and compliance.
+            </p>
+          </>
+        ),
+        features: [
+          "Manual Data Entry",
+          "Delayed Payments", 
+          "Reconciliation Errors",
+          "Limited Visibility",
+          "Process Inefficiencies",
+          "Compliance Challenges"
+        ]
       }}
       benefits={benefits}
       features={financeSolutions}
@@ -474,9 +358,6 @@ export default function FinancePage() {
       caseStudies={caseStudies}
       faqs={faqs}
       additionalSections={integrationSection}
-      primaryColor="primary"
-      accentColor="primary"
-      iconRenderer={renderIcon}
     />
   );
 }

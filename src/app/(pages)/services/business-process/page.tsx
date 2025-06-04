@@ -1,5 +1,3 @@
-// src/app/(pages)/services/business-process/page.tsx
-
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 
@@ -11,7 +9,6 @@ export const metadata = generateServiceMetadata({
 });
 
 export default function BusinessProcessPage() {
-  // Преимущества
   const benefits = [
     {
       title: "Time Efficiency",
@@ -35,7 +32,6 @@ export default function BusinessProcessPage() {
     }
   ];
 
-  // Функции и возможности
   const features = [
     {
       title: "Process Mapping & Analysis",
@@ -84,7 +80,6 @@ export default function BusinessProcessPage() {
     }
   ];
 
-  // Процесс внедрения
   const processes = [
     {
       step: 1,
@@ -113,7 +108,6 @@ export default function BusinessProcessPage() {
     }
   ];
 
-  // Кейсы
   const caseStudies = [
     {
       id: "monday-integration",
@@ -150,7 +144,6 @@ export default function BusinessProcessPage() {
     }
   ];
 
-  // FAQ
   const faqs = [
     {
       question: "Which business processes can be automated?",
@@ -170,57 +163,16 @@ export default function BusinessProcessPage() {
     }
   ];
 
-  // Сектор обзора
-  const overviewSideContent = (
-    <>
-      <h3 className="text-2xl font-bold mb-4">Industries We Serve</h3>
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Logistics & Transportation</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Manufacturing</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Financial Services</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Real Estate</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Healthcare</span>
-        </div>
-        <div className="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <span>E-commerce & Retail</span>
-        </div>
-      </div>
-    </>
-  );
-
-  // Секция технологий
   const technologiesSection = (
     <section className="py-20 bg-dark-gray">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Technologies We Use</h2>
+          <h2 className="text-3xl font-bold mb-4"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            Technologies We Use
+          </h2>
           <p className="text-light-gray max-w-3xl mx-auto">
             We leverage a variety of modern technologies and platforms to create powerful automation solutions.
           </p>
@@ -229,7 +181,7 @@ export default function BusinessProcessPage() {
           {['Monday.com', 'n8n', 'Make', 'Zapier', 'Airtable', 'Google Workspace', 'Microsoft Power Automate', 'QuickBooks', 'Stripe', 'DocuSign', 'JotForm', 'HubSpot'].map((tech, index) => (
             <div 
               key={index}
-              className="bg-medium-gray rounded-lg p-4 flex items-center justify-center h-20 text-center border border-transparent hover:border-primary/30 transition-all duration-300"
+              className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-lg p-4 flex items-center justify-center h-20 text-center border border-transparent hover:border-primary/30 transition-all duration-300"
             >
               <span className="font-medium">{tech}</span>
             </div>
@@ -238,66 +190,6 @@ export default function BusinessProcessPage() {
       </div>
     </section>
   );
-
-  // Функция для рендеринга иконок
-  function renderIcon(icon: string) {
-    switch (icon) {
-      case 'clock':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'shield':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-        );
-      case 'dollar':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'chart':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-        );
-      case 'map':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-          </svg>
-        );
-      case 'workflow':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-          </svg>
-        );
-      case 'connect':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'dashboard':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        );
-    }
-  }
 
   return (
     <ServiceTemplate
@@ -309,18 +201,25 @@ export default function BusinessProcessPage() {
         title: "What Is Business Process Automation?",
         description: (
           <>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               Business Process Automation (BPA) is the technology-enabled automation of complex business processes. It streamlines a business for simplicity, achieves digital transformation, increases service quality, improves service delivery, and contains costs.
             </p>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               Our approach to BPA focuses on connecting your existing tools and systems to create automated workflows that reduce manual intervention, minimize errors, and save time.
             </p>
-            <p className="text-light-gray">
+            <p>
               Whether you need to automate simple tasks like data entry or complex workflows across multiple departments, our solutions are tailored to your specific business needs.
             </p>
           </>
         ),
-        sideContent: overviewSideContent
+        features: [
+          "Logistics & Transportation",
+          "Manufacturing",
+          "Financial Services",
+          "Real Estate",
+          "Healthcare",
+          "E-commerce & Retail"
+        ]
       }}
       benefits={benefits}
       features={features}
@@ -328,9 +227,6 @@ export default function BusinessProcessPage() {
       caseStudies={caseStudies}
       faqs={faqs}
       additionalSections={technologiesSection}
-      primaryColor="primary"
-      accentColor="primary"
-      iconRenderer={renderIcon}
     />
   );
 }

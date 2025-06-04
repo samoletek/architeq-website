@@ -11,12 +11,11 @@ export const metadata = generateServiceMetadata({
 });
 
 export default function BoxedSolutionsPage() {
-  // Основные преимущества
   const benefits = [
     {
       title: "Faster Implementation",
       description: "Get up and running in weeks instead of months with pre-built components and workflows tailored for your industry.",
-      icon: "rocket"
+      icon: "clock"
     },
     {
       title: "Industry Best Practices",
@@ -35,7 +34,6 @@ export default function BoxedSolutionsPage() {
     }
   ];
 
-  // Отраслевые решения
   const industrySolutions = [
     {
       title: "Car Hauling Companies",
@@ -47,7 +45,7 @@ export default function BoxedSolutionsPage() {
         "Automated document flow",
         "Transportation cost calculations"
       ],
-      icon: "truck",
+      icon: "workflow",
       caseId: "car-hauling-solution"
     },
     {
@@ -60,7 +58,7 @@ export default function BoxedSolutionsPage() {
         "Interactive project dashboards",
         "Automated document flow"
       ],
-      icon: "furniture",
+      icon: "map",
       caseId: "kitchen-cabinetry-solution"
     },
     {
@@ -73,7 +71,7 @@ export default function BoxedSolutionsPage() {
         "Copyright control",
         "Vendor payment automation"
       ],
-      icon: "music",
+      icon: "analysis",
       caseId: "music-label-solution"
     },
     {
@@ -86,12 +84,11 @@ export default function BoxedSolutionsPage() {
         "Document flow management",
         "Agent and property analytics"
       ],
-      icon: "home",
+      icon: "dashboard",
       caseId: "real-estate-solution"
     }
   ];
 
-  // Процесс внедрения
   const processes = [
     {
       step: 1,
@@ -120,7 +117,6 @@ export default function BoxedSolutionsPage() {
     }
   ];
 
-  // Кейсы
   const caseStudies = [
     {
       id: "car-hauling-solution",
@@ -157,7 +153,6 @@ export default function BoxedSolutionsPage() {
     }
   ];
 
-  // FAQ
   const faqs = [
     {
       question: "How much customization is possible with boxed solutions?",
@@ -177,52 +172,20 @@ export default function BoxedSolutionsPage() {
     }
   ];
 
-  // Содержимое для секции обзора
-  const overviewSideContent = (
-    <>
-      <h3 className="text-2xl font-bold mb-4">Key Benefits</h3>
-      <ul className="space-y-4">
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Faster Implementation</h4>
-            <p className="text-light-gray">Get up and running in weeks instead of months with pre-built components and workflows.</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Industry-Specific Functionality</h4>
-            <p className="text-light-gray">Solutions designed for your industry unique challenges and requirements.</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Proven Results</h4>
-            <p className="text-light-gray">Benefit from solutions that have already delivered measurable results for similar businesses.</p>
-          </div>
-        </li>
-      </ul>
-    </>
-  );
-
-  // Дополнительная секция (для примера)
   const customSolutionsSection = (
-    <section className="py-20 bg-site-bg">
+    <section className="py-20 bg-transparent">
       <div className="container mx-auto px-4">
-        <div className="bg-dark-gradient rounded-xl p-8 md:p-12 border border-medium-gray">
+        <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 md:p-12 border border-white/10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Dont See Your Industry?</h2>
+              <h2 className="text-3xl font-bold mb-4"
+                  style={{
+                    textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                  }}>
+                Don&apos;t See Your Industry?
+              </h2>
               <p className="text-light-gray mb-6">
-                If you dont see a boxed solution for your specific industry, dont worry. We also offer custom automation solutions tailored to your unique business needs.
+                If you don&apos;t see a boxed solution for your specific industry, don&apos;t worry. We also offer custom automation solutions tailored to your unique business needs.
               </p>
               <p className="text-light-gray mb-6">
                 Our team of experts will analyze your workflows, identify automation opportunities, and develop a solution that addresses your specific challenges.
@@ -268,66 +231,6 @@ export default function BoxedSolutionsPage() {
     </section>
   );
 
-  // Функция для рендеринга иконок
-  function renderIcon(icon: string) {
-    switch (icon) {
-      case 'truck':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-          </svg>
-        );
-      case 'furniture':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
-        );
-      case 'music':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-          </svg>
-        );
-      case 'home':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-        );
-      case 'rocket':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-          </svg>
-        );
-      case 'check':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'dollar':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'chart':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-        );
-    }
-  }
-
   return (
     <ServiceTemplate
       serviceId="boxed-solutions"
@@ -338,18 +241,25 @@ export default function BoxedSolutionsPage() {
         title: "What Are Boxed Solutions?",
         description: (
           <>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               Boxed solutions are pre-configured automation packages designed specifically for particular industries. They combine our expertise in business process automation with deep industry knowledge to address the unique challenges of different sectors.
             </p>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               Each solution includes a set of optimized workflows, integrations, and templates that can be quickly implemented and customized for your specific business needs.
             </p>
-            <p className="text-light-gray">
+            <p>
               Our boxed solutions provide faster implementation times, lower costs, and proven results compared to building automation solutions from scratch, while still allowing for the customization needed to match your unique business processes.
             </p>
           </>
         ),
-        sideContent: overviewSideContent
+        features: [
+          "Faster Implementation",
+          "Industry-Specific Functionality",
+          "Proven Results",
+          "Cost Efficiency",
+          "Customizable Workflows",
+          "Expert Support"
+        ]
       }}
       benefits={benefits}
       features={industrySolutions}
@@ -357,9 +267,6 @@ export default function BoxedSolutionsPage() {
       caseStudies={caseStudies}
       faqs={faqs}
       additionalSections={customSolutionsSection}
-      primaryColor="primary"
-      accentColor="primary"
-      iconRenderer={renderIcon}
     />
   );
 }

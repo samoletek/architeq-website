@@ -1,5 +1,3 @@
-// src/app/(pages)/services/documentation/page.tsx
-
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 
@@ -11,7 +9,6 @@ export const metadata = generateServiceMetadata({
 });
 
 export default function DocumentationPage() {
-  // Преимущества
   const benefits = [
     {
       title: "Time Savings",
@@ -35,7 +32,6 @@ export default function DocumentationPage() {
     }
   ];
 
-  // Решения
   const documentSolutions = [
     {
       title: "Automatic Document Generation",
@@ -58,7 +54,7 @@ export default function DocumentationPage() {
         "Automatic reminders for pending signatures",
         "Secure and legally compliant process"
       ],
-      icon: "signature",
+      icon: "check",
       caseId: "electronic-signatures"
     },
     {
@@ -70,7 +66,7 @@ export default function DocumentationPage() {
         "Automatically trigger workflows based on form submissions",
         "Improve user experience with modern, responsive forms"
       ],
-      icon: "form",
+      icon: "workflow",
       caseId: "web-forms-integration"
     },
     {
@@ -82,11 +78,10 @@ export default function DocumentationPage() {
         "Automate document retention and archiving",
         "Control document access with role-based permissions"
       ],
-      icon: "folder"
+      icon: "dashboard"
     }
   ];
 
-  // Процесс внедрения
   const processes = [
     {
       step: 1,
@@ -115,7 +110,6 @@ export default function DocumentationPage() {
     }
   ];
 
-  // Кейсы
   const caseStudies = [
     {
       id: "document-generation",
@@ -152,7 +146,6 @@ export default function DocumentationPage() {
     }
   ];
 
-  // FAQ
   const faqs = [
     {
       question: "How secure are automated document solutions?",
@@ -172,77 +165,45 @@ export default function DocumentationPage() {
     }
   ];
 
-  // Обзорный контент
-  const overviewSideContent = (
-    <>
-      <h3 className="text-2xl font-bold mb-4">Common Document Challenges</h3>
-      <ul className="space-y-4">
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-neon-blue mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Time-Consuming Manual Processes</h4>
-            <p className="text-light-gray">Staff spending hours creating documents and manually entering data</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-neon-blue mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Errors and Inconsistencies</h4>
-            <p className="text-light-gray">Typos, outdated information, and formatting inconsistencies</p>
-          </div>
-        </li>
-        <li className="flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-neon-blue mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h4 className="font-semibold">Signing Delays</h4>
-            <p className="text-light-gray">Long waiting times for document approval and signature collection</p>
-          </div>
-        </li>
-      </ul>
-    </>
-  );
-
-  // Секция интеграции
   const integrationSection = (
-    <section className="py-20 bg-site-bg">
+    <section className="py-20 bg-transparent">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Integration Options</h2>
+          <h2 className="text-3xl font-bold mb-4"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            Integration Options
+          </h2>
           <p className="text-light-gray max-w-3xl mx-auto">
             Our document and form solutions integrate with a wide range of business tools and platforms.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-dark-gray rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-4 text-neon-blue">CRM Systems</h3>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
+            <h3 className="text-xl font-semibold mb-4 text-primary">CRM Systems</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Monday.com</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>HubSpot</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Salesforce</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Pipedrive</span>
@@ -250,29 +211,29 @@ export default function DocumentationPage() {
             </ul>
           </div>
 
-          <div className="bg-dark-gray rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-4 text-neon-blue">E-Signature Platforms</h3>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
+            <h3 className="text-xl font-semibold mb-4 text-primary">E-Signature Platforms</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>DocuSign</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>PandaDoc</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>SignNow</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Adobe Sign</span>
@@ -280,29 +241,29 @@ export default function DocumentationPage() {
             </ul>
           </div>
 
-          <div className="bg-dark-gray rounded-xl p-6">
-            <h3 className="text-xl font-semibold mb-4 text-neon-blue">Form & Document Tools</h3>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6">
+            <h3 className="text-xl font-semibold mb-4 text-primary">Form & Document Tools</h3>
             <ul className="text-light-gray space-y-2">
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>JotForm</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Typeform</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Google Forms</span>
               </li>
               <li className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neon-blue mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span>Google Docs</span>
@@ -314,44 +275,48 @@ export default function DocumentationPage() {
     </section>
   );
 
-  // ROI секция
   const roiSection = (
     <section className="py-20 bg-dark-gray">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Return on Investment</h2>
+          <h2 className="text-3xl font-bold mb-4"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            Return on Investment
+          </h2>
           <p className="text-light-gray max-w-3xl mx-auto">
             Document and form automation delivers measurable benefits and significant ROI across various business metrics.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-            <div className="text-4xl font-bold text-neon-blue mb-2">80%</div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-white/10">
+            <div className="text-4xl font-bold text-primary mb-2">80%</div>
             <h3 className="text-xl font-semibold mb-2">Time Savings</h3>
             <p className="text-light-gray">
               Reduce document creation and processing time by up to 80%, freeing staff for higher-value activities.
             </p>
           </div>
 
-          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-            <div className="text-4xl font-bold text-neon-blue mb-2">95%</div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-white/10">
+            <div className="text-4xl font-bold text-primary mb-2">95%</div>
             <h3 className="text-xl font-semibold mb-2">Error Reduction</h3>
             <p className="text-light-gray">
               Nearly eliminate errors in document content through automated data population and validation.
             </p>
           </div>
 
-          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-            <div className="text-4xl font-bold text-neon-blue mb-2">70%</div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-white/10">
+            <div className="text-4xl font-bold text-primary mb-2">70%</div>
             <h3 className="text-xl font-semibold mb-2">Faster Cycle Times</h3>
             <p className="text-light-gray">
               Accelerate document approval and signing processes by an average of 70% using electronic signatures.
             </p>
           </div>
 
-          <div className="bg-dark-gradient rounded-xl p-6 border border-medium-gray">
-            <div className="text-4xl font-bold text-neon-blue mb-2">50%</div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-white/10">
+            <div className="text-4xl font-bold text-primary mb-2">50%</div>
             <h3 className="text-xl font-semibold mb-2">Cost Reduction</h3>
             <p className="text-light-gray">
               Cut document-related costs by up to 50% through reduced labor, paper, and storage expenses.
@@ -361,66 +326,6 @@ export default function DocumentationPage() {
       </div>
     </section>
   );
-
-  // Функция для рендеринга иконок
-  function renderIcon(icon: string) {
-    switch (icon) {
-      case 'document':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        );
-      case 'signature':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-          </svg>
-        );
-      case 'form':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-        );
-      case 'folder':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-          </svg>
-        );
-      case 'clock':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'shield':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
-        );
-      case 'check':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      case 'user':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        );
-    }
-  }
 
   return (
     <ServiceTemplate
@@ -432,18 +337,25 @@ export default function DocumentationPage() {
         title: "What Is Document & Form Automation?",
         description: (
           <>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               Document and form automation is the process of using technology to streamline the creation, processing, management, and storage of business documents and forms.
             </p>
-            <p className="text-light-gray mb-4">
+            <p className="mb-4">
               By automating these processes, businesses can eliminate manual data entry, reduce errors, ensure compliance, and significantly improve efficiency across departments.
             </p>
-            <p className="text-light-gray">
+            <p>
               Our document and form automation solutions integrate seamlessly with your existing CRM and business systems to create a unified workflow that saves time and improves accuracy.
             </p>
           </>
         ),
-        sideContent: overviewSideContent
+        features: [
+          "Time-Consuming Manual Processes",
+          "Errors and Inconsistencies",
+          "Signing Delays",
+          "Compliance Requirements",
+          "Version Control",
+          "Data Security"
+        ]
       }}
       benefits={benefits}
       features={documentSolutions}
@@ -451,9 +363,6 @@ export default function DocumentationPage() {
       caseStudies={caseStudies}
       faqs={faqs}
       additionalSections={<>{integrationSection}{roiSection}</>}
-      primaryColor="neon-blue"
-      accentColor="neon-blue"
-      iconRenderer={renderIcon}
     />
   );
 }
