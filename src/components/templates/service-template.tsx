@@ -1,4 +1,4 @@
-// src/components/templates/service-template.tsx - Updated with new Overview layout
+// src/components/templates/service-template.tsx - Complete Updated Version
 "use client";
 
 import SiteLayout from '@/components/layout/site-layout';
@@ -236,7 +236,7 @@ export default function ServiceTemplate({
         </div>
       </section>
 
-      {/* Overview section - НОВЫЙ LAYOUT: title=====description + features ниже */}
+      {/* Overview section - ОБНОВЛЕННЫЙ LAYOUT */}
       {overview && (
         <OverviewSection 
           title={overview.title}
@@ -245,17 +245,16 @@ export default function ServiceTemplate({
         />
       )}
 
-      {/* Benefits section */}
+      {/* Benefits section - НОВЫЙ СТИЛЬ БЕЗ ИКОНОК */}
       {benefits && benefits.length > 0 && (
         <BenefitsSection 
           title="Key Benefits"
           subtitle="Our solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line."
           benefits={benefits}
-          renderIcon={renderIcon}
         />
       )}
 
-      {/* Features section */}
+      {/* Features section - НОВЫЙ LAYOUT ПО КАРТИНКЕ */}
       {features && features.length > 0 && (
         <FeaturesSection 
           title="Our Solutions"
@@ -302,7 +301,7 @@ export default function ServiceTemplate({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ OVERVIEW с новым layout
+// ОБНОВЛЕННАЯ СЕКЦИЯ OVERVIEW с новым layout и заголовком Features
 function OverviewSection({ 
   title, 
   description, 
@@ -362,7 +361,7 @@ function OverviewSection({
             variants={titleVariants}
           >
             {/* НОВЫЙ LAYOUT: Заголовок и описание в одной строке */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-24">
               {/* Левая колонка - заголовок */}
               <div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight"
@@ -381,54 +380,63 @@ function OverviewSection({
               </div>
             </div>
             
-            {/* Features на всю ширину ниже */}
+            {/* Features на всю ширину ниже с заголовком */}
             {features && features.length > 0 && (
-              <motion.div
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                className="flex flex-wrap justify-center gap-4 lg:gap-6"
-              >
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    custom={index}
-                    variants={buttonVariants}
-                    className={`
-                      px-6 py-3 rounded-lg transition-all duration-300 relative group border cursor-default
-                      text-white border-transparent
-                    `}
-                  >
-                    {/* Активное свечение */}
-                    <motion.div 
-                      className="absolute inset-0 rounded-lg"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                        boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                      }}
-                      animate={{
-                        boxShadow: [
-                          '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                          '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-                          '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        ]
-                      }}
-                      transition={{
-                        duration: 0.3,
-                        boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                      }}
-                    />
-                    
-                    <motion.span 
-                      className="relative z-10 font-medium text-sm lg:text-base text-white"
-                      style={{
-                        textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(178,75,243,0.6)'
-                      }}
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-bold mb-12 text-white"
+                    style={{
+                      textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+                    }}>
+                  Key Features
+                </h3>
+                
+                <motion.div
+                  initial="hidden"
+                  animate={isVisible ? "visible" : "hidden"}
+                  className="flex flex-wrap justify-center gap-4 lg:gap-6"
+                >
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      custom={index}
+                      variants={buttonVariants}
+                      className={`
+                        px-6 py-3 rounded-lg transition-all duration-300 relative group border cursor-default
+                        text-white border-transparent
+                      `}
                     >
-                      {feature}
-                    </motion.span>
-                  </motion.div>
-                ))}
-              </motion.div>
+                      {/* Активное свечение */}
+                      <motion.div 
+                        className="absolute inset-0 rounded-lg"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                          boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                        }}
+                        animate={{
+                          boxShadow: [
+                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                            '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                          ]
+                        }}
+                        transition={{
+                          duration: 0.3,
+                          boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                        }}
+                      />
+                      
+                      <motion.span 
+                        className="relative z-10 font-medium text-sm lg:text-base text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(178,75,243,0.6)'
+                        }}
+                      >
+                        {feature}
+                      </motion.span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             )}
           </motion.div>
         </div>
@@ -437,17 +445,15 @@ function OverviewSection({
   );
 }
 
-// Остальные компоненты секций остаются без изменений
+// ОБНОВЛЕННАЯ СЕКЦИЯ BENEFITS БЕЗ ИКОНОК С ЭФФЕКТАМИ КАК НА ГЛАВНОЙ
 function BenefitsSection({ 
   title, 
   subtitle, 
-  benefits, 
-  renderIcon 
+  benefits 
 }: { 
   title: string; 
   subtitle: string; 
   benefits: ServiceBenefit[]; 
-  renderIcon: (icon: string) => ReactNode; 
 }) {
   const { ref, isVisible, visibilityRatio } = useScrollAnimation({
     threshold: 0.3,
@@ -532,50 +538,53 @@ function BenefitsSection({
               initial="hidden"
               animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
+              className="h-full"
             >
-              <div className="service-card-enhanced relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
-                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                before:absolute before:content-[''] before:inset-0 
-                before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
-                backdrop-blur-sm group">
+              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
+                rounded-2xl p-6 transition-all duration-300 hover:border-primary/40 
+                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] group relative overflow-hidden h-full">
                 
+                {/* Стильный градиентный фон */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 
+                  group-hover:from-primary/10 group-hover:to-secondary/10 transition-all duration-500 rounded-2xl"></div>
+                
+                {/* Анимированное свечение по краям */}
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
+                  className="absolute inset-0 rounded-2xl"
+                  initial={{ opacity: 0 }}
                   animate={{ 
-                    opacity: [0.5, 0.7, 0.5], 
+                    opacity: [0.3, 0.6, 0.3],
+                    boxShadow: [
+                      '0 0 20px rgba(178,75,243,0.0)',
+                      '0 0 30px rgba(178,75,243,0.4)',
+                      '0 0 20px rgba(178,75,243,0.0)'
+                    ]
                   }}
                   transition={{ 
                     duration: 3, 
                     repeat: Infinity,
-                    ease: "easeInOut" 
-                  }}
-                />
-                
-                <motion.div 
-                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-lg blur-lg -z-10"
-                  animate={{ 
-                    opacity: [0.6, 0.9, 0.6] 
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity,
-                    ease: "easeInOut" 
+                    ease: "easeInOut",
+                    delay: index * 0.5
                   }}
                 />
                 
                 <div className="relative z-10">
-                  <div className="text-white mb-4">
-                    {renderIcon(benefit.icon)}
-                  </div>
-                  
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line text-white
+                    group-hover:text-primary transition-colors duration-300">
                     {benefit.title}
                   </h3>
                   
-                  <p className="text-light-gray text-sm sm:text-base md:text-lg font-sans">
+                  <p className="text-light-gray text-sm sm:text-base md:text-lg font-sans opacity-90
+                    group-hover:opacity-100 transition-opacity duration-300">
                     {benefit.description}
                   </p>
                 </div>
+                
+                {/* Декоративные элементы */}
+                <div className="absolute top-4 right-4 w-8 h-8 bg-primary/20 rounded-full 
+                  group-hover:bg-primary/30 transition-colors duration-300"></div>
+                <div className="absolute bottom-4 left-4 w-12 h-1 bg-gradient-to-r from-primary to-secondary 
+                  group-hover:from-secondary group-hover:to-primary transition-all duration-500"></div>
               </div>
             </motion.div>
           ))}
@@ -585,6 +594,7 @@ function BenefitsSection({
   );
 }
 
+// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С НОВЫМ LAYOUT ПО КАРТИНКЕ
 function FeaturesSection({ 
   title, 
   subtitle, 
@@ -683,7 +693,7 @@ function FeaturesSection({
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-16">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -692,87 +702,78 @@ function FeaturesSection({
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="service-card-enhanced relative rounded-2xl p-8 h-full overflow-hidden transition-all duration-500
-                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                backdrop-blur-sm">
-                
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: `
-                      radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.15) 0%, transparent 50%),
-                      radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.2) 0%, transparent 50%)
-                    `
-                  }}
-                  animate={{
-                    background: [
-                      `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.15) 0%, transparent 50%),
-                       radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.2) 0%, transparent 50%)`,
-                      `radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.2) 0%, transparent 50%),
-                       radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.15) 0%, transparent 50%)`,
-                      `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.15) 0%, transparent 50%),
-                       radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.2) 0%, transparent 50%)`
-                    ]
-                  }}
-                  transition={{
-                    duration: 12,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    repeatType: "reverse"
-                  }}
-                />
-                
-                <div className="flex items-start relative z-10">
-                  {feature.icon && (
-                    <div className="text-primary mr-6 flex-shrink-0">
-                      {renderIcon(feature.icon)}
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                    <p className="text-light-gray section-subtitle-large mb-6 opacity-90">
-                      {feature.description}
-                    </p>
-                    
-                    {feature.benefits && feature.benefits.length > 0 && (
-                      <>
-                        <h4 className="text-primary font-medium mb-3">Key Benefits:</h4>
-                        <ul className="text-light-gray space-y-2 mb-6">
-                          {feature.benefits.map((benefit, benefitIndex) => (
-                            <li key={benefitIndex} className="flex items-start">
-                              <span className="text-primary mr-3 mt-1">•</span>
-                              <span className="opacity-90">{benefit}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                {/* Левая колонка - заголовок и описание */}
+                <div>
+                  <div className="flex items-start mb-6">
+                    {feature.icon && (
+                      <div className="text-primary mr-4 flex-shrink-0 mt-1">
+                        {renderIcon(feature.icon)}
+                      </div>
                     )}
-                    
-                    {feature.caseId && (
-                      <Link 
-                        href={`/cases/${feature.caseId}`} 
-                        className="text-primary font-medium text-sm flex items-center hover:underline transition-colors"
-                      >
-                        View Related Case Study
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </Link>
-                    )}
+                    <h3 className="text-2xl md:text-3xl font-bold leading-tight text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+                        }}>
+                      {feature.title}
+                    </h3>
                   </div>
+                  
+                  <p className="text-light-gray text-lg md:text-xl leading-relaxed mb-8 opacity-90">
+                    {feature.description}
+                  </p>
+                  
+                  {feature.caseId && (
+                    <Link 
+                      href={`/cases/${feature.caseId}`} 
+                      className="inline-flex items-center text-primary font-medium hover:underline transition-colors group"
+                    >
+                      View Related Case Study
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  )}
+                </div>
+                
+                {/* Правая колонка - подзаголовки и benefits */}
+                <div className="space-y-6">
+                  {feature.benefits && feature.benefits.length > 0 && (
+                    <>
+                      <h4 className="text-xl font-semibold text-white mb-4">Key Benefits:</h4>
+                      <div className="space-y-4">
+                        {feature.benefits.map((benefit, benefitIndex) => (
+                          <div key={benefitIndex} className="flex items-start">
+                            <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 
+                              flex items-center justify-center mr-4 mt-0.5 flex-shrink-0">
+                              <div className="w-2 h-2 rounded-full bg-primary"></div>
+                            </div>
+                            <span className="text-light-gray text-base leading-relaxed opacity-90">
+                              {benefit}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
+              
+              {/* Разделительная линия для всех элементов кроме последнего */}
+              {index < features.length - 1 && (
+                <div className="mt-16 pt-8 border-t border-primary/20"></div>
+              )}
             </motion.div>
           ))}
         </div>
@@ -887,7 +888,7 @@ function ProcessSection({
                 </motion.div>
                 
                 <div className="ml-8 flex-1">
-                  <div className="service-card-enhanced bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 backdrop-blur-sm">
+                  <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 rounded-xl p-6">
                     <h3 className="text-xl font-bold mb-3">{process.title}</h3>
                     <p className="text-light-gray section-subtitle-large opacity-90">
                       {process.description}
@@ -990,9 +991,9 @@ function CaseStudiesSection({
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="case-card-enhanced overflow-hidden h-full rounded-2xl
-                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                backdrop-blur-sm">
+              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
+                overflow-hidden h-full rounded-2xl hover:border-primary/40 
+                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] transition-all duration-300">
                 
                 <div 
                   className="h-48 relative"
@@ -1139,7 +1140,8 @@ function FAQSection({
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="service-card-enhanced bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 h-full backdrop-blur-sm">
+              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
+                rounded-xl p-6 h-full hover:border-primary/40 transition-colors duration-300">
                 <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
                 <p className="text-light-gray section-subtitle-large opacity-90">{faq.answer}</p>
               </div>
