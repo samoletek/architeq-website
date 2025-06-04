@@ -3,10 +3,12 @@
 
 import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
+import { CaseCard } from '@/components/ui/cards/case-card';
 import Link from 'next/link';
 import { ReactNode, useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
+import { cn } from '@/lib/utils/utils';
 
 // Типы для описания секций страницы услуги
 export interface ServiceBenefit {
@@ -378,7 +380,7 @@ function OverviewSection({
               
               {/* Правая колонка - описание */}
               <div>
-                <div className="text-light-gray text-lg md:text-xl leading-relaxed opacity-90">
+                <div className="text-white text-lg md:text-xl leading-relaxed">
                   {description}
                 </div>
               </div>
@@ -389,7 +391,7 @@ function OverviewSection({
               <div className="text-center">
                 <h3 className="text-2xl md:text-3xl font-bold mb-12 text-white"
                     style={{
-                      textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+                      textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                     }}>
                   {featuresTitle}
                 </h3>
@@ -425,7 +427,7 @@ function OverviewSection({
                         }}
                         transition={{
                           duration: 0.3,
-                          boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                          boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                         }}
                       />
                       
@@ -549,7 +551,12 @@ function BenefitsSection({
           animate={titleControls}
           variants={titleVariants}
         >
-          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
+          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            {title}
+          </h2>
           <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
             {subtitle}
           </p>
@@ -563,6 +570,10 @@ function BenefitsSection({
               initial="hidden"
               animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
+              whileHover={{
+                y: -8,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
             >
               <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
                 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
@@ -571,7 +582,7 @@ function BenefitsSection({
                 backdrop-blur-sm group
                 border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
                 hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                hover:border-primary/40">
+                hover:border-primary/40 cursor-default">
                 
                 {/* Эффект свечения для активного элемента */}
                 <motion.div 
@@ -582,7 +593,8 @@ function BenefitsSection({
                   transition={{ 
                     duration: 3, 
                     repeat: Infinity,
-                    ease: "easeInOut" 
+                    ease: "easeInOut",
+                    delay: index * 0.5
                   }}
                 />
                 
@@ -595,7 +607,8 @@ function BenefitsSection({
                   transition={{ 
                     duration: 4, 
                     repeat: Infinity,
-                    ease: "easeInOut" 
+                    ease: "easeInOut",
+                    delay: index * 0.3
                   }}
                 />
 
@@ -639,12 +652,11 @@ function BenefitsSection({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С УВЕЛИЧЕННЫМИ ТЕКСТАМИ И ЗЕЛЕНОЙ ССЫЛКОЙ
+// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С АНИМАЦИЯМИ И УЛУЧШЕННЫМ ДИЗАЙНОМ
 function FeaturesSection({ 
   title, 
   subtitle, 
-  features, 
-  renderIcon 
+  features,  
 }: { 
   title: string; 
   subtitle: string; 
@@ -656,6 +668,14 @@ function FeaturesSection({
     rootMargin: '-50px 0px',
     triggerOnce: true
   });
+
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (isVisible && !hasAnimated) {
+      setHasAnimated(true);
+    }
+  }, [isVisible, hasAnimated]);
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -678,6 +698,19 @@ function FeaturesSection({
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],
         delay: 0.2 + index * 0.1
+      }
+    })
+  };
+
+  const bulletVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: 0.4 + index * 0.1
       }
     })
   };
@@ -748,69 +781,123 @@ function FeaturesSection({
               variants={cardVariants}
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-                {/* Левая колонка - заголовок и описание */}
-                <div>
-                  <div className="flex items-start mb-8">
-                    {feature.icon && (
-                      <div className="text-primary mr-6 flex-shrink-0 mt-1">
-                        {renderIcon(feature.icon)}
-                      </div>
-                    )}
-                    <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white"
-                        style={{
-                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
-                        }}>
-                      {feature.title}
-                    </h3>
-                  </div>
+                {/* Левая колонка - заголовок, описание и ссылка */}
+                <div className="flex flex-col">
+                  <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white mb-8"
+                      style={{
+                        textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+                      }}>
+                    {feature.title}
+                  </h3>
                   
-                  <p className="text-light-gray text-xl md:text-2xl leading-relaxed mb-12 opacity-90">
+                  <p className="text-white/70 text-lg md:text-xl leading-relaxed mb-8">
                     {feature.description}
                   </p>
-                  
+
+                  {/* Ссылка под описанием */}
                   {feature.caseId && (
-                    <Link 
-                      href={`/cases/${feature.caseId}`} 
-                      className="inline-flex items-center text-secondary font-medium hover:underline transition-colors group text-lg"
+                    <motion.div
+                      initial="hidden"
+                      animate={hasAnimated ? "visible" : "hidden"}
+                      variants={{
+                        hidden: { opacity: 0, x: -30 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            duration: 0.5,
+                            ease: [0.25, 0.1, 0.25, 1],
+                            delay: 0.4
+                          }
+                        }
+                      }}
                     >
-                      View Related Case Study
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                      <Link 
+                        href={`/cases/${feature.caseId}`} 
+                        className="inline-flex items-center text-secondary font-medium transition-all duration-300 group text-lg hover:text-secondary/80"
+                        style={{
+                          textShadow: 'none'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.textShadow = '0 0 15px rgba(176,255,116,0.8), 0 0 30px rgba(176,255,116,0.6)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.textShadow = 'none';
+                        }}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
+                        View Related Case Study
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </Link>
+                    </motion.div>
                   )}
                 </div>
                 
                 {/* Правая колонка - подзаголовки и benefits */}
-                <div className="space-y-8">
+                <div>
                   {feature.benefits && feature.benefits.length > 0 && (
-                    <>
-                      <h4 className="text-2xl font-semibold text-white mb-6">Key Benefits:</h4>
+                    <div>
+                      <h4 className="text-2xl md:text-3xl font-semibold text-white mb-8">Key Benefits:</h4>
                       <div className="space-y-6">
                         {feature.benefits.map((benefit, benefitIndex) => (
-                          <div key={benefitIndex} className="flex items-start">
-                            <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 
-                              flex items-center justify-center mr-4 mt-1 flex-shrink-0">
-                              <div className="w-2 h-2 rounded-full bg-primary"></div>
-                            </div>
-                            <span className="text-light-gray text-lg leading-relaxed opacity-90">
+                          <motion.div 
+                            key={benefitIndex} 
+                            className="flex items-start"
+                            custom={benefitIndex}
+                            initial="hidden"
+                            animate={hasAnimated ? "visible" : "hidden"}
+                            variants={bulletVariants}
+                          >
+                            <motion.div 
+                              className="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 
+                                flex items-center justify-center mr-4 mt-1 flex-shrink-0"
+                              animate={{
+                                boxShadow: [
+                                  '0 0 8px rgba(178,75,243,0.4)',
+                                  '0 0 16px rgba(178,75,243,0.7)',
+                                  '0 0 8px rgba(178,75,243,0.4)'
+                                ]
+                              }}
+                              transition={{
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: benefitIndex * 0.3
+                              }}
+                            >
+                              <motion.div 
+                                className="w-2 h-2 rounded-full bg-primary"
+                                animate={{
+                                  scale: [1, 1.1, 1],
+                                  opacity: [0.8, 1, 0.8]
+                                }}
+                                transition={{
+                                  duration: 3,
+                                  repeat: Infinity,
+                                  ease: "easeInOut",
+                                  delay: benefitIndex * 0.3
+                                }}
+                              />
+                            </motion.div>
+                            <span className="text-white text-lg leading-relaxed">
                               {benefit}
                             </span>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1005,6 +1092,13 @@ function CaseStudiesSection({
     }
   };
 
+  // Определяем количество колонок для сетки
+  const gridCols = caseStudies.length === 1 
+    ? 'grid-cols-1'
+    : caseStudies.length === 2 
+      ? 'grid-cols-1 md:grid-cols-2' 
+      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+
   return (
     <section 
       ref={ref}
@@ -1021,7 +1115,7 @@ function CaseStudiesSection({
           <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={cn("grid gap-8", gridCols)}>
           {caseStudies.map((caseStudy, index) => (
             <motion.div
               key={index}
@@ -1030,62 +1124,18 @@ function CaseStudiesSection({
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
-                overflow-hidden h-full rounded-2xl hover:border-primary/40 
-                hover:shadow-[0_10px_40px_rgba(178,75,243,0.3)] transition-all duration-300 group">
-                
-                <div 
-                  className="h-48 relative"
-                  style={{ 
-                    background: 'linear-gradient(135deg, rgba(176,255,116,0.3) 0%, rgba(176,255,116,0.2) 100%)' 
-                  }}
-                >
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-black/50 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm border border-secondary/30">
-                      {serviceId}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6 relative z-10">
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">{caseStudy.title}</h3>
-                  <p className="text-secondary text-sm mb-4 font-medium">{caseStudy.company}</p>
-                  <p className="text-light-gray text-base mb-6 opacity-90">
-                    {caseStudy.description}
-                  </p>
-                  
-                  <h4 className="text-secondary font-semibold mb-3 text-sm">Key Results:</h4>
-                  <ul className="text-light-gray text-sm space-y-2 mb-6">
-                    {caseStudy.results.map((result, resultIndex) => (
-                      <li key={resultIndex} className="flex items-start">
-                        <span className="text-secondary mr-2 mt-0.5">•</span>
-                        <span className="opacity-90">{result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Link 
-                    href={`/cases/${caseStudy.id}`} 
-                    className="text-secondary font-medium text-sm flex items-center hover:underline transition-colors group/link"
-                  >
-                    View Case Study
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1 group-hover/link:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
+              <CaseCard 
+                id={caseStudy.id}
+                title={caseStudy.title}
+                description={caseStudy.description}
+                company={caseStudy.company}
+                results={caseStudy.results}
+                tags={[serviceId]}
+                href={`/cases/${caseStudy.id}`}
+                className="case-card-enhanced"
+                index={index}
+                isVisible={isVisible}
+              />
             </motion.div>
           ))}
         </div>
