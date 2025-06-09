@@ -155,11 +155,11 @@ export function useScrollAnimation(
   } = {}
 ) {
   const { 
-    threshold = 0.3, // Увеличено с 0.1 для более позднего запуска
-    rootMargin = '-10% 0px', // Использует проценты вместо пикселей
+    threshold = 0.3,
+    rootMargin = '-10% 0px',
     triggerOnce = true,
-    visibilityThreshold = 0.3, // Минимальный процент видимости для запуска
-    delayStart = 0 // Задержка старта анимации в мс
+    visibilityThreshold = 0.3,
+    delayStart = 0
   } = options;
   
   const ref = useRef<HTMLDivElement>(null);
@@ -461,8 +461,8 @@ export function shouldEnableAnimations(): boolean {
       isLowPower = true;
     }
     
-    // Проверяем deviceMemory, если доступно (только в Chrome)
-    // @ts-expect-error - свойство существует только в некоторых браузерах
+    // Проверяем deviceMemory, если доступно (Chrome)
+    // @ts-expect-error
     if (navigator.deviceMemory && navigator.deviceMemory < 4) {
       isLowPower = true;
     }
@@ -559,16 +559,7 @@ export function useCoordinatedAnimation(
     return () => {
       coordinator.unregister(id, sequenceId.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-  
-  // Проверяем, можем ли анимировать при каждом рендере
-  useEffect(() => {
-    const coordinator = getCoordinator();
-    if (coordinator && sequenceId.current) {
-      setCanAnimate(coordinator.canAnimate(id, sequenceId.current));
-    }
-  });
+  }, [id, ...dependencies]); // Добавил зависимости для правильной работы
   
   return { canAnimate, onAnimationComplete };
 }

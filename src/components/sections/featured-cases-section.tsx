@@ -142,6 +142,8 @@ export default function FeaturedCasesSection({
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
                     className="case-card-enhanced"
+                    index={index}
+                    isVisible={isVisible}
                   />
                 </div>
               );

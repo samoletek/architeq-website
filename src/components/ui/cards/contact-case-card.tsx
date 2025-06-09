@@ -12,30 +12,89 @@ export interface ContactCaseCardProps {
   isVisible?: boolean;
 }
 
-export function ContactCaseCard({
+// Простая статичная версия для мобильных
+function SimpleMobileContactCard({ className }: ContactCaseCardProps) {
+  return (
+    <div className={cn("relative", className)}>
+      <Link href="/contacts" className="block h-full">
+        <div className="bg-dark-gray rounded-xl border border-gray-600/50 p-3 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-primary/30">
+          
+          {/* Теги */}
+          <div className="mb-2">
+            <div className="flex flex-wrap gap-1.5">
+              <span className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+                Custom
+              </span>
+              <span className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+                Consultation
+              </span>
+              <span className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+                Your Industry
+              </span>
+            </div>
+          </div>
+
+          {/* Контент */}
+          <div className="flex-grow">
+            <h3 className="text-sm font-semibold text-white leading-tight mb-2">
+              Create Your Custom Solution
+            </h3>
+
+            <p className="text-xs text-light-gray leading-relaxed mb-2 line-clamp-2">
+              Tell us about your business challenges, and we will create a tailored automation solution that fits your specific needs and goals.
+            </p>
+            
+            {/* Key Results */}
+            <div className="mb-3">
+              <h4 className="text-[10px] font-semibold text-primary mb-1">
+                Key Results:
+              </h4>
+              <ul className="space-y-0.5">
+                <li className="flex items-start">
+                  <span className="text-primary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
+                  <span className="text-[10px] text-light-gray leading-relaxed">
+                    <span className="text-primary">Personalized solution design</span> based on your workflow
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-primary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
+                  <span className="text-[10px] text-light-gray leading-relaxed">
+                    <span className="text-primary">Expert consultation included</span> with automation specialists
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="border-t border-gray-600/40 mt-auto pt-2">
+            <p className="text-[10px] text-white flex items-center mb-1">
+              <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
+              <span className="font-medium truncate">Your Company</span>
+            </p>
+
+            <p className="text-[10px] text-white/80 flex items-center">
+              <svg className="h-2.5 w-2.5 mr-1 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              </svg>
+              <span className="truncate">Your Location</span>
+            </p>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+// Расширенная версия для десктопа с анимациями
+function EnhancedDesktopContactCard({
   className,
   index = 0,
   isVisible = true
 }: ContactCaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Дополнительная проверка для отключения эффектов на слабых устройствах
-  const shouldDisableEffects = isMobile || 
-    (typeof navigator !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent));
-
-  // Анимационные варианты для карточки - те же что у обычных карточек
+  // Анимационные варианты
   const cardVariants = {
     hidden: { opacity: 0, y: 40, scale: 0.95 },
     visible: {
@@ -50,199 +109,75 @@ export function ContactCaseCard({
     }
   };
 
-  // Более компактные адаптивные высоты
-  const cardHeight = cn(
-    // Мобильные устройства
-    'min-h-[250px]',
-    // Планшеты
-    'md:min-h-[300px]',
-    // Маленькие ноутбуки
-    'lg:min-h-[340px]',
-    // Обычные ноутбуки и десктопы
-    'xl:min-h-[360px]',
-    // Большие экраны (MacBook Pro 15", большие мониторы)
-    'wide:min-h-[380px]',
-    // Очень большие экраны
-    '3xl:min-h-[400px]'
-  );
-
   return (
     <motion.div
-      initial={shouldDisableEffects ? false : "hidden"}
-      animate={shouldDisableEffects ? false : (isVisible ? "visible" : "hidden")}
-      variants={shouldDisableEffects ? {} : cardVariants}
-      className={cn(
-        'relative transition-all duration-300 h-full',
-        className
-      )}
-      onMouseEnter={!shouldDisableEffects ? () => setIsHovered(true) : undefined}
-      onMouseLeave={!shouldDisableEffects ? () => setIsHovered(false) : undefined}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      variants={cardVariants}
+      className={cn('relative transition-all duration-300 h-full', className)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Link href="/contacts" className="block h-full">
-        <div
-          className={cn(
-            'relative bg-dark-gray rounded-xl h-full flex flex-col',
-            'contact-case-card',
-            cardHeight
-          )}
-        >
+        <div className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card min-h-[360px]">
+          
           {/* Теги */}
-          <div className={cn(
-            "relative z-10",
-            // Мобильные
-            "pt-2 px-3 pb-2",
-            // Планшеты
-            "md:pt-3 md:px-4 md:pb-3",
-            // Ноутбуки
-            "lg:pt-3 lg:px-4 lg:pb-3",
-            // Большие экраны
-            "xl:pt-4 xl:px-5 xl:pb-4",
-            "wide:pt-4 wide:px-6 wide:pb-4"
-          )}>
+          <div className="relative z-10 pt-4 px-5 pb-3">
             <div className="flex flex-wrap gap-1.5">
-              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
                 Custom
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
                 Consultation
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
                 Your Industry
               </span>
             </div>
           </div>
 
           {/* Контент */}
-          <div className={cn(
-            "flex-grow z-10",
-            // Мобильные
-            "px-3 py-2",
-            // Планшеты
-            "md:px-4 md:py-2",
-            // Ноутбуки
-            "lg:px-4 lg:py-3",
-            // Большие экраны
-            "xl:px-5 xl:py-3",
-            "wide:px-6 wide:py-4"
-          )}>
-            {/* Заголовок - очень компактные размеры */}
-            <h3 className={cn(
-              "font-semibold text-white leading-tight mb-2",
-              // Мобильные
-              "text-xs",
-              // Планшеты
-              "md:text-sm",
-              // Ноутбуки
-              "lg:text-base",
-              // Обычные десктопы
-              "xl:text-base",
-              // Большие экраны
-              "wide:text-lg",
-              // Очень большие экраны
-              "3xl:text-xl"
-            )}>
+          <div className="flex-grow z-10 px-5 py-3">
+            <h3 className="text-lg font-semibold text-white leading-tight mb-3">
               Create Your Custom Solution
             </h3>
 
-            {/* Описание */}
             <p className={cn(
-              "line-clamp-3 leading-relaxed mb-3",
-              // Мобильные
-              "text-[10px]",
-              // Планшеты
-              "md:text-xs",
-              // Ноутбуки
-              "lg:text-xs",
-              // Обычные десктопы
-              "xl:text-xs",
-              // Большие экраны
-              "wide:text-xs",
-              // Очень большие экраны
-              "3xl:text-xs",
-              !shouldDisableEffects && "transition-colors duration-300",
-              !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
+              "text-xs line-clamp-3 leading-relaxed mb-4 transition-colors duration-300",
+              isHovered ? "text-white" : "text-light-gray"
             )}>
               Tell us about your business challenges, and we will create a tailored automation solution that fits your specific needs and goals.
             </p>
             
             {/* Key Results */}
-            <div className="mb-3">
-              <h4 className={cn(
-                "font-semibold mb-1.5 text-primary",
-                // Мобильные
-                "text-[10px]",
-                // Планшеты
-                "md:text-xs",
-                // Ноутбуки и выше
-                "lg:text-xs",
-                "xl:text-xs",
-                "wide:text-sm"
-              )}>
+            <div className="mb-4">
+              <h4 className="text-xs font-semibold mb-2 text-primary">
                 Key Results:
               </h4>
               <ul className="space-y-1">
                 <li className="flex items-start">
-                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
+                  <span className="text-primary mr-2 mt-0.5 flex-shrink-0 text-sm">•</span>
                   <span className={cn(
-                    "leading-relaxed",
-                    // Мобильные
-                    "text-[10px]",
-                    // Планшеты
-                    "md:text-[10px]",
-                    // Ноутбуки
-                    "lg:text-xs",
-                    // Обычные десктопы
-                    "xl:text-xs",
-                    // Большие экраны
-                    "wide:text-xs",
-                    // Очень большие экраны
-                    "3xl:text-xs",
-                    !shouldDisableEffects && "transition-colors duration-300",
-                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
+                    "text-xs leading-relaxed transition-colors duration-300",
+                    isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Personalized solution design</span> based on your workflow
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
+                  <span className="text-primary mr-2 mt-0.5 flex-shrink-0 text-sm">•</span>
                   <span className={cn(
-                    "leading-relaxed",
-                    // Мобильные
-                    "text-[10px]",
-                    // Планшеты
-                    "md:text-[10px]",
-                    // Ноутбуки
-                    "lg:text-xs",
-                    // Обычные десктопы
-                    "xl:text-xs",
-                    // Большие экраны
-                    "wide:text-xs",
-                    // Очень большие экраны
-                    "3xl:text-xs",
-                    !shouldDisableEffects && "transition-colors duration-300",
-                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
+                    "text-xs leading-relaxed transition-colors duration-300",
+                    isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Expert consultation included</span> with automation specialists
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
+                  <span className="text-primary mr-2 mt-0.5 flex-shrink-0 text-sm">•</span>
                   <span className={cn(
-                    "leading-relaxed",
-                    // Мобильные
-                    "text-[10px]",
-                    // Планшеты
-                    "md:text-[10px]",
-                    // Ноутбуки
-                    "lg:text-xs",
-                    // Обычные десктопы
-                    "xl:text-xs",
-                    // Большие экраны
-                    "wide:text-xs",
-                    // Очень большие экраны
-                    "3xl:text-xs",
-                    !shouldDisableEffects && "transition-colors duration-300",
-                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
+                    "text-xs leading-relaxed transition-colors duration-300",
+                    isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Tailored to your needs</span> and industry requirements
                   </span>
@@ -252,54 +187,15 @@ export function ContactCaseCard({
           </div>
 
           {/* Footer */}
-          <div className={cn(
-            "border-t border-medium-gray/40 mt-auto flex-shrink-0 z-10",
-            // Мобильные
-            "px-3 pb-2 pt-2",
-            // Планшеты
-            "md:px-4 md:pb-3 md:pt-3",
-            // Ноутбуки и выше
-            "lg:px-4 lg:pb-3 lg:pt-3",
-            "xl:px-5",
-            "wide:px-6"
-          )}>
-            <p className={cn(
-              "text-white flex items-center mb-1",
-              // Мобильные
-              "text-xs",
-              // Планшеты и выше
-              "md:text-xs",
-              "lg:text-xs",
-              "xl:text-xs",
-              "wide:text-xs"
-            )}>
+          <div className="border-t border-medium-gray/40 mt-auto flex-shrink-0 z-10 px-5 py-3">
+            <p className="text-xs text-white flex items-center mb-1">
               <span className="text-light-gray flex-shrink-0 mr-2">Company:</span>
               <span className="font-medium truncate">Your Company</span>
             </p>
 
-            <p className={cn(
-              "text-white/80 flex items-center",
-              // Мобильные
-              "text-[10px]",
-              // Планшеты и выше
-              "md:text-xs",
-              "lg:text-xs", 
-              "xl:text-xs",
-              "wide:text-xs"
-            )}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3 mr-1.5 text-primary flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
+            <p className="text-xs text-white/80 flex items-center">
+              <svg className="h-4 w-4 mr-2 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               </svg>
               <span className="truncate">Your Location</span>
             </p>
@@ -308,4 +204,27 @@ export function ContactCaseCard({
       </Link>
     </motion.div>
   );
+}
+
+export function ContactCaseCard(props: ContactCaseCardProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // На мобильных всегда используем простую версию
+  if (isMobile) {
+    return <SimpleMobileContactCard {...props} />;
+  }
+
+  // На десктопе используем расширенную версию
+  return <EnhancedDesktopContactCard {...props} />;
 }

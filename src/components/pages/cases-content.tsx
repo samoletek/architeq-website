@@ -24,8 +24,19 @@ import {
   CaseStudy
 } from '@/lib/data/case-studies';
 
+// Интерфейс для мобильной карточки кейса
+interface MobileCaseCardData {
+  title: string;
+  description?: string;
+  company: string;
+  location?: string;
+  industry?: string;
+  results?: string[];
+  tags?: string[];
+}
+
 // Узкая высокая мобильная карточка с компактным содержимым
-const MobileOptimizedCaseCard = ({ caseItem, index }: { caseItem: any, index: number }) => {
+const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData }) => {
   return (
     <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-secondary/30">
       {/* Теги */}
@@ -347,8 +358,7 @@ export default function CasesContent() {
                       className="block"
                     >
                       <MobileOptimizedCaseCard 
-                        caseItem={formatCaseCard(caseItem)} 
-                        index={index} 
+                        caseItem={formatCaseCard(caseItem)}
                       />
                     </Link>
                   ))}

@@ -373,6 +373,7 @@
 .case-card-enhanced:hover {
   border-color: rgba(176, 255, 116, 0.5) !important;
   transform: translateY(-10px) scale(1.02) !important;
+  z-index: 20 !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(176, 255, 116, 0.3), 
@@ -390,6 +391,7 @@
 .service-card-enhanced:hover {
   border-color: rgba(178, 75, 243, 0.5) !important;
   transform: translateY(-10px) scale(1.02) !important;
+  z-index: 20 !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(178, 75, 243, 0.3), 
@@ -407,14 +409,12 @@
 .contact-case-card:hover {
   border-color: rgba(178, 75, 243, 0.5) !important;
   transform: translateY(-10px) scale(1.02) !important;
+  z-index: 20 !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(178, 75, 243, 0.3), 
     0 0 30px rgba(178, 75, 243, 0.2) !important;
 }
-
-/* УБИРАЕМ ПРОБЛЕМНЫЕ СТИЛИ ДЛЯ КАРТОЧЕК КЕЙСОВ - ЭТО БЫЛО ПРИЧИНОЙ КОНФЛИКТОВ */
-/* Удалены все стили .desktop-case-cards, которые перебивали адаптивность */
 
 /* Агрессивная оптимизация для мобильных устройств */
 @media (max-width: 768px) {
