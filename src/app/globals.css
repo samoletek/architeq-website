@@ -7,7 +7,6 @@
   :root {
     --gradient-primary: linear-gradient(90deg, #B24BF3 0%, #4DADFF 100%);
     --gradient-accent: linear-gradient(90deg, #B0FF74 0%, #FFFFFF 100%);
-    --gradient-text: linear-gradient(90deg, #B0FF74 0%, #4DADFF 100%);
   }
   
   html {
@@ -301,18 +300,6 @@
     animation-delay: -3s;
   }
 
-  /* Z-index утилиты */
-  .z-35 {
-    z-index: 35;
-  }
-  
-  .z-45 {
-    z-index: 45;
-  }
-  
-  .z-55 {
-    z-index: 55;
-  }
   
   /* Градиентные границы */
   .gradient-border {
@@ -380,40 +367,31 @@
     0 0 30px rgba(176, 255, 116, 0.2) !important;
 }
 
-/* ========== КАРТОЧКИ УСЛУГ - ФИОЛЕТОВЫЕ ========== */
+/* ========== БАЗОВЫЙ КЛАСС ДЛЯ ФИОЛЕТОВЫХ КАРТОЧЕК ========== */
+.purple-card-enhanced {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+.purple-card-enhanced:hover {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  z-index: 20 !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+}
+
+/* Алиасы для обратной совместимости */
 .service-card-enhanced {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  position: relative;
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+  @apply purple-card-enhanced;
 }
 
-.service-card-enhanced:hover {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
-  z-index: 20 !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
-}
-
-/* ========== КОНТАКТНАЯ КАРТОЧКА - ОБЫЧНАЯ ФИОЛЕТОВАЯ ========== */
 .contact-case-card {
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  position: relative;
-  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
-}
-
-.contact-case-card:hover {
-  border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
-  z-index: 20 !important;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(178, 75, 243, 0.3), 
-    0 0 30px rgba(178, 75, 243, 0.2) !important;
+  @apply purple-card-enhanced;
 }
 
 /* Агрессивная оптимизация для мобильных устройств */
@@ -439,13 +417,7 @@
     @apply px-3 py-1.5 text-xs;
   }
   
-  /* Легкие анимации на мобильных */
-  .case-card-enhanced {
-    transform: none !important;
-    transition: none !important;
-  }
-  
-  /* Отключение motion эффектов */
+  /* Отключение анимаций карточек на мобильных */
   .case-card-enhanced {
     transform: none !important;
     transition: none !important;
