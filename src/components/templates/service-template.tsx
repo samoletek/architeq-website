@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import Link from 'next/link';
 import { ReactNode, useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { cn } from '@/lib/utils/utils';
 
@@ -568,7 +568,7 @@ function BenefitsSection({
               key={index}
               custom={index}
               initial="hidden"
-              animate={hasAnimated ? "visible" : "hidden"}
+              animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
               whileHover={{
                 y: -8,
@@ -656,7 +656,7 @@ function BenefitsSection({
 function FeaturesSection({ 
   title, 
   subtitle, 
-  features,  
+  features, 
 }: { 
   title: string; 
   subtitle: string; 
@@ -929,6 +929,65 @@ function ProcessSection({
     triggerOnce: true
   });
 
+  const [activeStep, setActiveStep] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    if (isVisible && !hasAnimated) {
+      setHasAnimated(true);
+    }
+  }, [isVisible, hasAnimated]);
+
+// Автоматический переход к следующей секции при достижении последнего шага
+useEffect(() => {
+  const processesLength = processes.length;
+  
+  if (activeStep === processesLength - 1) {
+    const timer = setTimeout(() => {
+      // Плавный скролл к следующей секции
+      const currentRef = ref.current;
+      if (currentRef) {
+        const nextSection = currentRef.nextElementSibling as HTMLElement;
+        if (nextSection) {
+          nextSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+    }, 3000); // Задержка 3 секунды на последнем шаге
+
+    return () => clearTimeout(timer);
+  }
+}, [activeStep, processes, ref]);
+
+  // Автоматическое переключение при скролле (опционально)
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const sectionElement = ref.current;
+      
+      if (sectionElement) {
+        const sectionTop = sectionElement.offsetTop;
+        const sectionHeight = sectionElement.offsetHeight;
+        const relativeScroll = scrollPosition - sectionTop;
+        
+        // Вычисляем активный шаг на основе позиции скролла
+        if (relativeScroll > 0 && relativeScroll < sectionHeight) {
+          const stepHeight = sectionHeight / processes.length;
+          const newActiveStep = Math.floor(relativeScroll / stepHeight);
+          
+          if (newActiveStep >= 0 && newActiveStep < processes.length && newActiveStep !== activeStep) {
+            setActiveStep(newActiveStep);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeStep, processes.length, ref]);
+
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -940,18 +999,36 @@ function ProcessSection({
       }
     }
   };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+  
+  const navVariants = {
+    hidden: { opacity: 0, x: -30 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
+      x: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.1 + index * 0.1
+        delay: index * 0.08
       }
     })
+  };
+
+  const contentVariants = {
+    initial: { opacity: 0 },
+    animate: { 
+      opacity: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut"
+      }
+    },
+    exit: { 
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    }
   };
 
   return (
@@ -960,6 +1037,7 @@ function ProcessSection({
       className="section-benefits bg-dark-gray relative overflow-hidden"
     >
       <div className="container mx-auto px-4 relative z-10">
+        {/* Заголовок секции */}
         <motion.div
           className="text-center section-content-spacing"
           initial="hidden"
@@ -977,58 +1055,155 @@ function ProcessSection({
           </p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="relative space-y-12">
-            <div 
-              className="absolute left-8 top-8 bottom-0 w-0.5 rounded-full"
-              style={{
-                background: 'linear-gradient(180deg, rgba(178,75,243,0.8) 0%, rgba(119,71,207,1) 50%, rgba(178,75,243,0.8) 100%)',
-                boxShadow: '0 0 12px rgba(178,75,243,0.8), 0 0 24px rgba(178,75,243,0.6)'
-              }}
-            />
+        {/* Основной контент с навигацией */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
             
-            {processes.map((process, index) => (
-              <motion.div 
-                key={process.step} 
-                className="relative flex items-start"
-                custom={index}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={cardVariants}
-              >
-                <motion.div 
-                  className="flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center z-10 font-bold text-lg"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(178,75,243,0.9) 0%, rgba(119,71,207,1) 100%)',
-                    boxShadow: '0 0 20px rgba(178,75,243,0.8), 0 0 40px rgba(178,75,243,0.6)'
-                  }}
-                  animate={{
-                    boxShadow: [
-                      '0 0 20px rgba(178,75,243,0.8), 0 0 40px rgba(178,75,243,0.6)',
-                      '0 0 30px rgba(178,75,243,1), 0 0 60px rgba(178,75,243,0.8)',
-                      '0 0 20px rgba(178,75,243,0.8), 0 0 40px rgba(178,75,243,0.6)'
-                    ]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.5
-                  }}
-                >
-                  {process.step}
-                </motion.div>
+            {/* Левая колонка - Навигационное меню */}
+            <div className="lg:col-span-1 -ml-8">
+              <div className="sticky top-24">
+                <div className="space-y-2 mb-8">
+                  {processes.map((process, index) => (
+                    <motion.button
+                      key={process.step}
+                      custom={index}
+                      initial="hidden"
+                      animate={isVisible ? "visible" : "hidden"}
+                      variants={navVariants}
+                      onClick={() => setActiveStep(index)}
+                      className={`w-full text-left py-3 px-4 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
+                        activeStep === index 
+                          ? 'text-secondary' 
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      {/* Зеленый фон при hover - выходит за пределы текста */}
+                      <div className="absolute -left-1 top-0 bottom-0 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 rounded-lg" 
+                           style={{ width: 'calc(80% + 20px)' }}></div>
+                      
+                      {/* Заголовок без нумерации - выровнен с Progress */}
+                      <h3 className="text-lg md:text-xl font-medium transition-colors duration-300 relative z-10 group-hover:text-black font-mono">
+                        {process.title}
+                      </h3>
+                    </motion.button>
+                  ))}
+                </div>
                 
-                <div className="ml-8 flex-1">
-                  <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 rounded-xl p-6">
-                    <h3 className="text-xl font-bold mb-3">{process.title}</h3>
-                    <p className="text-light-gray section-subtitle-large opacity-90">
-                      {process.description}
-                    </p>
+                {/* Прогресс-бар */}
+                <div className="mt-8 ml-4">
+                  <div className="text-lg md:text-xl font-medium text-light-gray mb-2 font-mono">Progress</div>
+                  <div className="w-4/5 h-2 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-secondary"
+                      animate={{ 
+                        width: `${((activeStep + 1) / processes.length) * 100}%`
+                      }}
+                      transition={{ 
+                        duration: 0.8, 
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </div>
+                  <div className="text-lg md:text-xl font-medium text-light-gray mt-2 font-mono">
+                    Step {activeStep + 1} of {processes.length}
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </div>
+
+            {/* Правая колонка - Детальное описание активного шага */}
+            <div className="lg:col-span-2 -mr-8">
+              <div className="sticky top-24">
+                {/* Свечение только за блоком */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
+                     style={{
+                       boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.2), 0 0 120px rgba(255, 255, 255, 0.05)'
+                     }}>
+                </div>
+                
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeStep}
+                    variants={contentVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                  >
+                    <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                      rounded-2xl p-8 md:p-12">
+                      
+                      {/* Заголовок шага - на одной прямой */}
+                      <div className="flex items-center mb-12">
+                        <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mr-6 font-bold text-lg text-black">
+                          {processes[activeStep].step}
+                        </div>
+                        <h3 className="text-3xl md:text-4xl font-bold text-white"
+                            style={{
+                              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                            }}>
+                          {processes[activeStep].title}
+                        </h3>
+                      </div>
+
+                      {/* Контент в две колонки с правильными пропорциями */}
+                      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                        {/* Левая колонка - описание (3/5 = 60%) */}
+                        <div className="lg:col-span-3">
+                          <p className="text-white text-lg md:text-xl leading-relaxed">
+                            {processes[activeStep].description}
+                          </p>
+                        </div>
+
+                        {/* Правая колонка - Key Focus (расширенный) */}
+                        <div className="lg:col-span-2">
+                          <div className="pl-4">
+                            <div className="border border-secondary/20 rounded-xl p-6 bg-white/10">
+                              <h4 className="text-white font-semibold mb-4">Key Focus:</h4>
+                              <p className="text-light-gray text-sm">
+                                This step ensures maximum efficiency and quality in our implementation process.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Навигационные кнопки */}
+                      <div className="flex justify-between items-center pt-12">
+                        <button
+                          onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
+                          disabled={activeStep === 0}
+                          className={`flex items-center font-medium transition-all duration-300 focus:outline-none ${
+                            activeStep === 0
+                              ? 'text-gray-500 cursor-not-allowed'
+                              : 'text-secondary hover:text-secondary/80'
+                          }`}
+                        >
+                          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                          Previous
+                        </button>
+
+                        <button
+                          onClick={() => setActiveStep(Math.min(processes.length - 1, activeStep + 1))}
+                          disabled={activeStep === processes.length - 1}
+                          className={`flex items-center font-medium transition-all duration-300 focus:outline-none ${
+                            activeStep === processes.length - 1
+                              ? 'text-gray-500 cursor-not-allowed'
+                              : 'text-secondary hover:text-secondary/80'
+                          }`}
+                        >
+                          Next
+                          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
         </div>
       </div>
