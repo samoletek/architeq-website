@@ -35,16 +35,16 @@ interface MobileCaseCardData {
   tags?: string[];
 }
 
-// Узкая высокая мобильная карточка с компактным содержимым
+// Мобильная карточка с компактным содержимым
 const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData }) => {
   return (
     <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-secondary/30">
       {/* Теги */}
       {caseItem.tags && caseItem.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
-          {caseItem.tags.map((tag: string, index: number) => (
+          {caseItem.tags.map((tag: string, tagIndex: number) => (
             <span
-              key={index}
+              key={tagIndex}
               className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
             >
               {tag}
@@ -70,8 +70,8 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
         <div className="mb-2">
           <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
           <ul className="space-y-0.5">
-            {caseItem.results.slice(0, 2).map((result: string, index: number) => (
-              <li key={index} className="flex items-start">
+            {caseItem.results.slice(0, 2).map((result: string, resultIndex: number) => (
+              <li key={resultIndex} className="flex items-start">
                 <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
                 <span 
                   className="text-[10px] text-light-gray leading-relaxed"
@@ -108,7 +108,7 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
 function createCaseCardTags(caseStudy: CaseStudy): string[] {
   const tags: string[] = [];
   
-  // Маппинг для коротких названий
+  // Маппинг
   const tagNames: Record<string, string> = {
     // Solution Types
     'Custom Solutions': 'Custom',
@@ -351,7 +351,7 @@ export default function CasesContent() {
               {/* Оптимизированная сетка кейсов для мобильных */}
               {regularCases.length > 0 ? (
                 <div className="grid grid-cols-1 gap-3">
-                  {regularCases.map((caseItem, index) => (
+                  {regularCases.map((caseItem) => (
                     <Link 
                       key={caseItem.id} 
                       href={`/cases/${caseItem.id}`}
@@ -411,10 +411,10 @@ export default function CasesContent() {
               />
             </div>
             
-            {/* СЕТКА: более узкие фильтры + flex для карточек */}
+            {/* СЕТКА */}
             <div className="flex gap-6">
               
-              {/* ЛЕВАЯ КОЛОНКА - Более узкие фильтры */}
+              {/* ЛЕВАЯ КОЛОНКА */}
               <div className="w-[220px] flex-shrink-0">
                 <div className="sticky top-24 space-y-4">
                   
@@ -433,7 +433,7 @@ export default function CasesContent() {
                 </div>
               </div>
               
-              {/* ПРАВАЯ ОБЛАСТЬ - Контент с большим количеством колонок */}
+              {/* ПРАВАЯ ОБЛАСТЬ */}
               <div className="flex-1 min-w-0">
                 
                 {filteredCases.length > 0 ? (
@@ -450,7 +450,7 @@ export default function CasesContent() {
                   >
                     <AnimatePresence>
                       {/* Первые 9 кейсов */}
-                      {regularCases.slice(0, 9).map((caseItem, index) => (
+                      {regularCases.slice(0, 9).map((caseItem, caseIndex) => (
                         <motion.div
                           key={caseItem.id}
                           variants={cardVariants}
@@ -458,7 +458,7 @@ export default function CasesContent() {
                           <CaseCard 
                             {...formatCaseCard(caseItem)}
                             href={`/cases/${caseItem.id}`}
-                            index={index}
+                            index={caseIndex}
                           />
                         </motion.div>
                       ))}
@@ -474,7 +474,7 @@ export default function CasesContent() {
                       )}
                       
                       {/* Остальные кейсы */}
-                      {regularCases.slice(9).map((caseItem, index) => (
+                      {regularCases.slice(9).map((caseItem, additionalIndex) => (
                         <motion.div
                           key={caseItem.id}
                           variants={cardVariants}
@@ -482,7 +482,7 @@ export default function CasesContent() {
                           <CaseCard 
                             {...formatCaseCard(caseItem)}
                             href={`/cases/${caseItem.id}`}
-                            index={index + 10}
+                            index={additionalIndex + 10}
                           />
                         </motion.div>
                       ))}

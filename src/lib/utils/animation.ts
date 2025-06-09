@@ -252,8 +252,7 @@ export function useDelayedAnimation(delay: number = 0, deps: React.DependencyLis
         clearTimeout(timerRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, ...deps]);
+  }, [delay, reset, ...deps]);
   
   return { shouldAnimate, reset };
 }
@@ -461,8 +460,8 @@ export function shouldEnableAnimations(): boolean {
       isLowPower = true;
     }
     
-    // Проверяем deviceMemory, если доступно (Chrome)
-    // @ts-expect-error
+    // Проверяем deviceMemory, если доступно (Chrome) - свойство deviceMemory не в типах TypeScript
+    // @ts-expect-error deviceMemory is not included in navigator types but exists in Chrome browsers
     if (navigator.deviceMemory && navigator.deviceMemory < 4) {
       isLowPower = true;
     }
@@ -539,6 +538,9 @@ export function useCoordinatedAnimation(
     }
   }, [id]);
   
+  // Создаем stringified версию dependencies для корректного сравнения
+  const depsString = JSON.stringify(dependencies);
+  
   // Регистрация в координаторе при монтировании и при изменении зависимостей
   useEffect(() => {
     const coordinator = getCoordinator();
@@ -546,7 +548,7 @@ export function useCoordinatedAnimation(
     
     // Формируем уникальный ID последовательности на основе зависимостей
     sequenceId.current = dependencies.length > 0 
-      ? `seq_${dependencies.join('_')}` 
+      ? `seq_${depsString}` 
       : undefined;
     
     // Регистрируем анимацию
@@ -559,7 +561,7 @@ export function useCoordinatedAnimation(
     return () => {
       coordinator.unregister(id, sequenceId.current);
     };
-  }, [id, ...dependencies]); // Добавил зависимости для правильной работы
+  }, [id, depsString]);
   
   return { canAnimate, onAnimationComplete };
 }
