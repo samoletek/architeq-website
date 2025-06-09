@@ -38,10 +38,10 @@ interface MobileCaseCardData {
 // Узкая высокая мобильная карточка с компактным содержимым
 const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData }) => {
   return (
-    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-secondary/30">
+    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 flex flex-col transition-colors duration-200 hover:border-secondary/30">
       {/* Теги */}
       {caseItem.tags && caseItem.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-2">
+        <div className="flex flex-wrap gap-1.5 mb-3">
           {caseItem.tags.map((tag: string, tagIndex: number) => (
             <span
               key={tagIndex}
@@ -54,23 +54,23 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
       )}
       
       {/* Заголовок */}
-      <h3 className="text-xs font-semibold text-white leading-tight mb-2">
+      <h3 className="text-xs font-semibold text-white leading-tight mb-3">
         {caseItem.title}
       </h3>
       
       {/* Описание */}
       {caseItem.description && (
-        <p className="text-[10px] text-light-gray leading-relaxed mb-2 line-clamp-2">
+        <p className="text-[10px] text-light-gray leading-relaxed mb-3 line-clamp-2">
           {caseItem.description}
         </p>
       )}
       
       {/* Результаты */}
       {caseItem.results && caseItem.results.length > 0 && (
-        <div className="mb-2">
+        <div className="mb-4">
           <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
           <ul className="space-y-0.5">
-            {caseItem.results.slice(0, 2).map((result: string, resultIndex: number) => (
+            {caseItem.results.slice(0, 3).map((result: string, resultIndex: number) => (
               <li key={resultIndex} className="flex items-start">
                 <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
                 <span 
@@ -86,7 +86,7 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
       )}
       
       {/* Footer */}
-      <div className="border-t border-gray-600 mt-auto pt-2">
+      <div className="border-t border-gray-600 mt-auto pt-3 mb-1">
         <p className="text-[10px] text-white flex items-center mb-1">
           <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
           <span className="font-medium truncate">{caseItem.company}</span>

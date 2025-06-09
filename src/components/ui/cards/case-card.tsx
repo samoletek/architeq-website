@@ -93,7 +93,7 @@ function SimpleMobileCard({
         <div className="mb-3">
           <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
           <ul className="space-y-0.5">
-            {results.slice(0, 2).map((result, index) => (
+            {results.slice(0, 3).map((result, index) => (
               <li key={index} className="flex items-start">
                 <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
                 <span 
@@ -225,7 +225,7 @@ function EnhancedDesktopCard({
       variants={cardVariants}
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border transition-all duration-300 flex flex-col relative',
-        'case-card-enhanced min-h-[430px]',
+        'case-card-enhanced min-h-[400px]',
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
