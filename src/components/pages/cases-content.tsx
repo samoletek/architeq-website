@@ -3,6 +3,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import { ContactCaseCard } from '@/components/ui/cards/contact-case-card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,75 @@ import {
   FunctionCategory,
   CaseStudy
 } from '@/lib/data/case-studies';
+
+// Узкая высокая мобильная карточка с компактным содержимым
+const MobileOptimizedCaseCard = ({ caseItem, index }: { caseItem: any, index: number }) => {
+  return (
+    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-secondary/30">
+      {/* Теги */}
+      {caseItem.tags && caseItem.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {caseItem.tags.map((tag: string, index: number) => (
+            <span
+              key={index}
+              className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+      
+      {/* Заголовок */}
+      <h3 className="text-xs font-semibold text-white leading-tight mb-2">
+        {caseItem.title}
+      </h3>
+      
+      {/* Описание */}
+      {caseItem.description && (
+        <p className="text-[10px] text-light-gray leading-relaxed mb-2 line-clamp-2">
+          {caseItem.description}
+        </p>
+      )}
+      
+      {/* Результаты */}
+      {caseItem.results && caseItem.results.length > 0 && (
+        <div className="mb-2">
+          <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
+          <ul className="space-y-0.5">
+            {caseItem.results.slice(0, 2).map((result: string, index: number) => (
+              <li key={index} className="flex items-start">
+                <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
+                <span 
+                  className="text-[10px] text-light-gray leading-relaxed"
+                  dangerouslySetInnerHTML={{
+                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {/* Footer */}
+      <div className="border-t border-gray-600 mt-auto pt-2">
+        <p className="text-[10px] text-white flex items-center mb-1">
+          <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
+          <span className="font-medium truncate">{caseItem.company}</span>
+        </p>
+        {(caseItem.location || caseItem.industry) && (
+          <p className="text-[10px] text-white/80 flex items-center">
+            <svg className="h-2.5 w-2.5 mr-1 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            </svg>
+            <span className="truncate">{caseItem.location || caseItem.industry}</span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 // Создание тегов для карточек
 function createCaseCardTags(caseStudy: CaseStudy): string[] {
@@ -181,27 +251,24 @@ export default function CasesContent() {
     return { regularCases: regular, hasContactCard: hasContact };
   }, [filteredCases]);
 
-  // Анимационные варианты для сетки
+  // Анимационные варианты для сетки (только для десктопа)
   const gridVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: isMobile ? { duration: 0.2 } : {
+      transition: {
         staggerChildren: 0.1
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: isMobile ? 10 : 20, scale: isMobile ? 1 : 0.95 },
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: isMobile ? {
-        duration: 0.2,
-        ease: "easeOut"
-      } : {
+      transition: {
         duration: 0.5,
         ease: [0.2, 0.65, 0.3, 0.9]
       }
@@ -232,12 +299,12 @@ export default function CasesContent() {
       </section>
 
       {/* Main content section */}
-      <section className="py-16 sm:py-20 lg:py-28 bg-site-bg">
+      <section className="py-12 sm:py-16 lg:py-20 bg-site-bg">
         
         {/* Mobile */}
         {isMobile ? (
           <div className="container mx-auto px-4">
-            <div className="space-y-6">
+            <div className="space-y-4">
               
               {/* Интегрированный поиск и фильтры */}
               <IntegratedSearchFilters
@@ -270,46 +337,22 @@ export default function CasesContent() {
                 allCases={allCaseStudies}
               />
               
-              {/* Сетка кейсов для мобильных */}
+              {/* Оптимизированная сетка кейсов для мобильных */}
               {regularCases.length > 0 ? (
-                isMobile ? (
-                  /* ПРОСТАЯ СЕТКА ДЛЯ МОБИЛЬНЫХ */
-                  <div className="grid grid-cols-1 gap-4">
-                    {regularCases.map((caseItem, index) => (
-                      <div key={caseItem.id}>
-                        <CaseCard 
-                          {...formatCaseCard(caseItem)}
-                          href={`/cases/${caseItem.id}`}
-                          index={index}
-                          isCompact={true}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  /* АНИМИРОВАННАЯ СЕТКА ДЛЯ ДЕСКТОПА */
-                  <motion.div
-                    variants={gridVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="grid grid-cols-1 gap-4"
-                  >
-                    <AnimatePresence>
-                      {regularCases.map((caseItem, index) => {
-                        return (
-                          <motion.div key={caseItem.id} variants={cardVariants}>
-                            <CaseCard 
-                              {...formatCaseCard(caseItem)}
-                              href={`/cases/${caseItem.id}`}
-                              index={index}
-                              isCompact={true}
-                            />
-                          </motion.div>
-                        );
-                      })}
-                    </AnimatePresence>
-                  </motion.div>
-                )
+                <div className="grid grid-cols-1 gap-3">
+                  {regularCases.map((caseItem, index) => (
+                    <Link 
+                      key={caseItem.id} 
+                      href={`/cases/${caseItem.id}`}
+                      className="block"
+                    >
+                      <MobileOptimizedCaseCard 
+                        caseItem={formatCaseCard(caseItem)} 
+                        index={index} 
+                      />
+                    </Link>
+                  ))}
+                </div>
               ) : (
                 /* Empty State для мобильных */
                 <div className="bg-dark-gray rounded-lg p-6 text-center">
@@ -335,10 +378,10 @@ export default function CasesContent() {
           </div>
         ) : (
           /* Desktop + tablet */
-          <div className="max-w-[1500px] mx-auto px-8 lg:px-12">
+          <div className="max-w-[1400px] mx-auto px-4">
             
             {/* Поисковая строка */}
-            <div className="mb-8 max-w-6xl mx-auto">
+            <div className="mb-6 max-w-6xl mx-auto">
               <IntegratedSearchFilters
                 searchQuery={searchQuery}
                 onSearchChange={handleSearchChange}
@@ -352,18 +395,18 @@ export default function CasesContent() {
             </div>
 
             {/* Недавно просмотренные кейсы */}
-            <div className="mb-8">
+            <div className="mb-6">
               <RecentlyViewedCases 
                 allCases={allCaseStudies} 
               />
             </div>
             
-            {/* СЕТКА: фиксированная ширина фильтров + flex для карточек */}
-            <div className="flex gap-8">
+            {/* СЕТКА: более узкие фильтры + flex для карточек */}
+            <div className="flex gap-6">
               
-              {/* ЛЕВАЯ КОЛОНКА - Фильтры */}
-              <div className="w-[260px] flex-shrink-0">
-                <div className="sticky top-24 space-y-6">
+              {/* ЛЕВАЯ КОЛОНКА - Более узкие фильтры */}
+              <div className="w-[220px] flex-shrink-0">
+                <div className="sticky top-24 space-y-4">
                   
                   {/* Function Filters */}
                   <FunctionFilters
@@ -380,7 +423,7 @@ export default function CasesContent() {
                 </div>
               </div>
               
-              {/* ПРАВАЯ ОБЛАСТЬ - Контент */}
+              {/* ПРАВАЯ ОБЛАСТЬ - Контент с большим количеством колонок */}
               <div className="flex-1 min-w-0">
                 
                 {filteredCases.length > 0 ? (
@@ -389,10 +432,10 @@ export default function CasesContent() {
                     initial="hidden"
                     animate="visible"
                     className={cn(
-                      "grid gap-5",
+                      "grid gap-4",
                       isTablet 
                         ? "grid-cols-2" 
-                        : "grid-cols-1 lg:grid-cols-3 desktop-case-cards"
+                        : "grid-cols-1 lg:grid-cols-3"
                     )}
                   >
                     <AnimatePresence>

@@ -68,10 +68,10 @@ export function IndustryFilters({
 
   if (isLoading) {
     return (
-      <div className={cn("flex items-center justify-center py-4", className)}>
-        <div className="flex items-center space-x-2 text-light-gray">
-          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-sm">Loading industries...</span>
+      <div className={cn("flex items-center justify-center py-3", className)}>
+        <div className="flex items-center space-x-1.5 text-light-gray">
+          <div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-xs">Loading industries...</span>
         </div>
       </div>
     );
@@ -82,20 +82,20 @@ export function IndustryFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКА */}
-      <div className="mb-4">
+      {/* КОМПАКТНЫЙ ЗАГОЛОВОК */}
+      <div className="mb-3">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-between text-left group focus:outline-none px-2.5 py-1.5 rounded-md hover:bg-white/5 transition-colors duration-200"
+          className="w-full flex items-center justify-between text-left group focus:outline-none px-2 py-1 rounded-md hover:bg-white/5 transition-colors duration-200"
         >
           <div className="flex items-center">
-            <h3 className="text-base font-semibold text-white">
+            <h3 className="text-sm font-semibold text-white">
               By Industry
             </h3>
             
-            {/* Счетчик справа от заголовка */}
+            {/* Компактный счетчик справа от заголовка */}
             {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
-              <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full font-medium border border-primary/30 text-[10px] ml-2">
+              <span className="bg-primary/20 text-primary text-xs px-1 py-0.5 rounded-full font-medium border border-primary/30 text-[9px] ml-1.5 min-w-[16px] text-center">
                 {selectedIndustries.filter(id => id !== 'your-industry').length}
               </span>
             )}
@@ -106,14 +106,14 @@ export function IndustryFilters({
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="text-light-gray group-hover:text-white transition-colors"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </motion.div>
         </button>
       </div>
 
-      {/* TOGGLE-СТИЛЬ для индустрий */}
+      {/* КОМПАКТНЫЕ TOGGLE для индустрий */}
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
@@ -122,8 +122,8 @@ export function IndustryFilters({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className={cn(
-              "space-y-1.5",
-              isMobile && "space-y-1"
+              "space-y-1",
+              isMobile && "space-y-0.5"
             )}
           >
             {filteredIndustries.map(({ id: industryId, label, count }, index) => {
@@ -139,7 +139,7 @@ export function IndustryFilters({
                   whileTap={disabled ? undefined : "tap"}
                   className={cn(
                     "relative w-full transition-all duration-300",
-                    isMobile ? "min-h-[28px]" : "min-h-[32px]"
+                    isMobile ? "min-h-[28px]" : "min-h-[30px]"
                   )}
                   style={{
                     animationDelay: `${index * 0.05}s`
@@ -147,13 +147,13 @@ export function IndustryFilters({
                 >
                   <div
                     className={cn(
-                      "group flex items-center justify-between w-full px-2.5 py-1.5 rounded-md transition-all duration-300",
+                      "group flex items-center justify-between w-full px-2 py-1 rounded-md transition-all duration-300",
                       "outline-none focus:outline-none active:outline-none",
                       selected 
                         ? "bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 shadow-sm" 
                         : "bg-transparent hover:bg-primary/5 border border-transparent hover:border-primary/20",
                       disabled && "opacity-50",
-                      isMobile && "text-xs px-2 py-1"
+                      isMobile && "px-1.5 py-0.5"
                     )}
                     style={{ outline: 'none', boxShadow: 'none' }}
                     tabIndex={-1}
@@ -166,7 +166,8 @@ export function IndustryFilters({
                       style={{ outline: 'none', userSelect: 'none' }}
                     >
                       <span className={cn(
-                        "text-left leading-none font-medium transition-colors duration-200 select-none pointer-events-none text-sm",
+                        "text-left leading-none font-medium transition-colors duration-200 select-none pointer-events-none",
+                        isMobile ? "text-xs" : "text-xs",
                         selected ? "text-primary" : "text-white"
                       )}
                       style={{ outline: 'none', userSelect: 'none' }}
@@ -177,13 +178,13 @@ export function IndustryFilters({
 
                     {/* Правая часть - toggle switch + счетчик */}
                     <div 
-                      className="flex items-center space-x-2 flex-shrink-0"
+                      className="flex items-center space-x-1.5 flex-shrink-0"
                       style={{ outline: 'none' }}
                     >
-                      {/* Счетчик случаев (если showCounts=true) */}
+                      {/* Компактный счетчик случаев (если showCounts=true) */}
                       {showCounts && (
                         <span className={cn(
-                          "text-xs px-1.5 py-0.5 rounded-full transition-colors duration-200 pointer-events-none select-none",
+                          "text-xs px-1 py-0.5 rounded-full transition-colors duration-200 pointer-events-none select-none text-[9px] min-w-[14px] text-center",
                           selected 
                             ? "bg-primary/25 text-primary" 
                             : "bg-white/10 text-light-gray"
@@ -194,7 +195,7 @@ export function IndustryFilters({
                         </span>
                       )}
 
-                      {/* Toggle Switch - уменьшенный */}
+                      {/* Компактный Toggle Switch */}
                       <div 
                         className="relative cursor-pointer outline-none focus:outline-none active:outline-none"
                         onClick={(e) => {
@@ -208,17 +209,17 @@ export function IndustryFilters({
                       >
                         <div 
                           className={cn(
-                            "w-8 h-4 rounded-full transition-all duration-300 relative overflow-hidden outline-none",
+                            "w-7 h-3.5 rounded-full transition-all duration-300 relative overflow-hidden outline-none",
                             selected
                               ? "bg-primary shadow-md shadow-primary/20" 
                               : "bg-white/20 hover:bg-primary/30"
                           )}
-                          style={{ outline: 'none', boxShadow: selected ? '0 2px 8px rgba(139, 92, 246, 0.3)' : 'none' }}
+                          style={{ outline: 'none', boxShadow: selected ? '0 1px 4px rgba(139, 92, 246, 0.3)' : 'none' }}
                         >
-                          {/* Toggle Circle - уменьшенный */}
+                          {/* Компактный Toggle Circle */}
                           <motion.div
                             animate={{
-                              x: selected ? 14 : 2
+                              x: selected ? 12 : 1.5
                             }}
                             transition={{ 
                               type: "spring", 
@@ -226,7 +227,7 @@ export function IndustryFilters({
                               damping: 30 
                             }}
                             className={cn(
-                              "absolute top-0.5 w-3 h-3 rounded-full transition-colors duration-300",
+                              "absolute top-0.5 w-2.5 h-2.5 rounded-full transition-colors duration-300",
                               selected 
                                 ? "bg-white shadow-sm" 
                                 : "bg-white/80 group-hover:bg-white"
@@ -265,13 +266,13 @@ export function IndustryFilters({
           {selectedIndustries.filter(id => id !== 'your-industry').slice(0, 3).map(industryId => (
             <span 
               key={industryId}
-              className="text-xs bg-primary/15 text-primary px-1.5 py-0.5 rounded-md border border-primary/25 text-[10px]"
+              className="text-xs bg-primary/15 text-primary px-1.5 py-0.5 rounded-md border border-primary/25 text-[9px]"
             >
               {INDUSTRY_CATEGORIES[industryId]}
             </span>
           ))}
           {selectedIndustries.filter(id => id !== 'your-industry').length > 3 && (
-            <span className="text-xs text-light-gray px-1.5 py-0.5 text-[10px]">
+            <span className="text-xs text-light-gray px-1.5 py-0.5 text-[9px]">
               +{selectedIndustries.filter(id => id !== 'your-industry').length - 3} more
             </span>
           )}

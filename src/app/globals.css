@@ -52,35 +52,39 @@
     @apply font-heading font-bold;
   }
   
-  /* Адаптивные размеры заголовков */
+  /* Компактные адаптивные размеры заголовков */
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
-  }
-  
-  h2 {
     @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
   }
   
-  h3 {
-    @apply text-xl sm:text-2xl md:text-3xl;
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
   }
   
-  h4 {
+  h3 {
     @apply text-lg sm:text-xl md:text-2xl;
   }
   
-  h5 {
+  h4 {
     @apply text-base sm:text-lg md:text-xl;
   }
   
-  h6 {
+  h5 {
     @apply text-sm sm:text-base md:text-lg;
   }
   
-  /* Базовый размер текста для мобильных устройств */
-  @media (max-width: 640px) {
+  h6 {
+    @apply text-xs sm:text-sm md:text-base;
+  }
+  
+  /* Компактный размер текста для мобильных устройств */
+  @media (max-width: 768px) {
     html {
-      font-size: 14px;
+      font-size: 13px;
+    }
+    
+    body {
+      line-height: 1.4;
     }
   }
 }
@@ -151,33 +155,33 @@
     }
   }
 
-  /* Стандартные размеры заголовков */
+  /* Компактные размеры заголовков */
   .hero-title {
-    @apply text-4xl md:text-6xl lg:text-7xl;
+    @apply text-3xl md:text-5xl lg:text-6xl;
   }
 
   .hero-subtitle {
-    @apply text-xl md:text-2xl lg:text-3xl;
+    @apply text-lg md:text-xl lg:text-2xl;
   }
 
   .section-title-large {
-    @apply text-4xl md:text-5xl lg:text-6xl;
-  }
-
-  .section-title-medium {
     @apply text-3xl md:text-4xl lg:text-5xl;
   }
 
+  .section-title-medium {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+
   .section-subtitle-large {
-    @apply text-base md:text-lg;
+    @apply text-sm md:text-base;
   }
 
   .section-subtitle-medium {
-    @apply text-lg md:text-2xl;
+    @apply text-base md:text-lg;
   }
 
   .section-subtitle-small {
-    @apply text-lg;
+    @apply text-base;
   }
 
   /* Стандартные отступы заголовков */
@@ -229,14 +233,14 @@
     background-image: var(--gradient-primary);
   }
   
-  /* Кнопки в стиле проекта */
+  /* Компактные кнопки в стиле проекта */
   .btn-primary {
-    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
+    @apply bg-secondary text-gray-900 hover:bg-opacity-90 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full font-medium transition-all text-xs sm:text-sm;
     box-shadow: 0 0 15px rgba(176, 255, 116, 0.3);
   }
   
   .btn-secondary {
-    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-medium transition-all text-sm sm:text-base;
+    @apply bg-dark-purple border border-primary/50 text-white hover:bg-opacity-80 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full font-medium transition-all text-xs sm:text-sm;
   }
   
   /* Футер */
@@ -409,31 +413,10 @@
     0 0 30px rgba(178, 75, 243, 0.2) !important;
 }
 
-/* Стили для карточек кейсов - СТАНДАРТИЗИРОВАНЫ ПО ФИОЛЕТОВОЙ КАРТОЧКЕ */
-@media (min-width: 1024px) {
-  .desktop-case-cards .case-card-enhanced h3 {
-    @apply text-xl font-semibold leading-tight; /* Как в фиолетовой карточке */
-  }
-  
-  .desktop-case-cards .case-card-enhanced p {
-    @apply text-sm leading-relaxed; /* Описание как в фиолетовой */
-  }
-  
-  .desktop-case-cards .case-card-enhanced .case-card-results li {
-    @apply text-xs leading-relaxed; /* Results как в фиолетовой */
-  }
-  
-  .desktop-case-cards .case-card-enhanced .case-card-footer p {
-    @apply text-sm; /* Footer как в фиолетовой */
-  }
-  
-  /* Теги стандартные */
-  .desktop-case-cards .case-card-enhanced span[class*="text-xs"] {
-    @apply text-xs px-2 py-1; /* Стандартные теги */
-  }
-}
+/* УБИРАЕМ ПРОБЛЕМНЫЕ СТИЛИ ДЛЯ КАРТОЧЕК КЕЙСОВ - ЭТО БЫЛО ПРИЧИНОЙ КОНФЛИКТОВ */
+/* Удалены все стили .desktop-case-cards, которые перебивали адаптивность */
 
-/* Медиа-запросы для адаптивности */
+/* Агрессивная оптимизация для мобильных устройств */
 @media (max-width: 768px) {
   .case-video-container {
     height: 250px;
@@ -450,10 +433,30 @@
     @apply py-8;
   }
   
-  /* Уменьшенные кнопки на мобильных */
+  /* Компактные кнопки на мобильных */
   .btn-primary,
   .btn-secondary {
-    @apply px-4 py-2 text-sm;
+    @apply px-3 py-1.5 text-xs;
+  }
+  
+  /* Полное отключение всех анимаций на мобильных */
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+  
+  /* Отключение motion эффектов */
+  .case-card-enhanced {
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  .case-card-enhanced:hover {
+    transform: none !important;
+    transition: none !important;
   }
 }
 

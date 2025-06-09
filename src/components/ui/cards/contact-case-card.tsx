@@ -1,7 +1,7 @@
 // src/components/ui/cards/contact-case-card.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
@@ -18,6 +18,22 @@ export function ContactCaseCard({
   isVisible = true
 }: ContactCaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Дополнительная проверка для отключения эффектов на слабых устройствах
+  const shouldDisableEffects = isMobile || 
+    (typeof navigator !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent));
 
   // Анимационные варианты для карточки - те же что у обычных карточек
   const cardVariants = {
@@ -34,87 +50,199 @@ export function ContactCaseCard({
     }
   };
 
+  // Более компактные адаптивные высоты
+  const cardHeight = cn(
+    // Мобильные устройства
+    'min-h-[250px]',
+    // Планшеты
+    'md:min-h-[300px]',
+    // Маленькие ноутбуки
+    'lg:min-h-[340px]',
+    // Обычные ноутбуки и десктопы
+    'xl:min-h-[360px]',
+    // Большие экраны (MacBook Pro 15", большие мониторы)
+    'wide:min-h-[380px]',
+    // Очень большие экраны
+    '3xl:min-h-[400px]'
+  );
+
   return (
     <motion.div
-      initial="hidden"
-      animate={isVisible ? "visible" : "hidden"}
-      variants={cardVariants}
+      initial={shouldDisableEffects ? false : "hidden"}
+      animate={shouldDisableEffects ? false : (isVisible ? "visible" : "hidden")}
+      variants={shouldDisableEffects ? {} : cardVariants}
       className={cn(
-        'relative transition-all duration-500 ease-out h-full',
+        'relative transition-all duration-300 h-full',
         className
       )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={!shouldDisableEffects ? () => setIsHovered(true) : undefined}
+      onMouseLeave={!shouldDisableEffects ? () => setIsHovered(false) : undefined}
     >
       <Link href="/contacts" className="block h-full">
         <div
           className={cn(
             'relative bg-dark-gray rounded-xl h-full flex flex-col',
-            'contact-case-card' // Использует фиолетовые стили из globals.css
+            'contact-case-card',
+            cardHeight
           )}
-          style={{
-            minHeight: '500px',
-          }}
         >
           {/* Теги */}
-          <div className="pt-4 px-6 pb-4 relative z-10">
-            <div className="flex flex-wrap gap-2">
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10">
+          <div className={cn(
+            "relative z-10",
+            // Мобильные
+            "pt-2 px-3 pb-2",
+            // Планшеты
+            "md:pt-3 md:px-4 md:pb-3",
+            // Ноутбуки
+            "lg:pt-3 lg:px-4 lg:pb-3",
+            // Большие экраны
+            "xl:pt-4 xl:px-5 xl:pb-4",
+            "wide:pt-4 wide:px-6 wide:pb-4"
+          )}>
+            <div className="flex flex-wrap gap-1.5">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Custom
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Consultation
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Your Industry
               </span>
             </div>
           </div>
 
           {/* Контент */}
-          <div className="flex-grow z-10 pl-6 pr-6 py-4">
-            {/* Заголовок - КАК В ОБЫЧНЫХ КАРТОЧКАХ */}
-            <h3 className="text-xl font-semibold leading-tight text-white mb-4">
+          <div className={cn(
+            "flex-grow z-10",
+            // Мобильные
+            "px-3 py-2",
+            // Планшеты
+            "md:px-4 md:py-2",
+            // Ноутбуки
+            "lg:px-4 lg:py-3",
+            // Большие экраны
+            "xl:px-5 xl:py-3",
+            "wide:px-6 wide:py-4"
+          )}>
+            {/* Заголовок - очень компактные размеры */}
+            <h3 className={cn(
+              "font-semibold text-white leading-tight mb-2",
+              // Мобильные
+              "text-xs",
+              // Планшеты
+              "md:text-sm",
+              // Ноутбуки
+              "lg:text-base",
+              // Обычные десктопы
+              "xl:text-base",
+              // Большие экраны
+              "wide:text-lg",
+              // Очень большие экраны
+              "3xl:text-xl"
+            )}>
               Create Your Custom Solution
             </h3>
 
             {/* Описание */}
             <p className={cn(
-              "text-sm leading-relaxed line-clamp-3 mb-4 transition-colors duration-300",
-              isHovered ? "text-white" : "text-light-gray"
+              "line-clamp-3 leading-relaxed mb-3",
+              // Мобильные
+              "text-[10px]",
+              // Планшеты
+              "md:text-xs",
+              // Ноутбуки
+              "lg:text-xs",
+              // Обычные десктопы
+              "xl:text-xs",
+              // Большие экраны
+              "wide:text-xs",
+              // Очень большие экраны
+              "3xl:text-xs",
+              !shouldDisableEffects && "transition-colors duration-300",
+              !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
             )}>
               Tell us about your business challenges, and we will create a tailored automation solution that fits your specific needs and goals.
             </p>
             
             {/* Key Results */}
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold mb-3 text-primary">
+            <div className="mb-3">
+              <h4 className={cn(
+                "font-semibold mb-1.5 text-primary",
+                // Мобильные
+                "text-[10px]",
+                // Планшеты
+                "md:text-xs",
+                // Ноутбуки и выше
+                "lg:text-xs",
+                "xl:text-xs",
+                "wide:text-sm"
+              )}>
                 Key Results:
               </h4>
-              <ul className="space-y-1.5">
+              <ul className="space-y-1">
                 <li className="flex items-start">
-                  <span className="text-primary mr-2 mt-1 flex-shrink-0 text-sm">•</span>
+                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
                   <span className={cn(
-                    "text-xs leading-relaxed transition-colors duration-300",
-                    isHovered ? "text-white" : "text-light-gray"
+                    "leading-relaxed",
+                    // Мобильные
+                    "text-[10px]",
+                    // Планшеты
+                    "md:text-[10px]",
+                    // Ноутбуки
+                    "lg:text-xs",
+                    // Обычные десктопы
+                    "xl:text-xs",
+                    // Большие экраны
+                    "wide:text-xs",
+                    // Очень большие экраны
+                    "3xl:text-xs",
+                    !shouldDisableEffects && "transition-colors duration-300",
+                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Personalized solution design</span> based on your workflow
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2 mt-1 flex-shrink-0 text-sm">•</span>
+                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
                   <span className={cn(
-                    "text-xs leading-relaxed transition-colors duration-300",
-                    isHovered ? "text-white" : "text-light-gray"
+                    "leading-relaxed",
+                    // Мобильные
+                    "text-[10px]",
+                    // Планшеты
+                    "md:text-[10px]",
+                    // Ноутбуки
+                    "lg:text-xs",
+                    // Обычные десктопы
+                    "xl:text-xs",
+                    // Большие экраны
+                    "wide:text-xs",
+                    // Очень большие экраны
+                    "3xl:text-xs",
+                    !shouldDisableEffects && "transition-colors duration-300",
+                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Expert consultation included</span> with automation specialists
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary mr-2 mt-1 flex-shrink-0 text-sm">•</span>
+                  <span className="text-primary mr-1.5 mt-0.5 flex-shrink-0 text-xs">•</span>
                   <span className={cn(
-                    "text-xs leading-relaxed transition-colors duration-300",
-                    isHovered ? "text-white" : "text-light-gray"
+                    "leading-relaxed",
+                    // Мобильные
+                    "text-[10px]",
+                    // Планшеты
+                    "md:text-[10px]",
+                    // Ноутбуки
+                    "lg:text-xs",
+                    // Обычные десктопы
+                    "xl:text-xs",
+                    // Большие экраны
+                    "wide:text-xs",
+                    // Очень большие экраны
+                    "3xl:text-xs",
+                    !shouldDisableEffects && "transition-colors duration-300",
+                    !shouldDisableEffects && isHovered ? "text-white" : "text-light-gray"
                   )}>
                     <span className="text-primary">Tailored to your needs</span> and industry requirements
                   </span>
@@ -124,16 +252,44 @@ export function ContactCaseCard({
           </div>
 
           {/* Footer */}
-          <div className="border-t border-medium-gray/40 mt-auto flex-shrink-0 px-6 pb-4 pt-4 z-10">
-            <p className="text-sm text-white flex items-center mb-2">
+          <div className={cn(
+            "border-t border-medium-gray/40 mt-auto flex-shrink-0 z-10",
+            // Мобильные
+            "px-3 pb-2 pt-2",
+            // Планшеты
+            "md:px-4 md:pb-3 md:pt-3",
+            // Ноутбуки и выше
+            "lg:px-4 lg:pb-3 lg:pt-3",
+            "xl:px-5",
+            "wide:px-6"
+          )}>
+            <p className={cn(
+              "text-white flex items-center mb-1",
+              // Мобильные
+              "text-xs",
+              // Планшеты и выше
+              "md:text-xs",
+              "lg:text-xs",
+              "xl:text-xs",
+              "wide:text-xs"
+            )}>
               <span className="text-light-gray flex-shrink-0 mr-2">Company:</span>
               <span className="font-medium truncate">Your Company</span>
             </p>
 
-            <p className="text-sm text-white/80 flex items-center">
+            <p className={cn(
+              "text-white/80 flex items-center",
+              // Мобильные
+              "text-[10px]",
+              // Планшеты и выше
+              "md:text-xs",
+              "lg:text-xs", 
+              "xl:text-xs",
+              "wide:text-xs"
+            )}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2 text-primary flex-shrink-0"
+                className="h-3 w-3 mr-1.5 text-primary flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
