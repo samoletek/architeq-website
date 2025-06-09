@@ -405,11 +405,11 @@ export default function CasesContent() {
             </div>
 
             
-            {/* СЕТКА: более узкие фильтры + flex для карточек */}
-            <div className="flex gap-6">
+            {/* СЕТКА: фильтры + карточки */}
+            <div className="flex gap-6 justify-center">
               
-              {/* ЛЕВАЯ КОЛОНКА - Более узкие фильтры */}
-              <div className="w-[220px] flex-shrink-0">
+              {/* ЛЕВАЯ КОЛОНКА - Фильтры */}
+              <div className="w-[270px] flex-shrink-0">
                 <div className="sticky top-24 space-y-4">
                   
                   {/* Function Filters */}
@@ -433,8 +433,8 @@ export default function CasesContent() {
                 </div>
               </div>
               
-              {/* ПРАВАЯ ОБЛАСТЬ - Контент с большим количеством колонок */}
-              <div className="flex-1 min-w-0">
+              {/* ПРАВАЯ ОБЛАСТЬ - Карточки */}
+              <div className="w-[950px] min-w-0">
                 
                 {filteredCases.length > 0 ? (
                   <motion.div
