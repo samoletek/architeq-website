@@ -439,13 +439,10 @@
     @apply px-3 py-1.5 text-xs;
   }
   
-  /* Полное отключение всех анимаций на мобильных */
-  *, *::before, *::after {
-    animation-duration: 0ms !important;
-    animation-delay: 0ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0ms !important;
-    transition-delay: 0ms !important;
+  /* Легкие анимации на мобильных */
+  .case-card-enhanced {
+    transform: none !important;
+    transition: none !important;
   }
   
   /* Отключение motion эффектов */
