@@ -225,7 +225,7 @@ export default function TestimonialsSection({
     return (
       <section 
         ref={sectionRef}
-        className={cn("section-testimonials bg-site-bg pt-24 pb-48", className)}
+        className={cn("section-testimonials bg-site-bg pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-20 md:pb-24", className)}
       >
         <div className="container mx-auto">
           <motion.div 
@@ -304,7 +304,7 @@ export default function TestimonialsSection({
     return (
       <section 
         ref={sectionRef}
-        className={cn("section-testimonials bg-dark-gray pt-24 pb-48", className)}
+        className={cn("section-testimonials bg-dark-gray pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-20 md:pb-24", className)}
       >
         <div className="container mx-auto">
           <motion.div 
@@ -384,10 +384,10 @@ export default function TestimonialsSection({
     );
   }
   
-  // Вариант по умолчанию с каруселью
+  // Вариант по умолчанию с каруселью - уменьшенные отступы
   return (
     <section 
-      className={cn("section-testimonials bg-dark-gray pt-48 pb-18", className)}
+      className={cn("section-testimonials bg-dark-gray pt-20 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
