@@ -252,6 +252,7 @@ export function useDelayedAnimation(delay: number = 0, deps: React.DependencyLis
         clearTimeout(timerRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delay, reset, ...deps]);
   
   return { shouldAnimate, reset };
@@ -547,7 +548,8 @@ export function useCoordinatedAnimation(
     if (!coordinator) return;
     
     // Формируем уникальный ID последовательности на основе зависимостей
-    sequenceId.current = dependencies.length > 0 
+    const hasCustomDependencies = dependencies.length > 0;
+    sequenceId.current = hasCustomDependencies 
       ? `seq_${depsString}` 
       : undefined;
     
@@ -561,7 +563,7 @@ export function useCoordinatedAnimation(
     return () => {
       coordinator.unregister(id, sequenceId.current);
     };
-  }, [id, depsString]);
+  }, [id, depsString, dependencies.length]);
   
   return { canAnimate, onAnimationComplete };
 }

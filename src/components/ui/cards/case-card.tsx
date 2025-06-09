@@ -49,7 +49,7 @@ function SimpleMobileCard({
         const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
         const updatedHistory = [id, ...filteredHistory].slice(0, 10);
         storage.set('recentlyViewedCases', updatedHistory);
-      } catch (_) {
+      } catch {
         // Игнорируем ошибки localStorage
       }
     }
@@ -191,7 +191,7 @@ function EnhancedDesktopCard({
           const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
           const updatedHistory = [id, ...filteredHistory].slice(0, 10);
           storage.set('recentlyViewedCases', updatedHistory);
-        } catch (_) {
+        } catch {
           // Игнорируем ошибки localStorage
         }
       };

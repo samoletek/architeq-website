@@ -35,7 +35,7 @@ interface MobileCaseCardData {
   tags?: string[];
 }
 
-// Мобильная карточка с компактным содержимым
+// Узкая высокая мобильная карточка с компактным содержимым
 const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData }) => {
   return (
     <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-secondary/30">
@@ -108,7 +108,7 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
 function createCaseCardTags(caseStudy: CaseStudy): string[] {
   const tags: string[] = [];
   
-  // Маппинг
+  // Маппинг для коротких названий
   const tagNames: Record<string, string> = {
     // Solution Types
     'Custom Solutions': 'Custom',
@@ -411,10 +411,10 @@ export default function CasesContent() {
               />
             </div>
             
-            {/* СЕТКА */}
+            {/* СЕТКА: более узкие фильтры + flex для карточек */}
             <div className="flex gap-6">
               
-              {/* ЛЕВАЯ КОЛОНКА */}
+              {/* ЛЕВАЯ КОЛОНКА - Более узкие фильтры */}
               <div className="w-[220px] flex-shrink-0">
                 <div className="sticky top-24 space-y-4">
                   
@@ -433,7 +433,7 @@ export default function CasesContent() {
                 </div>
               </div>
               
-              {/* ПРАВАЯ ОБЛАСТЬ */}
+              {/* ПРАВАЯ ОБЛАСТЬ - Контент с большим количеством колонок */}
               <div className="flex-1 min-w-0">
                 
                 {filteredCases.length > 0 ? (
