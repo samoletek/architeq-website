@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { FUNCTION_CATEGORIES, FunctionCategory, getFilterCounts } from '@/lib/data/case-studies';
+import { FunctionCategory, getFilterCounts } from '@/lib/data/case-studies';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface FunctionFiltersProps {

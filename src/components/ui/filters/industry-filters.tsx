@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
-import { INDUSTRY_CATEGORIES, IndustryCategory, getFilterCounts } from '@/lib/data/case-studies';
+import { IndustryCategory, getFilterCounts } from '@/lib/data/case-studies';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface IndustryFiltersProps {

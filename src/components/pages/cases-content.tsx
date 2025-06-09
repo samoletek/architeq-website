@@ -45,7 +45,7 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
           {caseItem.tags.map((tag: string, tagIndex: number) => (
             <span
               key={tagIndex}
-              className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
+              className="bg-black/60 text-white text-[9px] px-1 py-0.5 rounded border border-white/10"
             >
               {tag}
             </span>

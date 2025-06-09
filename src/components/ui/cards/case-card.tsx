@@ -68,7 +68,7 @@ function SimpleMobileCard({
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
+              className="bg-black/60 text-white text-[9px] px-1 py-0.5 rounded border border-white/10"
             >
               {tag}
             </span>
@@ -263,7 +263,7 @@ function EnhancedDesktopCard({
             {tags.map((tag, tagIndex) => (
               <span
                 key={tagIndex}
-                className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10"
+                className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
               >
                 {tag}
               </span>

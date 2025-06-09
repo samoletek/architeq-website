@@ -33,7 +33,7 @@ export function RecentlyViewedCases({
       const cases = recentlyViewedIds
         .map(id => getCaseStudyById(id))
         .filter(Boolean)
-        .filter(caseStudy => !caseStudy?.isSpecialCard) // Исключаем специальные карточки
+        .filter(caseStudy => !caseStudy?.isSpecialCard)
         .slice(0, maxItems) as CaseStudy[];
       
       setRecentCases(cases);
@@ -83,7 +83,7 @@ export function RecentlyViewedCases({
 
         {/* Список кейсов */}
         <div className="space-y-1">
-          {displayedCases.map((caseItem, index) => (
+          {displayedCases.map((caseItem) => (
             <Link
               key={caseItem.id}
               href={`/cases/${caseItem.id}`}
