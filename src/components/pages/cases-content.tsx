@@ -409,7 +409,7 @@ export default function CasesContent() {
             <div className="flex gap-6 justify-center">
               
               {/* ЛЕВАЯ КОЛОНКА - Фильтры */}
-              <div className="w-[270px] flex-shrink-0">
+              <div className="w-[240px] flex-shrink-0">
                 <div className="sticky top-24 space-y-4">
                   
                   {/* Function Filters */}
