@@ -23,7 +23,6 @@ export function IndustryFilters({
   showCounts = false
 }: IndustryFiltersProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const { isMobile } = useDeviceDetection();
 
   // Загружаем данные (имитация загрузки)
@@ -82,50 +81,29 @@ export function IndustryFilters({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* КОМПАКТНЫЙ ЗАГОЛОВОК */}
-      <div className="mb-3">
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-between text-left group focus:outline-none px-2 py-1 rounded-md hover:bg-white/5 transition-colors duration-200"
-        >
-          <div className="flex items-center">
-            <h3 className="text-sm font-semibold text-white">
-              By Industry
-            </h3>
-            
-            {/* Компактный счетчик справа от заголовка */}
-            {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
-              <span className="bg-primary/20 text-primary text-xs px-1 py-0.5 rounded-full font-medium border border-primary/30 text-[9px] ml-1.5 min-w-[16px] text-center">
-                {selectedIndustries.filter(id => id !== 'your-industry').length}
-              </span>
-            )}
-          </div>
+      {/* ЗАГОЛОВОК */}
+      <div className="mb-4">
+        <div className="flex items-center px-2 py-2 border-b border-gray-600/30">
+          <h3 className="text-sm font-semibold text-white">
+            By Industry
+          </h3>
           
-          <motion.div
-            animate={{ rotate: isCollapsed ? 0 : 180 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="text-light-gray group-hover:text-white transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
-        </button>
+          {/* Компактный счетчик справа от заголовка */}
+          {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
+            <span className="bg-primary/20 text-primary text-xs px-1 py-0.5 rounded-full font-medium border border-primary/30 text-[9px] ml-1.5 min-w-[16px] text-center">
+              {selectedIndustries.filter(id => id !== 'your-industry').length}
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* КОМПАКТНЫЕ TOGGLE для индустрий */}
-      <AnimatePresence>
-        {!isCollapsed && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className={cn(
-              "space-y-1",
-              isMobile && "space-y-0.5"
-            )}
-          >
+      {/* TOGGLE для индустрий */}
+      <div
+        className={cn(
+          "space-y-1",
+          isMobile && "space-y-0.5"
+        )}
+      >
             {filteredIndustries.map(({ id: industryId, label, count }, index) => {
               const selected = isSelected(industryId);
 
@@ -252,32 +230,7 @@ export function IndustryFilters({
                 </motion.div>
               );
             })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Компактный вид при сворачивании */}
-      {isCollapsed && selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-wrap gap-1"
-        >
-          {selectedIndustries.filter(id => id !== 'your-industry').slice(0, 3).map(industryId => (
-            <span 
-              key={industryId}
-              className="text-xs bg-primary/15 text-primary px-1.5 py-0.5 rounded-md border border-primary/25 text-[9px]"
-            >
-              {INDUSTRY_CATEGORIES[industryId]}
-            </span>
-          ))}
-          {selectedIndustries.filter(id => id !== 'your-industry').length > 3 && (
-            <span className="text-xs text-light-gray px-1.5 py-0.5 text-[9px]">
-              +{selectedIndustries.filter(id => id !== 'your-industry').length - 3} more
-            </span>
-          )}
-        </motion.div>
-      )}
+      </div>
     </div>
   );
 }

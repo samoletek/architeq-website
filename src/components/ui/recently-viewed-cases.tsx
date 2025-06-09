@@ -6,21 +6,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { CaseStudy, getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface RecentlyViewedCasesProps {
   allCases: CaseStudy[];
   className?: string;
   maxItems?: number;
+  compact?: boolean;
 }
 
 export function RecentlyViewedCases({
   allCases,
   className,
-  maxItems = 5
+  maxItems = 5,
+  compact
 }: RecentlyViewedCasesProps) {
   const [recentCases, setRecentCases] = useState<CaseStudy[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isMobile } = useDeviceDetection();
 
   // Загружаем недавно просмотренные кейсы из localStorage
   useEffect(() => {
@@ -49,10 +53,67 @@ export function RecentlyViewedCases({
     return null;
   }
 
-  // Показываем только первые 3 элемента, если не развернуто
-  const displayedCases = isExpanded ? recentCases : recentCases.slice(0, 3);
-  const hasMoreItems = recentCases.length > 3;
+  // Автоматически определяем компактный режим для десктопа
+  const isCompact = compact !== undefined ? compact : !isMobile;
+  
+  // Для компактного режима показываем только 5 элементов без расширения
+  const displayedCases = isCompact ? recentCases.slice(0, 5) : (isExpanded ? recentCases : recentCases.slice(0, 3));
+  const hasMoreItems = !isCompact && recentCases.length > 3;
 
+  // Компактная версия для десктопа (в стиле фильтров)
+  if (isCompact) {
+    return (
+      <div className={cn("w-full", className)}>
+        {/* Заголовок */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between px-2 py-2 border-b border-gray-600/30">
+            <h3 className="text-sm font-semibold text-white">
+              Recently Viewed
+            </h3>
+            {recentCases.length > 0 && (
+              <button
+                onClick={clearHistory}
+                className="text-[9px] text-light-gray hover:text-white transition-colors focus:outline-none"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Список кейсов */}
+        <div className="space-y-1">
+          {displayedCases.map((caseItem, index) => (
+            <Link
+              key={caseItem.id}
+              href={`/cases/${caseItem.id}`}
+              className="block group"
+            >
+              <div className="px-2 py-1.5 rounded-md transition-all duration-200 hover:bg-secondary/5 border border-transparent hover:border-secondary/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex-grow min-w-0">
+                    <span className="text-xs text-white group-hover:text-secondary transition-colors line-clamp-1 leading-tight">
+                      {caseItem.title}
+                    </span>
+                    <p className="text-[10px] text-light-gray mt-0.5 line-clamp-1">
+                      {caseItem.company}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 ml-2 text-light-gray group-hover:text-secondary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Полная версия для мобильных
   return (
     <div className={cn("bg-dark-gray/50 backdrop-blur-sm rounded-lg p-4 border border-medium-gray/30", className)}>
       

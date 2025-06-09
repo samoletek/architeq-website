@@ -404,12 +404,6 @@ export default function CasesContent() {
               />
             </div>
 
-            {/* Недавно просмотренные кейсы */}
-            <div className="mb-6">
-              <RecentlyViewedCases 
-                allCases={allCaseStudies} 
-              />
-            </div>
             
             {/* СЕТКА: более узкие фильтры + flex для карточек */}
             <div className="flex gap-6">
@@ -428,6 +422,12 @@ export default function CasesContent() {
                   <IndustryFilters
                     selectedIndustries={selectedIndustries}
                     onIndustryChange={handleIndustryChange}
+                  />
+                  
+                  {/* Recently Viewed Cases */}
+                  <RecentlyViewedCases 
+                    allCases={allCaseStudies}
+                    compact={true}
                   />
                   
                 </div>
