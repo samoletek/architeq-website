@@ -77,7 +77,7 @@ function SimpleMobileCard({
       )}
       
       {/* Заголовок */}
-      <h3 className="text-sm font-semibold text-white leading-tight mb-2">
+      <h3 className="text-lg font-semibold text-white leading-tight mb-2">
         {title}
       </h3>
       

@@ -47,23 +47,6 @@ export function IndustryFilters({
     return selectedIndustries.includes(industryId);
   };
 
-  // Анимационные варианты для toggle
-  const toggleVariants = {
-    initial: { scale: 0.95, opacity: 0 },
-    animate: { 
-      scale: 1, 
-      opacity: 1,
-      transition: { duration: 0.2, ease: "easeOut" }
-    },
-    hover: { 
-      scale: 1.02,
-      transition: { duration: 0.15, ease: "easeInOut" }
-    },
-    tap: { 
-      scale: 0.98,
-      transition: { duration: 0.1 }
-    }
-  };
 
   if (isLoading) {
     return (
@@ -88,9 +71,9 @@ export function IndustryFilters({
             By Industry
           </h3>
           
-          {/* Компактный счетчик справа от заголовка */}
+          {/* Счетчик справа от заголовка */}
           {selectedIndustries.filter(id => id !== 'your-industry').length > 0 && (
-            <span className="bg-primary/20 text-primary text-xs px-1 py-0.5 rounded-full font-medium border border-primary/30 text-[9px] ml-1.5 min-w-[16px] text-center">
+            <span className="text-primary text-sm ml-1.5 font-semibold">
               {selectedIndustries.filter(id => id !== 'your-industry').length}
             </span>
           )}
@@ -104,24 +87,16 @@ export function IndustryFilters({
           isMobile && "space-y-0.5"
         )}
       >
-            {filteredIndustries.map(({ id: industryId, label, count }, index) => {
+            {filteredIndustries.map(({ id: industryId, label, count }) => {
               const selected = isSelected(industryId);
 
               return (
-                <motion.div
+                <div
                   key={industryId}
-                  variants={toggleVariants}
-                  initial="initial"
-                  animate="animate"
-                  whileHover={disabled ? undefined : "hover"}
-                  whileTap={disabled ? undefined : "tap"}
                   className={cn(
                     "relative w-full transition-all duration-300",
                     isMobile ? "min-h-[28px]" : "min-h-[30px]"
                   )}
-                  style={{
-                    animationDelay: `${index * 0.05}s`
-                  }}
                 >
                   <div
                     className={cn(
@@ -227,7 +202,7 @@ export function IndustryFilters({
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
       </div>

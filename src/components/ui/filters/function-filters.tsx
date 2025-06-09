@@ -47,23 +47,6 @@ export function FunctionFilters({
     return selectedFunctions.includes(functionId);
   };
 
-  // Анимационные варианты для toggle
-  const toggleVariants = {
-    initial: { scale: 0.95, opacity: 0 },
-    animate: { 
-      scale: 1, 
-      opacity: 1,
-      transition: { duration: 0.2, ease: "easeOut" }
-    },
-    hover: { 
-      scale: 1.02,
-      transition: { duration: 0.15, ease: "easeInOut" }
-    },
-    tap: { 
-      scale: 0.98,
-      transition: { duration: 0.1 }
-    }
-  };
 
   if (isLoading) {
     return (
@@ -88,9 +71,9 @@ export function FunctionFilters({
             By Function
           </h3>
           
-          {/* Компактный счетчик справа от заголовка */}
+          {/* Счетчик справа от заголовка */}
           {selectedFunctions.filter(id => id !== 'custom-solutions').length > 0 && (
-            <span className="bg-secondary/20 text-secondary text-xs px-1 py-0.5 rounded-full font-medium border border-secondary/30 text-[9px] ml-1.5 min-w-[16px] text-center">
+            <span className="text-secondary text-sm ml-1.5 font-semibold">
               {selectedFunctions.filter(id => id !== 'custom-solutions').length}
             </span>
           )}
@@ -104,24 +87,16 @@ export function FunctionFilters({
           isMobile && "space-y-0.5"
         )}
       >
-            {filteredFunctions.map(({ id: functionId, label, count }, index) => {
+            {filteredFunctions.map(({ id: functionId, label, count }) => {
               const selected = isSelected(functionId);
 
               return (
-                <motion.div
+                <div
                   key={functionId}
-                  variants={toggleVariants}
-                  initial="initial"
-                  animate="animate"
-                  whileHover={disabled ? undefined : "hover"}
-                  whileTap={disabled ? undefined : "tap"}
                   className={cn(
                     "relative w-full transition-all duration-300",
                     isMobile ? "min-h-[28px]" : "min-h-[30px]"
                   )}
-                  style={{
-                    animationDelay: `${index * 0.05}s`
-                  }}
                 >
                   <div
                     className={cn(
@@ -227,7 +202,7 @@ export function FunctionFilters({
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
       </div>

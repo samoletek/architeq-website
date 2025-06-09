@@ -54,7 +54,7 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
       )}
       
       {/* Заголовок */}
-      <h3 className="text-xs font-semibold text-white leading-tight mb-3">
+      <h3 className="text-base font-semibold text-white leading-tight mb-3">
         {caseItem.title}
       </h3>
       
