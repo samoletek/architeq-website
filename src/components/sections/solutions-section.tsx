@@ -148,7 +148,7 @@ function SolutionNavigation({
 }) {
   return (
     <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto">
         {solutions.map((solution, index) => (
           <motion.button
             key={solution.id}

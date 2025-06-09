@@ -585,21 +585,35 @@ export default function ServicesPage() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastClickTimeRef = useRef(0);
   
   const { isMobile, isDesktop } = useDeviceDetection();
   
-  // Обработчик прокрутки с полным скрытием Hero (ТОЛЬКО ДЛЯ ДЕСКТОПА)
+  // Улучшенный обработчик прокрутки (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {
-    if (isMobile) return; // Отключаем сложную логику для мобильных
+    if (isMobile) return;
     
     if (!sectionRef.current) return;
     
     let ticking = false;
+    let lastScrollTime = 0;
     
     const handleScroll = () => {
-      if (!ticking) {
+      const now = Date.now();
+      
+      if (!ticking && now - lastScrollTime > 16) { // Throttle to ~60fps
+        lastScrollTime = now;
+        ticking = true;
+        
         requestAnimationFrame(() => {
-          if (!sectionRef.current || isScrollingRef.current) return;
+          if (!sectionRef.current) {
+            ticking = false;
+            return;
+          }
+          
+          // Проверяем, прошло ли достаточно времени с последнего клика
+          const timeSinceClick = now - lastClickTimeRef.current;
+          const shouldIgnoreScroll = isScrollingRef.current && timeSinceClick < 500; // Уменьшили время блокировки
           
           const rect = sectionRef.current.getBoundingClientRect();
           const sectionHeight = rect.height;
@@ -607,10 +621,10 @@ export default function ServicesPage() {
           
           const inSection = rect.top <= 0 && rect.bottom >= windowHeight;
           
-          if (inSection) {
+          if (inSection && !shouldIgnoreScroll) {
             const scrolled = Math.abs(rect.top);
             const totalScrollable = sectionHeight - windowHeight;
-            const progress = Math.min(scrolled / totalScrollable, 1);
+            const progress = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
             
             if (progress <= 0.15) {
               setScrollProgress(0);
@@ -634,9 +648,13 @@ export default function ServicesPage() {
             }
           }
           
+          // Если мы находимся в секции и прошло достаточно времени, сбрасываем флаг
+          if (inSection && timeSinceClick > 500) {
+            isScrollingRef.current = false;
+          }
+          
           ticking = false;
         });
-        ticking = true;
       }
     };
     
@@ -648,18 +666,24 @@ export default function ServicesPage() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, [activeIndex, isMobile]);
+  }, [activeIndex, isMobile, isScrollingRef]);
   
-  // Обработчик клика по навигации (ТОЛЬКО ДЛЯ ДЕСКТОПА)
+  // Улучшенный обработчик клика по навигации
   const handleServiceClick = (index: number) => {
     if (isMobile || index === activeIndex) return;
     
+    // Записываем время клика
+    lastClickTimeRef.current = Date.now();
+    
+    // Устанавливаем флаг программной прокрутки
     isScrollingRef.current = true;
+    
+    // Немедленно обновляем состояние
     setDirection(index > activeIndex ? 'down' : 'up');
     setActiveIndex(index);
     
-    const newProgress = index / (services.length - 1);
-    setScrollProgress(newProgress);
+    const targetProgress = index / (services.length - 1);
+    setScrollProgress(targetProgress);
     
     if (sectionRef.current) {
       const rect = sectionRef.current.getBoundingClientRect();
@@ -667,27 +691,31 @@ export default function ServicesPage() {
       const windowHeight = window.innerHeight;
       const totalScrollable = sectionHeight - windowHeight;
       
+      // Вычисляем целевую позицию скролла
       const heroProgress = 0.15;
-      const cardProgress = (1 - heroProgress) * newProgress;
-      const targetProgress = heroProgress + cardProgress;
+      const cardProgress = (1 - heroProgress) * targetProgress;
+      const finalProgress = heroProgress + cardProgress;
       
       const currentScrollTop = window.pageYOffset;
       const sectionTop = currentScrollTop + rect.top;
-      const targetScrollTop = sectionTop + (totalScrollable * targetProgress);
+      const targetScrollTop = sectionTop + (totalScrollable * finalProgress);
       
+      // Плавная прокрутка
       window.scrollTo({
         top: targetScrollTop,
         behavior: 'smooth'
       });
     }
     
+    // Очищаем предыдущий таймер
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
     
+    // Сбрасываем флаг через более короткое время
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-    }, 1000);
+    }, 500);
   };
   
   return (

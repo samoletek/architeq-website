@@ -210,7 +210,11 @@ export function SearchBar({
   
   // Функция для установки заданного запроса
   const setSearchTerm = (term: string) => {
-    handleInputChange({ target: { value: term } } as React.ChangeEvent<HTMLInputElement>);
+    setSearchQuery(term);
+    setShowResults(term.length > 0);
+    if (onSearch) {
+      onSearch(term);
+    }
   };
   
   // Фильтрация и ограничение результатов
@@ -291,14 +295,14 @@ export function SearchBar({
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => setSearchTerm("CRM")}
+                    onClick={() => setSearchTerm("CRM Integration")}
                   >
                     CRM Integration
                   </Button>
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => setSearchTerm("Document")}
+                    onClick={() => setSearchTerm("Document Automation")}
                   >
                     Document Automation
                   </Button>
@@ -483,21 +487,21 @@ export function SearchBar({
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => setSearchTerm("CRM")}
+                    onClick={() => setSearchTerm("CRM Integration")}
                   >
                     CRM Integration
                   </Button>
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => setSearchTerm("Document")}
+                    onClick={() => setSearchTerm("Document Automation")}
                   >
                     Document Automation
                   </Button>
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => setSearchTerm("AI")}
+                    onClick={() => setSearchTerm("AI Solutions")}
                   >
                     AI Solutions
                   </Button>
