@@ -5,7 +5,7 @@ import SiteLayout from '@/components/layout/site-layout';
 import { Button } from '@/components/ui/button';
 import { CaseCard } from '@/components/ui/cards/case-card';
 import Link from 'next/link';
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { cn } from '@/lib/utils/utils';
@@ -1332,6 +1332,7 @@ function CaseStudiesSection({
   );
 }
 
+// Исправленная FAQSection с циклической вертикальной каруселью
 function FAQSection({ 
   title, 
   subtitle, 
@@ -1347,6 +1348,147 @@ function FAQSection({
     triggerOnce: true
   });
 
+  const [activeQuestion, setActiveQuestion] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isVisible && !hasAnimated) {
+      setHasAnimated(true);
+    }
+  }, [isVisible, hasAnimated]);
+
+  // Обработка скролла с блокировкой выхода из секции
+  useEffect(() => {
+    let scrollDirection = 0;
+    let scrollMagnitude = 0;
+    let isTransitioning = false;
+    let scrollTimeout: NodeJS.Timeout;
+    let isInFAQSection = false;
+    
+    const handleScroll = (e: WheelEvent) => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const isCurrentlyInSection = rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+      
+      // Обновляем состояние нахождения в секции
+      if (isCurrentlyInSection) {
+        isInFAQSection = true;
+      }
+      
+      if (isInFAQSection) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (isTransitioning) return;
+        
+        // Накапливаем величину скролла
+        scrollMagnitude += Math.abs(e.deltaY);
+        scrollDirection = e.deltaY > 0 ? 1 : -1;
+        
+        // Очищаем предыдущий таймаут
+        clearTimeout(scrollTimeout);
+        
+        // Ждем завершения скролла
+        scrollTimeout = setTimeout(() => {
+          // Проверяем, был ли это полноценный скролл
+          if (scrollMagnitude > 50) {
+            isTransitioning = true;
+            
+            if (scrollDirection > 0) {
+              setActiveQuestion(prev => (prev + 1) % faqs.length);
+            } else {
+              setActiveQuestion(prev => (prev - 1 + faqs.length) % faqs.length);
+            }
+            
+            // Блокируем переключения на время анимации
+            setTimeout(() => {
+              isTransitioning = false;
+            }, 900);
+          }
+          
+          // Сбрасываем накопители
+          scrollMagnitude = 0;
+          scrollDirection = 0;
+        }, 150);
+      }
+    };
+    
+    // Обработчик клика для выхода из режима FAQ
+    const handleClick = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+      
+      const target = e.target as HTMLElement;
+      const isClickOnFAQ = sectionRef.current.contains(target);
+      
+      // Если клик вне FAQ секции, разрешаем обычный скролл
+      if (!isClickOnFAQ) {
+        isInFAQSection = false;
+      }
+    };
+
+    window.addEventListener('wheel', handleScroll, { passive: false, capture: true });
+    document.addEventListener('click', handleClick);
+    
+    return () => {
+      window.removeEventListener('wheel', handleScroll, true);
+      document.removeEventListener('click', handleClick);
+      clearTimeout(scrollTimeout);
+    };
+  }, [faqs.length]);
+
+  // Функция для переключения активного вопроса
+  const handleQuestionClick = (index: number) => {
+    setActiveQuestion(index);
+  };
+
+  // Функция для вычисления позиции и трансформации карточки (больше видимого пространства)
+  const getCardTransform = (index: number) => {
+    const diff = index - activeQuestion;
+    let normalizedDiff = diff;
+    
+    // Нормализация для циклической логики
+    if (diff > faqs.length / 2) {
+      normalizedDiff = diff - faqs.length;
+    } else if (diff < -faqs.length / 2) {
+      normalizedDiff = diff + faqs.length;
+    }
+    
+    if (normalizedDiff === 0) {
+      // Активная карточка в центре
+      return {
+        transform: 'translateY(0%) scale(1) rotateX(0deg)',
+        opacity: 1,
+        zIndex: 10,
+      };
+    } else if (normalizedDiff === -1) {
+      // Предыдущая карточка - больше видимого пространства
+      return {
+        transform: 'translateY(-65%) scale(0.85) rotateX(8deg)',
+        opacity: 0.65,
+        zIndex: 5,
+      };
+    } else if (normalizedDiff === 1) {
+      // Следующая карточка - больше видимого пространства
+      return {
+        transform: 'translateY(65%) scale(0.85) rotateX(-8deg)',
+        opacity: 0.65,
+        zIndex: 5,
+      };
+    } else {
+      // Все остальные карточки полностью скрыты
+      return {
+        transform: normalizedDiff < 0 
+          ? 'translateY(-140%) scale(0.7) rotateX(20deg)'
+          : 'translateY(140%) scale(0.7) rotateX(-20deg)',
+        opacity: 0,
+        zIndex: 1,
+      };
+    }
+  };
+
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
@@ -1359,15 +1501,15 @@ function FAQSection({
     }
   };
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+  const navVariants = {
+    hidden: { opacity: 0, x: -30 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
+      x: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.1 + index * 0.1
+        delay: index * 0.08
       }
     })
   };
@@ -1390,27 +1532,223 @@ function FAQSection({
               }}>
             {title}
           </h2>
-          <p className="text-light-gray text-lg md:text-2xl max-w-3xl mx-auto opacity-90">
+          <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
             {subtitle}
           </p>
         </motion.div>
-        
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              custom={index}
-              initial="hidden"
-              animate={isVisible ? "visible" : "hidden"}
-              variants={cardVariants}
-            >
-              <div className="bg-gradient-to-br from-dark-purple/50 to-dark-purple/30 backdrop-blur-sm border border-primary/20 
-                rounded-xl p-6 h-full hover:border-primary/40 transition-colors duration-300">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-light-gray section-subtitle-large opacity-90">{faq.answer}</p>
+
+        <div className="max-w-7xl mx-auto" ref={sectionRef}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+            
+            <div className="lg:col-span-1 flex items-start justify-center" style={{ paddingTop: '85px' }}>
+              <div className="w-full">
+                <div className="space-y-2">
+                  {faqs.map((faq, index) => (
+                    <motion.button
+                      key={index}
+                      custom={index}
+                      initial="hidden"
+                      animate={isVisible ? "visible" : "hidden"}
+                      variants={navVariants}
+                      onClick={() => handleQuestionClick(index)}
+                      className={`w-full text-left py-4 px-6 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
+                        activeQuestion === index 
+                          ? 'text-white' 
+                          : 'text-white/70 hover:text-white'
+                      }`}
+                    >
+                      {activeQuestion === index && (
+                        <motion.div 
+                          className="absolute inset-0 rounded-lg"
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                            boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                          }}
+                          initial={{ opacity: 0 }}
+                          animate={{ 
+                            opacity: 1,
+                            boxShadow: [
+                              '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                              '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                              '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                            ]
+                          }}
+                          transition={{
+                            opacity: { duration: 0.3 },
+                            boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                          }}
+                        />
+                      )}
+                      
+                      {activeQuestion !== index && (
+                        <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                      )}
+                      
+                      <span className="relative z-10 font-medium text-base md:text-lg leading-relaxed block">
+                        {faq.question}
+                      </span>
+                      
+                      <span className={`relative z-10 text-xs font-mono mt-1 block transition-colors duration-300 ${
+                        activeQuestion === index ? 'text-secondary' : 'text-white/50'
+                      }`}>
+                        Q{String(index + 1).padStart(2, '0')}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center mt-8 px-6">
+                  <button
+                    onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
+                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                    Previous
+                  </button>
+
+                  <span className="text-white/50 text-sm font-mono">
+                    {activeQuestion + 1} / {faqs.length}
+                  </span>
+
+                  <button
+                    onClick={() => handleQuestionClick((activeQuestion + 1) % faqs.length)}
+                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                  >
+                    Next
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </motion.div>
-          ))}
+            </div>
+
+            <div className="lg:col-span-2 flex items-center justify-center" style={{ marginTop: '-50px' }}>
+              <div className="relative w-full" style={{ height: '550px' }}>
+                <div className="relative h-full perspective-1000" ref={cardContainerRef}>
+                  {faqs.map((faq, index) => {
+                    const transform = getCardTransform(index);
+                    
+                    return (
+                      <motion.div
+                        key={index}
+                        className="absolute w-full"
+                        style={{
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          height: '280px', // Вернул исходную высоту
+                          transformStyle: 'preserve-3d',
+                          backfaceVisibility: 'hidden'
+                        }}
+                        animate={transform}
+                        transition={{
+                          duration: 0.7, // Увеличил длительность для плавности
+                          ease: [0.25, 0.46, 0.45, 0.94], // Плавная cubic-bezier кривая
+                          type: "tween"
+                        }}
+                      >
+                        {activeQuestion === index && (
+                          <motion.div
+                            className="absolute -inset-6 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ 
+                              opacity: 1, 
+                              scale: 1,
+                              boxShadow: [
+                                '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.2)',
+                                '0 0 50px rgba(0, 0, 0, 0.7), 0 0 100px rgba(119, 71, 207, 0.3)',
+                                '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.2)'
+                              ]
+                            }}
+                            transition={{
+                              opacity: { duration: 0.4 },
+                              scale: { duration: 0.4 },
+                              boxShadow: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                            }}
+                          />
+                        )}
+                        
+                        <div className={`bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col justify-center ${
+                          activeQuestion === index 
+                            ? 'border border-primary/30' 
+                            : 'border border-primary/10'
+                        }`}>
+                          
+                          <motion.h3 
+                            className="text-2xl md:text-3xl font-bold mb-8 leading-tight"
+                            style={{
+                              textShadow: activeQuestion === index 
+                                ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
+                                : 'none'
+                            }}
+                            animate={{
+                              textShadow: activeQuestion === index 
+                                ? [
+                                    '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)',
+                                    '0 0 25px rgba(255,255,255,0.9), 0 0 50px rgba(178,75,243,0.6)',
+                                    '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                                  ]
+                                : 'none'
+                            }}
+                            transition={{
+                              textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                            }}
+                          >
+                            {faq.question}
+                          </motion.h3>
+
+                          <div className="flex-1">
+                            <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+                              {faq.answer}
+                            </p>
+                          </div>
+
+                          {activeQuestion === index && (
+                            <motion.div
+                              className="mt-8 pt-6 border-t border-primary/20"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center text-secondary text-sm font-medium">
+                                  <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
+                                  Have more questions?
+                                </div>
+                                <Link 
+                                  href="/contacts" 
+                                  className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium"
+                                >
+                                  Contact our team →
+                                </Link>
+                              </div>
+                            </motion.div>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col space-y-2 z-20">
+                  {faqs.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleQuestionClick(index)}
+                      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                        activeQuestion === index 
+                          ? 'bg-secondary shadow-lg' 
+                          : 'bg-white/20 hover:bg-white/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
