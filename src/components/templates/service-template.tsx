@@ -1359,83 +1359,14 @@ function FAQSection({
     }
   }, [isVisible, hasAnimated]);
 
-  // Обработка скролла с блокировкой выхода из секции
+  // Автоматическая карусель вместо скролла
   useEffect(() => {
-    let scrollDirection = 0;
-    let scrollMagnitude = 0;
-    let isTransitioning = false;
-    let scrollTimeout: NodeJS.Timeout;
-    let isInFAQSection = false;
-    
-    const handleScroll = (e: WheelEvent) => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      const isCurrentlyInSection = rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
-      
-      // Обновляем состояние нахождения в секции
-      if (isCurrentlyInSection) {
-        isInFAQSection = true;
-      }
-      
-      if (isInFAQSection) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        if (isTransitioning) return;
-        
-        // Накапливаем величину скролла
-        scrollMagnitude += Math.abs(e.deltaY);
-        scrollDirection = e.deltaY > 0 ? 1 : -1;
-        
-        // Очищаем предыдущий таймаут
-        clearTimeout(scrollTimeout);
-        
-        // Ждем завершения скролла
-        scrollTimeout = setTimeout(() => {
-          // Проверяем, был ли это полноценный скролл
-          if (scrollMagnitude > 50) {
-            isTransitioning = true;
-            
-            if (scrollDirection > 0) {
-              setActiveQuestion(prev => (prev + 1) % faqs.length);
-            } else {
-              setActiveQuestion(prev => (prev - 1 + faqs.length) % faqs.length);
-            }
-            
-            // Блокируем переключения на время анимации
-            setTimeout(() => {
-              isTransitioning = false;
-            }, 900);
-          }
-          
-          // Сбрасываем накопители
-          scrollMagnitude = 0;
-          scrollDirection = 0;
-        }, 150);
-      }
-    };
-    
-    // Обработчик клика для выхода из режима FAQ
-    const handleClick = (e: MouseEvent) => {
-      if (!sectionRef.current) return;
-      
-      const target = e.target as HTMLElement;
-      const isClickOnFAQ = sectionRef.current.contains(target);
-      
-      // Если клик вне FAQ секции, разрешаем обычный скролл
-      if (!isClickOnFAQ) {
-        isInFAQSection = false;
-      }
-    };
+    const autoScrollInterval = setInterval(() => {
+      setActiveQuestion(prev => (prev + 1) % faqs.length);
+    }, 4000); // Переключение каждые 4 секунды
 
-    window.addEventListener('wheel', handleScroll, { passive: false, capture: true });
-    document.addEventListener('click', handleClick);
-    
     return () => {
-      window.removeEventListener('wheel', handleScroll, true);
-      document.removeEventListener('click', handleClick);
-      clearTimeout(scrollTimeout);
+      clearInterval(autoScrollInterval);
     };
   }, [faqs.length]);
 
@@ -1538,9 +1469,9 @@ function FAQSection({
         </motion.div>
 
         <div className="max-w-7xl mx-auto" ref={sectionRef}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center">
             
-            <div className="lg:col-span-1 flex items-start justify-center" style={{ paddingTop: '85px' }}>
+            <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
                 <div className="space-y-2">
                   {faqs.map((faq, index) => (
@@ -1625,8 +1556,8 @@ function FAQSection({
               </div>
             </div>
 
-            <div className="lg:col-span-2 flex items-center justify-center" style={{ marginTop: '-50px' }}>
-              <div className="relative w-full" style={{ height: '550px' }}>
+            <div className="lg:col-span-2 flex items-center justify-center">
+              <div className="relative w-full" style={{ height: '450px' }}>
                 <div className="relative h-full perspective-1000" ref={cardContainerRef}>
                   {faqs.map((faq, index) => {
                     const transform = getCardTransform(index);
@@ -1670,12 +1601,8 @@ function FAQSection({
                           />
                         )}
                         
-                        <div className={`bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
-                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col justify-center ${
-                          activeQuestion === index 
-                            ? 'border border-primary/30' 
-                            : 'border border-primary/10'
-                        }`}>
+                        <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col justify-center">
                           
                           <motion.h3 
                             className="text-2xl md:text-3xl font-bold mb-8 leading-tight"
@@ -1733,12 +1660,12 @@ function FAQSection({
                   })}
                 </div>
 
-                <div className="absolute right-0 top-1/2 transform -translate-y-1/2 flex flex-col space-y-2 z-20">
+                <div className="absolute -right-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
                   {faqs.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => handleQuestionClick(index)}
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
                         activeQuestion === index 
                           ? 'bg-secondary shadow-lg' 
                           : 'bg-white/20 hover:bg-white/40'
