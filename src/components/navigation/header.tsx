@@ -87,13 +87,10 @@ export default function Header({
     // Закрываем мобильное меню при изменении маршрута
     setIsMobileMenuOpen(false);
     
-    // Анимация появления хедера - с задержкой только для домашней страницы
-    const isHomePage = pathname === '/';
-    const delay = isHomePage ? 800 : 50;
-    
+    // Анимация появления хедера - убираем задержку для предотвращения FOUC
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, delay);
+    }, 10);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
