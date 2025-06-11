@@ -165,6 +165,8 @@ export default function AISolutionsPage() {
     }
   ];
 
+
+
   return (
     <ServiceTemplate
       serviceId="ai-solutions"
@@ -193,7 +195,8 @@ export default function AISolutionsPage() {
           "Predictive Analytics",
           "OpenAI GPT Models",
           "Text-to-Speech"
-        ]
+        ],
+        featuresTitle: "AI Technologies"
       }}
       benefits={benefits}
       features={aiSolutions}

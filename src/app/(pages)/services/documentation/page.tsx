@@ -355,7 +355,8 @@ export default function DocumentationPage() {
           "Compliance Requirements",
           "Version Control",
           "Data Security"
-        ]
+        ],
+        featuresTitle: "Common Document Challenges"
       }}
       benefits={benefits}
       features={documentSolutions}

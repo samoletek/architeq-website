@@ -1,308 +1,344 @@
-# Структура проекта architeq-website
+# Architeq Website - Project Structure Documentation
+
+**Project Type:** Next.js 15 Business Website with Advanced Animations  
+**Last Updated:** December 2024  
+**Technologies:** React 19, TypeScript 5, Tailwind CSS 3.4, Framer Motion 12.5
+
+## Project Overview
+
+The Architeq website is a sophisticated business automation company website featuring advanced animations, glassmorphism effects, and a comprehensive component library. The project emphasizes scalability, maintainability, and exceptional user experience through modern web technologies.
+
+## Directory Structure
 
 ```
 architeq-website/
-├── public/
-│   ├── favicon/
-│   │   ├── android-chrome-192x192.png
-│   │   ├── android-chrome-512x512.png
-│   │   ├── apple-touch-icon.png
-│   │   ├── favicon-16x16.png
-│   │   ├── favicon-32x32.png
-│   │   └── site.webmanifest
-│   ├── images/
-│   │   └── services/
-│   ├── styles/
-│   │   ├── animations.css
-│   │   ├── glassmorphism.css
-│   │   └── gradients.css
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── next.svg
-│   ├── robots.txt
-│   ├── sitemap.xml
-│   ├── vercel.svg
-│   └── window.svg
-├── scripts/
-│   ├── analyze-components.js
-│   └── generate-structure.js
-├── src/
-│   ├── app/
-│   │   ├── (pages)/
-│   │   │   ├── about/
-│   │   │   │   └── page.tsx
-│   │   │   ├── cases/
-│   │   │   │   ├── [slug]/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── contacts/
-│   │   │   │   └── page.tsx
-│   │   │   ├── cookies/
-│   │   │   │   └── page.tsx
-│   │   │   ├── privacy/
-│   │   │   │   └── page.tsx
-│   │   │   ├── services/
-│   │   │   │   ├── ai-solutions/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── boxed-solutions/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── business-process/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── crm-integration/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── documentation/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── finance/
-│   │   │   │   │   └── page.tsx
-│   │   │   │   └── page.tsx
-│   │   │   └── terms/
-│   │   │       └── page.tsx
-│   │   ├── api/
-│   │   │   ├── contact/
-│   │   │   │   └── route.ts
-│   │   │   └── search/
-│   │   │       └── route.ts
-│   │   ├── effects-demo/
-│   │   │   └── page.tsx
-│   │   ├── search/
-│   │   │   └── page.tsx
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── components/
-│   │   ├── layout/
-│   │   │   └── site-layout.tsx
-│   │   ├── navigation/
-│   │   │   ├── footer.tsx
-│   │   │   └── header.tsx
-│   │   ├── pages/
-│   │   │   ├── cases-content.tsx
-│   │   │   └── contacts-content.tsx
-│   │   ├── sections/
-│   │   │   ├── benefits-section.tsx
-│   │   │   ├── cta-section.tsx
-│   │   │   ├── featured-cases-section.tsx
-│   │   │   ├── hero-section.tsx
-│   │   │   ├── solutions-section.tsx
-│   │   │   └── testimonials-section.tsx
-│   │   ├── templates/
-│   │   │   └── service-template.tsx
-│   │   └── ui/
-│   │       ├── buttons/
-│   │       │   └── glowing-text-button.tsx
-│   │       ├── cards/
-│   │       │   └── case-card.tsx
-│   │       ├── effects/
-│   │       │   ├── depth-card.tsx
-│   │       │   ├── gradient-follow.tsx
-│   │       │   ├── hover-element.tsx
-│   │       │   ├── parallax-element.tsx
-│   │       │   ├── rotation-utils.ts
-│   │       │   ├── scroll-animate.tsx
-│   │       │   └── wave-divider.tsx
-│   │       ├── filters/
-│   │       │   └── case-filters.tsx
-│   │       ├── icons/
-│   │       │   └── icon.tsx
-│   │       ├── benefit-card.tsx
-│   │       ├── button.tsx
-│   │       ├── calendly-widget.tsx
-│   │       ├── form-input.tsx
-│   │       ├── form-select.tsx
-│   │       ├── gcs-video.tsx
-│   │       ├── hero-search.tsx
-│   │       ├── image-with-fallback.tsx
-│   │       ├── interactive-search.tsx
-│   │       ├── loading-button.tsx
-│   │       ├── neon-button.tsx
-│   │       ├── page-transition.tsx
-│   │       ├── recently-viewed-cases.tsx
-│   │       ├── search-bar.tsx
-│   │       ├── section-animation.tsx
-│   │       └── solution-switcher.tsx
-│   └── lib/
-│       ├── data/
-│       │   └── case-studies.ts
-│       ├── seo/
-│       │   ├── favicon-metadata.tsx
-│       │   ├── metadata.ts
-│       │   ├── schema.tsx
-│       │   └── service-metadata.tsx
-│       ├── services/
-│       │   └── monday-service.ts
-│       └── utils/
-│           ├── animation.ts
-│           ├── common.ts
-│           ├── device-detection.ts
-│           ├── utils.ts
-│           └── validation.ts
-├── .claude/
-│   └── settings.local.json
-├── .eslintcache
-├── component-structure.json
-├── eslint.config.mjs
-├── LICENSE
-├── next-env.d.ts
-├── next.config.js
-├── package-lock.json
-├── package.json
-├── postcss.config.js
-├── README.md
-├── structure.md
-├── tailwind.config.ts
-└── tsconfig.json
+├── 📁 public/                     # Static assets and public files
+│   ├── 📁 favicon/                # Favicon variants and manifest
+│   ├── 📁 styles/                 # Global CSS files (animations, effects)
+│   ├── robots.txt                 # SEO crawler instructions
+│   ├── sitemap.xml               # SEO sitemap
+│   └── *.svg                     # SVG icons and assets
+│
+├── 📁 scripts/                    # Development and build scripts
+│   ├── analyze-components.js      # Component structure analysis
+│   └── generate-structure.js     # Project documentation generator
+│
+└── 📁 src/                       # Main application source code
+    ├── 📁 app/                   # Next.js App Router structure
+    ├── 📁 components/            # React component library
+    └── 📁 lib/                   # Utilities, data, and services
 ```
 
-*Структура обновлена: 23.05.2025, 14:22*
+## Core Application Structure (`/src/app/`)
+
+### App Router Organization
+```
+app/
+├── 📁 (pages)/                   # Route group for main pages
+│   ├── 📁 about/                 # About page
+│   ├── 📁 cases/                 # Case studies
+│   │   ├── [slug]/page.tsx       # Dynamic case study pages
+│   │   └── page.tsx             # Case studies listing
+│   ├── 📁 contacts/             # Contact page
+│   ├── 📁 services/             # Service pages
+│   │   ├── ai-solutions/        # AI solutions service
+│   │   ├── business-process/    # Business process automation
+│   │   ├── crm-integration/     # CRM integration services
+│   │   ├── boxed-solutions/     # Industry-specific solutions
+│   │   ├── documentation/       # Documentation services
+│   │   ├── finance/            # Financial automation
+│   │   └── page.tsx            # Services overview
+│   └── 📁 [legal]/             # Legal pages (privacy, terms, cookies)
+│
+├── 📁 api/                      # API endpoints
+│   ├── contact/route.ts         # Contact form handler
+│   └── search/route.ts          # Search functionality
+│
+├── layout.tsx                   # Root layout with fonts and metadata
+├── page.tsx                     # Homepage
+├── globals.css                  # Global styles and CSS variables
+└── favicon.ico                  # Default favicon
+```
+
+## Component Architecture (`/src/components/`)
+
+### Component Organization Strategy
+The component library follows a hierarchical organization pattern from layout-level components down to granular UI elements.
+
+```
+components/
+├── 📁 layout/                   # Layout and structure components
+│   └── site-layout.tsx         # Main site wrapper with header/footer
+│
+├── 📁 navigation/               # Navigation-related components
+│   ├── header.tsx              # Main navigation with search and mobile menu
+│   └── footer.tsx              # Site footer with links and company info
+│
+├── 📁 pages/                   # Page-specific content components
+│   ├── cases-content.tsx       # Case studies page content
+│   └── contacts-content.tsx    # Contact page content
+│
+├── 📁 sections/                # Reusable page sections
+│   ├── hero-section.tsx        # Hero banners and intro sections
+│   ├── benefits-section.tsx    # Benefits/features display
+│   ├── featured-cases-section.tsx # Case studies showcase
+│   ├── testimonials-section.tsx # Customer testimonials
+│   ├── cta-section.tsx         # Call-to-action sections
+│   └── unified-cta-section.tsx # Standardized CTA component
+│
+├── 📁 templates/               # Page templates for consistency
+│   ├── service-template.tsx    # Comprehensive service page template
+│   └── case-study-template.tsx # Detailed case study presentation
+│
+└── 📁 ui/                      # Reusable UI component library
+    ├── 📁 buttons/             # Button variants and styles
+    ├── 📁 cards/               # Card components with effects
+    ├── 📁 effects/             # Animation and visual effects
+    ├── 📁 filters/             # Search and filtering components
+    ├── 📁 icons/               # Icon components
+    ├── 📁 tags/                # Tag and label components
+    └── [30+ individual components] # Form inputs, navigation, etc.
+```
+
+### Template System
+
+#### Service Template (`service-template.tsx`)
+**Purpose:** Standardized template for all service pages  
+**Features:**
+- Hero section with breadcrumb navigation
+- Overview section with customizable feature highlights
+- Benefits section with animations
+- Features section with case study integration
+- Interactive process section with scroll-based navigation
+- FAQ section with card carousel interface
+- Unified CTA section
+
+**Usage Pattern:**
+```typescript
+<ServiceTemplate
+  serviceId="crm-integration"
+  serviceTitle="CRM Integration Services"
+  serviceDescription="Connect your CRM with other business tools..."
+  overview={{ title, description, features }}
+  benefits={benefitsArray}
+  features={featuresArray}
+  processes={processSteps}
+  faqs={faqArray}
+/>
+```
+
+#### Case Study Template (`case-study-template.tsx`)
+**Purpose:** Rich, interactive case study presentations  
+**Features:**
+- Hero section with company badges and immediate impact
+- Animated impact metrics with counters
+- Business context and problem statement
+- Solution approach with technology stack
+- Interactive results display with auto-rotation
+- Client testimonials with enhanced typography
+- Expandable technical deep-dive sections
+- Related cases recommendations
+
+## Data and Utilities (`/src/lib/`)
+
+### Data Management
+```
+lib/
+├── 📁 data/
+│   └── case-studies.ts          # Structured case study data with categorization
+│
+├── 📁 seo/                     # SEO optimization utilities
+│   ├── metadata.ts             # Meta tags and Open Graph
+│   ├── schema.tsx              # Schema.org structured data
+│   ├── service-metadata.tsx    # Service-specific SEO
+│   └── favicon-metadata.tsx    # Favicon configuration
+│
+├── 📁 services/                # External service integrations
+│   └── monday-service.ts       # Monday.com CRM integration
+│
+└── 📁 utils/                   # Utility functions and helpers
+    ├── animation.ts            # Animation utilities and hooks
+    ├── common.ts              # Common utility functions
+    ├── device-detection.ts    # Device and browser detection
+    ├── tag-utils.ts           # Tag filtering and management
+    ├── utils.ts               # General utilities (cn, formatting)
+    └── validation.ts          # Form validation helpers
+```
+
+### Case Studies Data Structure
+The case studies system uses a sophisticated categorization approach:
+
+```typescript
+interface CaseStudy {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  industryCategory: IndustryCategory;    // New categorization
+  functionCategory: FunctionCategory;    // New categorization
+  industry: string;                     // Legacy compatibility
+  solutionType: string;                 // Legacy compatibility
+  description: string;
+  technologies: string[];
+  results: string[];
+  problem?: string;
+  solution?: string[];
+  testimonial?: ClientTestimonial;
+  clickableTags?: TaggedContent;
+}
+```
+
+## Technology Stack & Configuration
+
+### Core Dependencies
+- **Next.js 15.3.2** - React framework with App Router
+- **React 19** - UI library with concurrent features
+- **TypeScript 5** - Type safety and development experience
+- **Tailwind CSS 3.4** - Utility-first CSS framework
+
+### Animation & Effects
+- **Framer Motion 12.5** - Production-ready animation library
+- **GSAP 3.13** - Professional animation toolkit
+- **React Intersection Observer** - Scroll-triggered animations
+
+### External Services
+- **Cloudinary** - Image and video optimization
+- **Anthropic SDK** - AI-powered features
+- **Three.js** - 3D graphics and effects
+- **Monday.com API** - CRM integration
+
+### Development Tools
+- **ESLint 9** - Code linting and formatting
+- **PostCSS** - CSS processing and optimization
+- **Class Variance Authority** - Component variant management
+
+## Styling System
+
+### Tailwind Configuration
+The project extends Tailwind with custom design tokens:
+
+```typescript
+// Custom color palette
+colors: {
+  primary: '#B24FF3',      // Purple primary
+  secondary: '#B0FF74',    // Green secondary
+  'neon-blue': '#00D9FF',  // Accent blue
+  'neon-purple': '#B24FF3', // Accent purple
+  'dark-gray': '#1A1A1A',  // Background
+  'medium-gray': '#2A2A2A', // Surface
+  'light-gray': '#B3B3B3', // Text
+}
+
+// Custom effects
+boxShadow: {
+  'neon-blue': '0 0 20px rgba(0, 217, 255, 0.5)',
+  'neon-purple': '0 0 20px rgba(178, 75, 243, 0.5)',
+  'glassmorphism': '0 8px 32px rgba(31, 38, 135, 0.37)',
+}
+
+textShadow: {
+  'glow': '0 0 10px rgba(255, 255, 255, 0.8)',
+  'neon': '0 0 20px rgba(178, 75, 243, 0.8)',
+}
+```
+
+### CSS Architecture
+- **Global Styles** (`globals.css`) - CSS variables, base styles, utilities
+- **Effect Stylesheets** (`public/styles/`) - Specialized effect classes
+- **Component Styles** - Tailwind classes with conditional styling
+
+## API and Services
+
+### API Endpoints (`/src/app/api/`)
+- **Contact Form** (`/api/contact`) - Handles contact form submissions
+- **Search** (`/api/search`) - Provides search functionality for content
+
+### External Integrations
+- **Monday.com CRM** - Customer relationship management integration
+- **Cloudinary CDN** - Optimized media delivery
+- **Email Services** - Contact form processing
+
+## Development Patterns
+
+### Component Development
+1. **Atomic Design** - Components built from small, reusable pieces
+2. **Composition** - Complex components built by composing simpler ones
+3. **Prop Drilling Prevention** - Context and state management strategies
+4. **Performance** - Memoization and optimization techniques
+
+### State Management
+- **React Hooks** - useState, useEffect, useReducer for local state
+- **Context API** - For shared state and theme management
+- **Custom Hooks** - Reusable stateful logic (animations, data fetching)
+
+### Animation Strategy
+- **Progressive Enhancement** - Base functionality without animations
+- **Performance First** - GPU-accelerated transforms and opacity
+- **Accessibility** - Respect for reduced motion preferences
+- **Scroll-Based** - IntersectionObserver for trigger-based animations
+
+## Build and Deployment
+
+### Build Configuration
+```json
+// package.json scripts
+{
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint",
+  "analyze": "node scripts/analyze-components.js"
+}
+```
+
+### Performance Optimizations
+- **Image Optimization** - Next.js Image component with Cloudinary
+- **Font Optimization** - Google Fonts with display: swap
+- **Code Splitting** - Automatic route-based splitting
+- **Bundle Analysis** - Regular bundle size monitoring
+
+## Recent Additions and Updates
+
+### Template System (December 2024)
+- **Service Template**: Comprehensive template for service pages with interactive elements
+- **Case Study Template**: Rich case study presentation with animations and green theme adaptation
+
+### Enhanced UI Components
+- **Advanced Filtering**: Industry and function-based case study filtering
+- **Improved Animations**: Scroll-triggered animations with performance optimization
+- **Mobile Responsiveness**: Enhanced mobile experience across all components
+
+### Development Tools
+- **Component Analysis**: Automated component structure analysis
+- **Structure Documentation**: Automated project documentation generation
+
+## Key Files Reference
+
+| File | Purpose | Lines | Key Features |
+|------|---------|-------|--------------|
+| `service-template.tsx` | Service page template | 1,788 | Interactive FAQ, process navigation, animations |
+| `case-study-template.tsx` | Case study template | 1,360 | Green theme, animated counters, expandable sections |
+| `case-studies.ts` | Case study data | 1,283 | Structured data, categorization, filtering |
+| `site-layout.tsx` | Main layout wrapper | 200+ | Header/footer integration, responsive design |
+| `header.tsx` | Main navigation | 300+ | Search, mobile menu, animations |
+
+## Future Considerations
+
+### Scalability
+- Component library can be extracted to separate package
+- API endpoints can be expanded for dynamic content
+- Internationalization support can be added
+
+### Performance
+- Server-side rendering optimization
+- Edge computing for global performance
+- Progressive Web App features
+
+### Functionality
+- Advanced search with AI integration
+- Real-time collaboration features
+- Enhanced mobile app-like experience
 
 ---
 
-## Описание файлов проекта
-
-### Корневая директория
-- **`.claude/settings.local.json`** - Локальные настройки Claude Code
-- **`.eslintcache`** - Кэш ESLint для ускорения проверки кода
-- **`.gitignore`** - Файлы и папки, игнорируемые Git
-- **`component-structure.json`** - JSON-структура компонентов проекта
-- **`eslint.config.mjs`** - Конфигурация ESLint для линтинга кода
-- **`LICENSE`** - Лицензия проекта (MIT)
-- **`next.config.js`** - Конфигурация Next.js приложения
-- **`package-lock.json`** - Зафиксированные версии зависимостей
-- **`package.json`** - Метаданные проекта и зависимости
-- **`postcss.config.js`** - Конфигурация PostCSS для обработки CSS
-- **`README.md`** - Документация проекта
-- **`structure.md`** - Структура и описание файлов проекта
-- **`tailwind.config.ts`** - Конфигурация Tailwind CSS
-- **`tsconfig.json`** - Конфигурация TypeScript компилятора
-
-### public/
-- **`favicon/`** - Иконки для разных устройств и браузеров
-  - **`android-chrome-*.png`** - Иконки для Android Chrome
-  - **`apple-touch-icon.png`** - Иконка для iOS Safari
-  - **`favicon-*.png`** - Стандартные favicon размеры
-  - **`site.webmanifest`** - Манифест веб-приложения
-- **`images/services/`** - Изображения для страниц услуг
-- **`styles/`** - Дополнительные CSS файлы
-  - **`animations.css`** - CSS анимации
-  - **`glassmorphism.css`** - Эффекты стекломорфизма
-  - **`gradients.css`** - Градиентные стили
-- **`*.svg`** - SVG иконки (file, globe, next, vercel, window)
-- **`robots.txt`** - Инструкции для поисковых роботов
-- **`sitemap.xml`** - Карта сайта для SEO
-
-### scripts/
-- **`analyze-components.js`** - Скрипт анализа структуры компонентов
-- **`generate-structure.js`** - Скрипт генерации файла структуры
-
-### src/app/
-- **`favicon.ico`** - Основная иконка сайта
-- **`globals.css`** - Глобальные стили приложения
-- **`layout.tsx`** - Корневой лейаут приложения
-- **`page.tsx`** - Главная страница сайта
-
-#### src/app/(pages)/
-- **`about/page.tsx`** - Страница "О нас"
-- **`cases/page.tsx`** - Список кейсов
-- **`cases/[slug]/page.tsx`** - Динамическая страница кейса
-- **`contacts/page.tsx`** - Страница контактов
-- **`cookies/page.tsx`** - Политика использования cookies
-- **`privacy/page.tsx`** - Политика конфиденциальности
-- **`terms/page.tsx`** - Пользовательское соглашение
-- **`services/page.tsx`** - Общая страница услуг
-- **`services/*/page.tsx`** - Страницы отдельных услуг (AI, CRM, etc.)
-
-#### src/app/api/
-- **`contact/route.ts`** - API endpoint для обработки контактных форм
-- **`search/route.ts`** - API endpoint для поиска по сайту
-
-#### Другие страницы
-- **`effects-demo/page.tsx`** - Демо-страница эффектов
-- **`search/page.tsx`** - Страница результатов поиска
-
-### src/components/
-
-#### layout/
-- **`site-layout.tsx`** - Основной лейаут с хедером и футером
-
-#### navigation/
-- **`footer.tsx`** - Компонент футера сайта
-- **`header.tsx`** - Компонент хедера с навигацией
-
-#### pages/
-- **`cases-content.tsx`** - Контент для страницы кейсов
-- **`contacts-content.tsx`** - Контент для страницы контактов
-
-#### sections/
-- **`benefits-section.tsx`** - Секция преимуществ на главной
-- **`cta-section.tsx`** - Секция призыва к действию
-- **`featured-cases-section.tsx`** - Секция избранных кейсов
-- **`hero-section.tsx`** - Героическая секция главной страницы
-- **`solutions-section.tsx`** - Секция решений с переключателем
-- **`testimonials-section.tsx`** - Секция отзывов клиентов
-
-#### templates/
-- **`service-template.tsx`** - Шаблон для страниц услуг
-
-#### ui/
-**Кнопки:**
-- **`button.tsx`** - Базовый компонент кнопки
-- **`buttons/glowing-text-button.tsx`** - Кнопка с неоновым эффектом
-- **`loading-button.tsx`** - Кнопка с индикатором загрузки
-- **`neon-button.tsx`** - Неоновая кнопка
-
-**Карточки:**
-- **`benefit-card.tsx`** - Карточка преимущества
-- **`cards/case-card.tsx`** - Карточка кейса
-
-**Эффекты:**
-- **`effects/depth-card.tsx`** - Карточка с 3D эффектом
-- **`effects/gradient-follow.tsx`** - Следящий за курсором градиент
-- **`effects/hover-element.tsx`** - Элемент с hover эффектами
-- **`effects/parallax-element.tsx`** - Параллакс элемент
-- **`effects/rotation-utils.ts`** - Утилиты для поворотов
-- **`effects/scroll-animate.tsx`** - Анимация при скролле
-- **`effects/wave-divider.tsx`** - Волновой разделитель
-
-**Формы:**
-- **`form-input.tsx`** - Компонент поля ввода
-- **`form-select.tsx`** - Компонент выпадающего списка
-- **`calendly-widget.tsx`** - Виджет календарного планировщика
-
-**Поиск:**
-- **`hero-search.tsx`** - Поиск в героической секции
-- **`interactive-search.tsx`** - Интерактивный поиск
-- **`search-bar.tsx`** - Строка поиска
-- **`filters/case-filters.tsx`** - Фильтры для кейсов
-
-**Анимации:**
-- **`page-transition.tsx`** - Переходы между страницами
-- **`section-animation.tsx`** - Анимации секций
-
-**Другие:**
-- **`gcs-video.tsx`** - Компонент видео с Google Cloud Storage
-- **`icons/icon.tsx`** - Универсальный компонент иконок
-- **`image-with-fallback.tsx`** - Изображение с резервным вариантом
-- **`recently-viewed-cases.tsx`** - Недавно просмотренные кейсы
-- **`solution-switcher.tsx`** - Переключатель решений
-
-### src/lib/
-
-#### data/
-- **`case-studies.ts`** - Данные кейсов и проектов
-
-#### seo/
-- **`favicon-metadata.tsx`** - Метаданные для favicon
-- **`metadata.ts`** - SEO метаданные для страниц
-- **`schema.tsx`** - Schema.org разметка для поисковиков
-- **`service-metadata.tsx`** - Метаданные для страниц услуг
-
-#### services/
-- **`monday-service.ts`** - Интеграция с Monday.com CRM
-
-#### utils/
-- **`animation.ts`** - Утилиты для анимаций
-- **`common.ts`** - Общие вспомогательные функции
-- **`device-detection.ts`** - Определение типа устройства
-- **`utils.ts`** - Основные утилиты (cn, форматирование)
-- **`validation.ts`** - Валидация форм и данных
+This documentation provides a comprehensive overview of the Architeq website project structure, designed to help developers understand the codebase organization, architectural decisions, and development patterns used throughout the application.

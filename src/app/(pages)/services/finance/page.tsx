@@ -350,7 +350,8 @@ export default function FinancePage() {
           "Limited Visibility",
           "Process Inefficiencies",
           "Compliance Challenges"
-        ]
+        ],
+        featuresTitle: "Financial Process Challenges"
       }}
       benefits={benefits}
       features={financeSolutions}

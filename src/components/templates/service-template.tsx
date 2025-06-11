@@ -66,6 +66,8 @@ export interface ServiceTemplateProps {
   
   // Дополнительные блоки, если нужно
   additionalSections?: ReactNode;
+  // Control where additional sections appear
+  additionalSectionsPosition?: 'after-features' | 'before-cta';
 }
 
 export default function ServiceTemplate({
@@ -80,6 +82,7 @@ export default function ServiceTemplate({
   caseStudies,
   faqs,
   additionalSections,
+  additionalSectionsPosition = 'after-features',
 }: ServiceTemplateProps) {
   
   // Функция для рендеринга иконок - полный набор из всех services
@@ -268,6 +271,9 @@ export default function ServiceTemplate({
         />
       )}
 
+      {/* Дополнительные секции - positioned after Features, before Process */}
+      {additionalSectionsPosition === 'after-features' && additionalSections}
+
       {/* Process section */}
       {processes && processes.length > 0 && (
         <ProcessSection 
@@ -296,8 +302,8 @@ export default function ServiceTemplate({
         />
       )}
 
-      {/* Дополнительные секции */}
-      {additionalSections}
+      {/* Дополнительные секции - positioned before CTA (for boxed solutions) */}
+      {additionalSectionsPosition === 'before-cta' && additionalSections}
       
       {/* CTA section */}
       <CTASection />
@@ -352,7 +358,7 @@ function OverviewSection({
   return (
     <section 
       ref={ref}
-      className="section-benefits bg-transparent relative overflow-hidden"
+      className="py-48 bg-transparent relative overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
@@ -1034,7 +1040,7 @@ useEffect(() => {
   return (
     <section 
       ref={ref}
-      className="section-benefits bg-dark-gray relative overflow-hidden"
+      className="pt-48 pb-96 bg-dark-gray relative overflow-hidden"
     >
       <div className="container mx-auto px-4 relative z-10">
         {/* Заголовок секции */}
@@ -1091,7 +1097,7 @@ useEffect(() => {
                 
                 {/* Прогресс-бар */}
                 <div className="mt-8 ml-4">
-                  <div className="text-lg md:text-xl font-medium text-light-gray mb-2 font-mono">Progress</div>
+                  <div className="text-sm font-medium text-light-gray mb-2 font-mono">Progress</div>
                   <div className="w-4/5 h-2 bg-white/10 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-secondary"
@@ -1104,7 +1110,7 @@ useEffect(() => {
                       }}
                     />
                   </div>
-                  <div className="text-lg md:text-xl font-medium text-light-gray mt-2 font-mono">
+                  <div className="text-sm font-medium text-light-gray mt-2 font-mono">
                     Step {activeStep + 1} of {processes.length}
                   </div>
                 </div>
@@ -1332,7 +1338,7 @@ function CaseStudiesSection({
   );
 }
 
-// Исправленная FAQSection с циклической вертикальной каруселью
+// Clean FAQSection with no scroll interference
 function FAQSection({ 
   title, 
   subtitle, 
@@ -1342,32 +1348,42 @@ function FAQSection({
   subtitle: string; 
   faqs: ServiceFAQ[]; 
 }) {
-  const { ref, isVisible } = useScrollAnimation({
-    threshold: 0.3,
-    rootMargin: '-10% 0px',
-    triggerOnce: true
-  });
-
   const [activeQuestion, setActiveQuestion] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const cardContainerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Simple intersection observer for animations only - no scroll capture
   useEffect(() => {
-    if (isVisible && !hasAnimated) {
-      setHasAnimated(true);
-    }
-  }, [isVisible, hasAnimated]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px'
+      }
+    );
 
-  // Автоматическая карусель вместо скролла
-  useEffect(() => {
-    const autoScrollInterval = setInterval(() => {
-      setActiveQuestion(prev => (prev + 1) % faqs.length);
-    }, 4000); // Переключение каждые 4 секунды
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
 
     return () => {
-      clearInterval(autoScrollInterval);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
     };
+  }, []);
+
+  // Auto-carousel - completely independent of scroll
+  useEffect(() => {
+    const autoInterval = setInterval(() => {
+      setActiveQuestion(prev => (prev + 1) % faqs.length);
+    }, 5000);
+
+    return () => clearInterval(autoInterval);
   }, [faqs.length]);
 
   // Функция для переключения активного вопроса
@@ -1421,38 +1437,38 @@ function FAQSection({
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.6, 
-        ease: [0.2, 0.65, 0.3, 0.9]
+        duration: 0.5, 
+        ease: "easeOut"
       }
     }
   };
 
   const navVariants = {
-    hidden: { opacity: 0, x: -30 },
+    hidden: { opacity: 0, x: -20 },
     visible: (index: number) => ({
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: index * 0.08
+        duration: 0.3,
+        ease: "easeOut",
+        delay: index * 0.05
       }
     })
   };
 
   return (
     <section 
-      ref={ref}
-      className="section-benefits bg-dark-gray relative overflow-hidden"
+      ref={sectionRef}
+      className="min-h-screen bg-dark-gray relative overflow-hidden flex items-center py-24"
     >
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 w-full">
         <motion.div
-          className="text-center section-content-spacing"
+          className="text-center mb-16"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
@@ -1468,8 +1484,8 @@ function FAQSection({
           </p>
         </motion.div>
 
-        <div className="max-w-7xl mx-auto" ref={sectionRef}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center">
+        <div className="max-w-7xl mx-auto h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
             
             <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
@@ -1528,7 +1544,7 @@ function FAQSection({
                   ))}
                 </div>
 
-                <div className="flex justify-between items-center mt-8 px-6">
+                <div className="flex justify-center items-center gap-8 mt-8 px-6">
                   <button
                     onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
                     className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
@@ -1557,8 +1573,8 @@ function FAQSection({
             </div>
 
             <div className="lg:col-span-2 flex items-center justify-center">
-              <div className="relative w-full" style={{ height: '450px' }}>
-                <div className="relative h-full perspective-1000" ref={cardContainerRef}>
+              <div className="relative w-full" style={{ height: '350px' }}>
+                <div className="relative h-full perspective-1000">
                   {faqs.map((faq, index) => {
                     const transform = getCardTransform(index);
                     
@@ -1569,14 +1585,14 @@ function FAQSection({
                         style={{
                           top: '50%',
                           transform: 'translateY(-50%)',
-                          height: '280px', // Вернул исходную высоту
+                          height: '240px',
                           transformStyle: 'preserve-3d',
                           backfaceVisibility: 'hidden'
                         }}
                         animate={transform}
                         transition={{
-                          duration: 0.7, // Увеличил длительность для плавности
-                          ease: [0.25, 0.46, 0.45, 0.94], // Плавная cubic-bezier кривая
+                          duration: 0.6,
+                          ease: "easeInOut",
                           type: "tween"
                         }}
                       >
@@ -1596,7 +1612,7 @@ function FAQSection({
                             transition={{
                               opacity: { duration: 0.4 },
                               scale: { duration: 0.4 },
-                              boxShadow: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                              boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                             }}
                           />
                         )}
@@ -1621,7 +1637,7 @@ function FAQSection({
                                 : 'none'
                             }}
                             transition={{
-                              textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                              textShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                             }}
                           >
                             {faq.question}
@@ -1660,7 +1676,7 @@ function FAQSection({
                   })}
                 </div>
 
-                <div className="absolute -right-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
+                <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
                   {faqs.map((_, index) => (
                     <button
                       key={index}
