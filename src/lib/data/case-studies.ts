@@ -647,9 +647,9 @@ export const allCaseStudies: CaseStudy[] = [
       'Catalog expansion without increasing administrative personnel'
     ],
     testimonial: {
-      quote: 'As a music label operating across two continents, our administrative challenges were significant. The boxed solution from Architeq has centralized all our operations, from release management to royalty calculations. Our artists are happier with the timely and accurate reporting, and our team can focus on creative work instead of administrative tasks.',
-      author: 'Max Taylor and Angelina Phengpong',
-      position: 'Lead Producers at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['ai-crm-assistant', 'financial-calculations', 'monday-integration'],
     featured: false,
@@ -767,9 +767,9 @@ export const allCaseStudies: CaseStudy[] = [
       'More informed decisions based on complete data'
     ],
     testimonial: {
-      quote: 'The AI assistant for our CRM has made information retrieval incredibly efficient. Our team can ask questions in natural language and get comprehensive answers drawn from across our entire database. New team members get up to speed much faster, and everyone saves time that used to be spent digging through records.',
-      author: 'David Gaddie',
-      position: 'CEO at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['music-label-solution', 'speech-to-text-analysis', 'dashboards-creation'],
     featured: false,
@@ -850,9 +850,9 @@ export const allCaseStudies: CaseStudy[] = [
       'Unification of calculations within company'
     ],
     testimonial: {
-      quote: 'The financial computation system has eliminated the errors and inconsistencies that used to plague our payment process. Calculations that used to take days now happen automatically, and we have been able to implement more complex payment structures without adding administrative burden.',
-      author: 'Jaqueline Gaddie',
-      position: 'Financial Director at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['quickbooks-integration', 'stripe-invoicing', 'dashboards-creation'],
     featured: false,
