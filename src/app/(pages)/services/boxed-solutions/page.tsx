@@ -1,7 +1,5 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 export const metadata = generateServiceMetadata({
   title: 'Industry-Specific Boxed Solutions',
@@ -180,10 +178,10 @@ export default function BoxedSolutionsPage() {
               style={{
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
               }}>
-            Don't See Your Industry?
+            Don&apos;t See Your Industry?
           </h2>
           <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-            Every industry has unique challenges. If you don't see a boxed solution for your specific sector, we create custom automation architectures tailored to your business needs.
+            Every industry has unique challenges. If you don&apos;t see a boxed solution for your specific sector, we create custom automation architectures tailored to your business needs.
           </p>
         </div>
 
@@ -238,7 +236,7 @@ export default function BoxedSolutionsPage() {
                     style={{
                       textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
                     }}>
-                  Industries We've Automated
+                  Industries We&apos;ve Automated
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

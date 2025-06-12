@@ -1,7 +1,5 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 export const metadata = generateServiceMetadata({
   title: 'Business Process Automation',

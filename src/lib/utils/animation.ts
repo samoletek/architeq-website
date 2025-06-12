@@ -568,7 +568,7 @@ export function useCoordinatedAnimation(
     if (coordinator && sequenceId.current) {
       setCanAnimate(coordinator.canAnimate(id, sequenceId.current));
     }
-  });
+  }, [id]);
   
   return { canAnimate, onAnimationComplete };
 }

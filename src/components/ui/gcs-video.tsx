@@ -54,7 +54,7 @@ export function GCSVideo({
         videoElement.removeEventListener('dragstart', preventActions);
       }
     };
-  }, [videoRef.current]);
+  }, []);
   
   // Формируем URL для видео в Google Cloud Storage
   const bucketName = process.env.NEXT_PUBLIC_GCS_BUCKET_NAME || 'architeq-videos';

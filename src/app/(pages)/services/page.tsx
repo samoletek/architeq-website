@@ -652,7 +652,7 @@ export default function ServicesPage() {
             Our Architecture Methodology
           </h2>
           <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-            We don't just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
+            We don&apos;t just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
           </p>
         </div>
 
