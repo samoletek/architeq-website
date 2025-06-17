@@ -584,6 +584,10 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          // Reset to auto-playing when section becomes visible
+          setIsAutoPlaying(true);
+        } else {
+          setIsVisible(false);
         }
       },
       { threshold: 0.2 }
@@ -598,22 +602,16 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'Critical': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      case 'High': return 'bg-[#B0FF74]/20 text-[#B0FF74] border-[#B0FF74]/30';
-      case 'Medium': return 'bg-white/20 text-white/80 border-white/30';
+      case 'Critical': return 'bg-red-500/20 text-red-200 border-red-500/30';
+      case 'High': return 'bg-purple-500/20 text-purple-100 border-purple-500/30';
+      case 'Medium': return 'bg-[#B0FF74]/20 text-[#B0FF74] border-[#B0FF74]/30';
       default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
     }
   };
 
-  const getAreaColor = (area: string) => {
-    switch (area) {
-      case 'Data Integration': return 'bg-primary/20 text-primary border-primary/30';
-      case 'Process Automation': return 'bg-secondary/20 text-secondary border-secondary/30';
-      case 'System Modernization': return 'bg-neon-blue/20 text-neon-blue border-neon-blue/30';
-      case 'Analytics': return 'bg-neon-purple/20 text-neon-purple border-neon-purple/30';
-      case 'Risk Management': return 'bg-red-400/20 text-red-400 border-red-400/30';
-      default: return 'bg-light-gray/20 text-light-gray border-light-gray/30';
-    }
+  const getAreaColor = () => {
+    // All area tags have uniform gray background with white text
+    return 'bg-gray-600/20 text-white border-gray-600/30';
   };
 
   const handlePrevSlide = () => {
@@ -701,15 +699,15 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 min-h-[600px]"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 h-[650px]"
               >
                 {/* Challenge Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 h-full relative overflow-hidden">
+                  <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 h-[650px] relative overflow-hidden">
                     {/* Challenge Background Glow */}
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
@@ -721,7 +719,11 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                       {/* Challenge Header */}
                       <div className="mb-10">
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                          <motion.div 
+                            className="w-4 h-4 rounded-full bg-red-500"
+                            animate={{ opacity: [0.6, 1, 0.6] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          />
                           <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
                         </div>
                         
@@ -736,19 +738,31 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
                       {/* Challenge Details */}
                       <div className="space-y-8">
-                        <div className="flex flex-wrap gap-3">
+                        <motion.div 
+                          key={`challenge-tags-${activeSlide}`}
+                          className="flex flex-wrap gap-3"
+                          initial={{ opacity: 0, x: 30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                        >
                           <span className={`text-xs px-4 py-2 rounded-full border ${getPriorityColor(currentPair.challenge.priority)}`}>
                             {currentPair.challenge.priority} Priority
                           </span>
-                          <span className={`text-xs px-4 py-2 rounded-full border ${getAreaColor(currentPair.challenge.area)}`}>
+                          <span className={`text-xs px-4 py-2 rounded-full border ${getAreaColor()}`}>
                             {currentPair.challenge.area}
                           </span>
-                        </div>
+                        </motion.div>
                         
-                        <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
+                        <motion.div 
+                          key={`challenge-bottleneck-${activeSlide}`}
+                          className="bg-red-500/10 rounded-lg p-4 border border-red-500/20"
+                          initial={{ opacity: 0, x: 30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                        >
                           <div className="text-sm text-red-400 font-medium mb-1">Bottleneck</div>
                           <div className="text-white/80">{currentPair.challenge.impact}</div>
-                        </div>
+                        </motion.div>
                       </div>
                     </div>
                   </div>
@@ -756,7 +770,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
                 {/* Solutions Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 h-full relative overflow-hidden">
+                  <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 h-[650px] relative overflow-hidden">
                     {/* Solutions Background Glow */}
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl"
@@ -768,7 +782,11 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                       {/* Solutions Header */}
                       <div className="mb-10">
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-4 h-4 rounded-full bg-[#B0FF74]"></div>
+                          <motion.div 
+                            className="w-4 h-4 rounded-full bg-[#B0FF74]"
+                            animate={{ opacity: [0.6, 1, 0.6] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          />
                           <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solutions</span>
                         </div>
                         
@@ -780,11 +798,8 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                       {/* Solutions List */}
                       <div className="space-y-6">
                         {currentPair.solutions.map((solution, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.2 }}
+                          <div
+                            key={`solution-${activeSlide}-${index}`}
                             className="bg-[#B0FF74]/5 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300"
                           >
                             <div className="mb-4">
@@ -795,22 +810,34 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                                 {solution.description}
                               </p>
                               
-                              <div className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4">
+                              <motion.div 
+                                key={`key-benefit-${activeSlide}-${index}`}
+                                className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4"
+                                initial={{ opacity: 0, x: 30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                              >
                                 <div className="text-sm text-[#B0FF74] font-medium mb-1">Key Benefit</div>
                                 <div className="text-white/80">{solution.keyBenefit}</div>
-                              </div>
+                              </motion.div>
                             </div>
 
 
                             {/* Technologies */}
-                            <div className="flex flex-wrap gap-2">
+                            <motion.div 
+                              key={`technologies-${activeSlide}-${index}`}
+                              className="flex flex-wrap gap-2"
+                              initial={{ opacity: 0, x: 30 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                            >
                               {solution.technologies.map((tech, techIndex) => (
                                 <span key={techIndex} className="text-xs px-3 py-1 rounded-full bg-[#B0FF74]/20 text-[#B0FF74] border border-[#B0FF74]/30">
                                   {tech}
                                 </span>
                               ))}
-                            </div>
-                          </motion.div>
+                            </motion.div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -819,20 +846,6 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
               </motion.div>
             </AnimatePresence>
 
-            {/* Slide Indicators */}
-            <div className="flex justify-center mt-12 gap-3">
-              {challengeSolutionPairs.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleDotClick(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    activeSlide === index 
-                      ? 'bg-[#B0FF74] shadow-lg shadow-[#B0FF74]/50' 
-                      : 'bg-white/20 hover:bg-white/40'
-                  }`}
-                />
-              ))}
-            </div>
 
             {/* Auto-play Indicator */}
             <div className="flex justify-center mt-6">
@@ -847,6 +860,21 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
             </div>
           </div>
         </motion.div>
+      </div>
+
+      {/* Fixed Navigation Dots - Positioned relative to section */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
+        {challengeSolutionPairs.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleDotClick(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              activeSlide === index 
+                ? 'bg-[#B0FF74] shadow-lg shadow-[#B0FF74]/50' 
+                : 'bg-white/20 hover:bg-white/40'
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
@@ -1498,17 +1526,25 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
         >
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 
+            <motion.h2 
               className="text-4xl md:text-5xl font-bold mb-6"
+              initial={{ opacity: 0, x: -50 }}
+              animate={isVisible ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               style={{
                 textShadow: '0 0 20px rgba(176, 255, 116, 0.8), 0 0 40px rgba(176, 255, 116, 0.4)'
               }}
             >
               Related Success Stories
-            </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-white/70 max-w-3xl mx-auto"
+              initial={{ opacity: 0, x: -50 }}
+              animate={isVisible ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            >
               Explore other transformative automation solutions we&apos;ve delivered
-            </p>
+            </motion.p>
           </div>
 
           {/* Related Cases Grid with dynamic centering */}
@@ -1520,9 +1556,9 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
             {relatedCases.map((relatedCase, caseIndex) => (
               <motion.div
                 key={relatedCase.id}
-                initial={{ opacity: 0, y: 40 }}
-                animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: caseIndex * 0.1 }}
+                initial={{ opacity: 0, x: 50 }}
+                animate={isVisible ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 + (caseIndex * 0.1) }}
                 whileHover={{ y: -5 }}
                 className={`group cursor-pointer ${
                   relatedCases.length <= 2 ? 'w-full max-w-sm' : 'w-full'

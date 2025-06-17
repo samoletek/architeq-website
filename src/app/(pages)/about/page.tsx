@@ -1,7 +1,8 @@
 import SiteLayout from '@/components/layout/site-layout';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { siteMetadata } from '@/lib/seo/metadata';
-import UnifiedCTASection from '@/components/sections/unified-cta-section';
 
 export const metadata: Metadata = {
   title: 'About Us | Architeq',
@@ -272,8 +273,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-{/* CTA Section */}
-<UnifiedCTASection preset="about" />
+      {/* CTA Section */}
+      <section className="section-cta bg-dark-gradient">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="section-title-medium font-bold section-title-spacing">Ready to Streamline the Flow?</h2>
+          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing">
+          Trust our team to map your processes and uncover automation potential.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center button-gap-default">
+            <Link href="/contacts">
+              <Button variant="primary" size="lg">
+                Contact Our Team
+              </Button>
+            </Link>
+            <Link href="/cases">
+              <Button variant="secondary" size="lg">
+                View Our Case Studies
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
     </SiteLayout>
   );
 }
