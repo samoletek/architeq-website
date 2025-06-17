@@ -565,6 +565,14 @@ export function useCoordinatedAnimation(
     };
   }, [id, depsString, dependencies.length]);
   
+  // Проверяем, можем ли анимировать при каждом рендере
+  useEffect(() => {
+    const coordinator = getCoordinator();
+    if (coordinator && sequenceId.current) {
+      setCanAnimate(coordinator.canAnimate(id, sequenceId.current));
+    }
+  }, [id]);
+  
   return { canAnimate, onAnimationComplete };
 }
 

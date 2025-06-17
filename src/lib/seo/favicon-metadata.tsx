@@ -7,35 +7,21 @@ interface FaviconConfig {
   titleBar?: string;
 }
 
-// Расширенный интерфейс для иконки с поддержкой цвета
-interface IconWithColor {
-  rel: string;
-  url: string;
-  color?: string;
-}
-
-// Тип для других иконок в метаданных
-type OtherIcon = {
-  rel: string;
-  url: string;
-  [key: string]: string | undefined;
-};
 
 /**
  * Компонент для вставки всех необходимых ссылок на фавиконки в head
  * Используется в cтарой версии с кастомным _document.tsx
  */
 export function FaviconMetadata({
-  backgroundColor = '#121212',
-  titleBar = '#ff4500'
-}: FaviconConfig = {}) {
+  backgroundColor = '#121212'
+}: Omit<FaviconConfig, 'titleBar'> = {}) {
   return (
     <>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
       <link rel="manifest" href="/favicon/site.webmanifest" />
-      <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color={titleBar} />
       <meta name="msapplication-TileColor" content={backgroundColor} />
     </>
   );
@@ -49,24 +35,15 @@ export function FaviconMetadata({
 export function generateFaviconMetadata({
   backgroundColor = '#121212',
 }: Omit<FaviconConfig, 'titleBar'> = {}): Partial<Metadata> {
-  // Создаем иконку Safari с помощью нашего расширенного интерфейса
-  const safariIcon: IconWithColor = {
-    rel: 'mask-icon',
-    url: '/favicon/safari-pinned-tab.svg',
-    color: '#ff4500'
-  };
-
   return {
     icons: {
       icon: [
+        { url: '/favicon.ico', sizes: 'any' },
         { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
         { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
       ],
       apple: [
         { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
-      ],
-      other: [
-        safariIcon as unknown as OtherIcon
       ]
     },
     manifest: '/favicon/site.webmanifest',
