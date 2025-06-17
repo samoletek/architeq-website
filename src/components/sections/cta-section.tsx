@@ -90,11 +90,11 @@ export default function CTASection({
     };
   }, []);
   
-  // Настройки для разных вариантов
+  // Настройки для разных вариантов - уменьшенные отступы
   const variantClasses = {
-    default: "section-cta bg-dark-gradient pt-72 pb-48",
-    minimal: "py-16 bg-dark-gray",
-    highlight: "py-24 bg-primary/10 dark:bg-primary/5"
+    default: "section-cta bg-dark-gradient pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-24",
+    minimal: "py-12 sm:py-16 bg-dark-gray",
+    highlight: "py-16 sm:py-20 md:py-24 bg-primary/10 dark:bg-primary/5"
   };
 
   // Варианты анимации для контента
@@ -179,7 +179,7 @@ export default function CTASection({
             </h2>
           
             <p className={cn(
-              "text-light-gray mb-16",
+              "text-light-gray mb-8 sm:mb-12 md:mb-16",
               compact ? "text-base" : "text-lg"
             )}>
               {description}

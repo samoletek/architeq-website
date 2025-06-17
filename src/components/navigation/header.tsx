@@ -87,13 +87,10 @@ export default function Header({
     // Закрываем мобильное меню при изменении маршрута
     setIsMobileMenuOpen(false);
     
-    // Анимация появления хедера - с задержкой только для домашней страницы
-    const isHomePage = pathname === '/';
-    const delay = isHomePage ? 800 : 50;
-    
+    // Анимация появления хедера - убираем задержку для предотвращения FOUC
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, delay);
+    }, 10);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -193,21 +190,23 @@ export default function Header({
           className
         )}
       >
-        <div className="container mx-auto px-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 flex md:grid md:grid-cols-3 items-center justify-between md:justify-normal">
           {/* Логотип */}
-          <Link 
-            href="/" 
-            className="text-2xl font-bold"
-          >
-            <span 
-              className="inline-block text-white text-shadow-white transition-all duration-300 hover:text-secondary hover:text-shadow-green"
+          <div className="justify-self-start">
+            <Link 
+              href="/" 
+              className="text-2xl font-bold"
             >
-              {logo || "Architeq"}
-            </span>
-          </Link>
+              <span 
+                className="inline-block text-white text-shadow-white transition-all duration-300 hover:text-secondary hover:text-shadow-green"
+              >
+                {logo || "Architeq"}
+              </span>
+            </Link>
+          </div>
 
           {/* Десктопное меню */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8 justify-self-center whitespace-nowrap">
             {navigation.map((item) => (
               <div
                 key={item.name}
@@ -295,14 +294,14 @@ export default function Header({
           </nav>
 
           {/* CTA кнопка на десктопе */}
-          <div className="hidden md:block z-10">
+          <div className="hidden md:block z-10 justify-self-end">
             <GlowingTextButton href={ctaButton.href} size="sm" variant="header">
               {ctaButton.text}
             </GlowingTextButton>
           </div>
 
           {/* Мобильные кнопки */}
-          <div className="flex items-center space-x-3 md:hidden">
+          <div className="flex items-center space-x-3 md:hidden md:justify-self-end">
             {/* Поиск на мобильном */}
             {showSearch && (
               <button 
@@ -356,9 +355,9 @@ export default function Header({
               {/* Контент меню */}
               <motion.div
                 className="md:hidden fixed inset-0 z-50 flex flex-col"
-                initial={{ opacity: 0, y: "100%" }}
+                initial={{ opacity: 0, y: "-100%" }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: "100%" }}
+                exit={{ opacity: 0, y: "-100%" }}
                 transition={{ 
                   duration: 0.3,
                   ease: [0.25, 0.1, 0.25, 1]

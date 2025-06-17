@@ -11,6 +11,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Брейкпоинты для больших экранов
+      screens: {
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+        '3xl': '1920px',
+        '4xl': '2560px',
+        // Дополнительные специфичные брейкпоинты
+        'tablet': '768px',
+        'laptop': '1024px',
+        'desktop': '1280px',
+        'wide': '1440px',
+        'ultrawide': '1920px'
+      },
       colors: {
         // Основные цвета
         'site-bg': '#121212',                // Основной фон (графитовый)
@@ -25,7 +42,7 @@ const config: Config = {
         
         // Дополнительные акценты
         'accent-blue': '#4DADFF',
-        'accent-coral': '#B0FF74',          // Заменен с #FF6B8B на зеленый
+        'accent-coral': '#B0FF74',
         'accent-teal': '#00F5D4',
       },
       fontFamily: {
@@ -74,7 +91,7 @@ const config: Config = {
         'main-gradient': 'linear-gradient(135deg, #121212 0%, #180033 100%)',
         'footer-gradient': 'linear-gradient(180deg, #180033 0%, #1A0040 100%)',
         
-        // Акцентные градиенты - обновленные
+        // Акцентные градиенты
         'primary-gradient': 'linear-gradient(135deg, #7747CF 0%, #4DADFF 100%)',
         'secondary-gradient': 'linear-gradient(135deg, #B0FF74 0%, #00F5D4 100%)',
         
@@ -88,7 +105,6 @@ const config: Config = {
         'radial-glow-blue': 'radial-gradient(circle, rgba(77, 173, 255, 0.7) 0%, rgba(77, 173, 255, 0) 70%)',
         'radial-glow-white': 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%)',
       },
-      // Добавить в файл tailwind.config.ts в раздел theme.extend.spacing
          spacing: {
          '29': '7.25rem', // 1.8 * 16px (в Tailwind mt-16 = 4rem = 16 * 4px = 64px, поэтому 64px * 1.8 = 115.2px ≈ 7.25rem)
          },
@@ -125,7 +141,7 @@ const config: Config = {
   },
   plugins: [
     plugin(({ addUtilities, theme }) => {
-      // Добавляем явную типизацию для textShadows
+      // Явная типизация для textShadows
       const textShadows = theme('textShadow') as Record<string, string>;
       const utilities: Record<string, { textShadow: string }> = {};
       
@@ -137,7 +153,7 @@ const config: Config = {
       
       addUtilities(utilities);
       
-      // Добавляем утилиты для эффектов глубины
+      // Утилиты для эффектов глубины
       addUtilities({
         '.perspective': {
           perspective: '1000px',

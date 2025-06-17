@@ -56,11 +56,11 @@ export function GCSVideo({
     };
   }, []);
   
-  // Формируем URL для видео в Google Cloud Storage
+  // URL для видео в Google Cloud Storage
   const bucketName = process.env.NEXT_PUBLIC_GCS_BUCKET_NAME || 'architeq-videos';
   const videoUrl = `https://storage.googleapis.com/${bucketName}/case-studies/${caseId}.mp4`;
   
-  // Стили с бордером
+  // Стили
   const containerStyles = cn(
     "bg-dark-purple/40 backdrop-blur-sm rounded-lg overflow-hidden border transition-all duration-300",
     isHovered ? "border-primary/50 shadow-neon-glow" : "border-primary/30",

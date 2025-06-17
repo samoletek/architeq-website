@@ -27,15 +27,9 @@ const PageTransition: React.FC<PageTransitionProps> = ({
   // Устанавливаем флаг монтирования после первого рендера
   useEffect(() => {
     // Немедленно отмечаем компонент как смонтированный
-    // для предотвращения мигания контента
     setIsMounted(true);
-    
-    // Небольшая задержка, чтобы убедиться, что все DOM элементы загружены и стили применены
-    const timer = setTimeout(() => {
-      setIsInitialRender(false);
-    }, 100);
-    
-    return () => clearTimeout(timer);
+    // Убираем задержку для предотвращения FOUC
+    setIsInitialRender(false);
   }, []);
 
   // Отслеживаем изменение пути для определения навигации
@@ -81,7 +75,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({
   // просто возвращаем контент без анимации
   if (!isMounted || (isInitialRender && skipInitialTransition)) {
     return (
-      <div className={cn("min-h-screen", className)} style={{ opacity: 1 }}>
+      <div className={cn("min-h-screen", className)}>
         {children}
       </div>
     );

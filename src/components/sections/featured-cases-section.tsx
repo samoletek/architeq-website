@@ -87,11 +87,11 @@ export default function FeaturedCasesSection({
       ? 'grid-cols-1 md:grid-cols-2' 
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   
-  // Определяем класс секции
+  // Определяем класс секции - уменьшенные отступы
   const sectionClasses = cn(
     "section-cases",
     sectionBg,
-    "pt-48 pb-64",
+    "pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32",
     className
   );
 
@@ -100,11 +100,11 @@ export default function FeaturedCasesSection({
     return (
       <section className={sectionClasses}>
         <div className="container mx-auto px-4">
-          {/* Заголовок и подзаголовок */}
+          {/* Заголовок и подзаголовок - более компактные */}
           {!compact && (
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
-              <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">{title}</h2>
+              <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
           
@@ -123,12 +123,12 @@ export default function FeaturedCasesSection({
             </div>
           )}
 
-          {/* Сетка кейсов */}
-          <div className={cn("grid gap-8", gridCols)}>
+          {/* Сетка кейсов - уменьшенная ширина */}
+          <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
-                <div key={index}>
+                <div key={index} className="min-h-[450px]">
                   <CaseCard 
                     id={cardData.id}
                     title={cardData.title}
@@ -141,16 +141,18 @@ export default function FeaturedCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
-                    className="case-card-enhanced"
+                    className="case-card-enhanced h-full"
+                    index={index}
+                    isVisible={isVisible}
                   />
                 </div>
               );
             })}
           </div>
 
-          {/* Кнопка "Посмотреть все" */}
+          {/* Кнопка "Посмотреть все" - уменьшенный отступ */}
           {!compact && viewAllUrl && (
-            <div className="mt-36 text-center">
+            <div className="mt-12 sm:mt-16 md:mt-20 text-center">
               <Link href={viewAllUrl}>
                 <Button variant="secondary" size="lg">
                   {viewAllText}
@@ -211,16 +213,16 @@ export default function FeaturedCasesSection({
       className={sectionClasses}
     >
       <div className="container mx-auto px-4">
-        {/* Заголовок и подзаголовок */}
+        {/* Заголовок и подзаголовок - более компактные */}
         {!compact && (
           <motion.div 
-            className="text-center mb-20"
+            className="text-center mb-12 sm:mb-16"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8">{title}</h2>
-            <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">{title}</h2>
+            <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </motion.div>
         )}
         
@@ -244,8 +246,8 @@ export default function FeaturedCasesSection({
           </motion.div>
         )}
 
-        {/* Сетка кейсов */}
-        <div className={cn("grid gap-8", gridCols)}>
+        {/* Сетка кейсов - уменьшенная ширина */}
+        <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
           {displayCases.map((caseItem, index) => {
             const cardData = toCaseCardFormat(caseItem);
             return (
@@ -255,6 +257,7 @@ export default function FeaturedCasesSection({
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
                 variants={cardVariants}
+                className="min-h-[450px]"
               >
                 <CaseCard 
                   id={cardData.id}
@@ -268,17 +271,17 @@ export default function FeaturedCasesSection({
                   tags={cardData.tags}
                   href={`/cases/${cardData.id}`}
                   isCompact={caseCardVariant === 'compact'}
-                  className="case-card-enhanced"
+                  className="case-card-enhanced h-full"
                 />
               </motion.div>
             );
           })}
         </div>
 
-        {/* Кнопка "Посмотреть все" */}
+        {/* Кнопка "Посмотреть все" - уменьшенный отступ */}
         {!compact && viewAllUrl && (
           <motion.div 
-            className="mt-16 text-center"
+            className="mt-12 sm:mt-16 md:mt-20 text-center"
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={buttonVariants}

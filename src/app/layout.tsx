@@ -94,8 +94,7 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${inter.variable} ${ibmPlexMono.variable}`} 
-      suppressHydrationWarning
+      className={`${inter.variable} ${ibmPlexMono.variable}`}
     >
       <head>
         {/* Preload critical resources */}

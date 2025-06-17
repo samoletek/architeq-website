@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
-import { generateCardTags } from '@/lib/utils/tag-utils';
-import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export interface CaseCardProps {
   id?: string;
@@ -28,30 +26,124 @@ export interface CaseCardProps {
   isVisible?: boolean;
 }
 
-// Акцентная зеленая палитра
-const greenPalette = ['#B0FF74', '#9AFF6D', '#8BFF50', '#7CFF33', '#6DFF16', '#5EFF00', '#50E000'];
+// Простая статичная карточка для мобильных устройств
+function SimpleMobileCard({
+  id,
+  title,
+  description,
+  company,
+  location,
+  industry,
+  results,
+  tags,
+  href,
+  className,
+  isCompact,
+  onClick
+}: CaseCardProps) {
+  // Простое сохранение в историю без useEffect
+  const handleClick = () => {
+    if (id && typeof window !== 'undefined') {
+      try {
+        const recentlyViewed = storage.get<string[]>('recentlyViewedCases', []);
+        const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
+        const updatedHistory = [id, ...filteredHistory].slice(0, 10);
+        storage.set('recentlyViewedCases', updatedHistory);
+      } catch {
+        // Игнорируем ошибки localStorage
+      }
+    }
+    if (onClick) onClick();
+  };
 
-const getHash = (str: string) =>
-  str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const cardContent = (
+    <div className={cn(
+      "bg-dark-gray rounded-xl border border-gray-600/50 p-3 transition-colors duration-200 hover:border-secondary/30",
+      "flex flex-col",
+      className
+    )}>
+      {/* Теги */}
+      {tags && tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-black/60 text-white text-[9px] px-1 py-0.5 rounded border border-white/10"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+      
+      {/* Заголовок */}
+      <h3 className="text-lg font-semibold text-white leading-tight mb-2">
+        {title}
+      </h3>
+      
+      {/* Описание */}
+      {description && !isCompact && (
+        <p className="text-xs text-light-gray leading-relaxed mb-2 line-clamp-2">
+          {description}
+        </p>
+      )}
+      
+      {/* Результаты */}
+      {results && results.length > 0 && !isCompact && (
+        <div className="mb-3">
+          <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
+          <ul className="space-y-0.5">
+            {results.slice(0, 3).map((result, index) => (
+              <li key={index} className="flex items-start">
+                <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
+                <span 
+                  className="text-[10px] text-light-gray leading-relaxed"
+                  dangerouslySetInnerHTML={{
+                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {/* Footer */}
+      <div className="border-t border-gray-600/40 mt-auto pt-2">
+        <p className="text-[10px] text-white flex items-center mb-1">
+          <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
+          <span className="font-medium truncate">{company}</span>
+        </p>
+        
+        {(location || industry) && (
+          <p className="text-[10px] text-white/80 flex items-center">
+            <svg className="h-2.5 w-2.5 mr-1 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            </svg>
+            <span className="truncate">{location || industry}</span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
 
-const getTwoColors = (key: string) => {
-  const hash = getHash(key);
-  const index1 = hash % greenPalette.length;
-  const index2 = (hash * 7) % greenPalette.length;
-  return [
-    greenPalette[index1],
-    greenPalette[index2 === index1 ? (index2 + 1) % greenPalette.length : index2]
-  ];
-};
+  if (onClick) {
+    return (
+      <button onClick={handleClick} className="w-full text-left">
+        {cardContent}
+      </button>
+    );
+  }
 
-const getTwoOffsets = (key: string) => {
-  const hash = getHash(key);
-  const left1 = 10 + (hash % 30);
-  const left2 = 60 + ((hash * 3) % 30);
-  return [left1, left2];
-};
+  return (
+    <Link href={href} onClick={handleClick}>
+      {cardContent}
+    </Link>
+  );
+}
 
-export function CaseCard({
+// Расширенная карточка для десктопа с анимациями
+function EnhancedDesktopCard({
   id,
   title,
   description,
@@ -62,65 +154,57 @@ export function CaseCard({
   tags,
   href,
   className,
-  isCompact = false,
+  isCompact,
   onClick,
   index = 0,
   isVisible = true
 }: CaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [displayTags, setDisplayTags] = useState<string[]>([]);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Цветовая схема для градиентов
+  const greenPalette = ['#B0FF74', '#9AFF6D', '#8BFF50', '#7CFF33'];
+  const getHash = (str: string) => str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const getTwoColors = (key: string) => {
+    const hash = getHash(key);
+    const index1 = hash % greenPalette.length;
+    const index2 = (hash * 7) % greenPalette.length;
+    return [
+      greenPalette[index1],
+      greenPalette[index2 === index1 ? (index2 + 1) % greenPalette.length : index2]
+    ];
+  };
+  const getTwoOffsets = (key: string) => {
+    const hash = getHash(key);
+    return [15 + (hash % 25), 65 + ((hash * 3) % 25)];
+  };
 
   const gradientKey = company + title;
   const [color1, color2] = getTwoColors(gradientKey);
   const [left1, left2] = getTwoOffsets(gradientKey);
 
-  // Генерируем теги с помощью новой системы
-  useEffect(() => {
-    if (id) {
-      const caseStudy = getCaseStudyById(id);
-      if (caseStudy) {
-        const generatedTags = generateCardTags(caseStudy);
-        setDisplayTags(generatedTags);
-      } else if (tags) {
-        setDisplayTags(tags);
-      }
-    } else if (tags) {
-      setDisplayTags(tags);
-    }
-  }, [id, tags]);
-
+  // Сохранение в историю
   useEffect(() => {
     if (id && typeof window !== 'undefined') {
       const handleSaveToHistory = () => {
-        const recentlyViewed = storage.get<string[]>('recentlyViewedCases', []);
-        const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
-        const updatedHistory = [id, ...filteredHistory].slice(0, 10);
-        storage.set('recentlyViewedCases', updatedHistory);
+        try {
+          const recentlyViewed = storage.get<string[]>('recentlyViewedCases', []);
+          const filteredHistory = recentlyViewed.filter(caseId => caseId !== id);
+          const updatedHistory = [id, ...filteredHistory].slice(0, 10);
+          storage.set('recentlyViewedCases', updatedHistory);
+        } catch {
+          // Игнорируем ошибки localStorage
+        }
       };
 
       const linkElement = document.querySelector(`a[href="${href}"]`);
       if (linkElement) {
         linkElement.addEventListener('click', handleSaveToHistory);
-        return () => {
-          linkElement.removeEventListener('click', handleSaveToHistory);
-        };
+        return () => linkElement.removeEventListener('click', handleSaveToHistory);
       }
     }
   }, [id, href]);
 
-  // Анимационные варианты для карточек
+  // Анимационные варианты
   const cardVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -134,42 +218,27 @@ export function CaseCard({
     }
   };
 
-  // Уменьшенная высота для мобильных устройств
-  const cardHeight = isCompact 
-    ? 'auto' 
-    : isMobile 
-      ? 'min-h-[280px]'
-      : 'min-h-[380px] sm:min-h-[420px]';
-
   const cardContent = (
     <motion.div
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
       className={cn(
-        'bg-dark-gray rounded-xl overflow-hidden border',
-        'transition-all duration-300 flex flex-col relative',
-        'case-card-enhanced',
-        isHovered ? 'case-card-hovered' : '',
-        cardHeight,
+        'bg-dark-gray rounded-xl overflow-hidden border transition-all duration-300 flex flex-col relative',
+        'case-card-enhanced min-h-[400px]',
         className
       )}
-      style={{
-        boxShadow: isHovered 
-          ? '0 20px 40px rgba(0, 0, 0, 0.15), 0 0 15px rgba(176, 255, 116, 0.25), 0 0 30px rgba(176, 255, 116, 0.15)'
-          : '0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(176, 255, 116, 0.3)',
-      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Зеленые пятна свечения снизу */}
+      {/* Анимированные пятна свечения */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
-        {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, index) => (
+        {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, spotIndex) => (
           <motion.div
-            key={index}
+            key={spotIndex}
             initial={{ opacity: 0 }}
             animate={{ 
-              opacity: isHovered ? 0.9 : 0.3, 
+              opacity: isHovered ? 0.6 : 0.3, 
               height: isHovered ? '280px' : '220px' 
             }}
             transition={{ duration: 0.4 }}
@@ -177,83 +246,59 @@ export function CaseCard({
               position: 'absolute',
               bottom: 0,
               left: `${spot.left}%`,
-              width: `220px`,
+              width: '220px',
               transform: 'translate(-50%, 50%)',
               borderRadius: '9999px',
-              filter: 'blur(100px)',
-              mixBlendMode: 'screen',
-              background: `
-                radial-gradient(circle, ${spot.color}FF 0%, transparent 60%),
-                radial-gradient(circle, ${spot.color}FF 0%, transparent 50%),
-                radial-gradient(circle, ${spot.color}CC 0%, transparent 70%),
-                radial-gradient(circle, ${spot.color}AA 0%, transparent 80%),
-                radial-gradient(circle, ${spot.color}88 0%, transparent 90%)
-              `
+              filter: 'blur(80px)',
+              background: `radial-gradient(circle, ${spot.color}FF 0%, transparent 70%)`
             }}
           />
         ))}
       </div>
 
-      {/* Теги - уменьшенные отступы для мобильных */}
-      <div className={cn(
-        "relative z-10",
-        isMobile ? "pt-2 px-3 pb-2" : "pt-5 px-4 pb-5"
-      )}>
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {displayTags.map((tag, index) => (
-            <span
-              key={index}
-              className={cn(
-                "bg-black/60 backdrop-blur-sm text-white rounded-md border border-white/10",
-                isMobile ? "text-xs px-1.5 py-0.5" : "text-xs px-2 py-0.5 sm:py-1"
-              )}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+      {/* Теги */}
+      <div className="relative z-10 pt-4 px-5 pb-3">
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {tags.map((tag, tagIndex) => (
+              <span
+                key={tagIndex}
+                className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Контент - уменьшенные отступы для мобильных */}
-      <div className={cn(
-        "flex-grow z-10",
-        isMobile ? "pl-3 pr-4 py-2" : "pl-6 pr-8 py-5"
-      )}>
-        <h3 className={cn(
-          "font-semibold text-white leading-tight",
-          isMobile ? "text-base mb-2" : "text-2xl mb-6"
-        )}>
+      {/* Контент */}
+      <div className="flex-grow z-10 px-5 py-3">
+        <h3 className="text-lg font-semibold text-white leading-tight mb-3">
           {title}
         </h3>
 
         {description && !isCompact && (
           <p className={cn(
-            "text-light-gray line-clamp-3",
-            isMobile ? "text-xs mb-2" : "text-md mb-3"
+            "text-xs text-light-gray line-clamp-3 leading-relaxed mb-4 transition-colors duration-300",
+            isHovered ? "text-white" : "text-light-gray"
           )}>
             {description}
           </p>
         )}
 
         {results && results.length > 0 && !isCompact && (
-          <div className={cn(
-            isMobile ? "mb-2" : "mb-5"
-          )}>
-            <h4 className={cn(
-              "font-medium text-secondary",
-              isMobile ? "text-xs mb-1" : "text-sm mb-4"
-            )}>Key results:</h4>
-            <ul className={cn(
-              "text-light-gray space-y-0.5",
-              isMobile ? "text-xs" : "text-md"
-            )}>
-              {results.slice(0, isMobile ? 2 : 4).map((result, index) => (
-                <li key={index} className="flex items-start">
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-secondary mb-2">Key Results:</h4>
+            <ul className="space-y-1">
+              {results.slice(0, 3).map((result, resultIndex) => (
+                <li key={resultIndex} className="flex items-start">
+                  <span className="text-secondary mr-2 mt-0.5 flex-shrink-0 text-sm">•</span>
                   <span className={cn(
-                    "text-secondary flex-shrink-0",
-                    isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
-                  )}>•</span>
-                  <span className="line-clamp-1 leading-relaxed" dangerouslySetInnerHTML={{ 
+                    "text-xs leading-relaxed transition-colors duration-300",
+                    isHovered ? "text-white" : "text-light-gray"
+                  )} 
+                  dangerouslySetInnerHTML={{ 
                     __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                   }} />
                 </li>
@@ -263,52 +308,17 @@ export function CaseCard({
         )}
       </div>
 
-      {/* Footer - уменьшенные отступы для мобильных */}
-      <div className={cn(
-        "border-t border-medium-gray/40 mt-auto z-10",
-        isMobile ? "px-3 pb-3 pt-2" : "px-6 pb-6 pt-4"
-      )}>
-        <p className={cn(
-          "text-white flex items-center",
-          isMobile ? "text-xs mb-1" : "text-sm mb-2"
-        )}>
-          <span className={cn(
-            "text-light-gray flex-shrink-0",
-            isMobile ? "mr-1" : "mr-1.5 sm:mr-2"
-          )}>Company:</span>
+      {/* Footer */}
+      <div className="border-t border-medium-gray/40 mt-auto z-10 px-5 py-3">
+        <p className="text-xs text-white flex items-center mb-1">
+          <span className="text-light-gray flex-shrink-0 mr-2">Company:</span>
           <span className="font-medium truncate">{company}</span>
         </p>
 
         {(location || industry) && (
-          <p className={cn(
-            "text-white/80 flex items-center",
-            isMobile ? "text-xs" : "text-sm"
-          )}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={cn(
-                "text-secondary flex-shrink-0",
-                isMobile ? "h-3 w-3 mr-1" : "h-4 w-4 mr-1 sm:mr-1.5"
-              )}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {location ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              )}
+          <p className="text-xs text-white/80 flex items-center">
+            <svg className="h-4 w-4 mr-2 text-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             </svg>
             <span className="truncate">{location || industry}</span>
           </p>
@@ -319,10 +329,7 @@ export function CaseCard({
 
   if (onClick) {
     return (
-      <button
-        onClick={onClick}
-        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-secondary rounded-xl"
-      >
+      <button onClick={onClick} className="w-full text-left">
         {cardContent}
       </button>
     );
@@ -333,6 +340,30 @@ export function CaseCard({
       {cardContent}
     </Link>
   );
+}
+
+// Основной компонент с автоматическим выбором версии
+export function CaseCard(props: CaseCardProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // На мобильных всегда используем простую версию
+  if (isMobile) {
+    return <SimpleMobileCard {...props} />;
+  }
+
+  // На десктопе используем расширенную версию
+  return <EnhancedDesktopCard {...props} />;
 }
 
 export function CompactCaseCard(props: Omit<CaseCardProps, 'isCompact'>) {

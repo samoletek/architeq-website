@@ -155,11 +155,11 @@ export function useScrollAnimation(
   } = {}
 ) {
   const { 
-    threshold = 0.3, // Увеличено с 0.1 для более позднего запуска
-    rootMargin = '-10% 0px', // Использует проценты вместо пикселей
+    threshold = 0.3,
+    rootMargin = '-10% 0px',
     triggerOnce = true,
-    visibilityThreshold = 0.3, // Минимальный процент видимости для запуска
-    delayStart = 0 // Задержка старта анимации в мс
+    visibilityThreshold = 0.3,
+    delayStart = 0
   } = options;
   
   const ref = useRef<HTMLDivElement>(null);
@@ -252,8 +252,8 @@ export function useDelayedAnimation(delay: number = 0, deps: React.DependencyLis
         clearTimeout(timerRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, ...deps]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [delay, reset, ...deps]);
   
   return { shouldAnimate, reset };
 }
@@ -461,8 +461,8 @@ export function shouldEnableAnimations(): boolean {
       isLowPower = true;
     }
     
-    // Проверяем deviceMemory, если доступно (только в Chrome)
-    // @ts-expect-error - свойство существует только в некоторых браузерах
+    // Проверяем deviceMemory, если доступно (Chrome) - свойство deviceMemory не в типах TypeScript
+    // @ts-expect-error deviceMemory is not included in navigator types but exists in Chrome browsers
     if (navigator.deviceMemory && navigator.deviceMemory < 4) {
       isLowPower = true;
     }
@@ -539,14 +539,18 @@ export function useCoordinatedAnimation(
     }
   }, [id]);
   
+  // Создаем stringified версию dependencies для корректного сравнения
+  const depsString = JSON.stringify(dependencies);
+  
   // Регистрация в координаторе при монтировании и при изменении зависимостей
   useEffect(() => {
     const coordinator = getCoordinator();
     if (!coordinator) return;
     
     // Формируем уникальный ID последовательности на основе зависимостей
-    sequenceId.current = dependencies.length > 0 
-      ? `seq_${dependencies.join('_')}` 
+    const hasCustomDependencies = dependencies.length > 0;
+    sequenceId.current = hasCustomDependencies 
+      ? `seq_${depsString}` 
       : undefined;
     
     // Регистрируем анимацию
@@ -559,8 +563,7 @@ export function useCoordinatedAnimation(
     return () => {
       coordinator.unregister(id, sequenceId.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, depsString, dependencies.length]);
   
   // Проверяем, можем ли анимировать при каждом рендере
   useEffect(() => {

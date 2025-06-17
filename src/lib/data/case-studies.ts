@@ -6,10 +6,9 @@ export const INDUSTRY_CATEGORIES = {
   'financial-services': 'Financial Services',
   'dispatching-services': 'Dispatching Services', 
   'car-hauling': 'Car Hauling',
-  'commercial-music': 'Commercial Music Production',
-  'healthcare-medical': 'Healthcare & Medical Supplies',
-  'cabinetry-coatings': 'Cabinetry & Coatings',
-  'furniture-manufacturing': 'Furniture Manufacturing Industry'
+  'commercial-music': 'Music Production',
+  'healthcare-medical': 'Healthcare & Medical',
+  'cabinetry-coatings': 'Cabinetry & Coatings'
 } as const;
 
 // Фильтры по функциям (By Function) - вертикальные фиолетовые теги
@@ -17,14 +16,14 @@ export const FUNCTION_CATEGORIES = {
   'custom-solutions': 'Custom Solutions',
   'crm-integrations': 'CRM Integrations',
   'documents-forms': 'Documents & Web Forms',
-  'system-infrastructure': 'System & Infrastructure Integrations',
+  'system-infrastructure': 'System Integrations',
   'ai-powered': 'AI-Powered Solutions',
-  'industry-specific': 'Industry-Specific Products',
+  'industry-specific': 'Industry-Specific',
   'finance-accounting': 'Finance & Accounting'
 } as const;
 
 /**
- * ТИПЫ ДЛЯ НОВОЙ СИСТЕМЫ
+ * ТИПЫ
  */
 export type IndustryCategory = keyof typeof INDUSTRY_CATEGORIES;
 export type FunctionCategory = keyof typeof FUNCTION_CATEGORIES;
@@ -38,7 +37,7 @@ export interface CaseStudy {
   company: string;             // Название компании-клиента
   location: string;            // Местоположение клиента
   
-  // НОВЫЕ ПОЛЯ ДЛЯ ФИЛЬТРАЦИИ
+  // ПОЛЯ ДЛЯ ФИЛЬТРАЦИИ
   industryCategory: IndustryCategory;  // Категория отрасли
   functionCategory: FunctionCategory;  // Категория функции
   
@@ -103,100 +102,7 @@ export const CONTACT_CASE_CARD: CaseStudy = {
 };
 
 /**
- * Маппинг для красивого отображения тегов
- */
-const tagDisplayNames: Record<string, string> = {
-  // Solution Types - обновлены под новые категории
-  'Custom Solutions': 'Custom',
-  'CRM Integrations': 'CRM',
-  'Documents & Web Forms': 'Documents',
-  'System & Infrastructure Integrations': 'Systems',
-  'AI-Powered Solutions': 'AI',
-  'Industry-Specific Products': 'Industry',
-  'Finance & Accounting': 'Finance',
-  
-  // Industries - обновлены под новые категории
-  'Your Industry': 'Custom',
-  'Financial Services': 'Finance',
-  'Dispatching Services': 'Dispatching',
-  'Car Hauling': 'Car Hauling',
-  'Commercial Music Production': 'Music',
-  'Healthcare & Medical Supplies': 'Healthcare',
-  'Cabinetry & Coatings': 'Cabinetry',
-  'Furniture Manufacturing Industry': 'Manufacturing',
-  
-  // Technologies - оставлены прежние
-  'Monday CRM': 'Monday',
-  'API integrations': 'API',
-  'Google Workspace API': 'Google API',
-  'Google Data Studio': 'Analytics',
-  'Google Docs API': 'Google API',
-  'Google Sheets': 'Google API',
-  'GoogleSheets': 'Google API',
-  'GoogleDrive': 'Google API',
-  'Tailwind CSS': 'Tailwind',
-  'QuickBooks': 'QB',
-  'Email API': 'Email API',
-  'Google Speech-to-Text API': 'Speech API',
-  'ElevenLabs': 'Voice AI',
-  'CabinetVision': 'CAD',
-};
-
-/**
- * Функция для форматирования тегов для отображения
- */
-function formatTagForDisplay(tag: string): string {
-  return tagDisplayNames[tag] || tag;
-}
-
-/**
- * Функция для маппинга старых категорий в новые (для будущего использования)
- */
-export function mapToNewCategories(caseStudy: Partial<CaseStudy>): {
-  industryCategory: IndustryCategory;
-  functionCategory: FunctionCategory;
-} {
-  // Маппинг индустрий
-  const industryMapping: Record<string, IndustryCategory> = {
-    'Logistics & Transportation': 'car-hauling',
-    'Financial Management': 'financial-services',
-    'Document Management': 'healthcare-medical',
-    'Lead Generation': 'your-industry',
-    'CRM Integration': 'your-industry',
-    'Communications': 'dispatching-services',
-    'Analytics': 'your-industry',
-    'Vehicle Transportation': 'car-hauling',
-    'Manufacturing': 'furniture-manufacturing',
-    'Music Industry': 'commercial-music',
-    'Construction': 'cabinetry-coatings',
-    'Customer Service': 'your-industry',
-    'Data Management': 'your-industry',
-    'Corporate Communications': 'dispatching-services',
-    'Sales & Customer Service': 'your-industry'
-  };
-
-  // Маппинг функций
-  const functionMapping: Record<string, FunctionCategory> = {
-    'Web-application': 'custom-solutions',
-    'Financial Automation': 'finance-accounting',
-    'Documents & Forms': 'documents-forms',
-    'CRM System Integration': 'crm-integrations',
-    'Industry Solution': 'industry-specific',
-    'AI Solution': 'ai-powered',
-    'Integration & Automation': 'system-infrastructure'
-  };
-
-  const industryCategory = caseStudy.industry ? 
-    industryMapping[caseStudy.industry] || 'your-industry' : 'your-industry';
-  
-  const functionCategory = caseStudy.solutionType ? 
-    functionMapping[caseStudy.solutionType] || 'custom-solutions' : 'custom-solutions';
-
-  return { industryCategory, functionCategory };
-}
-
-/**
-* Все кейсы в едином массиве - ОБНОВЛЕННЫЕ С НОВОЙ СТРУКТУРОЙ
+* Все кейсы в едином массиве
 */
 export const allCaseStudies: CaseStudy[] = [
   // Добавляем специальную карточку в начало
@@ -331,7 +237,6 @@ export const allCaseStudies: CaseStudy[] = [
     featured: true,
     image: '/images/cases/quickbooks-integration.jpg'
   },
-  // Добавим еще несколько кейсов для демонстрации... (сокращено для читаемости)
   {
     id: 'document-generation',
     title: 'Document Generation from CRM Status Changes',
@@ -339,7 +244,7 @@ export const allCaseStudies: CaseStudy[] = [
     location: 'Atlanta, GA, USA',
     industryCategory: 'healthcare-medical',
     functionCategory: 'documents-forms',
-    industry: 'Healthcare & Medical Supplies',
+    industry: 'Healthcare & Medical',
     solutionType: 'Documents & Web Forms',
     description: 'Automatic document generation system that creates documents based on CRM data changes.',
     shortDescription: 'Automatic document generation system that creates documents based on CRM data changes.',
@@ -496,7 +401,7 @@ export const allCaseStudies: CaseStudy[] = [
   },
   {
     id: 'monday-integration',
-    title: 'Comprehensive Monday Integration with External Systems',
+    title: 'Monday Integration with External Systems',
     company: 'New Age Cabinetry & Coatings',
     location: 'Phoenix, AZ, USA',
     industryCategory: 'cabinetry-coatings',
@@ -668,9 +573,9 @@ export const allCaseStudies: CaseStudy[] = [
     title: 'Boxed Solution for Kitchen Cabinetry Manufacturers',
     company: 'AllWood Design',
     location: 'San Diego, CA, USA',
-    industryCategory: 'furniture-manufacturing',
+    industryCategory: 'cabinetry-coatings',
     functionCategory: 'industry-specific',
-    industry: 'Furniture Manufacturing Industry',
+    industry: 'Cabinetry & Coatings',
     solutionType: 'Industry-Specific Products',
     description: 'Centralized system for kitchen furniture manufacturing companies to manage orders, design, and production.',
     shortDescription: 'Centralized system for kitchen furniture manufacturing companies to manage orders, design, and production.',
@@ -714,7 +619,7 @@ export const allCaseStudies: CaseStudy[] = [
     location: 'USA, Australia',
     industryCategory: 'commercial-music',
     functionCategory: 'industry-specific',
-    industry: 'Commercial Music Production',
+    industry: 'Music Production',
     solutionType: 'Industry-Specific Products',
     description: 'Centralized system for managing music assets, royalty calculations, and copyright control.',
     shortDescription: 'Centralized system for managing music assets, royalty calculations, and copyright control.',
@@ -742,9 +647,9 @@ export const allCaseStudies: CaseStudy[] = [
       'Catalog expansion without increasing administrative personnel'
     ],
     testimonial: {
-      quote: 'As a music label operating across two continents, our administrative challenges were significant. The boxed solution from Architeq has centralized all our operations, from release management to royalty calculations. Our artists are happier with the timely and accurate reporting, and our team can focus on creative work instead of administrative tasks.',
-      author: 'Max Taylor and Angelina Phengpong',
-      position: 'Lead Producers at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['ai-crm-assistant', 'financial-calculations', 'monday-integration'],
     featured: false,
@@ -842,7 +747,7 @@ export const allCaseStudies: CaseStudy[] = [
     location: 'USA, Australia',
     industryCategory: 'commercial-music',
     functionCategory: 'ai-powered',
-    industry: 'Commercial Music Production',
+    industry: 'Music Production',
     solutionType: 'AI-Powered Solutions',
     description: 'Integration of AI assistant into CRM interface for natural language data search and summarization.',
     shortDescription: 'Integration of AI assistant into CRM interface for natural language data search and summarization.',
@@ -862,9 +767,9 @@ export const allCaseStudies: CaseStudy[] = [
       'More informed decisions based on complete data'
     ],
     testimonial: {
-      quote: 'The AI assistant for our CRM has made information retrieval incredibly efficient. Our team can ask questions in natural language and get comprehensive answers drawn from across our entire database. New team members get up to speed much faster, and everyone saves time that used to be spent digging through records.',
-      author: 'David Gaddie',
-      position: 'CEO at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['music-label-solution', 'speech-to-text-analysis', 'dashboards-creation'],
     featured: false,
@@ -890,11 +795,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Creating reports with main metrics and identified problems',
       'Integration with CRM for automatic saving of transcripts'
     ],
-    technologies: ['OpenAI Whisper', 'Google Speech-to-Text API', 'Make', 'Monday'],
+    technologies: ['OpenAI Whisper', 'Google API', 'Make', 'Monday'],
     alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'OpenAI', 'Claude'],
     clickableTags: {
       companies: ['Various Companies'],
-      technologies: ['OpenAI Whisper', 'Google Speech-to-Text API', 'Make'],
+      technologies: ['OpenAI Whisper', 'Google API', 'Make'],
       locations: ['Multiple Locations', 'USA']
     },
     results: [
@@ -919,8 +824,8 @@ export const allCaseStudies: CaseStudy[] = [
     location: 'USA, Australia',
     industryCategory: 'commercial-music',
     functionCategory: 'system-infrastructure',
-    industry: 'Commercial Music Production',
-    solutionType: 'System & Infrastructure Integrations',
+    industry: 'Music Production',
+    solutionType: 'System Integrations',
     description: 'Automated financial calculation system for handling complex payment structures with multiple variables.',
     shortDescription: 'Automated financial calculation system for handling complex payment structures with multiple variables.',
     problem: 'Companies face difficulties in calculating payments for different categories of employees and contractors. The process includes many variables, such as taxes, bonuses, deductions, rates for external and internal specialists. Errors in calculations lead to discrepancies, payment delays, and additional costs for corrections.',
@@ -945,9 +850,9 @@ export const allCaseStudies: CaseStudy[] = [
       'Unification of calculations within company'
     ],
     testimonial: {
-      quote: 'The financial computation system has eliminated the errors and inconsistencies that used to plague our payment process. Calculations that used to take days now happen automatically, and we have been able to implement more complex payment structures without adding administrative burden.',
-      author: 'Jaqueline Gaddie',
-      position: 'Financial Director at SUQEAK E CLEAN STUDIOS'
+      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
+      author: 'Client Testimonial',
+      position: 'Coming Soon'
     },
     relatedCases: ['quickbooks-integration', 'stripe-invoicing', 'dashboards-creation'],
     featured: false,
@@ -961,7 +866,7 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'financial-services',
     functionCategory: 'system-infrastructure',
     industry: 'Financial Services',
-    solutionType: 'System & Infrastructure Integrations',
+    solutionType: 'System Integrations',
     description: 'Complex automatic notification system in Slack with filtering, routing, and priority management.',
     shortDescription: 'Complex automatic notification system in Slack with filtering, routing, and priority management.',
     problem: 'Teams drown in the flow of messages and notifications, critical information gets lost, there is no structured approach to communication, no prioritization of notifications.',
@@ -1003,7 +908,7 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'financial-services',
     functionCategory: 'system-infrastructure',
     industry: 'Financial Services',
-    solutionType: 'System & Infrastructure Integrations',
+    solutionType: 'System Integrations',
     description: 'Integration of telephony systems with CRM for automatic call logging and customer data management.',
     shortDescription: 'Integration of telephony systems with CRM for automatic call logging and customer data management.',
     problem: 'Companies lose valuable information about customer interactions by phone, spend time on manual entry of call data into CRM.',
@@ -1039,8 +944,30 @@ export const allCaseStudies: CaseStudy[] = [
 ];
 
 /**
- * НОВЫЕ ФУНКЦИИ ДЛЯ РАБОТЫ С ОБНОВЛЕННОЙ СИСТЕМОЙ ФИЛЬТРАЦИИ
+ * ФУНКЦИИ ДЛЯ РАБОТЫ С СИСТЕМОЙ ФИЛЬТРАЦИИ
  */
+
+/**
+ * Получение данных для фильтров с подсчетом количества кейсов
+ */
+export function getFilterCounts(): {
+  industries: Array<{ id: IndustryCategory; label: string; count: number }>;
+  functions: Array<{ id: FunctionCategory; label: string; count: number }>;
+} {
+  const industries = Object.entries(INDUSTRY_CATEGORIES).map(([id, label]) => ({
+    id: id as IndustryCategory,
+    label,
+    count: allCaseStudies.filter(cs => cs.industryCategory === id).length
+  }));
+
+  const functions = Object.entries(FUNCTION_CATEGORIES).map(([id, label]) => ({
+    id: id as FunctionCategory,
+    label,
+    count: allCaseStudies.filter(cs => cs.functionCategory === id).length
+  }));
+
+  return { industries, functions };
+}
 
 /**
  * Получение кейсов по матричной логике фильтрации
@@ -1086,52 +1013,15 @@ export function filterCasesByMatrix({
 }
 
 /**
- * Получение кейсов по кликабельным тегам
+ * Получение кейса по ID
  */
-export function getCasesByClickableTag(tagType: 'companies' | 'technologies' | 'locations', tagValue: string): CaseStudy[] {
-  return allCaseStudies.filter(caseStudy => 
-    caseStudy.clickableTags?.[tagType]?.includes(tagValue)
-  );
-}
-
-/**
- * Получение всех уникальных значений для кликабельных тегов
- */
-export function getUniqueClickableTags(tagType: 'companies' | 'technologies' | 'locations'): string[] {
-  const tags = new Set<string>();
-  allCaseStudies.forEach(cs => {
-    cs.clickableTags?.[tagType]?.forEach(tag => tags.add(tag));
-  });
-  return Array.from(tags).sort();
-}
-
-/**
- * Получение данных для фильтров с подсчетом количества кейсов
- */
-export function getFilterCounts(): {
-  industries: Array<{ id: IndustryCategory; label: string; count: number }>;
-  functions: Array<{ id: FunctionCategory; label: string; count: number }>;
-} {
-  const industries = Object.entries(INDUSTRY_CATEGORIES).map(([id, label]) => ({
-    id: id as IndustryCategory,
-    label,
-    count: allCaseStudies.filter(cs => cs.industryCategory === id).length
-  }));
-
-  const functions = Object.entries(FUNCTION_CATEGORIES).map(([id, label]) => ({
-    id: id as FunctionCategory,
-    label,
-    count: allCaseStudies.filter(cs => cs.functionCategory === id).length
-  }));
-
-  return { industries, functions };
-}
-
-// Остальные функции остаются без изменений, но используют новую структуру
 export function getCaseStudyById(id: string): CaseStudy | undefined {
   return allCaseStudies.find(caseStudy => caseStudy.id === id);
 }
 
+/**
+ * Получение связанных кейсов
+ */
 export function getRelatedCases(caseId: string, limit: number = 3): CaseStudy[] {
   const currentCase = getCaseStudyById(caseId);
 
@@ -1146,6 +1036,9 @@ export function getRelatedCases(caseId: string, limit: number = 3): CaseStudy[] 
     .slice(0, limit);
 }
 
+/**
+ * Получение избранных кейсов
+ */
 export function getFeaturedCases(limit: number = 3): CaseStudy[] {
   const featuredCases = allCaseStudies.filter(cs => cs.featured && !cs.isSpecialCard);
   
@@ -1156,6 +1049,65 @@ export function getFeaturedCases(limit: number = 3): CaseStudy[] {
   return featuredCases.slice(0, limit);
 }
 
+/**
+ * Маппинг для красивого отображения тегов
+ */
+const tagDisplayNames: Record<string, string> = {
+  // Solution Types - все возможные варианты из твоих кейсов
+  'Custom Solutions': 'Custom',
+  'CRM Integrations': 'CRM',
+  'Documents & Web Forms': 'Documents',
+  'System Integrations': 'Systems',
+  'System & Infrastructure Integrations': 'Systems',
+  'AI-Powered Solutions': 'AI',
+  'Industry-Specific': 'Industry',
+  'Industry-Specific Products': 'Industry',
+  'Finance & Accounting': 'Finance',
+  
+  // Technologies
+  'Monday CRM': 'Monday',
+  'Monday': 'Monday',
+  'API integrations': 'API',
+  'QuickBooks': 'QB',
+  'Make': 'Make',
+  'Zapier': 'Zapier',
+  'OpenAI': 'OpenAI',
+  'Twilio': 'Twilio',
+  'Stripe': 'Stripe',
+  'Next.js': 'Next.js',
+  'TypeScript': 'TypeScript',
+  'DocuSign': 'DocuSign',
+  'JotForm': 'JotForm',
+  'Slack': 'Slack',
+  'Google Sheets': 'Sheets',
+  'GoogleSheets': 'Sheets',
+  'Google Workspace API': 'Google API',
+  'Google Data Studio': 'Analytics',
+  'Google Docs API': 'Google API',
+  'Google API': 'Google API',
+  'ElevenLabs': 'Voice AI',
+  'CabinetVision': 'CAD',
+  'GoogleDrive': 'Drive',
+  'Google Workspace': 'Google',
+  'PlayHT': 'Voice AI',
+  'Retool': 'Retool',
+  'OpenAI Whisper': 'AI Speech',
+  'Email API': 'Email',
+  'Jira': 'Jira',
+  'Bill': 'Bill',
+  'PandaDoc': 'PandaDoc'
+};
+
+/**
+ * Функция для форматирования тегов для отображения
+ */
+function formatTagForDisplay(tag: string): string {
+  return tagDisplayNames[tag] || tag;
+}
+
+/**
+ * Преобразование кейса в формат карточки для featured секции
+ */
 export function toCaseCardFormat(caseStudy: CaseStudy) {
   return {
     id: caseStudy.id,
@@ -1172,112 +1124,4 @@ export function toCaseCardFormat(caseStudy: CaseStudy) {
     ],
     isSpecialCard: caseStudy.isSpecialCard
   };
-}
-
-// Обратная совместимость со старыми функциями
-export function getUniqueValues<T extends keyof CaseStudy>(field: T): string[] {
-  const values = new Set<string>();
-  allCaseStudies.forEach(cs => {
-    const value = cs[field];
-    if (typeof value === 'string') {
-      values.add(value);
-    }
-  });
-  return Array.from(values);
-}
-
-export function filterCases({
-  searchQuery = '',
-  industries = [],
-  solutionTypes = []
-}: {
-  searchQuery?: string;
-  industries?: string[];
-  solutionTypes?: string[];
-}): CaseStudy[] {
-  // Преобразуем в новый формат для обратной совместимости
-  const industriesNew = industries.map(industry => {
-    const foundEntry = Object.entries(INDUSTRY_CATEGORIES).find(([, value]) => value === industry);
-    return foundEntry ? foundEntry[0] as IndustryCategory : 'your-industry';
-  });
-  
-  const functionsNew = solutionTypes.map(solutionType => {
-    const foundEntry = Object.entries(FUNCTION_CATEGORIES).find(([, value]) => value === solutionType);
-    return foundEntry ? foundEntry[0] as FunctionCategory : 'custom-solutions';
-  });
-
-  return filterCasesByMatrix({
-    searchQuery,
-    industries: industriesNew,
-    functions: functionsNew
-  });
-}
-
-/**
- * Функция для получения всех уникальных тегов определенного типа
- */
-export function getUniqueTagsByType(tagType: 'function' | 'industry' | 'technology' | 'company' | 'location'): string[] {
-  const tags = new Set<string>();
-  
-  allCaseStudies.forEach(caseStudy => {
-    switch (tagType) {
-      case 'function':
-        if (caseStudy.functionCategory !== 'custom-solutions') {
-          tags.add(FUNCTION_CATEGORIES[caseStudy.functionCategory]);
-        }
-        break;
-      case 'industry':
-        if (caseStudy.industryCategory !== 'your-industry') {
-          tags.add(INDUSTRY_CATEGORIES[caseStudy.industryCategory]);
-        }
-        break;
-      case 'technology':
-        caseStudy.technologies.forEach(tech => tags.add(tech));
-        break;
-      case 'company':
-        caseStudy.clickableTags?.companies?.forEach(company => tags.add(company));
-        break;
-      case 'location':
-        caseStudy.clickableTags?.locations?.forEach(location => tags.add(location));
-        break;
-    }
-  });
-  
-  return Array.from(tags).sort();
-}
-
-/**
- * Функция для поиска кейсов по тегу
- */
-export function getCasesByTag(tagValue: string, tagType?: 'function' | 'industry' | 'technology' | 'company' | 'location'): CaseStudy[] {
-  return allCaseStudies.filter(caseStudy => {
-    // Поиск в функциях
-    if (!tagType || tagType === 'function') {
-      const functionName = FUNCTION_CATEGORIES[caseStudy.functionCategory];
-      if (functionName === tagValue) return true;
-    }
-    
-    // Поиск в индустриях
-    if (!tagType || tagType === 'industry') {
-      const industryName = INDUSTRY_CATEGORIES[caseStudy.industryCategory];
-      if (industryName === tagValue) return true;
-    }
-    
-    // Поиск в технологиях
-    if (!tagType || tagType === 'technology') {
-      if (caseStudy.technologies.includes(tagValue)) return true;
-    }
-    
-    // Поиск в компаниях
-    if (!tagType || tagType === 'company') {
-      if (caseStudy.clickableTags?.companies?.includes(tagValue)) return true;
-    }
-    
-    // Поиск в локациях
-    if (!tagType || tagType === 'location') {
-      if (caseStudy.clickableTags?.locations?.includes(tagValue)) return true;
-    }
-    
-    return false;
-  });
 }

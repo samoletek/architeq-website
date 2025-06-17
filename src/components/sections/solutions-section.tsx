@@ -147,15 +147,15 @@ function SolutionNavigation({
   onSolutionClick: (index: number) => void;
 }) {
   return (
-    <div className="text-center mb-20">
-              <div className="flex flex-wrap justify-center gap-6">
+    <div className="text-center mb-12 sm:mb-16 md:mb-20">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto">
         {solutions.map((solution, index) => (
           <motion.button
             key={solution.id}
             onClick={() => onSolutionClick(index)}
             className={`
-              px-6 py-3 rounded-lg transition-all duration-300 relative group border
-              focus:outline-none focus:ring-0
+              px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg transition-all duration-300 relative group border
+              focus:outline-none focus:ring-0 text-xs sm:text-sm md:text-base
               ${activeIndex === index 
                 ? 'text-white border-transparent' 
                 : 'text-gray-400 hover:text-white border-gray-600/30'
@@ -252,7 +252,7 @@ const SolutionContent = ({
   return (
     <motion.div 
       className="relative w-full z-10 max-w-6xl mx-auto" 
-      style={{ height: '380px' }}
+      style={{ minHeight: '400px' }}
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
@@ -354,11 +354,11 @@ const SolutionContent = ({
           y: { duration: 0.5 }
         }}
         className={`
-          relative rounded-2xl p-12 overflow-hidden group w-full
+          relative rounded-2xl p-6 sm:p-8 md:p-12 overflow-hidden group w-full
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
         `}
         style={{
-          height: '380px',
+          minHeight: '400px',
           width: '100%',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',
@@ -370,23 +370,23 @@ const SolutionContent = ({
         onMouseLeave={() => onHover(false)}
       >
         {/* Контент карточки - компактный */}
-        <div className="relative z-10 h-full flex flex-col">
-          {/* Заголовок и подзаголовок - уменьшенные отступы */}
-          <div className="mb-8 text-center">
-            <h3 className="text-3xl font-bold leading-tight text-white mb-6"
+        <div className="relative z-10 h-full flex flex-col justify-center md:justify-start">
+          {/* Заголовок и подзаголовок - адаптивные */}
+          <div className="mb-6 sm:mb-8 text-center">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight text-white mb-4 sm:mb-6"
                 style={{
                   textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                 }}>
               {solution.label}
             </h3>
-            <p className="text-white text-lg leading-relaxed max-w-2xl mx-auto opacity-90">
+            <p className="text-white text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto opacity-90">
               {solution.description}
             </p>
           </div>
           
-          {/* Возможности - компактная сетка */}
+          {/* Возможности - адаптивная сетка */}
           <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-xl font-bold mb-6 text-white text-left max-w-xl mx-auto"
+            <h4 className="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-6 text-white text-left max-w-4xl mx-auto"
                 style={{
                   textShadow: '0 0 15px rgba(255,255,255,0.6)'
                 }}>
@@ -410,7 +410,7 @@ const SolutionContent = ({
                 >
                   {/* Буллиты с аура-эффектом */}
                   <motion.div 
-                    className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0"
+                    className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-primary/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0"
                     initial={{ scale: 0 }}
                     animate={{ 
                       scale: isActive ? 1 : 0
@@ -424,7 +424,7 @@ const SolutionContent = ({
                     }}
                   >
                     <motion.div 
-                      className="w-1.5 h-1.5 rounded-full bg-primary" 
+                      className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary" 
                       initial={{ scale: 0 }}
                       animate={{ 
                         scale: isActive ? [1, 1.5, 1] : 0
@@ -440,7 +440,7 @@ const SolutionContent = ({
                       }}
                     />
                   </motion.div>
-                  <span className="text-white text-base leading-relaxed text-left opacity-95">
+                  <span className="text-white text-sm sm:text-base leading-relaxed text-left opacity-95">
                     {feature}
                   </span>
                 </motion.div>
@@ -448,8 +448,60 @@ const SolutionContent = ({
             </div>
           </div>
           
-          {/* CTA кнопка в правом нижнем углу */}
-          <div className="absolute bottom-2 right-12">
+          {/* CTA кнопка - скрытая на десктопе до hover, видимая на мобилке */}
+          <div className="mt-6 flex justify-center md:absolute md:bottom-4 md:right-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: 1,
+                scale: 1
+              }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="block md:hidden"
+            >
+              {solution.href && (
+                <Link href={solution.href}>
+                  <Button 
+                    variant="primary" 
+                    className="text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6 transition-all duration-300 relative overflow-hidden group"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0 4px 16px rgba(119, 71, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
+                    {/* Зеркальный эффект */}
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                    />
+                    <span className="flex items-center relative z-10"
+                          style={{
+                            textShadow: '0 0 10px rgba(255,255,255,0.5)'
+                          }}>
+                      Learn More
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </span>
+                  </Button>
+                </Link>
+              )}
+            </motion.div>
+            
+            {/* Скрытая кнопка для десктопа */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
@@ -457,12 +509,13 @@ const SolutionContent = ({
                 scale: isHovered ? 1 : 0.8
               }}
               transition={{ duration: 0.3, ease: "easeOut" }}
+              className="hidden md:block"
             >
               {solution.href && (
                 <Link href={solution.href}>
                   <Button 
                     variant="primary" 
-                    className="text-base py-3 px-6 transition-all duration-300 relative overflow-hidden group"
+                    className="text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6 transition-all duration-300 relative overflow-hidden group"
                     style={{
                       background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
                       backdropFilter: 'blur(10px)',
@@ -603,8 +656,8 @@ export function SolutionsSection({
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">{title}</h2>
-            <p className="text-lg md:text-base text-light-gray max-w-4xl mx-auto whitespace-pre-line">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10 md:mb-12">{title}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
           </motion.div>
@@ -624,8 +677,8 @@ export function SolutionsSection({
             onSolutionClick={handleSolutionClick}
           />
 
-          {/* Центрированная карточка с уменьшенным отступом */}
-          <div className="flex justify-center mt-14">
+          {/* Центрированная карточка с адаптивным отступом */}
+          <div className="flex justify-center mt-8 sm:mt-10 md:mt-14">
             <AnimatePresence mode="wait" custom={direction}>
               <SolutionContent
                 key={activeIndex}

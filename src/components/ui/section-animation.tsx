@@ -97,11 +97,8 @@ export function SectionAnimation({
   
   // Задержка для предотвращения мигания при гидратации
   useEffect(() => {
-    const hydrationTimer = setTimeout(() => {
-      setIsMounted(true);
-    }, 10);
-    
-    return () => clearTimeout(hydrationTimer);
+    // Убираем задержку для предотвращения FOUC
+    setIsMounted(true);
   }, []);
   
   useEffect(() => {
@@ -203,7 +200,7 @@ export function SectionAnimation({
     
     // Добавляем небольшую задержку для предотвращения "прыжков" при гидратации
     if (!isMounted) {
-      return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
+      return <div className={className}>{children}</div>;
     }
     
     return content;
@@ -238,17 +235,13 @@ export function AnimatedContainer({
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
-    // Небольшая задержка для предотвращения мигания при гидратации
-    const timer = setTimeout(() => {
-      setIsMounted(true);
-    }, 10);
-    
-    return () => clearTimeout(timer);
+    // Убираем задержку для предотвращения FOUC
+    setIsMounted(true);
   }, []);
   
-  // Если компонент не смонтирован, показываем статический контент с opacity для предотвращения мигания
+  // Если компонент не смонтирован, показываем статический контент
   if (!isMounted) {
-    return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
+    return <div className={className}>{children}</div>;
   }
   
   return (
@@ -317,7 +310,7 @@ export function AnimatedItem({
   
   // Если компонент не смонтирован, показываем статический контент
   if (!isMounted) {
-    return <div className={className} style={{ opacity: 0.99 }}>{children}</div>;
+    return <div className={className}>{children}</div>;
   }
   
   return (

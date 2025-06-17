@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { Icon, IconName } from '@/components/ui/icons/icon';
+import { IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { useScrollAnimation } from '@/lib/utils/animation';
 
@@ -221,10 +221,6 @@ export default function BenefitsSection({
                 />
                 
                 <div className="relative z-10">
-                  <div className="text-white mb-4">
-                    <Icon name={benefit.icon} className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </div>
-                  
                   <motion.h3 
                     className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line"
                     custom={index}
@@ -275,14 +271,9 @@ export function CompactBenefitsSection({
             {/* Компактное свечение для маленьких карточек */}
             <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/25 via-[#180033]/20 to-[#121212]/30 rounded-lg blur-sm -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            <div className="relative z-10 flex items-start w-full">
-              <div className="text-secondary flex-shrink-0 mr-3">
-                <Icon name={benefit.icon} className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="text-base sm:text-lg font-semibold mb-1">{benefit.title}</h4>
-                <p className="text-light-gray text-xs sm:text-sm font-sans">{benefit.description}</p>
-              </div>
+            <div className="relative z-10 w-full">
+              <h4 className="text-base sm:text-lg font-semibold mb-2">{benefit.title}</h4>
+              <p className="text-light-gray text-xs sm:text-sm font-sans">{benefit.description}</p>
             </div>
           </div>
         ))}
@@ -312,10 +303,7 @@ export function HorizontalBenefits({
           <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/35 rounded-lg blur-md -z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
           
           <div className="relative z-10">
-            <div className="text-secondary group-hover:text-white transition-colors duration-300 mb-4">
-              <Icon name={benefit.icon} className="h-5 w-5 sm:h-6 sm:w-6" />
-            </div>
-            <h4 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">
+            <h4 className="text-lg sm:text-xl font-semibold mb-4 group-hover:text-secondary transition-colors duration-300">
               {benefit.title}
             </h4>
             <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
