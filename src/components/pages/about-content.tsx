@@ -1146,7 +1146,7 @@ function AchievementsSection() {
                 />
 
                 <div className="relative z-10">
-                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2 group-hover:text-white transition-colors duration-300">
+                  <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={hasAnimated ? { opacity: 1 } : {}}
@@ -1272,7 +1272,7 @@ function MethodologySection() {
           <h2 
             className="text-4xl md:text-5xl font-bold mb-6"
             style={{
-              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
             }}
           >
             Our Methodology
@@ -1293,7 +1293,7 @@ function MethodologySection() {
                     onClick={() => handleStepChange(index)}
                     className={`w-full text-left p-4 rounded-lg transition-all duration-300 relative group ${
                       activeStep === index 
-                        ? 'bg-primary/10 border border-primary/30' 
+                        ? 'bg-secondary/10 border border-secondary/30' 
                         : 'hover:bg-white/5'
                     }`}
                     whileHover={{ scale: 1.02 }}
@@ -1302,7 +1302,7 @@ function MethodologySection() {
                     {/* Active step glow effect */}
                     {activeStep === index && (
                       <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-r from-secondary/20 to-transparent rounded-lg"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
@@ -1311,16 +1311,16 @@ function MethodologySection() {
                     
                     <div className="relative z-10 flex items-center gap-4">
                       <motion.div 
-                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 ${
+                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 flex-shrink-0 ${
                           activeStep === index 
-                            ? 'bg-primary text-black' 
+                            ? 'bg-secondary text-black' 
                             : 'bg-white/10 text-white/70'
                         }`}
                         animate={activeStep === index ? {
                           boxShadow: [
-                            '0 0 10px rgba(178,75,243,0.4)',
-                            '0 0 20px rgba(178,75,243,0.7)',
-                            '0 0 10px rgba(178,75,243,0.4)'
+                            '0 0 10px rgba(176,255,116,0.4)',
+                            '0 0 20px rgba(176,255,116,0.7)',
+                            '0 0 10px rgba(176,255,116,0.4)'
                           ]
                         } : {}}
                         transition={{
@@ -1331,13 +1331,13 @@ function MethodologySection() {
                       >
                         {step.number}
                       </motion.div>
-                      <div>
-                        <h3 className={`font-semibold transition-colors duration-300 ${
+                      <div className="flex-1">
+                        <h3 className={`font-semibold transition-colors duration-300 font-mono text-sm ${
                           activeStep === index ? 'text-white' : 'text-white/70'
                         }`}>
                           {step.title}
                         </h3>
-                        <p className="text-primary text-sm">{step.focus}</p>
+                        <p className="text-secondary text-xs font-mono">{step.focus}</p>
                       </div>
                     </div>
                   </motion.button>
@@ -1354,23 +1354,23 @@ function MethodologySection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden"
+                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-secondary/20 relative overflow-hidden"
                 >
                   <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
+                    className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
                     animate={{ opacity: [0.5, 0.8, 0.5] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   />
 
                   <div className="relative z-10">
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-black font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-black font-bold text-lg">
                         {steps[activeStep].number}
                       </div>
                       <h3 
                         className="text-3xl font-bold text-white"
                         style={{
-                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
                         }}
                       >
                         {steps[activeStep].title}
@@ -1381,14 +1381,9 @@ function MethodologySection() {
                       {steps[activeStep].description}
                     </p>
 
-                    <div className="space-y-4">
-                      <div className="bg-white/5 rounded-lg p-4 border border-primary/20">
-                        <h4 className="text-primary font-semibold mb-2">Key Focus:</h4>
-                        <p className="text-white/70">{steps[activeStep].focus}</p>
-                      </div>
-                      
-                      <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-                        <h4 className="text-primary font-semibold mb-2">Strategic Insight:</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                        <h4 className="text-secondary font-semibold mb-2">Strategic Insight:</h4>
                         <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].insight}</p>
                       </div>
                       
@@ -1400,54 +1395,6 @@ function MethodologySection() {
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Enhanced Progress Bar with Auto-play Indicator */}
-          <div className="mt-8">
-            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-primary"
-                animate={{ 
-                  width: `${((activeStep + 1) / steps.length) * 100}%`
-                }}
-                transition={{ 
-                  duration: 0.8, 
-                  ease: "easeInOut"
-                }}
-              />
-            </div>
-            
-            <div className="flex justify-between items-center mt-4">
-              <div className="flex items-center gap-2 text-white/50 text-sm">
-                <motion.div
-                  className="w-2 h-2 rounded-full bg-primary"
-                  animate={{ opacity: isAutoPlaying && !hasUserInteracted ? [0.3, 1, 0.3] : 0.6 }}
-                  transition={{ duration: 1.5, repeat: isAutoPlaying && !hasUserInteracted ? Infinity : 0 }}
-                />
-                <span>
-                  {isAutoPlaying && !hasUserInteracted ? 'Auto-progression active' : 'Manual control active'}
-                </span>
-              </div>
-              
-              <span className="text-white/50 text-sm">
-                Step {activeStep + 1} of {steps.length}
-              </span>
-            </div>
-            
-            {/* Navigation Dots */}
-            <div className="flex justify-center gap-2 mt-4">
-              {steps.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleStepChange(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    activeStep === index 
-                      ? 'bg-primary shadow-lg shadow-primary/50' 
-                      : 'bg-white/20 hover:bg-white/40'
-                  }`}
-                />
-              ))}
             </div>
           </div>
         </div>
