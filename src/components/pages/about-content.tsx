@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Team member interface
 interface TeamMember {
@@ -29,6 +30,13 @@ interface Achievement {
   number: string;
   suffix: string;
   label: string;
+  description: string;
+}
+
+// Technology interface
+interface Technology {
+  name: string;
+  category: string;
   description: string;
 }
 
@@ -1403,138 +1411,334 @@ function MethodologySection() {
   );
 }
 
-// Technology Icons Components
+// Enhanced Technology Icons Components using actual SVG files
 const TechIcon = ({ name }: { name: string }) => {
-  const getIcon = () => {
-    switch (name.toLowerCase()) {
-      case 'monday.com':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 17.568c-1.171 1.171-2.781 1.896-4.568 1.896s-3.397-.725-4.568-1.896S6.536 14.787 6.536 13s.725-3.397 1.896-4.568S11.213 6.536 13 6.536s3.397.725 4.568 1.896 1.896 2.781 1.896 4.568-.725 3.397-1.896 4.568z" fill="#FF3D57"/>
-          </svg>
-        );
-      case 'hubspot':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full">
-            <path d="M18.164 7.93V5.084a2.198 2.198 0 0 0-1.422-2.056 2.196 2.196 0 0 0-2.394.478L12 5.854 9.652 3.506a2.196 2.196 0 0 0-2.394-.478 2.198 2.198 0 0 0-1.422 2.056V7.93a6.27 6.27 0 0 0-3.29 5.505v2.564c0 .344.28.624.624.624h2.564v2.564a.624.624 0 0 0 .624.624h2.564v2.564c0 .344.28.624.624.624h2.564c.344 0 .624-.28.624-.624v-2.564h2.564a.624.624 0 0 0 .624-.624v-2.564h2.564c.344 0 .624-.28.624-.624v-2.564a6.27 6.27 0 0 0-3.29-5.505z" fill="#FF7A59"/>
-          </svg>
-        );
-      case 'zoho':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6 18H6l6-12h6v12z"/>
-          </svg>
-        );
-      case 'pipedrive':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12.5 0C5.596 0 0 5.596 0 12.5S5.596 25 12.5 25 25 19.404 25 12.5 19.404 0 12.5 0zm0 20c-4.142 0-7.5-3.358-7.5-7.5S8.358 5 12.5 5s7.5 3.358 7.5 7.5-3.358 7.5-7.5 7.5z"/>
-          </svg>
-        );
-      case 'make (integromat)':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0L8 8h8l-4-8zM8 8L0 12l8 4V8zM16 8v8l8-4-8-4zM8 16l4 8 4-8H8z"/>
-          </svg>
-        );
-      case 'zapier':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.5 12.5h-5l2.5-2.5v5zm-13 0v-5l2.5 2.5h-5zm2.5-2.5L5.5 7.5h5l-2.5 2.5zm5 0l2.5 2.5v5h-5l2.5-2.5z"/>
-          </svg>
-        );
-      case 'n8n':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0L3 6v12l9 6 9-6V6l-9-6zM8 10h2v4H8v-4zm4-2h2v8h-2V8zm4 2h2v4h-2v-4z"/>
-          </svg>
-        );
-      case 'google workspace':
-      case 'google docs':
-      case 'google sheets':
-      case 'google forms':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-        );
-      case 'notion':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.606c.093.466 0 .933-.466.98l-.747.14v10.264c-.66.373-1.261.606-1.781.606-.793 0-.933-.233-1.493-.933l-4.613-7.186v6.952l1.54.326s0 .933-1.307.933l-3.633.233c-.093-.187 0-.653.327-.746l.84-.233V9.854L7.822 9.61c-.094-.466.14-1.12.887-1.166l3.913-.28 4.8 7.327V8.88l-1.307-.14c-.094-.56.187-.933.747-.933z"/>
-          </svg>
-        );
-      case 'miro':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M17.392 0H23.6v5.88H17.392zM10.536 0h6.208v12.768h-6.208zM3.68 0h6.208v18.648H3.68zM10.536 15.552H23.6V24h-13.064z"/>
-          </svg>
-        );
-      case 'quickbooks':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12c1.232 0 2.426-.186 3.552-.531L12 18.923 8.448 23.47C9.574 23.814 10.768 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 3.6A8.4 8.4 0 1 1 3.6 12 8.4 8.4 0 0 1 12 3.6z"/>
-          </svg>
-        );
-      case 'stripe':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full">
-            <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.274 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.619 3.445 2.637 0 .97-.787 1.402-2.618 1.402-2.618 0-5.323-.981-7.391-2.637l-.955 5.518C3.862 22.030 6.728 24 12.165 24c2.618 0 4.817-.755 6.3-2.053 1.544-1.33 2.328-3.162 2.328-5.498 0-3.905-2.467-5.659-6.817-7.299z" fill="#6772E5"/>
-          </svg>
-        );
-      case 'paypal':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/>
-          </svg>
-        );
-      case 'openai':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.508 4.508 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/>
-          </svg>
-        );
-      case 'slack':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full">
-            <g>
-              <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52z" fill="#E01E5A"/>
-              <path d="M6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A"/>
-              <path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834z" fill="#36C5F0"/>
-              <path d="M8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0"/>
-              <path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834z" fill="#2EB67D"/>
-              <path d="M17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D"/>
-              <path d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52z" fill="#ECB22E"/>
-              <path d="M15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z" fill="#ECB22E"/>
-            </g>
-          </svg>
-        );
-      case 'twilio':
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.218c-5.1 0-9.218-4.118-9.218-9.218S6.9 2.782 12 2.782s9.218 4.118 9.218 9.218-4.118 9.218-9.218 9.218zm6.54-9.218c0 1.51-1.225 2.735-2.735 2.735s-2.735-1.225-2.735-2.735S14.295 9.265 15.805 9.265 18.54 10.49 18.54 12zm-6.54 0c0 1.51-1.225 2.735-2.735 2.735S6.53 13.51 6.53 12s1.225-2.735 2.735-2.735S12 10.49 12 12zm-6.54 0c0 1.51-1.225 2.735-2.735 2.735S0 13.51 0 12s1.225-2.735 2.735-2.735S5.46 10.49 5.46 12z"/>
-          </svg>
-        );
-      default:
-        // Generic service icon for unknown services
-        return (
-          <svg viewBox="0 0 24 24" className="w-full h-full">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#176255"/>
-          </svg>
-        );
+  const getIconPath = () => {
+    switch (name) {
+      // CRM & Project Management
+      case 'Monday.com': return '/icons/tech/monday-com.svg';
+      case 'HubSpot': return '/icons/tech/hubspot.svg';
+      case 'Zoho': return '/icons/tech/zoho.svg';
+      case 'Pipedrive': return '/icons/tech/pipedrive.svg';
+      
+      // Automation
+      case 'Make (Integromat)': return '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg'; // No specific Make icon
+      case 'Zapier': return '/icons/tech/zapier.svg';
+      case 'n8n': return '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg';
+      
+      // Productivity & Collaboration
+      case 'Google Workspace': return '/icons/tech/google-drive.svg';
+      case 'Notion': return null; // Will show placeholder
+      case 'Miro': return '/icons/tech/cdnlogo.com_miro.svg';
+      
+      // Finance & Payments
+      case 'QuickBooks': return '/icons/tech/cdnlogo.com_quickbooks.svg';
+      case 'Bill.com': return '/icons/tech/BILL.svg';
+      case 'Chaser': return '/icons/tech/chase.svg';
+      case 'Stripe': return '/icons/tech/companystripe.svg';
+      case 'PayPal': return '/icons/tech/paypal.svg';
+      
+      // Verification & Security
+      case 'Plaid': return '/icons/tech/cdnlogo.com_plaid.svg';
+      case 'Veriff': return '/icons/tech/veriff-seeklogo.svg';
+      
+      // Document Management
+      case 'DocuSign': return '/icons/tech/docusign-seeklogo.svg';
+      case 'SignNow': return '/icons/tech/signnow-seeklogo.svg';
+      case 'eSignatures': return '/icons/tech/docusign-seeklogo.svg'; // Using DocuSign for generic eSignatures
+      case 'Google Docs': return '/icons/tech/google-docs.svg';
+      
+      // Forms & Data Collection
+      case 'JotForm': return '/icons/tech/cdnlogo.com_jotform.svg';
+      case 'Typeform': return '/icons/tech/typeform.svg';
+      case 'Cognito': return '/icons/tech/AWS Cognito.svg';
+      case 'Google Forms': return '/icons/tech/forms.svg';
+      
+      // AI
+      case 'OpenAI': return '/icons/tech/OpenAI_logo_2025_(symbol).svg';
+      case 'Claude': return '/icons/tech/Anthropic Ai.svg';
+      case 'Deepseek': return '/icons/tech/deepseek.svg';
+      case 'Gemini': return '/icons/tech/google-gemini-icon.svg';
+      case 'Grok': return '/icons/tech/grok-icon.svg';
+      
+      // Communications
+      case 'Twilio': return '/icons/tech/cdnlogo.com_twilio.svg';
+      case 'AirCall': return '/icons/tech/Aircall.svg';
+      case 'Slack': return '/icons/tech/slack-icon.svg';
+      case 'Telegram': return '/icons/tech/telegram-icon.svg';
+      case 'OpenPhone': return '/icons/tech/Open Phone.svg';
+      
+      // Database
+      case 'Airtable': return '/icons/tech/airtable.svg';
+      case 'Google Sheets': return '/icons/tech/google-drive.svg';
+      case 'MySQL': return '/icons/tech/mysql.svg';
+      case 'PostgreSQL': return '/icons/tech/postgresql.svg';
+      
+      // Specific Tools
+      case 'BestPass': return null; // Will show placeholder
+      case 'SuperDispatch': return null; // Will show placeholder
+      case 'CentralDispatch': return null; // Will show placeholder
+      
+      // Tracking
+      case 'Hubstaff': return '/icons/tech/hubstaff_94356.svg';
+      
+      // Default fallback
+      default: return null; // Will show placeholder
     }
   };
 
+  const iconPath = getIconPath();
+  
   return (
     <div className="w-full h-full">
-      {getIcon()}
+      {iconPath ? (
+        <Image 
+          src={iconPath} 
+          alt={name}
+          width={40}
+          height={40}
+          className="w-full h-full object-contain"
+          style={{ filter: 'none' }}
+          unoptimized
+        />
+      ) : (
+        <div className="w-full h-full bg-white/10 rounded-lg flex items-center justify-center">
+          <span className="text-white/60 text-xs font-bold">
+            {name.charAt(0).toUpperCase()}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
 
+// Individual Dock Icon Component with Apple Dock physics
+interface DockIconProps {
+  name: string;
+  mouseX: MotionValue<number>;
+  onClickAnimation: () => void;
+}
+
+function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  // Calculate distance from mouse to icon center
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  // Apply magnification effect based on distance
+  const DISTANCE = 100;
+  const SCALE = 1.5;
+  const NUDGE = 20;
+  const SPRING_CONFIG = {
+    stiffness: 300,
+    damping: 30,
+  };
+  const scale = useTransform(distance, [-DISTANCE, 0, DISTANCE], [1, SCALE, 1]);
+
+// Calculate horizontal nudge (отталкивание от мыши)
+  const x = useTransform(() => {
+    const d = distance.get();
+    if (d === -Infinity) {
+      return 0;
+    } else if (d < -DISTANCE || d > DISTANCE) {
+      return Math.sign(d) * -1 * NUDGE;
+    } else {
+      return (-d / DISTANCE) * NUDGE * scale.get();
+    }
+  });
+
+  // Apply spring physics to transformations
+  const scaleSpring = useSpring(scale, SPRING_CONFIG);
+  const xSpring = useSpring(x, SPRING_CONFIG);
+  
+  // Y animation for click effect
+  const y = useMotionValue(0);
+
+  const handleClick = () => {
+    onClickAnimation();
+    // Apple-style bounce animation on click
+    y.set(0);
+    y.set(-40);
+    setTimeout(() => y.set(0), 150);
+    setTimeout(() => y.set(-20), 300);
+    setTimeout(() => y.set(0), 450);
+  };
+
+  return (
+    <motion.button
+      ref={ref}
+      style={{
+        x: xSpring,
+        scale: scaleSpring,
+        y: y,
+        willChange: 'transform' // Оптимизация производительности
+      }}
+      onClick={handleClick}
+      className="group relative flex flex-col items-center justify-center origin-center focus:outline-none"
+    >
+
+      {/* Icon Container with Apple Dock glass effect */}
+      <motion.div
+        className="w-16 h-16 bg-gradient-to-br from-white/15 to-white/5 rounded-2xl flex items-center justify-center border border-white/20 shadow-2xl backdrop-blur-sm relative overflow-visible"
+        transition={{ duration: 0.2 }}
+      >
+        {/* Glass reflection effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-2xl opacity-60"></div>
+        
+        <div className="w-10 h-10 relative z-10">
+          <TechIcon name={name} />
+        </div>
+      </motion.div>
+    </motion.button>
+  );
+}
+
+// Main Apple Dock Component
+function AppleDock({ technologies }: { technologies: Technology[] }) {
+  const mouseX = useMotionValue(Infinity); // Use Infinity as null value
+  const [clickedIcon, setClickedIcon] = useState<string | null>(null);
+  const [hoveredTech, setHoveredTech] = useState<Technology | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleIconClick = (iconName: string) => {
+    setClickedIcon(iconName);
+    setTimeout(() => setClickedIcon(null), 1000);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (rect) {
+      const relativeX = e.clientX - rect.left;
+      const iconWidth = 88;
+      
+      // Calculate current animation offset
+      const currentTime = Date.now() / 1000; // seconds
+      const animationDuration = technologies.length * 2;
+      const cycleProgress = (currentTime % animationDuration) / animationDuration;
+      const currentOffset = cycleProgress * singleLoopWidth;
+      
+      // Adjust relative position for animation
+      const adjustedX = (relativeX + currentOffset) % singleLoopWidth;
+      const iconIndex = Math.floor(adjustedX / iconWidth) % technologies.length;
+      
+      if (iconIndex >= 0 && iconIndex < technologies.length) {
+        setHoveredTech(technologies[iconIndex]);
+      }
+      
+      mouseX.set(e.clientX);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredTech(null);
+    mouseX.set(Infinity);
+  };
+
+  // Create duplicated technologies for infinite scroll (enough copies for seamless loop)
+  const duplicatedTechnologies = [...technologies, ...technologies, ...technologies, ...technologies];
+  const iconWidth = 88; // 64px icon + 16px space + 8px padding
+  const singleLoopWidth = technologies.length * iconWidth;
+  
+  return (
+    <motion.div
+      className="relative bg-white/8 backdrop-blur-lg rounded-3xl py-16 px-8 border border-white/10 shadow-2xl overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)'
+      }}
+      layout
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      {/* Dock background glow */}
+      <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent rounded-3xl"></div>
+      
+      {/* Scrolling Icons container */}
+      <div 
+        ref={containerRef}
+        className="relative z-10 overflow-hidden py-4"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <motion.div
+          className="flex items-center space-x-4"
+          animate={{
+            x: [0, -singleLoopWidth]
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: technologies.length * 2, // 2 seconds per technology
+              ease: "linear",
+            },
+          }}
+        >
+          {duplicatedTechnologies.map((tech, index) => (
+            <motion.div 
+              key={`${tech.name}-${index}`}
+              className="flex-shrink-0 p-1"
+              initial={{ opacity: 1, scale: 1 }}
+            >
+              <DockIcon
+                name={tech.name}
+                mouseX={mouseX}
+                onClickAnimation={() => handleIconClick(tech.name)}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Click effect overlay */}
+      <AnimatePresence>
+        {clickedIcon && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.2 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 pointer-events-none"
+          >
+            <div className="absolute inset-0 bg-gradient-radial from-secondary/20 via-transparent to-transparent rounded-3xl"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Technology Info Display */}
+      <div className="mt-8 text-center min-h-[60px] flex flex-col justify-center">
+        <AnimatePresence mode="wait">
+          {hoveredTech ? (
+            <motion.div
+              key={hoveredTech.name}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-2"
+            >
+              <h3 className="text-xl font-bold text-white">{hoveredTech.name}</h3>
+              <p className="text-secondary font-medium">{hoveredTech.category}</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-white/60 text-sm"
+            >
+              Hover over icons to see technology details
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
+// Updated Technology Stack Section with Apple Dock
 function TechnologyStackSection() {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -1543,54 +1747,75 @@ function TechnologyStackSection() {
   });
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [hoveredTech, setHoveredTech] = useState<number | null>(null);
-  const [carouselOffset, setCarouselOffset] = useState(0);
 
   // Enhanced technology stack data with descriptions
   const technologies = [
+    // CRM & Project Management
     { name: 'Monday.com', category: 'CRM & Project Management', description: 'Project management and team collaboration platform' },
     { name: 'HubSpot', category: 'CRM & Project Management', description: 'Comprehensive CRM and marketing automation' },
     { name: 'Zoho', category: 'CRM & Project Management', description: 'Integrated business software suite' },
     { name: 'Pipedrive', category: 'CRM & Project Management', description: 'Sales-focused CRM for pipeline management' },
+    
+    // Automation
     { name: 'Make (Integromat)', category: 'Automation', description: 'Visual automation platform for complex workflows' },
     { name: 'Zapier', category: 'Automation', description: 'Connect apps and automate workflows' },
     { name: 'n8n', category: 'Automation', description: 'Open-source workflow automation tool' },
+    
+    // Productivity & Collaboration
     { name: 'Google Workspace', category: 'Productivity & Collaboration', description: 'Cloud-based productivity and collaboration suite' },
     { name: 'Notion', category: 'Productivity & Collaboration', description: 'All-in-one workspace for notes and project management' },
     { name: 'Miro', category: 'Productivity & Collaboration', description: 'Online collaborative whiteboard platform' },
+    
+    // Finance & Payments
     { name: 'QuickBooks', category: 'Finance & Payments', description: 'Accounting software for small to medium businesses' },
     { name: 'Bill.com', category: 'Finance & Payments', description: 'Automated bill pay and invoice management' },
-    { name: 'Chaser', category: 'Finance & Payments', description: 'Automated credit control and debt collection' },
+    { name: 'Chaser', category: 'Finance & Payments', description: 'Automated debt collection and payment reminders' },
     { name: 'Stripe', category: 'Finance & Payments', description: 'Online payment processing platform' },
-    { name: 'PayPal', category: 'Finance & Payments', description: 'Digital payment and money transfer service' },
-    { name: 'Plaid', category: 'Verification & Security', description: 'Financial data connectivity and verification' },
-    { name: 'Veriff', category: 'Verification & Security', description: 'Identity verification and fraud prevention' },
+    { name: 'PayPal', category: 'Finance & Payments', description: 'Digital payments and money transfers' },
+    
+    // Verification & Security
+    { name: 'Plaid', category: 'Verification & Security', description: 'Financial data aggregation and verification' },
+    { name: 'Veriff', category: 'Verification & Security', description: 'Identity verification and compliance' },
+    
+    // Document Management
     { name: 'DocuSign', category: 'Document Management', description: 'Electronic signature and document workflow' },
-    { name: 'SignNow', category: 'Document Management', description: 'Digital document signing solution' },
-    { name: 'eSignatures', category: 'Document Management', description: 'Electronic signature services' },
-    { name: 'Google Docs', category: 'Document Management', description: 'Cloud-based document creation and collaboration' },
+    { name: 'SignNow', category: 'Document Management', description: 'Digital document signing and management' },
+    { name: 'eSignatures', category: 'Document Management', description: 'Electronic signature solutions' },
+    { name: 'Google Docs', category: 'Document Management', description: 'Collaborative document creation and editing' },
+    
+    // Forms & Data Collection
     { name: 'JotForm', category: 'Forms & Data Collection', description: 'Online form builder and data collection' },
     { name: 'Typeform', category: 'Forms & Data Collection', description: 'Interactive forms and surveys' },
-    { name: 'Cognito', category: 'Forms & Data Collection', description: 'Advanced form builder with payment integration' },
-    { name: 'Google Forms', category: 'Forms & Data Collection', description: 'Simple survey and form creation tool' },
+    { name: 'Cognito', category: 'Forms & Data Collection', description: 'Online forms and payment processing' },
+    { name: 'Google Forms', category: 'Forms & Data Collection', description: 'Simple form creation and response collection' },
+    
+    // AI
     { name: 'OpenAI', category: 'AI', description: 'Advanced AI models for text and reasoning' },
-    { name: 'Claude', category: 'AI', description: 'AI assistant for analysis and content creation' },
-    { name: 'Deepseek', category: 'AI', description: 'AI model for complex reasoning tasks' },
-    { name: 'Gemini', category: 'AI', description: 'Google\'s multimodal AI model' },
+    { name: 'Claude', category: 'AI', description: 'AI assistant for analysis and automation' },
+    { name: 'Deepseek', category: 'AI', description: 'Advanced reasoning and code generation AI' },
+    { name: 'Gemini', category: 'AI', description: 'Google\'s multimodal AI assistant' },
     { name: 'Grok', category: 'AI', description: 'Real-time AI with web access' },
-    { name: 'Twilio', category: 'Communications', description: 'Cloud communications platform' },
-    { name: 'AirCall', category: 'Communications', description: 'Cloud-based phone system for businesses' },
+    
+    // Communications
+    { name: 'Twilio', category: 'Communications', description: 'Programmable communications platform' },
+    { name: 'AirCall', category: 'Communications', description: 'Cloud-based phone system for teams' },
     { name: 'Slack', category: 'Communications', description: 'Team collaboration and messaging' },
-    { name: 'Telegram', category: 'Communications', description: 'Secure messaging with bot automation' },
-    { name: 'OpenPhone', category: 'Communications', description: 'Business phone system for remote teams' },
-    { name: 'Airtable', category: 'Database', description: 'Flexible database and project management' },
-    { name: 'Google Sheets', category: 'Database', description: 'Cloud-based spreadsheet and data analysis' },
+    { name: 'Telegram', category: 'Communications', description: 'Secure messaging and automation bots' },
+    { name: 'OpenPhone', category: 'Communications', description: 'Business phone system with integrations' },
+    
+    // Database
+    { name: 'Airtable', category: 'Database', description: 'Spreadsheet-database hybrid for project management' },
+    { name: 'Google Sheets', category: 'Database', description: 'Cloud-based spreadsheet with automation' },
     { name: 'MySQL', category: 'Database', description: 'Relational database management system' },
-    { name: 'PostgreSQL', category: 'Database', description: 'Advanced open-source database system' },
-    { name: 'BestPass', category: 'Specific Tools', description: 'Fleet toll management and payment' },
-    { name: 'SuperDispatch', category: 'Specific Tools', description: 'Auto transport logistics platform' },
-    { name: 'CentralDispatch', category: 'Specific Tools', description: 'Vehicle shipping marketplace' },
-    { name: 'Hubstaff', category: 'Tracking', description: 'Time tracking and productivity monitoring' }
+    { name: 'PostgreSQL', category: 'Database', description: 'Advanced open-source relational database' },
+    
+    // Specific Tools
+    { name: 'BestPass', category: 'Specific Tools', description: 'Toll management for commercial fleets' },
+    { name: 'SuperDispatch', category: 'Specific Tools', description: 'Auto transport and logistics platform' },
+    { name: 'CentralDispatch', category: 'Specific Tools', description: 'Vehicle shipping and transport marketplace' },
+    
+    // Tracking
+    { name: 'Hubstaff', category: 'Tracking', description: 'Time tracking and workforce management' }
   ];
 
   const uniqueCategories = Array.from(new Set(technologies.map(tech => tech.category)));
@@ -1598,32 +1823,6 @@ function TechnologyStackSection() {
   const filteredTechnologies = selectedCategories.length === 0 
     ? technologies 
     : technologies.filter(tech => selectedCategories.includes(tech.category));
-
-  // Auto-scroll animation with seamless loop
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    const interval = setInterval(() => {
-      setCarouselOffset(prev => {
-        const itemWidth = 96; // Updated width for larger icons
-        const totalWidth = filteredTechnologies.length * itemWidth;
-        const newOffset = prev - 1.5; // Slightly slower speed
-        
-        // Reset when we've scrolled one full set
-        if (Math.abs(newOffset) >= totalWidth) {
-          return 0;
-        }
-        return newOffset;
-      });
-    }, 50);
-    
-    return () => clearInterval(interval);
-  }, [isVisible, filteredTechnologies.length]);
-
-  // Reset carousel position when technologies change
-  useEffect(() => {
-    setCarouselOffset(0);
-  }, [filteredTechnologies.length]);
 
   // Handle filter selection (multi-select)
   const handleCategoryToggle = (category: string) => {
@@ -1639,46 +1838,6 @@ function TechnologyStackSection() {
   // Clear all filters
   const clearFilters = () => {
     setSelectedCategories([]);
-  };
-
-  // Apple Dock animation logic with precise center fixation
-  const getDockItemScale = (index: number, containerWidth: number) => {
-    const itemWidth = 96; // Increased width for larger icons
-    const centerPosition = containerWidth / 2;
-    const itemPosition = (index * itemWidth) + carouselOffset + (itemWidth / 2);
-    const distanceFromCenter = Math.abs(itemPosition - centerPosition);
-    
-    // Much more precise center detection - only very close items get scaling
-    if (distanceFromCenter <= 25) {
-      // Center item - largest scale
-      return hoveredTech === index ? 1.6 : 1.4;
-    } else if (distanceFromCenter <= 75) {
-      // Adjacent items - slightly larger
-      return hoveredTech === index ? 1.3 : 1.15;
-    } else {
-      // All other items - normal size
-      return hoveredTech === index ? 1.2 : 1.0;
-    }
-  };
-
-  // Get Y offset for center elevation effect
-  const getDockItemYOffset = (index: number, containerWidth: number) => {
-    const itemWidth = 96;
-    const centerPosition = containerWidth / 2;
-    const itemPosition = (index * itemWidth) + carouselOffset + (itemWidth / 2);
-    const distanceFromCenter = Math.abs(itemPosition - centerPosition);
-    
-    // Very precise center detection for elevation
-    if (distanceFromCenter <= 25) {
-      // Only center item gets significant elevation
-      return -20; // 20px elevation for center item
-    } else if (distanceFromCenter <= 75) {
-      // Adjacent items get slight elevation
-      return -8; // 8px elevation for adjacent items
-    } else {
-      // All other items stay at baseline
-      return 0;
-    }
   };
 
   const titleVariants = {
@@ -1766,7 +1925,7 @@ function TechnologyStackSection() {
             ))}
           </div>
           
-          {/* Clear Filters Button */}
+          {/* Clear Filters Button - removed underline */}
           {selectedCategories.length > 0 && (
             <motion.div
               className="text-center"
@@ -1776,7 +1935,7 @@ function TechnologyStackSection() {
             >
               <button
                 onClick={clearFilters}
-                className="text-white/60 hover:text-white text-sm font-medium transition-colors duration-300 underline decoration-secondary hover:decoration-white"
+                className="text-white/60 hover:text-white text-sm font-medium transition-colors duration-300"
               >
                 Clear all filters ({selectedCategories.length} active)
               </button>
@@ -1784,121 +1943,34 @@ function TechnologyStackSection() {
           )}
         </motion.div>
 
-        {/* Horizontal Scrolling Apple Dock Carousel */}
+        {/* Apple Dock Container */}
         <motion.div
-          className="relative overflow-hidden"
+          className="relative overflow-visible flex justify-center"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={dockVariants}
         >
-          <div className="bg-white/5 backdrop-blur-sm rounded-3xl py-12 px-4 border border-white/10 relative">
-            {/* Gradient masks for fade effect */}
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black/20 to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black/20 to-transparent z-10 pointer-events-none"></div>
-            
-            <div className="relative h-40 overflow-visible" id="carousel-container">
-              <motion.div
-                className="flex absolute bottom-0 left-0 gap-4 items-end"
-                animate={{
-                  x: carouselOffset
-                }}
-                transition={{
-                  type: "linear",
-                  duration: 0
-                }}
-                style={{
-                  width: `${(filteredTechnologies.length * 2) * 96}px` // Double width for seamless loop with larger icons
-                }}
-              >
-                {/* Duplicate technologies for seamless loop */}
-                {[...filteredTechnologies, ...filteredTechnologies].map((tech, index) => {
-                  const containerElement = typeof window !== 'undefined' ? 
-                    document.getElementById('carousel-container') : null;
-                  const containerWidth = containerElement?.offsetWidth || 800;
-                  const scale = getDockItemScale(index, containerWidth);
-                  const yOffset = getDockItemYOffset(index, containerWidth);
-                  
-                  return (
-                    <motion.div
-                      key={`${tech.name}-${index}`}
-                      className="relative group cursor-pointer flex-shrink-0 flex flex-col items-center"
-                      animate={{
-                        scale: scale,
-                        y: yOffset
-                      }}
-                      style={{
-                        width: '80px',
-                        transformOrigin: 'center bottom',
-                        marginRight: '16px' // Fixed spacing to prevent compression
-                      }}
-                      onMouseEnter={() => setHoveredTech(index)}
-                      onMouseLeave={() => setHoveredTech(null)}
-                      transition={{ 
-                        duration: 0.3,
-                        ease: [0.25, 0.1, 0.25, 1]
-                      }}
-                    >
-                      {/* Tooltip */}
-                      <AnimatePresence>
-                        {hoveredTech === index && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute -top-20 left-1/2 transform -translate-x-1/2 z-50"
-                          >
-                            <div className="bg-black/90 backdrop-blur-sm text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap border border-white/20">
-                              <div className="font-semibold">{tech.name}</div>
-                              <div className="text-white/70 max-w-xs">{tech.description}</div>
-                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/90"></div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-
-                      {/* Technology Icon */}
-                      <motion.div
-                        className="w-20 h-20 bg-gradient-to-br from-secondary/20 to-secondary/40 rounded-2xl flex items-center justify-center text-3xl border border-secondary/30 shadow-lg shadow-secondary/20"
-                        whileHover={{ 
-                          boxShadow: '0 0 25px rgba(176,255,116,0.5)',
-                          borderColor: 'rgba(176,255,116,0.6)'
-                        }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="w-12 h-12">
-                          <TechIcon name={tech.name} />
-                        </div>
-                      </motion.div>
-
-                      {/* Technology Name */}
-                      <div className="text-center mt-2 text-xs font-medium text-white/80 leading-tight w-full">
-                        {tech.name.length > 10 ? `${tech.name.slice(0, 10)}...` : tech.name}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Active Filters Info */}
-          {selectedCategories.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-center mt-6"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20">
-                <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                <span className="text-secondary text-sm font-medium">
-                  {filteredTechnologies.length} tools filtered
-                </span>
-              </div>
-            </motion.div>
-          )}
+          <AppleDock technologies={filteredTechnologies} />
         </motion.div>
+
+        {/* Active Filters Info */}
+        {selectedCategories.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-center mt-6"
+          >
+            <div className="inline-flex items-
+            center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              <span className="text-secondary text-sm font-medium">
+                {filteredTechnologies.length} tools filtered by {selectedCategories.join(', ')}
+              </span>
+            </div>
+          </motion.div>
+        )}
+
       </div>
     </section>
   );
