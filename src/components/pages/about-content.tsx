@@ -1411,83 +1411,79 @@ function MethodologySection() {
   );
 }
 
-// Enhanced Technology Icons Components using actual SVG files
-const TechIcon = ({ name }: { name: string }) => {
-  const getIconPath = () => {
-    switch (name) {
-      // CRM & Project Management
-      case 'Monday.com': return '/icons/tech/monday-com.svg';
-      case 'HubSpot': return '/icons/tech/hubspot.svg';
-      case 'Zoho': return '/icons/tech/zoho.svg';
-      case 'Pipedrive': return '/icons/tech/pipedrive.svg';
-      
-      // Automation
-      case 'Make (Integromat)': return '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg'; // No specific Make icon
-      case 'Zapier': return '/icons/tech/zapier.svg';
-      case 'n8n': return '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg';
-      
-      // Productivity & Collaboration
-      case 'Google Workspace': return '/icons/tech/google-drive.svg';
-      case 'Notion': return null; // Will show placeholder
-      case 'Miro': return '/icons/tech/cdnlogo.com_miro.svg';
-      
-      // Finance & Payments
-      case 'QuickBooks': return '/icons/tech/cdnlogo.com_quickbooks.svg';
-      case 'Bill.com': return '/icons/tech/BILL.svg';
-      case 'Chaser': return '/icons/tech/chase.svg';
-      case 'Stripe': return '/icons/tech/companystripe.svg';
-      case 'PayPal': return '/icons/tech/paypal.svg';
-      
-      // Verification & Security
-      case 'Plaid': return '/icons/tech/cdnlogo.com_plaid.svg';
-      case 'Veriff': return '/icons/tech/veriff-seeklogo.svg';
-      
-      // Document Management
-      case 'DocuSign': return '/icons/tech/docusign-seeklogo.svg';
-      case 'SignNow': return '/icons/tech/signnow-seeklogo.svg';
-      case 'eSignatures': return '/icons/tech/docusign-seeklogo.svg'; // Using DocuSign for generic eSignatures
-      case 'Google Docs': return '/icons/tech/google-docs.svg';
-      
-      // Forms & Data Collection
-      case 'JotForm': return '/icons/tech/cdnlogo.com_jotform.svg';
-      case 'Typeform': return '/icons/tech/typeform.svg';
-      case 'Cognito': return '/icons/tech/AWS Cognito.svg';
-      case 'Google Forms': return '/icons/tech/forms.svg';
-      
-      // AI
-      case 'OpenAI': return '/icons/tech/OpenAI_logo_2025_(symbol).svg';
-      case 'Claude': return '/icons/tech/Anthropic Ai.svg';
-      case 'Deepseek': return '/icons/tech/deepseek.svg';
-      case 'Gemini': return '/icons/tech/google-gemini-icon.svg';
-      case 'Grok': return '/icons/tech/grok-icon.svg';
-      
-      // Communications
-      case 'Twilio': return '/icons/tech/cdnlogo.com_twilio.svg';
-      case 'AirCall': return '/icons/tech/Aircall.svg';
-      case 'Slack': return '/icons/tech/slack-icon.svg';
-      case 'Telegram': return '/icons/tech/telegram-icon.svg';
-      case 'OpenPhone': return '/icons/tech/Open Phone.svg';
-      
-      // Database
-      case 'Airtable': return '/icons/tech/airtable.svg';
-      case 'Google Sheets': return '/icons/tech/google-drive.svg';
-      case 'MySQL': return '/icons/tech/mysql.svg';
-      case 'PostgreSQL': return '/icons/tech/postgresql.svg';
-      
-      // Specific Tools
-      case 'BestPass': return null; // Will show placeholder
-      case 'SuperDispatch': return null; // Will show placeholder
-      case 'CentralDispatch': return null; // Will show placeholder
-      
-      // Tracking
-      case 'Hubstaff': return '/icons/tech/hubstaff_94356.svg';
-      
-      // Default fallback
-      default: return null; // Will show placeholder
-    }
-  };
+// Создайте этот объект в начале TechnologyStackSection или в отдельном файле
+const TECHNOLOGY_ICON_MAPPING: Record<string, string | null> = {
+  // CRM & Project Management
+  'Monday.com': '/icons/tech/monday-com.svg',
+  'HubSpot': '/icons/tech/hubspot.svg',
+  'Zoho': '/icons/tech/zoho.svg',
+  'Pipedrive': '/icons/tech/pipedrive.svg',
+  
+  // Automation
+  'Make (Integromat)': '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg', // Используем n8n иконку (Make иконки нет)
+  'Zapier': '/icons/tech/zapier.svg',
+  'n8n': '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg',
+  
+  // Productivity & Collaboration
+  'Google Workspace': '/icons/tech/google-drive.svg',
+  'Notion': null, // Нет иконки
+  'Miro': '/icons/tech/cdnlogo.com_miro.svg',
+  
+  // Finance & Payments
+  'QuickBooks': '/icons/tech/cdnlogo.com_quickbooks.svg',
+  'Bill.com': '/icons/tech/BILL.svg',
+  'Chaser': '/icons/tech/chase.svg',
+  'Stripe': '/icons/tech/companystripe.svg',
+  'PayPal': '/icons/tech/paypal.svg',
+  
+  // Verification & Security
+  'Plaid': '/icons/tech/cdnlogo.com_plaid.svg',
+  'Veriff': '/icons/tech/veriff-seeklogo.svg',
+  
+  // Document Management
+  'DocuSign': '/icons/tech/docusign-seeklogo.svg',
+  'SignNow': '/icons/tech/signnow-seeklogo.svg',
+  'eSignatures': '/icons/tech/docusign-seeklogo.svg', // Используем DocuSign для общих eSignatures
+  'Google Docs': '/icons/tech/google-docs.svg',
+  
+  // Forms & Data Collection
+  'JotForm': '/icons/tech/cdnlogo.com_jotform.svg',
+  'Typeform': '/icons/tech/typeform.svg',
+  'Cognito': '/icons/tech/AWS Cognito.svg',
+  'Google Forms': '/icons/tech/forms.svg',
+  
+  // AI
+  'OpenAI': '/icons/tech/OpenAI_logo_2025_(symbol).svg',
+  'Claude': '/icons/tech/Anthropic Ai.svg',
+  'Deepseek': '/icons/tech/deepseek.svg',
+  'Gemini': '/icons/tech/google-gemini-icon.svg',
+  'Grok': '/icons/tech/grok-icon.svg',
+  
+  // Communications
+  'Twilio': '/icons/tech/cdnlogo.com_twilio.svg',
+  'AirCall': '/icons/tech/Aircall.svg',
+  'Slack': '/icons/tech/slack-icon.svg',
+  'Telegram': '/icons/tech/telegram-icon.svg',
+  'OpenPhone': '/icons/tech/Open Phone.svg',
+  
+  // Database
+  'Airtable': '/icons/tech/airtable.svg',
+  'Google Sheets': '/icons/tech/google-drive.svg',
+  'MySQL': '/icons/tech/mysql.svg',
+  'PostgreSQL': '/icons/tech/postgresql.svg',
+  
+  // Specific Tools
+  'BestPass': null, // Нет иконки
+  'SuperDispatch': null, // Нет иконки
+  'CentralDispatch': null, // Нет иконки
+  
+  // Tracking
+  'Hubstaff': '/icons/tech/hubstaff_94356.svg'
+};
 
-  const iconPath = getIconPath();
+// Обновленный компонент TechIcon
+const TechIcon = ({ name }: { name: string }) => {
+  const iconPath = TECHNOLOGY_ICON_MAPPING[name]; // Простое получение пути
   
   return (
     <div className="w-full h-full">
@@ -1502,10 +1498,23 @@ const TechIcon = ({ name }: { name: string }) => {
           unoptimized
         />
       ) : (
-        <div className="w-full h-full bg-white/10 rounded-lg flex items-center justify-center">
-          <span className="text-white/60 text-xs font-bold">
-            {name.charAt(0).toUpperCase()}
-          </span>
+        // Заглушка с галочкой для технологий без иконки
+        <div className="w-full h-full bg-gradient-to-br from-secondary/20 to-secondary/30 rounded-lg flex items-center justify-center border border-secondary/40">
+          <svg 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            className="text-secondary"
+          >
+            <path 
+              d="M20 6L9 17L4 12" 
+              stroke="currentColor" 
+              strokeWidth="2.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
       )}
     </div>
