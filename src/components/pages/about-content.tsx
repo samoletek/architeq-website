@@ -241,22 +241,23 @@ function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-            <Button 
-              variant="secondary" 
-              size="lg"
+            <Link href="/contacts">
+              <Button 
+                variant="secondary" 
+                size="lg"
+              >
+                Meet Our Team
+              </Button>
+            </Link>
+            <button 
               onClick={() => {
-                const missionSection = document.getElementById('mission');
-                missionSection?.scrollIntoView({ behavior: 'smooth' });
+                const valuesSection = document.getElementById('core-values');
+                valuesSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-            >
-              Our Story
-            </Button>
-            <Link 
-              href="/contacts"
               className="text-white/80 hover:text-white transition-colors duration-300 text-lg font-medium group"
             >
               <span className="flex items-center">
-                Meet Our Team
+                Our Values
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform"
@@ -272,7 +273,7 @@ function HeroSection() {
                   />
                 </svg>
               </span>
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>
@@ -335,14 +336,14 @@ function MissionVisionSection() {
             >
               <h3 className="text-3xl font-bold mb-6 text-white">The Problem We Saw</h3>
               <div className="space-y-6 text-white/80 leading-relaxed">
-                <p>
-                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams drowning in day-to-day operations instead of charting their growth strategy.
+              <p>
+                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="text-secondary font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
                 </p>
                 <p>
-                  These scaling businesses were caught in a trap — spending up to 70% of their time firefighting operational issues while their strategic vision gathered dust.
+                  These scaling businesses were caught in a trap — spending up to <span className="text-secondary font-medium">70% of their time</span> <span className="text-secondary font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
                 </p>
                 <p>
-                  We built Architeq to break this cycle. Before jumping into solutions, we first map every process in your business — an approach that delivers immediate clarity and efficiency gains.
+                  We built Architeq to <span className="text-secondary font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="text-secondary font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
                 </p>
               </div>
             </motion.div>
@@ -488,7 +489,7 @@ function ValuesSection() {
 
 
   return (
-    <section ref={ref} className="section-solutions bg-transparent relative overflow-hidden">
+    <section id="core-values" ref={ref} className="section-solutions bg-transparent relative overflow-hidden">
       <div className="absolute inset-0">
         <motion.div 
           className="absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-30"
@@ -968,21 +969,21 @@ function TeamSection() {
                                 {member.position}
                               </p>
 
-                              {/* Experience and location */}
-                              {member.yearsExperience && (
-                                <div className="space-y-1 text-sm text-white/60">
-                                  <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-secondary shadow-sm shadow-secondary/50 flex-shrink-0 ml-auto"></span>
-                                    <span className="mr-auto">{member.yearsExperience}+ years experience</span>
-                                  </div>
-                                  {member.location && (
-                                    <div className="flex items-center gap-2">
-                                      <span className="w-2 h-2 rounded-full bg-secondary shadow-sm shadow-secondary/50 flex-shrink-0 ml-auto"></span>
-                                      <span className="mr-auto">{member.location}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
+{/* Experience and location */}
+{member.yearsExperience && (
+  <div className="flex flex-col items-center gap-3 text-sm text-white/60">
+    {/* Experience centered */}
+    <span className="whitespace-nowrap">{member.yearsExperience}+ years experience</span>
+    
+    {/* Location with dot */}
+    {member.location && (
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-secondary shadow-sm shadow-secondary/50 flex-shrink-0"></span>
+        <span>{member.location}</span>
+      </div>
+    )}
+  </div>
+)}
                             </div>
 
                             {/* Content Section */}
@@ -1149,7 +1150,7 @@ function AchievementsSection() {
                 
                 {/* Animated counter glow */}
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100"
+                  className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100"
                   transition={{ duration: 0.3 }}
                 />
 
@@ -1299,7 +1300,7 @@ function MethodologySection() {
                   <motion.button
                     key={step.number}
                     onClick={() => handleStepChange(index)}
-                    className={`w-full text-left p-4 rounded-lg transition-all duration-300 relative group ${
+                    className={`w-full text-left py-6 px-4 rounded-lg transition-all duration-300 relative group ${
                       activeStep === index 
                         ? 'bg-secondary/10 border border-secondary/30' 
                         : 'hover:bg-white/5'
@@ -1340,12 +1341,12 @@ function MethodologySection() {
                         {step.number}
                       </motion.div>
                       <div className="flex-1">
-                        <h3 className={`font-semibold transition-colors duration-300 font-mono text-sm ${
+                        <h3 className={`font-semibold transition-colors duration-300 font-mono text-base ${
                           activeStep === index ? 'text-white' : 'text-white/70'
                         }`}>
                           {step.title}
                         </h3>
-                        <p className="text-secondary text-xs font-mono">{step.focus}</p>
+                        <p className="text-secondary text-sm font-mono">{step.focus}</p>
                       </div>
                     </div>
                   </motion.button>
@@ -1362,7 +1363,7 @@ function MethodologySection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-secondary/20 relative overflow-hidden"
+                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden"
                 >
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
@@ -1420,13 +1421,13 @@ const TECHNOLOGY_ICON_MAPPING: Record<string, string | null> = {
   'Pipedrive': '/icons/tech/pipedrive.svg',
   
   // Automation
-  'Make (Integromat)': '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg', // Используем n8n иконку (Make иконки нет)
+  'Make': '/icons/tech/make-color.svg',
   'Zapier': '/icons/tech/zapier.svg',
   'n8n': '/icons/tech/N8N.Io_idQ-KxEpHW_1.svg',
   
   // Productivity & Collaboration
-  'Google Workspace': '/icons/tech/google-drive.svg',
-  'Notion': null, // Нет иконки
+  'Google Workspace': '/icons/tech/google.svg',
+  'Notion': '/icons/tech/notion-svgrepo-com.svg',
   'Miro': '/icons/tech/cdnlogo.com_miro.svg',
   
   // Finance & Payments
@@ -1443,7 +1444,7 @@ const TECHNOLOGY_ICON_MAPPING: Record<string, string | null> = {
   // Document Management
   'DocuSign': '/icons/tech/docusign-seeklogo.svg',
   'SignNow': '/icons/tech/signnow-seeklogo.svg',
-  'eSignatures': '/icons/tech/docusign-seeklogo.svg', // Используем DocuSign для общих eSignatures
+  'eSignatures': null, // Заглушка с галочкой
   'Google Docs': '/icons/tech/google-docs.svg',
   
   // Forms & Data Collection
@@ -1468,7 +1469,7 @@ const TECHNOLOGY_ICON_MAPPING: Record<string, string | null> = {
   
   // Database
   'Airtable': '/icons/tech/airtable.svg',
-  'Google Sheets': '/icons/tech/google-drive.svg',
+  'Google Sheets': '/icons/tech/icons8-google-spreadsheets.svg',
   'MySQL': '/icons/tech/mysql.svg',
   'PostgreSQL': '/icons/tech/postgresql.svg',
   
@@ -1650,10 +1651,18 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
     mouseX.set(Infinity);
   };
 
-  // Create duplicated technologies for infinite scroll
-  const duplicatedTechnologies = [...technologies, ...technologies, ...technologies, ...technologies];
+  // Create duplicated technologies for infinite scroll - ensure minimum width
+  const minRequiredTechs = 12; // Minimum number of technologies to fill the carousel
+  let workingTechnologies = [...technologies];
+  
+  // If filtered technologies are too few, repeat them to fill the carousel
+  while (workingTechnologies.length < minRequiredTechs) {
+    workingTechnologies = [...workingTechnologies, ...technologies];
+  }
+  
+  const duplicatedTechnologies = [...workingTechnologies, ...workingTechnologies, ...workingTechnologies, ...workingTechnologies];
   const iconWidth = 88;
-  const singleLoopWidth = technologies.length * iconWidth;
+  const singleLoopWidth = workingTechnologies.length * iconWidth;
   
   return (
     <motion.div
@@ -1682,7 +1691,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: technologies.length * 2,
+              duration: workingTechnologies.length * 2,
               ease: "linear",
             },
           }}
@@ -1743,7 +1752,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
               transition={{ duration: 0.2 }}
               className="text-white/60 text-sm"
             >
-              Hover over icons to see technology details
+              We continuously explore new tools, adopting only those that <br />prove their reliability, performance, and real business value through rigorous testing.
             </motion.div>
           )}
         </AnimatePresence>
@@ -1771,7 +1780,7 @@ function TechnologyStackSection() {
     { name: 'Pipedrive', category: 'CRM & Project Management', description: 'Sales-focused CRM for pipeline management' },
     
     // Automation
-    { name: 'Make (Integromat)', category: 'Automation', description: 'Visual automation platform for complex workflows' },
+    { name: 'Make', category: 'Automation', description: 'Visual automation platform for complex workflows' },
     { name: 'Zapier', category: 'Automation', description: 'Connect apps and automate workflows' },
     { name: 'n8n', category: 'Automation', description: 'Open-source workflow automation tool' },
     
@@ -1910,7 +1919,7 @@ function TechnologyStackSection() {
             Our Technology Stack
           </h2>
           <p className="text-xl text-white/70 max-w-3xl mx-auto">
-            We build scalable automations on trusted, industry-leading platforms — tailored to your workflows and tech stack — and continuously explore new tools, adopting only those that prove their reliability, performance, and real business value through rigorous testing.
+            We build scalable automations on trusted, industry-leading platforms — tailored to your workflows and tech stack.
           </p>
         </motion.div>
 
@@ -2097,7 +2106,7 @@ function InteractiveApproachSection() {
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
               }}
             >
-              Our Unique Approach
+              Our Approach
             </h2>
             <p className="text-xl text-white/70 max-w-4xl mx-auto">
               How we deliver automation solutions that actually work for your business
