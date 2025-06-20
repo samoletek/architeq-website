@@ -1528,7 +1528,16 @@ interface DockIconProps {
   onClickAnimation: () => void;
 }
 
-function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
+// Обновленный компонент DockIcon с правильным hover
+interface DockIconProps {
+  name: string;
+  mouseX: MotionValue<number>;
+  onClickAnimation: () => void;
+  onHover: (tech: Technology | null) => void; // Добавляем prop для hover
+  technology: Technology; // Добавляем полную информацию о технологии
+}
+
+function DockIcon({ name, mouseX, onClickAnimation, onHover, technology }: DockIconProps) {
   const ref = useRef<HTMLButtonElement>(null);
 
   // Calculate distance from mouse to icon center
@@ -1547,7 +1556,7 @@ function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
   };
   const scale = useTransform(distance, [-DISTANCE, 0, DISTANCE], [1, SCALE, 1]);
 
-// Calculate horizontal nudge (отталкивание от мыши)
+  // Calculate horizontal nudge
   const x = useTransform(() => {
     const d = distance.get();
     if (d === -Infinity) {
@@ -1576,6 +1585,15 @@ function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
     setTimeout(() => y.set(0), 450);
   };
 
+  // ✅ ИСПРАВЛЕНИЕ: Простое отслеживание hover
+  const handleMouseEnter = () => {
+    onHover(technology);
+  };
+
+  const handleMouseLeave = () => {
+    onHover(null);
+  };
+
   return (
     <motion.button
       ref={ref}
@@ -1583,12 +1601,13 @@ function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
         x: xSpring,
         scale: scaleSpring,
         y: y,
-        willChange: 'transform' // Оптимизация производительности
+        willChange: 'transform'
       }}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="group relative flex flex-col items-center justify-center origin-center focus:outline-none"
     >
-
       {/* Icon Container with Apple Dock glass effect */}
       <motion.div
         className="w-16 h-16 bg-gradient-to-br from-white/15 to-white/5 rounded-2xl flex items-center justify-center border border-white/20 shadow-2xl backdrop-blur-sm relative overflow-visible"
@@ -1605,40 +1624,25 @@ function DockIcon({ name, mouseX, onClickAnimation }: DockIconProps) {
   );
 }
 
-// Main Apple Dock Component
+// Упрощенный компонент AppleDock
 function AppleDock({ technologies }: { technologies: Technology[] }) {
-  const mouseX = useMotionValue(Infinity); // Use Infinity as null value
+  const mouseX = useMotionValue(Infinity);
   const [clickedIcon, setClickedIcon] = useState<string | null>(null);
   const [hoveredTech, setHoveredTech] = useState<Technology | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleIconClick = (iconName: string) => {
     setClickedIcon(iconName);
     setTimeout(() => setClickedIcon(null), 1000);
   };
 
+  // ✅ ИСПРАВЛЕНИЕ: Простая функция для обработки hover
+  const handleIconHover = (tech: Technology | null) => {
+    setHoveredTech(tech);
+  };
+
+  // ✅ ИСПРАВЛЕНИЕ: Убираем сложную логику handleMouseMove
   const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (rect) {
-      const relativeX = e.clientX - rect.left;
-      const iconWidth = 88;
-      
-      // Calculate current animation offset
-      const currentTime = Date.now() / 1000; // seconds
-      const animationDuration = technologies.length * 2;
-      const cycleProgress = (currentTime % animationDuration) / animationDuration;
-      const currentOffset = cycleProgress * singleLoopWidth;
-      
-      // Adjust relative position for animation
-      const adjustedX = (relativeX + currentOffset) % singleLoopWidth;
-      const iconIndex = Math.floor(adjustedX / iconWidth) % technologies.length;
-      
-      if (iconIndex >= 0 && iconIndex < technologies.length) {
-        setHoveredTech(technologies[iconIndex]);
-      }
-      
-      mouseX.set(e.clientX);
-    }
+    mouseX.set(e.clientX);
   };
 
   const handleMouseLeave = () => {
@@ -1646,9 +1650,9 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
     mouseX.set(Infinity);
   };
 
-  // Create duplicated technologies for infinite scroll (enough copies for seamless loop)
+  // Create duplicated technologies for infinite scroll
   const duplicatedTechnologies = [...technologies, ...technologies, ...technologies, ...technologies];
-  const iconWidth = 88; // 64px icon + 16px space + 8px padding
+  const iconWidth = 88;
   const singleLoopWidth = technologies.length * iconWidth;
   
   return (
@@ -1665,7 +1669,6 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
       
       {/* Scrolling Icons container */}
       <div 
-        ref={containerRef}
         className="relative z-10 overflow-hidden py-4"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -1679,7 +1682,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: technologies.length * 2, // 2 seconds per technology
+              duration: technologies.length * 2,
               ease: "linear",
             },
           }}
@@ -1692,8 +1695,10 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
             >
               <DockIcon
                 name={tech.name}
+                technology={tech}
                 mouseX={mouseX}
                 onClickAnimation={() => handleIconClick(tech.name)}
+                onHover={handleIconHover}
               />
             </motion.div>
           ))}
