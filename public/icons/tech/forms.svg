@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" id="forms">
+  <path fill="#7349bd" d="M25 8v18.5c0 .831-.669 1.5-1.5 1.5h-16c-.831 0-1.5-.669-1.5-1.5v-22C6 3.67 6.669 3 7.5 3H20"></path>
+  <path fill="#b7a2dd" d="M20 3v3.5c0 .831.669 1.5 1.5 1.5H25z"></path>
+  <path fill="#f9f9f9" fill-rule="evenodd" d="M10.008 1033.861a.5.5 0 1 0 0 1 .5.5 0 1 0 0-1zm2 0a.5.5 0 1 0 0 1H21a.5.5 0 1 0 0-1h-8.992zm-2 2a.5.5 0 1 0 0 1 .5.5 0 1 0 0-1zm2 0a.5.5 0 1 0 0 1H21a.5.5 0 1 0 0-1h-8.992zm-2 2a.5.5 0 1 0 0 1 .5.5 0 1 0 0-1zm2 0a.5.5 0 1 0 0 1H21a.5.5 0 1 0 0-1h-8.992z" color="#000" font-family="sans-serif" font-weight="400" overflow="visible" style="line-height:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;block-progression:tb;white-space:normal;isolation:auto;mix-blend-mode:normal;solid-color:#000;solid-opacity:1" transform="translate(0 -1020.362)"></path>
+</svg>

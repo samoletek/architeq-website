@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { LoadingButton } from '@/components/ui/loading-button';
 import CalendlyWidget from '@/components/ui/calendly-widget';
 import { FormInput } from '@/components/ui/form-input';
@@ -27,6 +27,40 @@ interface ContactFormState {
   touched: Record<string, boolean>;
 }
 
+// Тип для FAQ
+interface ContactFAQ {
+  question: string;
+  answer: string;
+}
+
+// Данные FAQ для контактной страницы
+const contactFaqs: ContactFAQ[] = [
+  {
+    question: "How quickly can you implement a solution?",
+    answer: "Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We start with a discovery phase to understand your needs, then design and deploy your custom solution with full testing and training included."
+  },
+  {
+    question: "Which countries are your clients from?",
+    answer: "We work with clients globally, including USA, Europe, Australia, and Japan. Our team operates across different time zones to provide convenient support. We've successfully delivered projects for companies ranging from startups to enterprise-level organizations."
+  },
+  {
+    question: "What is your pricing model?",
+    answer: "Our pricing is transparent and tailored to your needs. We offer both fixed-price projects for defined scopes and flexible monthly retainers for ongoing support. Every project starts with a free consultation to provide you with a detailed proposal and timeline."
+  },
+  {
+    question: "Do you provide training for our team?",
+    answer: "Absolutely! Comprehensive training is included with every implementation. We provide hands-on training sessions, detailed documentation, and ongoing support to ensure your team can effectively use and maintain the automated systems we build for you."
+  },
+  {
+    question: "What industries do you specialize in?",
+    answer: "We work across various industries including professional services, e-commerce, healthcare, finance, and manufacturing. Our automation solutions are customized to meet the specific regulatory requirements and workflows of your industry."
+  },
+  {
+    question: "Do you offer ongoing support after implementation?",
+    answer: "Yes, we provide comprehensive post-implementation support including system monitoring, regular updates, troubleshooting, and feature enhancements. Our support packages are designed to ensure your automation continues to deliver value as your business grows."
+  }
+];
+
 // Варианты интересов
 const interestOptions = [
   { value: 'General Inquiry', label: 'General Inquiry' },
@@ -45,6 +79,296 @@ const formValidators = {
   message: [required('Message is required')],
   phone: [isPhone('Enter a valid phone number')], // Поле необязательное, валидатор допускает пустые значения
 };
+
+// Интерактивная FAQ секция для контактной страницы
+function ContactFAQSection() {
+  const [activeQuestion, setActiveQuestion] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Simple intersection observer for animations only
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px'
+      }
+    );
+
+    const currentSection = sectionRef.current;
+    if (currentSection) {
+      observer.observe(currentSection);
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
+  }, []);
+
+  // Auto-carousel
+  useEffect(() => {
+    const autoInterval = setInterval(() => {
+      setActiveQuestion(prev => (prev + 1) % contactFaqs.length);
+    }, 5000);
+
+    return () => clearInterval(autoInterval);
+  }, []);
+
+  const handleQuestionClick = (index: number) => {
+    setActiveQuestion(index);
+  };
+
+  // Function for calculating card position and transformation
+  const getCardTransform = (index: number) => {
+    const diff = index - activeQuestion;
+    let normalizedDiff = diff;
+    
+    if (diff > contactFaqs.length / 2) {
+      normalizedDiff = diff - contactFaqs.length;
+    } else if (diff < -contactFaqs.length / 2) {
+      normalizedDiff = diff + contactFaqs.length;
+    }
+    
+    if (normalizedDiff === 0) {
+      return {
+        transform: 'translateY(0%) scale(1) rotateX(0deg)',
+        opacity: 1,
+        zIndex: 10,
+      };
+    } else if (normalizedDiff === -1) {
+      return {
+        transform: 'translateY(-65%) scale(0.85) rotateX(8deg)',
+        opacity: 0.65,
+        zIndex: 5,
+      };
+    } else if (normalizedDiff === 1) {
+      return {
+        transform: 'translateY(65%) scale(0.85) rotateX(-8deg)',
+        opacity: 0.65,
+        zIndex: 5,
+      };
+    } else {
+      return {
+        transform: normalizedDiff < 0 
+          ? 'translateY(-140%) scale(0.7) rotateX(20deg)'
+          : 'translateY(140%) scale(0.7) rotateX(-20deg)',
+        opacity: 0,
+        zIndex: 1,
+      };
+    }
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5, 
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const navVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (index: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+        delay: index * 0.05
+      }
+    })
+  };
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="bg-dark-gray relative overflow-hidden py-16"
+      style={{ minHeight: '100vh' }}
+    >
+      <div className="container mx-auto px-4 relative z-10 w-full">
+        <motion.div
+          className="text-center mb-12"
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+          variants={titleVariants}
+        >
+          <h2 className="section-title-medium font-bold section-title-spacing"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            Frequently Asked Questions
+          </h2>
+          <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+            Get answers to common questions about our automation services and process
+          </p>
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
+            
+            <div className="lg:col-span-1 flex justify-center">
+              <div className="w-full">
+                <div className="space-y-2">
+                  {contactFaqs.map((faq, index) => (
+                    <motion.button
+                      key={index}
+                      custom={index}
+                      initial="hidden"
+                      animate={isVisible ? "visible" : "hidden"}
+                      variants={navVariants}
+                      onClick={() => handleQuestionClick(index)}
+                      className={`
+                        w-full text-left p-4 rounded-lg transition-all duration-300 border text-sm
+                        ${activeQuestion === index
+                          ? 'bg-primary/10 border-primary/30 text-white shadow-lg'
+                          : 'bg-transparent border-white/10 text-white/70 hover:bg-white/5 hover:border-white/20'
+                        }
+                      `}
+                    >
+                      <div className="flex items-center">
+                        <div className={`
+                          w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 transition-all duration-300
+                          ${activeQuestion === index
+                            ? 'bg-primary text-white'
+                            : 'bg-white/10 text-white/60'
+                          }
+                        `}>
+                          {index + 1}
+                        </div>
+                        <span className="font-medium">
+                          {faq.question}
+                        </span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-2 flex items-center justify-center">
+              <div className="relative w-full" style={{ height: '400px' }}>
+                <div className="relative h-full perspective-1000">
+                  {contactFaqs.map((faq, index) => {
+                    const transform = getCardTransform(index);
+                    
+                    return (
+                      <motion.div
+                        key={index}
+                        className="absolute w-full"
+                        style={{
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          height: '300px',
+                          transformStyle: 'preserve-3d',
+                          backfaceVisibility: 'hidden'
+                        }}
+                        animate={transform}
+                        transition={{
+                          duration: 0.6,
+                          ease: "easeInOut",
+                          type: "tween"
+                        }}
+                      >
+                        {activeQuestion === index && (
+                          <motion.div
+                            className="absolute -inset-6 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ 
+                              opacity: 1, 
+                              scale: 1
+                            }}
+                            transition={{
+                              opacity: { duration: 0.4 },
+                              scale: { duration: 0.4 }
+                            }}
+                            style={{
+                              boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.25)'
+                            }}
+                          />
+                        )}
+                        
+                        <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col"
+                          style={{ justifyContent: 'space-between', paddingTop: '3rem', paddingBottom: '3rem' }}>
+                          
+                          <div className="flex-1">
+                            <motion.h3 
+                              className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-white"
+                              style={{
+                                textShadow: activeQuestion === index 
+                                  ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
+                                  : 'none'
+                              }}
+                            >
+                              {faq.question}
+                            </motion.h3>
+
+                            <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+                              {faq.answer}
+                            </p>
+                          </div>
+
+                          {activeQuestion === index && (
+                            <motion.div
+                              className="mt-8 pt-6 border-t border-primary/20"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center text-secondary text-sm font-medium">
+                                  <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
+                                  Ready to get started?
+                                </div>
+                                <button 
+                                  onClick={() => {
+                                    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+                                  }}
+                                  className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium"
+                                >
+                                  Contact us now →
+                                </button>
+                              </div>
+                            </motion.div>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
+                  {contactFaqs.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleQuestionClick(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        activeQuestion === index 
+                          ? 'bg-secondary shadow-lg' 
+                          : 'bg-white/20 hover:bg-white/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function ContactsContent() {
   // Состояние формы
@@ -267,7 +591,7 @@ export default function ContactsContent() {
                 </motion.div>
               )}
               
-              <form onSubmit={handleSubmit} noValidate>
+              <form id="contact-form" onSubmit={handleSubmit} noValidate>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                   <FormInput
                     id="name"
@@ -415,62 +739,8 @@ export default function ContactsContent() {
         </div>
       </section>
       
-      {/* FAQ Section with updated styling */}
-      <section className="section-benefits bg-site-bg">
-        <div className="container mx-auto px-4">
-          <h2 className="section-title-medium font-bold section-title-spacing pb-12 text-center">FAQ</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div 
-              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
-                         border border-primary/20 
-                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                         hover:border-primary/40 
-                         transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">How quickly can you implement a solution?</h3>
-              <p className="text-light-gray">Most of our automation solutions can be implemented within 2-4 weeks, depending on complexity. We will provide a detailed timeline during our initial consultation.</p>
-            </div>
-            
-            <div 
-              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
-                         border border-primary/20 
-                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                         hover:border-primary/40 
-                         transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">Which countries are your clients from?</h3>
-              <p className="text-light-gray">We work with clients from the USA, Europe, Australia, and Japan. Our team operates across different time zones to provide convenient support for your business.</p>
-            </div>
-            
-            <div 
-              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
-                         border border-primary/20 
-                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                         hover:border-primary/40 
-                         transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">What is your pricing model?</h3>
-              <p className="text-light-gray">Our pricing depends on the scope and complexity of your project. We offer both fixed-price projects and monthly payments for ongoing support and maintenance.</p>
-            </div>
-            
-            <div 
-              className="bg-dark-purple/40 backdrop-blur-sm rounded-lg p-8 
-                         border border-primary/20 
-                         shadow-[0_0_15px_rgba(119,71,207,0.2)] 
-                         hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                         hover:border-primary/40 
-                         transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">Do you provide training for our team?</h3>
-              <p className="text-light-gray">Absolutely! We provide comprehensive training to ensure your team can effectively use and maintain the automated systems we implement.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Interactive FAQ Section */}
+      <ContactFAQSection />
     </>
   );
 }

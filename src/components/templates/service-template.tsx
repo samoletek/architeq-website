@@ -1465,11 +1465,12 @@ function FAQSection({
   return (
     <section 
       ref={sectionRef}
-      className="min-h-screen bg-dark-gray relative overflow-hidden flex items-center py-24"
+      className="bg-dark-gray relative overflow-hidden py-16"
+      style={{ minHeight: '100vh' }}
     >
       <div className="container mx-auto px-4 relative z-10 w-full">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
@@ -1574,7 +1575,7 @@ function FAQSection({
             </div>
 
             <div className="lg:col-span-2 flex items-center justify-center">
-              <div className="relative w-full" style={{ height: '350px' }}>
+              <div className="relative w-full" style={{ height: '400px' }}>
                 <div className="relative h-full perspective-1000">
                   {faqs.map((faq, index) => {
                     const transform = getCardTransform(index);
@@ -1586,7 +1587,7 @@ function FAQSection({
                         style={{
                           top: '50%',
                           transform: 'translateY(-50%)',
-                          height: '240px',
+                          height: '300px',
                           transformStyle: 'preserve-3d',
                           backfaceVisibility: 'hidden'
                         }}
@@ -1603,48 +1604,34 @@ function FAQSection({
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ 
                               opacity: 1, 
-                              scale: 1,
-                              boxShadow: [
-                                '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.2)',
-                                '0 0 50px rgba(0, 0, 0, 0.7), 0 0 100px rgba(119, 71, 207, 0.3)',
-                                '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.2)'
-                              ]
+                              scale: 1
                             }}
                             transition={{
                               opacity: { duration: 0.4 },
-                              scale: { duration: 0.4 },
-                              boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                              scale: { duration: 0.4 }
+                            }}
+                            style={{
+                              boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.25)'
                             }}
                           />
                         )}
                         
                         <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
-                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col justify-center">
+                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col"
+                          style={{ justifyContent: 'space-between', paddingTop: '3rem', paddingBottom: '3rem' }}>
                           
-                          <motion.h3 
-                            className="text-2xl md:text-3xl font-bold mb-8 leading-tight"
-                            style={{
-                              textShadow: activeQuestion === index 
-                                ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
-                                : 'none'
-                            }}
-                            animate={{
-                              textShadow: activeQuestion === index 
-                                ? [
-                                    '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)',
-                                    '0 0 25px rgba(255,255,255,0.9), 0 0 50px rgba(178,75,243,0.6)',
-                                    '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                                  ]
-                                : 'none'
-                            }}
-                            transition={{
-                              textShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                            }}
-                          >
-                            {faq.question}
-                          </motion.h3>
-
                           <div className="flex-1">
+                            <motion.h3 
+                              className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-white"
+                              style={{
+                                textShadow: activeQuestion === index 
+                                  ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
+                                  : 'none'
+                              }}
+                            >
+                              {faq.question}
+                            </motion.h3>
+
                             <p className="text-white/90 text-lg md:text-xl leading-relaxed">
                               {faq.answer}
                             </p>
