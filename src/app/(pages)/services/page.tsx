@@ -718,192 +718,17 @@ export default function ServicesPage() {
     }, 500);
   };
 
-  const architectureMethodologySection = (
-    <section className="pt-48 pb-48 bg-dark-gray relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center section-content-spacing">
-          <h2 className="section-title-medium font-bold section-title-spacing"
-              style={{
-                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-              }}>
-            Our Architecture Methodology
-          </h2>
-          <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
-            We don&apos;t just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
-          </p>
-        </div>
+  const [expandedFeature, setExpandedFeature] = useState<string | null>(null);
+  const [expandedPrinciple, setExpandedPrinciple] = useState<number | null>(null);
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* Left Side - Methodology Steps */}
-          <div className="space-y-8">
-            {[
-              {
-                step: "01",
-                title: "Discovery & Mapping",
-                description: "We start by understanding your complete business ecosystem — not just individual processes, but how everything connects and flows together.",
-                features: ["Business process mapping", "System inventory & analysis", "Stakeholder interviews", "Data flow documentation"]
-              },
-              {
-                step: "02", 
-                title: "Architecture Design",
-                description: "Using our findings, we design a comprehensive automation architecture that addresses current needs while building for future growth.",
-                features: ["Scalable system design", "Integration planning", "Security & compliance framework", "Performance optimization"]
-              },
-              {
-                step: "03",
-                title: "Iterative Implementation",
-                description: "We build in phases, delivering immediate value while progressing toward the complete vision — ensuring you see ROI at every stage.",
-                features: ["Phased deployment", "Continuous testing", "Real-time monitoring", "Performance analytics"]
-              },
-              {
-                step: "04",
-                title: "Evolution & Optimization",
-                description: "Your business grows and changes — so should your automation. We continuously optimize and evolve your systems to stay ahead.",
-                features: ["Performance monitoring", "Regular optimization", "Feature enhancements", "Future-proofing"]
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 mr-6">
-                    <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative">
-                      <span className="text-white font-bold text-lg">{item.step}</span>
-                      <div className="absolute inset-0 rounded-full border border-primary/60 animate-pulse"></div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-3"
-                        style={{
-                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
-                        }}>
-                      {item.title}
-                    </h3>
-                    <p className="text-light-gray text-lg mb-4 leading-relaxed">
-                      {item.description}
-                    </p>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {item.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center">
-                          <div className="w-2 h-2 rounded-full bg-secondary mr-3"></div>
-                          <span className="text-white text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Connection Line */}
-                {index < 3 && (
-                  <div className="absolute left-8 top-20 w-0.5 h-12 bg-gradient-to-b from-primary/40 to-transparent"></div>
-                )}
-              </motion.div>
-            ))}
-          </div>
+  const toggleFeatureDropdown = (stepIndex: number, featureIndex: number) => {
+    const key = `${stepIndex}-${featureIndex}`;
+    setExpandedFeature(prev => prev === key ? null : key);
+  };
 
-          {/* Right Side - Architecture Visualization */}
-          <div className="relative">
-            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-              
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-4 left-4 w-3 h-3 rounded-full bg-primary"></div>
-                <div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-secondary"></div>
-                <div className="absolute bottom-8 left-8 w-2 h-2 rounded-full bg-primary"></div>
-                <div className="absolute bottom-4 right-4 w-3 h-3 rounded-full bg-secondary"></div>
-              </div>
-
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-8 text-center"
-                    style={{
-                      textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
-                    }}>
-                  Architeq Architecture Principles
-                </h3>
-
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Scalable by Design",
-                      description: "Every system we build is designed to grow with your business, handling increased complexity without breaking."
-                    },
-                    {
-                      title: "Integration-First",
-                      description: "We think in ecosystems, not silos. Every component connects seamlessly with your existing tools."
-                    },
-                    {
-                      title: "User-Centric",
-                      description: "Beautiful automation is useless if people don't use it. We prioritize intuitive design and user adoption."
-                    },
-                    {
-                      title: "Data-Driven",
-                      description: "Every decision is backed by data. We build comprehensive analytics to prove ROI and guide optimization."
-                    },
-                    {
-                      title: "Security-First",
-                      description: "Security and compliance aren't afterthoughts — they're built into the foundation of every solution."
-                    },
-                    {
-                      title: "Future-Ready",
-                      description: "We design with tomorrow in mind, ensuring your automation stays relevant as technology evolves."
-                    }
-                  ].map((principle, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="group"
-                    >
-                      <div>
-                        <h4 className="text-white font-semibold mb-2 group-hover:text-secondary transition-colors duration-300">
-                          {principle.title}
-                        </h4>
-                        <p className="text-light-gray text-sm leading-relaxed">
-                          {principle.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Stats */}
-        <div className="mt-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">99.9%</div>
-              <div className="text-white font-semibold mb-2">Uptime Guarantee</div>
-              <div className="text-light-gray text-sm">Enterprise-grade reliability built into every solution</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">50+</div>
-              <div className="text-white font-semibold mb-2">Business Ecosystems</div>
-              <div className="text-light-gray text-sm">Complete automation architectures deployed</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">5x</div>
-              <div className="text-white font-semibold mb-2">ROI Average</div>
-              <div className="text-light-gray text-sm">Return on investment within first year</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  );
+  const togglePrinciple = (index: number) => {
+    setExpandedPrinciple(prev => prev === index ? null : index);
+  };
   
   return (
     <SiteLayout>
@@ -1029,7 +854,369 @@ export default function ServicesPage() {
       )}
 
       {/* Architecture Methodology section */}
-      {architectureMethodologySection}
+      <section className="pt-32 pb-32 bg-dark-gray relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center section-content-spacing">
+            <h2 className="section-title-medium font-bold section-title-spacing"
+                style={{
+                  textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                }}>
+              Our Architecture Methodology
+            </h2>
+            <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+              We don&apos;t just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
+            </p>
+          </div>
+
+          {/* Main Content Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+            
+            {/* Methodology Steps - Left Side (3 columns) */}
+            <div className="lg:col-span-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                {/* All 4 Steps in Grid Layout */}
+                {[
+                {
+                  step: "01",
+                  title: "Discovery & Mapping",
+                  description: "We start by understanding your complete business ecosystem — not just individual processes, but how everything connects and flows together.",
+                  features: [
+                    {
+                      title: "Business process mapping",
+                      details: ["Current state documentation", "Process flow analysis", "Bottleneck identification", "Stakeholder impact assessment"]
+                    },
+                    {
+                      title: "System inventory & analysis", 
+                      details: ["Technology stack audit", "Integration points mapping", "Data flow documentation", "Performance metrics review"]
+                    },
+                    {
+                      title: "Stakeholder interviews",
+                      details: ["User requirement gathering", "Pain point identification", "Success criteria definition", "Change management planning"]
+                    },
+                    {
+                      title: "Data flow documentation",
+                      details: ["Information architecture", "Data source mapping", "Quality assessment", "Governance requirements"]
+                    }
+                  ]
+                },
+                {
+                  step: "02", 
+                  title: "Architecture Design",
+                  description: "Using our findings, we design a comprehensive automation architecture that addresses current needs while building for future growth.",
+                  features: [
+                    {
+                      title: "Scalable system design",
+                      details: ["Modular architecture planning", "Load balancing strategy", "Resource optimization", "Growth capacity planning"]
+                    },
+                    {
+                      title: "Integration planning",
+                      details: ["API design and documentation", "Data synchronization strategy", "Third-party service integration", "Legacy system connectivity"]
+                    },
+                    {
+                      title: "Security & compliance framework",
+                      details: ["Access control implementation", "Data encryption standards", "Audit trail requirements", "Regulatory compliance mapping"]
+                    },
+                    {
+                      title: "Performance optimization",
+                      details: ["Response time optimization", "Resource utilization planning", "Caching strategy", "Monitoring and alerting setup"]
+                    }
+                  ]
+                },
+                {
+                  step: "03",
+                  title: "Iterative Implementation",
+                  description: "We build in phases, delivering immediate value while progressing toward the complete vision — ensuring you see ROI at every stage.",
+                  features: [
+                    {
+                      title: "Phased deployment",
+                      details: ["MVP development", "Feature prioritization", "Risk mitigation strategy", "User feedback integration"]
+                    },
+                    {
+                      title: "Continuous testing",
+                      details: ["Automated test suites", "Performance testing", "User acceptance testing", "Security vulnerability scanning"]
+                    },
+                    {
+                      title: "Real-time monitoring",
+                      details: ["System health dashboards", "Performance metrics tracking", "Error logging and alerting", "User activity monitoring"]
+                    },
+                    {
+                      title: "Performance analytics",
+                      details: ["Usage pattern analysis", "Efficiency measurements", "ROI tracking", "Optimization recommendations"]
+                    }
+                  ]
+                },
+                {
+                  step: "04",
+                  title: "Evolution & Optimization",
+                  description: "Your business grows and changes — so should your automation. We continuously optimize and evolve your systems to stay ahead.",
+                  features: [
+                    {
+                      title: "Performance monitoring",
+                      details: ["Continuous health checks", "Performance trend analysis", "Capacity planning", "Proactive issue detection"]
+                    },
+                    {
+                      title: "Regular optimization",
+                      details: ["Code optimization", "Database tuning", "Infrastructure scaling", "Process refinement"]
+                    },
+                    {
+                      title: "Feature enhancements",
+                      details: ["User-driven improvements", "Technology upgrades", "New functionality development", "UX/UI enhancements"]
+                    },
+                    {
+                      title: "Future-proofing",
+                      details: ["Technology roadmap planning", "Scalability assessments", "Industry trend integration", "Innovation opportunities"]
+                    }
+                  ]
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                  viewport={{ once: true }}
+                  className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
+                >
+                  <div className="flex flex-col">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-4">
+                        <span className="text-white font-bold text-sm">{item.step}</span>
+                        <div className="absolute inset-0 rounded-full border border-primary/60 animate-pulse"></div>
+                      </div>
+                      <h3 className="text-xl font-bold text-white"
+                          style={{
+                            textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                          }}>
+                        {item.title}
+                      </h3>
+                    </div>
+                    
+                    <p className="text-white/70 text-sm mb-4 leading-relaxed">
+                      {item.description}
+                    </p>
+                    
+                    <div className="space-y-2">
+                      {item.features.map((feature, featureIndex) => {
+                        const dropdownKey = `${index}-${featureIndex}`;
+                        const isExpanded = expandedFeature === dropdownKey;
+                        
+                        return (
+                          <div key={featureIndex} className="relative">
+                            <motion.div 
+                              className="flex items-center cursor-pointer group"
+                              onClick={() => toggleFeatureDropdown(index, featureIndex)}
+                            >
+                              <motion.div 
+                                className="w-3 h-3 rounded-full bg-secondary mr-3 relative flex items-center justify-center"
+                                whileHover={{ scale: 1.2 }}
+                                animate={{
+                                  boxShadow: [
+                                    '0 0 5px rgba(34, 197, 94, 0.5)',
+                                    '0 0 15px rgba(34, 197, 94, 0.8)',
+                                    '0 0 5px rgba(34, 197, 94, 0.5)'
+                                  ]
+                                }}
+                                transition={{
+                                  boxShadow: {
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  },
+                                  scale: { duration: 0.2 }
+                                }}
+                              >
+                                <motion.div
+                                  className="text-white text-xs font-bold"
+                                  animate={{
+                                    rotate: isExpanded ? 180 : 0
+                                  }}
+                                  transition={{ duration: 0.3 }}
+                                >
+                                  {isExpanded ? '−' : '+'}
+                                </motion.div>
+                              </motion.div>
+                              <span className="text-white text-sm group-hover:text-secondary transition-colors duration-300">
+                                {feature.title}
+                              </span>
+                            </motion.div>
+                            
+                            <AnimatePresence>
+                              {isExpanded && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                                  animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
+                                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="ml-6 pl-4 border-l border-secondary/30">
+                                    <div className="space-y-2">
+                                      {feature.details.map((detail, detailIndex) => (
+                                        <motion.div
+                                          key={detailIndex}
+                                          initial={{ opacity: 0, x: -10 }}
+                                          animate={{ opacity: 1, x: 0 }}
+                                          transition={{ delay: detailIndex * 0.1, duration: 0.3 }}
+                                          className="flex items-center"
+                                        >
+                                          <div className="w-1.5 h-1.5 rounded-full bg-secondary/60 mr-2"></div>
+                                          <span className="text-light-gray text-xs leading-relaxed">
+                                            {detail}
+                                          </span>
+                                        </motion.div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+              </div>
+            </div>
+
+            {/* Architecture Principles - Right Side */}
+            <div className="lg:col-span-1 flex items-center">
+              <div className="w-full">
+                <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-4 border border-primary/20 relative overflow-hidden">
+                
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-4 left-4 w-3 h-3 rounded-full bg-primary"></div>
+                  <div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-secondary"></div>
+                  <div className="absolute bottom-8 left-8 w-2 h-2 rounded-full bg-primary"></div>
+                  <div className="absolute bottom-4 right-4 w-3 h-3 rounded-full bg-secondary"></div>
+                </div>
+
+                <div className="relative z-10">
+                  <h3 className="text-lg font-bold text-white mb-4 text-center"
+                      style={{
+                        textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                      }}>
+                    Architeq Architecture Principles
+                  </h3>
+
+                  <div className="space-y-2">
+                    {[
+                      {
+                        title: "Scalable by Design",
+                        description: "Every system we build is designed to grow with your business, handling increased complexity without breaking.",
+                        details: ["Modular architecture", "Load balancing", "Resource optimization", "Growth capacity planning"]
+                      },
+                      {
+                        title: "Integration-First",
+                        description: "We think in ecosystems, not silos. Every component connects seamlessly with your existing tools.",
+                        details: ["API-first design", "Third-party integrations", "Data synchronization", "Legacy system connectivity"]
+                      },
+                      {
+                        title: "User-Centric",
+                        description: "Beautiful automation is useless if people don't use it. We prioritize intuitive design and user adoption.",
+                        details: ["Intuitive interfaces", "User experience optimization", "Training & support", "Adoption metrics"]
+                      },
+                      {
+                        title: "Data-Driven",
+                        description: "Every decision is backed by data. We build comprehensive analytics to prove ROI and guide optimization.",
+                        details: ["Analytics dashboards", "Performance metrics", "ROI tracking", "Optimization insights"]
+                      },
+                      {
+                        title: "Security-First",
+                        description: "Security and compliance aren't afterthoughts — they're built into the foundation of every solution.",
+                        details: ["Access control", "Data encryption", "Audit trails", "Compliance standards"]
+                      },
+                      {
+                        title: "Future-Ready",
+                        description: "We design with tomorrow in mind, ensuring your automation stays relevant as technology evolves.",
+                        details: ["Technology roadmap", "Scalability planning", "Industry trends", "Innovation integration"]
+                      }
+                    ].map((principle, index) => {
+                      const isExpanded = expandedPrinciple === index;
+                      
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          viewport={{ once: true }}
+                          className="border border-primary/20 rounded-lg overflow-hidden bg-primary/5 hover:bg-primary/10 transition-all duration-300"
+                        >
+                          <motion.div
+                            className="p-3 cursor-pointer flex items-center justify-between group"
+                            onClick={() => togglePrinciple(index)}
+                          >
+                            <div className="flex items-center flex-1">
+                              <motion.div 
+                                className="w-2 h-2 rounded-full bg-secondary mr-3 flex-shrink-0"
+                                animate={{
+                                  scale: isExpanded ? 1.3 : 1,
+                                  boxShadow: isExpanded 
+                                    ? '0 0 8px rgba(34, 197, 94, 0.8), 0 0 16px rgba(34, 197, 94, 0.5)'
+                                    : '0 0 4px rgba(34, 197, 94, 0.4)'
+                                }}
+                                transition={{ duration: 0.3 }}
+                              />
+                              <h4 className="text-white font-semibold text-sm group-hover:text-secondary transition-colors duration-300">
+                                {principle.title}
+                              </h4>
+                            </div>
+                            <motion.div
+                              className="text-white text-sm font-bold ml-2"
+                              animate={{ rotate: isExpanded ? 45 : 0 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              +
+                            </motion.div>
+                          </motion.div>
+                          
+                          <AnimatePresence>
+                            {isExpanded && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                                className="overflow-hidden"
+                              >
+                                <div className="px-3 pb-3 border-t border-primary/10">
+                                  <p className="text-white text-xs leading-relaxed mb-3 mt-2">
+                                    {principle.description}
+                                  </p>
+                                  <div className="space-y-1">
+                                    {principle.details.map((detail, detailIndex) => (
+                                      <motion.div
+                                        key={detailIndex}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: detailIndex * 0.1, duration: 0.3 }}
+                                        className="flex items-center"
+                                      >
+                                        <div className="w-1 h-1 rounded-full bg-secondary/60 mr-2 flex-shrink-0"></div>
+                                        <span className="text-white text-xs">
+                                          {detail}
+                                        </span>
+                                      </motion.div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Enhanced Process section */}
       <EnhancedProcessSection />
