@@ -337,13 +337,13 @@ function MissionVisionSection() {
               <h3 className="text-3xl font-bold mb-6 text-white">The Problem We Saw</h3>
               <div className="space-y-6 text-white/80 leading-relaxed">
               <p>
-                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="text-secondary font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
+                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="text-primary font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
                 </p>
                 <p>
-                  These scaling businesses were caught in a trap — spending up to <span className="text-secondary font-medium">70% of their time</span> <span className="text-secondary font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
+                  These scaling businesses were caught in a trap — spending up to <span className="text-primary font-medium">70% of their time</span> <span className="text-primary font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
                 </p>
                 <p>
-                  We built Architeq to <span className="text-secondary font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="text-secondary font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
+                  We built Architeq to <span className="text-primary font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="text-primary font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
                 </p>
               </div>
             </motion.div>
@@ -371,15 +371,15 @@ function MissionVisionSection() {
                 </div>
               </div>
 
-              <div className="bg-[linear-gradient(to_bottom,_#0A2A0A_0%,_#170A24_50%,_#12071A_100%)] rounded-2xl p-8 border border-secondary/20 relative overflow-hidden">
+              <div className="bg-[linear-gradient(to_bottom,_#2A0A2A_0%,_#170A24_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
+                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
                   animate={{ opacity: [0.5, 0.8, 0.5] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
                 />
                 
                 <div className="relative z-10">
-                  <h4 className="text-2xl font-bold mb-4 text-secondary">Our Vision</h4>
+                  <h4 className="text-2xl font-bold mb-4 text-primary">Our Vision</h4>
                   <p className="text-white/80 leading-relaxed">
                     We&apos;re building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
                   </p>
