@@ -6,6 +6,7 @@ import { useScrollAnimation } from '@/lib/utils/animation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Team member interface
 interface TeamMember {
@@ -352,35 +353,23 @@ function MissionVisionSection() {
               variants={contentVariants}
               className="space-y-8"
             >
-              <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
-                  animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                />
-                
-                <div className="relative z-10">
+              <SimpleGlowCard variant="primary">
+                <div className="p-8">
                   <h4 className="text-2xl font-bold mb-4 text-primary">Our Mission</h4>
                   <p className="text-white/80 leading-relaxed">
                     We&apos;re on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most — strategic thinking and innovation.
                   </p>
                 </div>
-              </div>
+              </SimpleGlowCard>
 
-              <div className="bg-[linear-gradient(to_bottom,_#2A0A2A_0%,_#170A24_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
-                  animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-                />
-                
-                <div className="relative z-10">
+              <SimpleGlowCard variant="primary">
+                <div className="p-8">
                   <h4 className="text-2xl font-bold mb-4 text-primary">Our Vision</h4>
                   <p className="text-white/80 leading-relaxed">
                     We&apos;re building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
                   </p>
                 </div>
-              </div>
+              </SimpleGlowCard>
             </motion.div>
           </div>
         </div>
