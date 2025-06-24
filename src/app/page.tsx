@@ -107,7 +107,7 @@ export default function Home() {
           delay={0.2}
           waitForPrevious={true} // Координация с предыдущими секциями
         >
-          <TestimonialsSection />
+          <TestimonialsSection variant="cards" />
         </SectionAnimation>
         
         {/* 

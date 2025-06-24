@@ -234,8 +234,156 @@ interface HorizontalServiceCardProps {
   onHover: (hovered: boolean) => void;
 }
 
-// Восстановленная карточка с полными анимациями
+// Solutions data from individual service pages - exact titles from Our Solutions sections
+const serviceSolutions = {
+  'business-process': [
+    { title: "Process Mapping & Analysis", description: "Analyze workflows to identify bottlenecks and automation opportunities." },
+    { title: "Custom Workflow Design", description: "Design automated workflows that streamline operations." },
+    { title: "System Integration", description: "Connect existing tools for seamless information flow." },
+    { title: "Dashboard Creation", description: "Real-time visibility into business processes and KPIs." }
+  ],
+  'crm-integration': [
+    { title: "Email & Communication", description: "Connect CRM with communication tools for seamless flow." },
+    { title: "Document Management", description: "Integrate storage and e-signature solutions." },
+    { title: "Accounting & Payments", description: "Link CRM with financial systems for automated invoicing." },
+    { title: "Marketing Platforms", description: "Synchronize campaigns, leads, and analytics with CRM." }
+  ],
+  'boxed-solutions': [
+    { title: "Car Hauling Companies", description: "Unified CRM for order management and cost calculation." },
+    { title: "Kitchen Cabinetry Manufacturers", description: "Centralized system for orders, designs, and production." },
+    { title: "Music Labels", description: "Manage assets, calculate royalties, and automate reporting." },
+    { title: "Real Estate Companies", description: "Coordinate showings, documents, and deal tracking." }
+  ],
+  'ai-solutions': [
+    { title: "AI Voice Bots", description: "Handle customer inquiries and appointments automatically." },
+    { title: "CRM AI Assistants", description: "Natural language search across CRM systems." },
+    { title: "Communication Analysis", description: "Transcription and analysis of client conversations." },
+    { title: "Predictive Analytics", description: "AI-powered forecasting for business insights." }
+  ],
+  'documentation': [
+    { title: "Automatic Document Generation", description: "Create documents automatically from CRM templates." },
+    { title: "Electronic Signatures Integration", description: "Streamline document signing directly from CRM." },
+    { title: "Web Forms with CRM Integration", description: "Custom forms that feed data into CRM systems." },
+    { title: "Document Management Automation", description: "Automate organization and version control." }
+  ],
+  'finance': [
+    { title: "Invoice Automation", description: "Automate invoicing from creation to reconciliation." },
+    { title: "Accounting Integration", description: "Connect CRM with accounting for seamless data flow." },
+    { title: "Payment Processing", description: "Integrate payment gateways with business systems." },
+    { title: "Financial Reports & Dashboards", description: "Custom dashboards and automated financial reports." }
+  ]
+};
+
+// Sales metrics and value propositions data
+const salesData = {
+  'business-process': {
+    timeToROI: '2-4 weeks',
+    avgEfficiencyGain: '40-60%',
+    avgTimeSaved: '25-30 hours/week',
+    clientsSaved: '200+',
+    valueProps: [
+      'Eliminate 80% of manual processes',
+      'Reduce processing time by 60%',
+      'Zero human errors in core workflows',
+      'Real-time visibility across operations'
+    ],
+    metrics: [
+      { label: 'Time Saved', value: '30hrs', unit: '/week' },
+      { label: 'Error Rate', value: '0%', unit: '' },
+      { label: 'ROI Timeline', value: '2-4', unit: 'weeks' }
+    ]
+  },
+  'crm-integration': {
+    timeToROI: '3-6 weeks',
+    avgEfficiencyGain: '50-70%',
+    avgTimeSaved: '20-25 hours/week',
+    clientsSaved: '150+',
+    valueProps: [
+      'Unified customer data across all platforms',
+      'Automated lead scoring and nurturing',
+      '360° customer view for better decisions',
+      'Seamless sales pipeline management'
+    ],
+    metrics: [
+      { label: 'Lead Conversion', value: '+45%', unit: '' },
+      { label: 'Data Accuracy', value: '99%', unit: '' },
+      { label: 'Sales Velocity', value: '+60%', unit: '' }
+    ]
+  },
+  'boxed-solutions': {
+    timeToROI: '1-2 weeks',
+    avgEfficiencyGain: '30-50%',
+    avgTimeSaved: '15-20 hours/week',
+    clientsSaved: '100+',
+    valueProps: [
+      'Industry-proven workflows ready to deploy',
+      'Fastest time to value in the market',
+      'Pre-built integrations for common tools',
+      'Scalable foundation for custom needs'
+    ],
+    metrics: [
+      { label: 'Deploy Time', value: '1-2', unit: 'weeks' },
+      { label: 'Setup Cost', value: '-70%', unit: '' },
+      { label: 'Efficiency Gain', value: '40%', unit: '' }
+    ]
+  },
+  'ai-solutions': {
+    timeToROI: '4-8 weeks',
+    avgEfficiencyGain: '60-80%',
+    avgTimeSaved: '35-40 hours/week',
+    clientsSaved: '80+',
+    valueProps: [
+      'AI-powered decision automation',
+      'Natural language processing for communication',
+      'Predictive analytics for business insights',
+      'Smart routing and task assignment'
+    ],
+    metrics: [
+      { label: 'Response Time', value: '90%', unit: 'faster' },
+      { label: 'Decision Accuracy', value: '95%', unit: '' },
+      { label: 'Processing Volume', value: '10x', unit: '' }
+    ]
+  },
+  'documentation': {
+    timeToROI: '2-3 weeks',
+    avgEfficiencyGain: '70-85%',
+    avgTimeSaved: '20-30 hours/week',
+    clientsSaved: '120+',
+    valueProps: [
+      'Zero manual document creation',
+      'Automated approval workflows',
+      'Real-time collaboration and versioning',
+      'Built-in compliance and audit trails'
+    ],
+    metrics: [
+      { label: 'Doc Processing', value: '85%', unit: 'faster' },
+      { label: 'Approval Time', value: '-90%', unit: '' },
+      { label: 'Compliance Rate', value: '100%', unit: '' }
+    ]
+  },
+  'finance': {
+    timeToROI: '3-5 weeks',
+    avgEfficiencyGain: '55-75%',
+    avgTimeSaved: '25-35 hours/week',
+    clientsSaved: '90+',
+    valueProps: [
+      'Real-time financial visibility',
+      'Automated reconciliation and reporting',
+      'Multi-currency and payment method support',
+      'Seamless accounting system integration'
+    ],
+    metrics: [
+      { label: 'Reconciliation', value: '95%', unit: 'automated' },
+      { label: 'Report Generation', value: '80%', unit: 'faster' },
+      { label: 'Payment Processing', value: '24/7', unit: '' }
+    ]
+  }
+};
+
+// Enhanced card component with sales focus and micro-animations
 function HorizontalServiceCard({ service, isActive, direction, isHovered, onHover }: HorizontalServiceCardProps) {
+  const [isExploreButtonHovered, setIsExploreButtonHovered] = useState(false);
+  
   const cardVariants = {
     enter: () => ({
       opacity: 0,
@@ -262,7 +410,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
   return (
     <motion.div 
       className="relative w-full z-10" 
-      style={{ height: '560px' }}
+      style={{ height: '680px' }}
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
@@ -368,7 +516,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
         `}
         style={{
-          height: '560px',
+          height: '680px',
           width: '100%',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',
@@ -380,121 +528,218 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
         onMouseLeave={() => onHover(false)}
       >
         {/* Контент карточки */}
-        <div className="relative z-10 h-full flex flex-col justify-center py-8">
+        <div className="relative z-10 h-full flex flex-col py-6">
+
+          {/* Cases link */}
+          <motion.div 
+            className="text-center mb-6"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ 
+              opacity: isActive ? 1 : 0,
+              scale: isActive ? 1 : 0.9
+            }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <Link href={`/cases?filter=${service.id}`}>
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 hover:border-primary/40 transition-all duration-300 cursor-pointer">
+                <motion.div 
+                  className="w-2 h-2 rounded-full bg-secondary mr-2"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.7, 1, 0.7]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <span className="text-white text-sm font-medium hover:text-secondary transition-colors duration-300">
+                  View Cases
+                </span>
+              </div>
+            </Link>
+          </motion.div>
+
           {/* Заголовок и подзаголовок */}
-          <div className="mb-8 text-center">
-            <h3 className="text-3xl font-bold leading-tight text-white mb-6"
+          <div className="mb-6 text-center">
+            <h3 className="text-3xl font-bold leading-tight text-white mb-4"
                 style={{
                   textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                 }}>
               {service.title}
             </h3>
-            <p className="text-white text-lg leading-relaxed max-w-2xl mx-auto opacity-90">
+            <p className="text-white text-base leading-relaxed max-w-2xl mx-auto opacity-90 mb-4">
               {service.description}
             </p>
+            
           </div>
           
-          {/* Возможности */}
-          <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-xl font-bold mb-6 text-white text-left"
-                style={{
-                  textShadow: '0 0 15px rgba(255,255,255,0.6)'
-                }}>
-              Core Capabilities:
-            </h4>
-            <div className="space-y-4 max-w-xl w-full">
-              {service.features.slice(0, 4).map((feature: string, index: number) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ 
-                    opacity: isActive ? 1 : 0,
-                    x: isActive ? 0 : -20
-                  }}
-                  transition={{ 
-                    duration: 0.5, 
-                    delay: isActive ? index * 0.12 + 0.3 : 0,
-                    ease: [0.25, 0.1, 0.25, 1]
-                  }}
-                  className="flex items-start"
-                >
-                  {/* Улучшенные буллиты с аура-эффектом */}
-                  <motion.div 
-                    className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1 flex-shrink-0"
-                    initial={{ scale: 0 }}
+          {/* Value propositions and capabilities in two columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1">
+            {/* Left: Our Solutions */}
+            <div>
+              <h4 className="text-xl font-bold mb-4 text-white"
+                  style={{
+                    textShadow: '0 0 15px rgba(255,255,255,0.6)'
+                  }}>
+                Our Solutions:
+              </h4>
+              <div className="grid grid-cols-1 gap-3">
+                {serviceSolutions[service.id as keyof typeof serviceSolutions]?.slice(0, 4).map((solution, index: number) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20, scale: 0.95 }}
                     animate={{ 
-                      scale: isActive ? 1 : 0
+                      opacity: isActive ? 1 : 0,
+                      x: isActive ? 0 : -20,
+                      scale: isActive ? 1 : 0.95
                     }}
                     transition={{ 
-                      scale: { duration: 0.4, delay: isActive ? index * 0.12 + 0.4 : 0, ease: "backOut" }
+                      duration: 0.5, 
+                      delay: isActive ? index * 0.1 + 0.9 : 0,
+                      ease: [0.25, 0.1, 0.25, 1]
                     }}
-                    style={{
-                      boxShadow: isActive ? '0 0 12px rgba(178,75,243,0.8), 0 0 24px rgba(178,75,243,0.5)' : 'none',
-                      background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
+                    className="group cursor-pointer bg-primary/5 hover:bg-primary/10 rounded-lg p-3 border border-primary/10 hover:border-primary/30 transition-all duration-300"
+                    whileHover={{ 
+                      scale: 1.02,
+                      x: 4
                     }}
                   >
+                    <div className="flex items-start">
+                      <motion.div 
+                        className="w-2 h-2 rounded-full bg-primary/60 mr-3 mt-2 flex-shrink-0"
+                        initial={{ scale: 0 }}
+                        animate={{ 
+                          scale: isActive ? 1 : 0
+                        }}
+                        transition={{ 
+                          duration: 0.6, 
+                          delay: isActive ? index * 0.1 + 1.0 : 0,
+                          type: "spring",
+                          stiffness: 200
+                        }}
+                        whileHover={{ scale: 1.2 }}
+                        style={{
+                          boxShadow: isActive ? '0 0 8px rgba(178,75,243,0.8), 0 0 16px rgba(178,75,243,0.5)' : 'none'
+                        }}
+                      />
+                      <div className="flex-1">
+                        <h5 className="text-white font-medium text-sm mb-1 transition-colors duration-300">
+                          {solution.title}
+                        </h5>
+                        <p className="text-white/70 text-xs leading-relaxed">
+                          {solution.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Core Capabilities */}
+            <div>
+              <h4 className="text-xl font-bold mb-4 text-white"
+                  style={{
+                    textShadow: '0 0 15px rgba(255,255,255,0.6)'
+                  }}>
+                Core Capabilities:
+              </h4>
+              <div className="space-y-3">
+                {salesData[service.id as keyof typeof salesData]?.valueProps.map((prop: string, index: number) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ 
+                      opacity: isActive ? 1 : 0,
+                      x: isActive ? 0 : 20
+                    }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: isActive ? index * 0.1 + 1.2 : 0,
+                      ease: [0.25, 0.1, 0.25, 1]
+                    }}
+                    className="flex items-start group cursor-pointer"
+                    whileHover={{ x: -4 }}
+                  >
                     <motion.div 
-                      className="w-1.5 h-1.5 rounded-full bg-primary" 
-                      initial={{ scale: 0 }}
+                      className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center mr-3 mt-0.5 flex-shrink-0"
+                      initial={{ scale: 0, rotate: -180 }}
                       animate={{ 
-                        scale: isActive ? [1, 1.5, 1] : 0
+                        scale: isActive ? 1 : 0,
+                        rotate: isActive ? 0 : -180
                       }}
                       transition={{ 
-                        duration: isActive ? 2 : 0.3, 
-                        delay: isActive ? index * 0.12 + 0.5 : 0,
-                        ease: "easeInOut",
-                        repeat: isActive ? Infinity : 0
+                        duration: 0.6, 
+                        delay: isActive ? index * 0.1 + 1.3 : 0,
+                        type: "spring",
+                        stiffness: 200
                       }}
                       style={{
-                        boxShadow: isActive ? '0 0 8px rgba(178,75,243,1), 0 0 16px rgba(178,75,243,0.8)' : 'none'
+                        boxShadow: isActive ? '0 0 10px rgba(176, 255, 116, 0.6), 0 0 20px rgba(176, 255, 116, 0.3)' : 'none',
+                        background: 'radial-gradient(circle, rgba(176, 255, 116, 0.3) 0%, rgba(176, 255, 116, 0.1) 100%)'
                       }}
-                    />
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <motion.div 
+                        className="text-secondary text-xs font-bold"
+                        animate={{
+                          opacity: [0.7, 1, 0.7]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+                      >
+                        ✓
+                      </motion.div>
+                    </motion.div>
+                    <span className={`text-base leading-relaxed transition-colors duration-300 ${isExploreButtonHovered ? 'text-secondary' : 'text-white'}`}>
+                      {prop}
+                    </span>
                   </motion.div>
-                  <span className="text-white text-base leading-relaxed text-left opacity-95">
-                    {feature}
-                  </span>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
           
-          {/* CTA кнопка */}
-          <div className="mt-8 flex justify-center">
+          {/* Enhanced CTA section with two buttons */}
+          <div className="mt-6 space-y-4">
+            {/* Primary CTA */}
             <motion.div
+              className="flex justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
-                opacity: isHovered ? 1 : 0,
-                y: isHovered ? 0 : 20
+                opacity: isActive ? 1 : 0,
+                y: isActive ? 0 : 20
               }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.5, delay: 1.6 }}
             >
               <Link href={`/services/${service.id}`}>
                 <Button 
                   variant="primary" 
-                  className="text-base py-3 px-6 transition-all duration-300 relative overflow-hidden group"
+                  className="text-base py-3 px-8 transition-all duration-300 relative overflow-hidden group"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    boxShadow: '0 8px 32px rgba(119, 71, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                    background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)',
+                    backdropFilter: 'blur(15px)',
+                    WebkitBackdropFilter: 'blur(15px)',
+                    border: 'none',
+                    boxShadow: '0 8px 32px rgba(119, 71, 207, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
                   }}
+                  onMouseEnter={() => setIsExploreButtonHovered(true)}
+                  onMouseLeave={() => setIsExploreButtonHovered(false)}
                 >
-                  {/* Зеркальный эффект */}
+                  {/* Enhanced shimmer effect */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
                   />
-                  <span className="flex items-center relative z-10"
+                  <span className="flex items-center relative z-10 font-semibold"
                         style={{
-                          textShadow: '0 0 10px rgba(255,255,255,0.5)'
+                          textShadow: '0 0 15px rgba(255,255,255,0.7)'
                         }}>
-                    Learn More
-                    <svg
+                    Explore Solution
+                    <motion.svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
+                      className="h-5 w-5 ml-2"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      whileHover={{ x: 4 }}
+                      transition={{ type: "spring", stiffness: 400 }}
                     >
                       <path
                         strokeLinecap="round"
@@ -502,11 +747,13 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                         strokeWidth={2}
                         d="M9 5l7 7-7 7"
                       />
-                    </svg>
+                    </motion.svg>
                   </span>
                 </Button>
               </Link>
             </motion.div>
+
+
           </div>
         </div>
       </motion.div>
@@ -514,65 +761,176 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
   );
 }
 
-// Простой компонент карточки для мобильных
+// Enhanced mobile card component with sales focus
 function MobileServiceCard({ service, index }: { service: Service; index: number }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const currentSalesData = salesData[service.id as keyof typeof salesData];
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-dark-gray rounded-xl p-6 border border-medium-gray/30"
+      className="relative overflow-hidden rounded-xl border"
+      style={{
+        background: `
+          radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.15) 0%, transparent 50%),
+          linear-gradient(135deg, rgba(23, 10, 36, 0.6) 0%, rgba(21, 9, 32, 0.7) 50%, rgba(18, 7, 26, 0.8) 100%)
+        `,
+        border: '1px solid rgba(119, 71, 207, 0.15)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)'
+      }}
     >
-      <div 
-        className="flex items-center justify-between cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <h3 className="text-lg font-semibold text-white">{service.title}</h3>
-        <motion.div
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-          className="text-light-gray"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </motion.div>
+      {/* Sales metrics strip */}
+      <div className="flex justify-between items-center p-3 bg-primary/5 border-b border-primary/10">
+        <div className="flex space-x-4">
+          {currentSalesData?.metrics.slice(0, 2).map((metric, metricIndex) => (
+            <div key={metricIndex} className="text-center">
+              <div className="text-sm font-bold text-secondary">
+                {metric.value}
+                <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
+              </div>
+              <div className="text-xs text-white/50">{metric.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center text-xs text-white/60">
+          <motion.div 
+            className="w-1.5 h-1.5 rounded-full bg-secondary mr-1"
+            animate={{
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          ROI: {currentSalesData?.timeToROI}
+        </div>
       </div>
 
-      <p className="text-light-gray mt-3 text-sm leading-relaxed">
-        {service.description}
-      </p>
-
-      <AnimatePresence>
-        {isExpanded && (
+      <div className="p-6">
+        <div 
+          className="flex items-center justify-between cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <h3 className="text-lg font-semibold text-white"
+              style={{
+                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+              }}>
+            {service.title}
+          </h3>
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            className="text-light-gray"
           >
-            <div className="mt-4 pt-4 border-t border-medium-gray/30">
-              <h4 className="text-sm font-semibold text-secondary mb-3">Key Features:</h4>
-              <ul className="space-y-2 mb-4">
-                {service.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
-                    <span className="text-secondary mr-2 mt-1 text-xs">•</span>
-                    <span className="text-light-gray text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <Link href={`/services/${service.id}`}>
-                <Button variant="secondary" size="sm" className="w-full">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+
+        <p className="text-light-gray mt-3 text-sm leading-relaxed">
+          {service.description}
+        </p>
+
+        {/* Cases link */}
+        <div className="mt-3 flex items-center justify-between">
+          <Link href={`/cases?filter=${service.id}`}>
+            <div className="flex items-center text-xs text-white/60 hover:text-secondary transition-colors duration-300">
+              <motion.div 
+                className="w-1.5 h-1.5 rounded-full bg-secondary mr-2"
+                animate={{
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              View Cases
+            </div>
+          </Link>
+          <div className="text-xs text-secondary font-semibold">
+            +{currentSalesData?.avgEfficiencyGain.split('-')[0]} efficiency
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 pt-4 border-t border-primary/10">
+                {/* Value propositions */}
+                <h4 className="text-sm font-semibold text-secondary mb-3">Core Capabilities:</h4>
+                <div className="space-y-2 mb-4">
+                  {currentSalesData?.valueProps.slice(0, 3).map((prop, propIndex) => (
+                    <div key={propIndex} className="flex items-start">
+                      <motion.div 
+                        className="w-3 h-3 rounded-full bg-secondary/20 flex items-center justify-center mr-2 mt-1 flex-shrink-0"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: propIndex * 0.1 }}
+                      >
+                        <div className="w-1 h-1 rounded-full bg-secondary" />
+                      </motion.div>
+                      <span className="text-white/80 text-xs leading-relaxed">{prop}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Our Solutions */}
+                <h4 className="text-sm font-semibold text-primary mb-3">Our Solutions:</h4>
+                <div className="space-y-2 mb-4">
+                  {serviceSolutions[service.id as keyof typeof serviceSolutions]?.slice(0, 3).map((solution, solutionIndex) => (
+                    <motion.div
+                      key={solutionIndex}
+                      className="bg-primary/5 hover:bg-primary/10 rounded-lg p-2 border border-primary/10 transition-all duration-300"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: solutionIndex * 0.1 + 0.3 }}
+                    >
+                      <div className="flex items-start">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mr-2 mt-1.5 flex-shrink-0"></div>
+                        <div className="flex-1">
+                          <h5 className="text-white font-medium text-xs mb-1">
+                            {solution.title}
+                          </h5>
+                          <p className="text-white/70 text-xs leading-relaxed">
+                            {solution.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <div className="flex space-x-2">
+                  <Link href={`/services/${service.id}`} className="flex-1">
+                    <Button variant="primary" size="sm" className="w-full">
+                      Explore Solution
+                    </Button>
+                  </Link>
+                  <Link href="/contacts" className="flex-1">
+                    <div className="flex items-center justify-center text-secondary font-medium text-sm py-2 transition-all duration-300 hover:opacity-80">
+                      <span>Talk to the Team</span>
+                      <motion.div 
+                        className="w-2 h-2 rounded-full bg-secondary ml-2"
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          opacity: [0.7, 1, 0.7]
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 }
@@ -744,7 +1102,7 @@ export default function ServicesPage() {
       {/* Hero section */}
       <section className="section-hero bg-transparent relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
                 style={{
                   textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
@@ -754,7 +1112,10 @@ export default function ServicesPage() {
             <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing opacity-90">
               We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center button-gap-large">
+            
+
+            {/* Enhanced CTA */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <Button variant="secondary" size="lg" href="/contacts">
                 See How It Works 
               </Button>
