@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
-import EnhancedProcessSection from '@/components/sections/enhanced-process-section';
+import { AutomationFlowTimeline } from '@/components/sections/automation-flow-timeline';
 import ParallaxAuraBackground from '@/components/ui/effects/parallax-aura-background';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
@@ -1330,19 +1330,14 @@ export default function ServicesPage() {
                   ]
                 }
               ].map((item, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.15 }}
-                  viewport={{ once: true }}
                   className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
                 >
                   <div className="flex flex-col">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-4">
                         <span className="text-white font-bold text-sm">{item.step}</span>
-                        <div className="absolute inset-0 rounded-full border border-primary/60 animate-pulse"></div>
                       </div>
                       <h3 className="text-xl font-bold text-white"
                           style={{
@@ -1367,35 +1362,18 @@ export default function ServicesPage() {
                               className="flex items-center cursor-pointer group"
                               onClick={() => toggleFeatureDropdown(index, featureIndex)}
                             >
-                              <motion.div 
-                                className="w-3 h-3 rounded-full bg-secondary mr-3 relative flex items-center justify-center"
-                                whileHover={{ scale: 1.2 }}
-                                animate={{
-                                  boxShadow: [
-                                    '0 0 5px rgba(34, 197, 94, 0.5)',
-                                    '0 0 15px rgba(34, 197, 94, 0.8)',
-                                    '0 0 5px rgba(34, 197, 94, 0.5)'
-                                  ]
-                                }}
-                                transition={{
-                                  boxShadow: {
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut"
-                                  },
-                                  scale: { duration: 0.2 }
-                                }}
+                              <div 
+                                className="w-3 h-3 rounded-full bg-secondary mr-3 relative flex items-center justify-center hover:scale-110 transition-transform duration-200"
                               >
-                                <motion.div
-                                  className="text-white text-xs font-bold"
-                                  animate={{
-                                    rotate: isExpanded ? 180 : 0
+                                <div
+                                  className="text-white text-xs font-bold transition-transform duration-300"
+                                  style={{
+                                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
                                   }}
-                                  transition={{ duration: 0.3 }}
                                 >
                                   {isExpanded ? '−' : '+'}
-                                </motion.div>
-                              </motion.div>
+                                </div>
+                              </div>
                               <span className="text-white text-sm group-hover:text-secondary transition-colors duration-300">
                                 {feature.title}
                               </span>
@@ -1413,18 +1391,15 @@ export default function ServicesPage() {
                                   <div className="ml-6 pl-4 border-l border-secondary/30">
                                     <div className="space-y-2">
                                       {feature.details.map((detail, detailIndex) => (
-                                        <motion.div
+                                        <div
                                           key={detailIndex}
-                                          initial={{ opacity: 0, x: -10 }}
-                                          animate={{ opacity: 1, x: 0 }}
-                                          transition={{ delay: detailIndex * 0.1, duration: 0.3 }}
                                           className="flex items-center"
                                         >
                                           <div className="w-1.5 h-1.5 rounded-full bg-secondary/60 mr-2"></div>
                                           <span className="text-light-gray text-xs leading-relaxed">
                                             {detail}
                                           </span>
-                                        </motion.div>
+                                        </div>
                                       ))}
                                     </div>
                                   </div>
@@ -1436,7 +1411,7 @@ export default function ServicesPage() {
                       })}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
               </div>
             </div>
@@ -1498,12 +1473,8 @@ export default function ServicesPage() {
                       const isExpanded = expandedPrinciple === index;
                       
                       return (
-                        <motion.div
+                        <div
                           key={index}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.1 }}
-                          viewport={{ once: true }}
                           className="border border-primary/20 rounded-lg overflow-hidden bg-primary/5 hover:bg-primary/10 transition-all duration-300"
                         >
                           <motion.div
@@ -1511,27 +1482,24 @@ export default function ServicesPage() {
                             onClick={() => togglePrinciple(index)}
                           >
                             <div className="flex items-center flex-1">
-                              <motion.div 
-                                className="w-2 h-2 rounded-full bg-secondary mr-3 flex-shrink-0"
-                                animate={{
-                                  scale: isExpanded ? 1.3 : 1,
-                                  boxShadow: isExpanded 
-                                    ? '0 0 8px rgba(34, 197, 94, 0.8), 0 0 16px rgba(34, 197, 94, 0.5)'
-                                    : '0 0 4px rgba(34, 197, 94, 0.4)'
+                              <div 
+                                className="w-2 h-2 rounded-full bg-secondary mr-3 flex-shrink-0 transition-transform duration-300"
+                                style={{
+                                  transform: isExpanded ? 'scale(1.3)' : 'scale(1)'
                                 }}
-                                transition={{ duration: 0.3 }}
                               />
                               <h4 className="text-white font-semibold text-sm group-hover:text-secondary transition-colors duration-300">
                                 {principle.title}
                               </h4>
                             </div>
-                            <motion.div
-                              className="text-white text-sm font-bold ml-2"
-                              animate={{ rotate: isExpanded ? 45 : 0 }}
-                              transition={{ duration: 0.3 }}
+                            <div
+                              className="text-white text-sm font-bold ml-2 transition-transform duration-300"
+                              style={{
+                                transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)'
+                              }}
                             >
                               +
-                            </motion.div>
+                            </div>
                           </motion.div>
                           
                           <AnimatePresence>
@@ -1549,25 +1517,22 @@ export default function ServicesPage() {
                                   </p>
                                   <div className="space-y-1">
                                     {principle.details.map((detail, detailIndex) => (
-                                      <motion.div
+                                      <div
                                         key={detailIndex}
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: detailIndex * 0.1, duration: 0.3 }}
                                         className="flex items-center"
                                       >
                                         <div className="w-1 h-1 rounded-full bg-secondary/60 mr-2 flex-shrink-0"></div>
                                         <span className="text-white text-xs">
                                           {detail}
                                         </span>
-                                      </motion.div>
+                                      </div>
                                     ))}
                                   </div>
                                 </div>
                               </motion.div>
                             )}
                           </AnimatePresence>
-                        </motion.div>
+                        </div>
                       );
                     })}
                   </div>
@@ -1579,8 +1544,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Enhanced Process section */}
-      <EnhancedProcessSection />
+      {/* Automation Flow Timeline */}
+      <AutomationFlowTimeline />
       
       {/* CTA section */}
       <section className="section-cta bg-transparent relative z-10">
