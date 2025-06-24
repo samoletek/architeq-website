@@ -234,45 +234,6 @@ interface HorizontalServiceCardProps {
   onHover: (hovered: boolean) => void;
 }
 
-// Solutions data from individual service pages - exact titles from Our Solutions sections
-const serviceSolutions = {
-  'business-process': [
-    { title: "Process Mapping & Analysis", description: "Analyze workflows to identify bottlenecks and automation opportunities." },
-    { title: "Custom Workflow Design", description: "Design automated workflows that streamline operations." },
-    { title: "System Integration", description: "Connect existing tools for seamless information flow." },
-    { title: "Dashboard Creation", description: "Real-time visibility into business processes and KPIs." }
-  ],
-  'crm-integration': [
-    { title: "Email & Communication", description: "Connect CRM with communication tools for seamless flow." },
-    { title: "Document Management", description: "Integrate storage and e-signature solutions." },
-    { title: "Accounting & Payments", description: "Link CRM with financial systems for automated invoicing." },
-    { title: "Marketing Platforms", description: "Synchronize campaigns, leads, and analytics with CRM." }
-  ],
-  'boxed-solutions': [
-    { title: "Car Hauling Companies", description: "Unified CRM for order management and cost calculation." },
-    { title: "Kitchen Cabinetry Manufacturers", description: "Centralized system for orders, designs, and production." },
-    { title: "Music Labels", description: "Manage assets, calculate royalties, and automate reporting." },
-    { title: "Real Estate Companies", description: "Coordinate showings, documents, and deal tracking." }
-  ],
-  'ai-solutions': [
-    { title: "AI Voice Bots", description: "Handle customer inquiries and appointments automatically." },
-    { title: "CRM AI Assistants", description: "Natural language search across CRM systems." },
-    { title: "Communication Analysis", description: "Transcription and analysis of client conversations." },
-    { title: "Predictive Analytics", description: "AI-powered forecasting for business insights." }
-  ],
-  'documentation': [
-    { title: "Automatic Document Generation", description: "Create documents automatically from CRM templates." },
-    { title: "Electronic Signatures Integration", description: "Streamline document signing directly from CRM." },
-    { title: "Web Forms with CRM Integration", description: "Custom forms that feed data into CRM systems." },
-    { title: "Document Management Automation", description: "Automate organization and version control." }
-  ],
-  'finance': [
-    { title: "Invoice Automation", description: "Automate invoicing from creation to reconciliation." },
-    { title: "Accounting Integration", description: "Connect CRM with accounting for seamless data flow." },
-    { title: "Payment Processing", description: "Integrate payment gateways with business systems." },
-    { title: "Financial Reports & Dashboards", description: "Custom dashboards and automated financial reports." }
-  ]
-};
 
 // Sales metrics and value propositions data
 const salesData = {
@@ -382,7 +343,6 @@ const salesData = {
 
 // Enhanced card component with sales focus and micro-animations
 function HorizontalServiceCard({ service, isActive, direction, isHovered, onHover }: HorizontalServiceCardProps) {
-  const [isExploreButtonHovered, setIsExploreButtonHovered] = useState(false);
   
   const cardVariants = {
     enter: () => ({
