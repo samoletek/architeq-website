@@ -1109,80 +1109,16 @@ export default function ServicesPage() {
                 }}>
               How We Architect
             </h1>
-            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium opacity-90">
+            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing opacity-90">
               We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
             </p>
             
-            {/* Trust indicators - company achievements */}
-            <motion.div 
-              className="flex flex-wrap justify-center items-center gap-8 mt-8 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              {[
-                { number: '50', suffix: '+', label: 'Projects Delivered' },
-                { number: '95', suffix: '%', label: 'Client Satisfaction' },
-                { number: '3', suffix: 'x', label: 'Average ROI' },
-                { number: '24', suffix: '/7', label: 'System Uptime' }
-              ].map((achievement, index) => (
-                <motion.div 
-                  key={index}
-                  className="text-center"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: 0.6 + index * 0.1,
-                    type: "spring",
-                    stiffness: 200 
-                  }}
-                >
-                  <div className="relative">
-                    <motion.div 
-                      className="text-2xl font-bold text-secondary mb-1"
-                      style={{
-                        textShadow: '0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.4)'
-                      }}
-                      animate={{
-                        textShadow: [
-                          '0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.4)',
-                          '0 0 20px rgba(176, 255, 116, 1), 0 0 40px rgba(176, 255, 116, 0.6)',
-                          '0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.4)'
-                        ]
-                      }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-                    >
-                      {achievement.number}
-                      <span className="text-base text-white/70">{achievement.suffix}</span>
-                    </motion.div>
-                    <div className="text-xs text-white/60 uppercase tracking-wide">{achievement.label}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
 
             {/* Enhanced CTA */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <Button variant="secondary" size="lg" href="/contacts">
                 See How It Works 
               </Button>
-              <motion.div 
-                className="flex items-center text-sm text-white/60"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.2 }}
-              >
-                <motion.div 
-                  className="w-2 h-2 rounded-full bg-secondary mr-2"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.7, 1, 0.7]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                Free consultation & system audit
-              </motion.div>
             </div>
           </div>
         </div>
