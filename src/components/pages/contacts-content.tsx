@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { LoadingButton } from '@/components/ui/loading-button';
+import { Button } from '@/components/ui/button';
 import CalendlyWidget from '@/components/ui/calendly-widget';
 import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
@@ -172,7 +173,7 @@ function ContactFAQSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut"
+        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -184,7 +185,7 @@ function ContactFAQSection() {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
+        ease: [0.25, 0.1, 0.25, 1],
         delay: index * 0.05
       }
     })
@@ -557,12 +558,24 @@ export default function ContactsContent() {
     <>
       {/* Hero section */}
       <section className="section-hero bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacingg">Get in Touch</h1>
-            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
-            Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
-            </p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <div data-animate="fade-up">
+              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
+                  style={{
+                    textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                  }}>
+                Get in Touch
+              </h1>
+              <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
+                Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center button-gap-large">
+                <Button variant="secondary" size="lg" href="#contact-form">
+                  Start Consultation
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

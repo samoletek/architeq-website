@@ -228,7 +228,7 @@ function HeroSection() {
           variants={titleVariants}
         >
           <h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight"
+            className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
             style={{
               textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
             }}
@@ -236,7 +236,7 @@ function HeroSection() {
             About Architeq
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
+          <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
             We architect digital systems that flex, scale, and adapt — for companies across industries.
           </p>
 
