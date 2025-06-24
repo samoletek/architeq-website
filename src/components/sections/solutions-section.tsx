@@ -42,6 +42,46 @@ export interface SolutionsSectionProps {
   variant?: 'default' | 'alternate';
 }
 
+// Данные о решениях для каждого сервиса
+const serviceSolutions = {
+  'business-process': [
+    { title: "Process Mapping & Analysis", description: "Analyze workflows to identify bottlenecks and automation opportunities." },
+    { title: "Workflow Optimization", description: "Design efficient processes that eliminate manual steps and reduce cycle times." },
+    { title: "System Integration", description: "Connect disparate tools to create seamless data flow across operations." },
+    { title: "Custom Automation Scripts", description: "Build intelligent automation that adapts to your specific business logic." }
+  ],
+  'crm-integration': [
+    { title: "Custom CRM Development", description: "Build tailored CRM systems designed specifically for your workflows." },
+    { title: "Data Migration & Cleanup", description: "Transfer and organize existing data into your new centralized system." },
+    { title: "Multi-Platform Sync", description: "Keep all your tools connected with real-time bidirectional data flow." },
+    { title: "Analytics & Reporting", description: "Create custom dashboards that provide actionable business insights." }
+  ],
+  'boxed-solutions': [
+    { title: "Industry Templates", description: "Pre-configured workflows designed for your specific industry sector." },
+    { title: "Rapid Deployment", description: "Fast implementation with minimal disruption to current operations." },
+    { title: "Custom Configuration", description: "Tailored setup that matches your unique business requirements." },
+    { title: "Scalable Architecture", description: "Solutions that grow with your business and adapt to changes." }
+  ],
+  'ai-solutions': [
+    { title: "AI Voice Assistants", description: "Intelligent voice interaction for improved customer communication." },
+    { title: "Conversation Analytics", description: "Real-time transcription and analysis of customer interactions." },
+    { title: "Smart Data Processing", description: "Automated extraction and organization of information from conversations." },
+    { title: "Predictive Insights", description: "AI-driven recommendations based on conversation patterns and data." }
+  ],
+  'documentation': [
+    { title: "Template-Based Generation", description: "Automatic document creation using predefined templates and CRM data." },
+    { title: "E-Signature Integration", description: "Streamlined signing processes with real-time status tracking." },
+    { title: "Compliance Management", description: "Ensure all documents meet regulatory requirements automatically." },
+    { title: "Version Control", description: "Automated tracking and management of document revisions." }
+  ],
+  'finance': [
+    { title: "Invoice Automation", description: "Generate and send invoices automatically based on CRM triggers." },
+    { title: "Payment Tracking", description: "Real-time monitoring of payment status and automated follow-ups." },
+    { title: "Financial Reporting", description: "Custom dashboards and reports for comprehensive financial visibility." },
+    { title: "System Reconciliation", description: "Automatic matching and synchronization across financial platforms." }
+  ]
+};
+
 // Данные о решениях по умолчанию
 const defaultSolutions: Solution[] = [
   {
@@ -136,7 +176,7 @@ const defaultSolutions: Solution[] = [
   }
 ];
 
-// Компонент горизонтальных табов
+// Компонент элегантных горизонтальных табов
 function SolutionNavigation({ 
   solutions, 
   activeIndex, 
@@ -147,60 +187,45 @@ function SolutionNavigation({
   onSolutionClick: (index: number) => void;
 }) {
   return (
-    <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 max-w-4xl mx-auto">
+    <div className="text-center mb-8">
+      <div className="inline-flex flex-wrap justify-center gap-6 sm:gap-8 relative">
         {solutions.map((solution, index) => (
           <motion.button
             key={solution.id}
             onClick={() => onSolutionClick(index)}
             className={`
-              px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg transition-all duration-300 relative group border
-              focus:outline-none focus:ring-0 text-xs sm:text-sm md:text-base
+              relative px-4 py-3 font-medium transition-all duration-300
+              focus:outline-none focus:ring-0 text-sm sm:text-base
               ${activeIndex === index 
-                ? 'text-white border-transparent' 
-                : 'text-gray-400 hover:text-white border-gray-600/30'
+                ? 'text-white' 
+                : 'text-gray-400 hover:text-white'
               }
             `}
+            style={{
+              background: activeIndex === index ? 
+                'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)' :
+                'transparent',
+              border: activeIndex === index ? 
+                '1px solid rgba(119, 71, 207, 0.4)' :
+                '1px solid transparent',
+              borderRadius: '12px',
+              backdropFilter: activeIndex === index ? 'blur(10px)' : 'none'
+            }}
             whileHover={{ 
               scale: 1.05,
               transition: {
                 type: "spring",
                 stiffness: 400,
-                damping: 10
+                damping: 15
               }
             }}
             whileTap={{ scale: 0.95 }}
           >
-            {/* Активное свечение */}
-            {activeIndex === index && (
-              <motion.div 
-                className="absolute inset-0 rounded-lg"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                  boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                }}
-                layoutId="activeSolutionTab"
-                animate={{
-                  boxShadow: [
-                    '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                    '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-                    '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                  ]
-                }}
-                transition={{
-                  duration: 0.3,
-                  boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                }}
-              />
-            )}
             
             <motion.span 
-              className={`
-                relative z-10 font-medium text-sm lg:text-base
-                ${activeIndex === index ? 'text-white' : ''}
-              `}
+              className="relative z-10 font-semibold whitespace-nowrap"
               style={activeIndex === index ? {
-                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(178,75,243,0.6)'
+                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 25px rgba(178,75,243,0.6)'
               } : {}}
             >
               {solution.label}
@@ -212,7 +237,7 @@ function SolutionNavigation({
   );
 }
 
-// Компонент для отдельного решения с улучшенными размерами
+// Компонент для отдельного решения в стиле Services page с оптимизированной высотой
 const SolutionContent = ({ 
   solution, 
   isActive = false,
@@ -226,6 +251,7 @@ const SolutionContent = ({
   isHovered: boolean;
   onHover: (hovered: boolean) => void;
 }) => {
+  const [isExploreButtonHovered, setIsExploreButtonHovered] = useState(false);
   const cardVariants = {
     enter: () => ({
       opacity: 0,
@@ -245,14 +271,17 @@ const SolutionContent = ({
   };
 
   const hoverAnimation = {
-    y: isHovered ? -3 : 0,
-    scale: isHovered ? 1.015 : 1,
+    y: isHovered ? -2 : 0,
+    scale: isHovered ? 1.01 : 1,
   };
+
+  // Получаем данные для текущего решения
+  const currentSolutions = serviceSolutions[solution.id as keyof typeof serviceSolutions] || [];
 
   return (
     <motion.div 
-      className="relative w-full z-10 max-w-6xl mx-auto" 
-      style={{ minHeight: '400px' }}
+      className="relative w-full z-10 max-w-7xl mx-auto" 
+      style={{ height: 'auto', maxHeight: '70vh' }}
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
@@ -272,10 +301,10 @@ const SolutionContent = ({
         }}
         className="absolute inset-0 rounded-2xl overflow-hidden -z-10"
         style={{
-          top: '8px',
-          left: '8px', 
-          right: '-8px',
-          bottom: '-8px',
+          top: '6px',
+          left: '6px', 
+          right: '-6px',
+          bottom: '-6px',
           background: `
             radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.15) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.2) 0%, transparent 50%),
@@ -286,8 +315,8 @@ const SolutionContent = ({
           backdropFilter: 'blur(30px)',
           WebkitBackdropFilter: 'blur(30px)',
           boxShadow: `
-            0 8px 32px rgba(119, 71, 207, 0.2),
-            0 0 64px rgba(178, 75, 243, 0.15),
+            0 6px 24px rgba(119, 71, 207, 0.2),
+            0 0 40px rgba(178, 75, 243, 0.15),
             inset 0 1px 0 rgba(255, 255, 255, 0.05)
           `,
         }}
@@ -297,37 +326,15 @@ const SolutionContent = ({
           className="absolute inset-0"
           animate={{ 
             background: [
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`,
-              `radial-gradient(circle at 80% 20%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 20% 80%, rgba(178, 75, 243, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.3) 0%, transparent 40%)`,
-              `radial-gradient(circle at 10% 30%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 90% 70%, rgba(178, 75, 243, 0.2) 0%, transparent 40%),
-               radial-gradient(circle at 40% 50%, rgba(139, 92, 246, 0.4) 0%, transparent 40%)`,
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.4) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.2) 0%, transparent 40%)`
-            ]
-          }}
-          transition={{ 
-            duration: 12, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "reverse"
-          }}
-        />
-        
-        {/* Дополнительное свечение по краям */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            boxShadow: [
-              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`,
-              `inset 0 0 60px rgba(178, 75, 243, 0.3), inset 0 0 100px rgba(119, 71, 207, 0.15), 0 0 80px rgba(178, 75, 243, 0.4)`,
-              `inset 0 0 50px rgba(139, 92, 246, 0.25), inset 0 0 90px rgba(178, 75, 243, 0.12), 0 0 70px rgba(119, 71, 207, 0.35)`,
-              `inset 0 0 40px rgba(119, 71, 207, 0.2), inset 0 0 80px rgba(178, 75, 243, 0.1), 0 0 60px rgba(139, 92, 246, 0.3)`
+              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.25) 0%, transparent 40%),
+               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.15) 0%, transparent 40%)`,
+              `radial-gradient(circle at 80% 20%, rgba(119, 71, 207, 0.25) 0%, transparent 40%),
+               radial-gradient(circle at 20% 80%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.25) 0%, transparent 40%)`,
+              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
+               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.25) 0%, transparent 40%),
+               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.15) 0%, transparent 40%)`
             ]
           }}
           transition={{ 
@@ -339,7 +346,7 @@ const SolutionContent = ({
         />
       </motion.div>
 
-      {/* Основная карточка - стеклянная */}
+      {/* Основная карточка с двухколоночным макетом */}
       <motion.div
         key={solution.id}
         custom={direction}
@@ -354,11 +361,10 @@ const SolutionContent = ({
           y: { duration: 0.5 }
         }}
         className={`
-          relative rounded-2xl p-6 sm:p-8 md:p-12 overflow-hidden group w-full
+          relative rounded-2xl p-10 sm:p-12 lg:p-16 overflow-hidden group w-full
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
         `}
         style={{
-          minHeight: '400px',
           width: '100%',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',
@@ -369,31 +375,31 @@ const SolutionContent = ({
         onMouseEnter={() => onHover(true)}
         onMouseLeave={() => onHover(false)}
       >
-        {/* Контент карточки - компактный */}
-        <div className="relative z-10 h-full flex flex-col justify-center md:justify-start">
-          {/* Заголовок и подзаголовок - адаптивные */}
-          <div className="mb-6 sm:mb-8 text-center">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight text-white mb-4 sm:mb-6"
-                style={{
-                  textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                }}>
-              {solution.label}
-            </h3>
-            <p className="text-white text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto opacity-90">
-              {solution.description}
-            </p>
-          </div>
-          
-          {/* Возможности - адаптивная сетка */}
-          <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-6 text-white text-left max-w-4xl mx-auto"
+        {/* Заголовок решения */}
+        <div className="text-center mb-6">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-white mb-3"
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+              }}>
+            {solution.label}
+          </h3>
+          <p className="text-white text-sm sm:text-base lg:text-lg leading-relaxed max-w-4xl mx-auto opacity-90">
+            {solution.description}
+          </p>
+        </div>
+
+        {/* Двухколоночный контент */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          {/* Левая колонка - Our Solutions */}
+          <div className="space-y-4">
+            <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-6"
                 style={{
                   textShadow: '0 0 15px rgba(255,255,255,0.6)'
                 }}>
-              Key Features:
+              Our Solutions
             </h4>
-            <div className="space-y-4 max-w-xl mx-auto w-full">
-              {solution.features.slice(0, 4).map((feature: string, index: number) => (
+            <div className="space-y-3">
+              {currentSolutions.slice(0, 3).map((sol: {title: string, description: string}, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -403,136 +409,151 @@ const SolutionContent = ({
                   }}
                   transition={{ 
                     duration: 0.5, 
-                    delay: isActive ? index * 0.12 + 0.3 : 0,
+                    delay: isActive ? index * 0.1 + 0.2 : 0,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="flex items-start"
+                  className="bg-white/5 rounded-lg p-2.5 backdrop-blur-sm border border-white/10"
                 >
-                  {/* Буллиты с аура-эффектом */}
+                  <h5 className="text-white font-semibold text-sm sm:text-base mb-1 flex items-center">
+                    <motion.div 
+                      className="w-2 h-2 rounded-full bg-secondary mr-2 flex-shrink-0"
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.7, 1, 0.7]
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.2 }}
+                    />
+                    {sol.title}
+                  </h5>
+                  <p className="text-gray-400 text-xs sm:text-sm leading-snug">
+                    {sol.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Правая колонка - Key Features */}
+          <div className="space-y-4">
+            <h4 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-6"
+                style={{
+                  textShadow: '0 0 15px rgba(255,255,255,0.6)'
+                }}>
+              Key Features
+            </h4>
+            <div className="space-y-3">
+              {solution.features.slice(0, 4).map((feature: string, index: number) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ 
+                    opacity: isActive ? 1 : 0,
+                    x: isActive ? 0 : 20
+                  }}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: isActive ? index * 0.1 + 0.3 : 0,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  className="flex items-start group cursor-pointer"
+                  whileHover={{ x: -4 }}
+                >
+                  {/* Галочки без кругов */}
                   <motion.div 
-                    className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-primary/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0"
-                    initial={{ scale: 0 }}
+                    className="mr-3 mt-0.5 flex-shrink-0"
+                    initial={{ scale: 0, rotate: -180 }}
                     animate={{ 
-                      scale: isActive ? 1 : 0
+                      scale: isActive ? 1 : 0,
+                      rotate: isActive ? 0 : -180
                     }}
                     transition={{ 
-                      scale: { duration: 0.4, delay: isActive ? index * 0.12 + 0.4 : 0, ease: "backOut" }
+                      duration: 0.6, 
+                      delay: isActive ? index * 0.1 + 0.4 : 0,
+                      type: "spring",
+                      stiffness: 200
                     }}
-                    style={{
-                      boxShadow: isActive ? '0 0 8px rgba(178,75,243,0.8), 0 0 16px rgba(178,75,243,0.5)' : 'none',
-                      background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
-                    }}
+                    whileHover={{ scale: 1.1 }}
                   >
                     <motion.div 
-                      className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary" 
-                      initial={{ scale: 0 }}
-                      animate={{ 
-                        scale: isActive ? [1, 1.5, 1] : 0
+                      className="text-secondary text-2xl font-bold"
+                      animate={{
+                        opacity: [0.7, 1, 0.7]
                       }}
-                      transition={{ 
-                        duration: isActive ? 2 : 0.3, 
-                        delay: isActive ? index * 0.12 + 0.5 : 0,
-                        ease: "easeInOut",
-                        repeat: isActive ? Infinity : 0
-                      }}
+                      transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
                       style={{
-                        boxShadow: isActive ? '0 0 8px rgba(178,75,243,1), 0 0 16px rgba(178,75,243,0.8)' : 'none'
+                        textShadow: '0 0 10px rgba(176, 255, 116, 0.6)',
+                        fontSize: '1.5rem'
                       }}
-                    />
+                    >
+                      ✓
+                    </motion.div>
                   </motion.div>
-                  <span className="text-white text-sm sm:text-base leading-relaxed text-left opacity-95">
+                  <span className="text-base sm:text-lg font-medium leading-relaxed transition-colors duration-300 text-white font-inter">
                     {feature}
                   </span>
                 </motion.div>
               ))}
             </div>
-          </div>
-          
-          {/* CTA кнопка - скрытая на десктопе до hover, видимая на мобилке */}
-          <div className="mt-6 flex justify-center md:absolute md:bottom-4 md:right-6">
+            
+            {/* View Cases Button под Key Features */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              className="mt-8 flex justify-center"
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
-                opacity: 1,
-                scale: 1
+                opacity: isActive ? 1 : 0,
+                scale: isActive ? 1 : 0.9
               }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="block md:hidden"
+              transition={{ duration: 0.3, delay: 0.7, ease: "easeOut" }}
             >
-              {solution.href && (
-                <Link href={solution.href}>
-                  <Button 
-                    variant="primary" 
-                    className="text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6 transition-all duration-300 relative overflow-hidden group"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: '0 4px 16px rgba(119, 71, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+              <Link href="/cases">
+                <div className={`flex items-center font-medium text-sm py-2 px-3 transition-all duration-300 hover:opacity-80 ${
+                  isExploreButtonHovered ? 'text-secondary' : 'text-gray-400'
+                }`}>
+                  <motion.div 
+                    className="w-2 h-2 rounded-full bg-secondary mr-2"
+                    animate={{
+                      scale: [1, 1.3, 1],
+                      opacity: [0.7, 1, 0.7]
                     }}
-                  >
-                    {/* Зеркальный эффект */}
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
-                    />
-                    <span className="flex items-center relative z-10"
-                          style={{
-                            textShadow: '0 0 10px rgba(255,255,255,0.5)'
-                          }}>
-                      Learn More
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </span>
-                  </Button>
-                </Link>
-              )}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  <span>View Cases</span>
+                </div>
+              </Link>
             </motion.div>
             
-            {/* Скрытая кнопка для десктопа */}
+            {/* Explore Solution Button под View Cases */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              className="mt-4"
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ 
-                opacity: isHovered ? 1 : 0,
-                scale: isHovered ? 1 : 0.8
+                opacity: isActive ? 1 : 0,
+                scale: isActive ? 1 : 0.9
               }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="hidden md:block"
+              transition={{ duration: 0.3, delay: 0.8, ease: "easeOut" }}
             >
               {solution.href && (
                 <Link href={solution.href}>
                   <Button 
                     variant="primary" 
-                    className="text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6 transition-all duration-300 relative overflow-hidden group"
+                    className="text-sm py-2.5 px-5 transition-all duration-300 relative overflow-hidden group w-full"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                      background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)',
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
                       boxShadow: '0 4px 16px rgba(119, 71, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                     }}
+                    onMouseEnter={() => setIsExploreButtonHovered(true)}
+                    onMouseLeave={() => setIsExploreButtonHovered(false)}
                   >
-                    {/* Зеркальный эффект */}
                     <div 
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
                     />
-                    <span className="flex items-center relative z-10"
+                    <span className="flex items-center justify-center relative z-10"
                           style={{
                             textShadow: '0 0 10px rgba(255,255,255,0.5)'
                           }}>
-                      Learn More
+                      Explore Solution
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
@@ -554,6 +575,7 @@ const SolutionContent = ({
             </motion.div>
           </div>
         </div>
+
       </motion.div>
     </motion.div>
   );
@@ -641,7 +663,7 @@ export function SolutionsSection({
   return (
     <section 
       ref={sectionRef}
-      className={cn("section-solutions relative overflow-hidden pt-24 pb-32", className)}
+      className={cn("section-solutions relative overflow-hidden py-16 sm:py-20", className)}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
@@ -657,7 +679,7 @@ export function SolutionsSection({
             variants={titleVariants}
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10 md:mb-12">{title}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-light-gray max-w-4xl mx-auto whitespace-pre-line">
+            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
           </motion.div>
