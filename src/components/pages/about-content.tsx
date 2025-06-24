@@ -179,7 +179,6 @@ function HeroSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -200,8 +199,7 @@ function HeroSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
         <motion.div 
           className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
@@ -215,8 +213,7 @@ function HeroSection() {
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -295,7 +292,6 @@ function MissionVisionSection() {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: index * 0.2
       }
     })
@@ -360,7 +356,7 @@ function MissionVisionSection() {
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
                   animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 4, repeat: Infinity }}
                 />
                 
                 <div className="relative z-10">
@@ -375,7 +371,7 @@ function MissionVisionSection() {
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
                   animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 2 }}
                 />
                 
                 <div className="relative z-10">
@@ -482,7 +478,6 @@ function ValuesSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -503,8 +498,7 @@ function ValuesSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
         <motion.div 
           className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full blur-3xl opacity-20"
@@ -518,8 +512,7 @@ function ValuesSection() {
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -558,7 +551,7 @@ function ValuesSection() {
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-3xl"
                 animate={{ opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Infinity }}
               />
 
               <div className="relative z-10">
@@ -612,7 +605,7 @@ function ValuesSection() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            transition={{ duration: 0.5 }}
                           >
                             <div className="px-4 pb-4">
                               <p className="text-white leading-relaxed pt-4" dangerouslySetInnerHTML={{
@@ -782,7 +775,6 @@ function TeamSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut"
       }
     }
   };
@@ -794,7 +786,6 @@ function TeamSection() {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
         delay: index * 0.05
       }
     })
@@ -865,7 +856,7 @@ function TeamSection() {
                           }}
                           transition={{
                             opacity: { duration: 0.3 },
-                            boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                            boxShadow: { duration: 4, repeat: Infinity }
                           }}
                         />
                       )}
@@ -949,8 +940,7 @@ function TeamSection() {
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ 
                           duration: 0.6, 
-                          ease: [0.25, 0.1, 0.25, 1]
-                        }}
+                                          }}
                         className="w-full"
                       >
                         <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-3xl overflow-hidden border border-white/10 hover:border-secondary/40 transition-all duration-500 shadow-xl shadow-black/20">
@@ -1003,7 +993,7 @@ function TeamSection() {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    transition={{ duration: 0.5 }}
                                     className="mb-6"
                                   >
                                     <div className="border-t border-white/20 pt-6">
@@ -1094,7 +1084,6 @@ function AchievementsSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1106,7 +1095,6 @@ function AchievementsSection() {
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.2 + index * 0.1
       }
     })
@@ -1264,7 +1252,6 @@ function MethodologySection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1335,8 +1322,7 @@ function MethodologySection() {
                         transition={{
                           duration: 3,
                           repeat: activeStep === index ? Infinity : 0,
-                          ease: "easeInOut"
-                        }}
+                                          }}
                       >
                         {step.number}
                       </motion.div>
@@ -1368,7 +1354,7 @@ function MethodologySection() {
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
                     animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{ duration: 4, repeat: Infinity }}
                   />
 
                   <div className="relative z-10">
@@ -1671,7 +1657,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
         background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)'
       }}
       layout
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.3 }}
     >
       {/* Dock background glow */}
       <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent rounded-3xl"></div>
@@ -1692,7 +1678,6 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
               repeat: Infinity,
               repeatType: "loop",
               duration: workingTechnologies.length * 2,
-              ease: "linear",
             },
           }}
         >
@@ -1870,7 +1855,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1882,7 +1866,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.2
       }
     }
@@ -1895,7 +1878,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.4
       }
     }
@@ -2086,8 +2068,7 @@ function InteractiveApproachSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -2121,7 +2102,7 @@ function InteractiveApproachSection() {
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+                transition={{ duration: 0.6 }}
                 className="grid grid-cols-1 lg:grid-cols-2 gap-12 h-[500px]"
               >
                 {/* Challenge Side */}
@@ -2130,7 +2111,7 @@ function InteractiveApproachSection() {
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{ duration: 4, repeat: Infinity }}
                     />
                     
                     <div className="relative z-10">
@@ -2171,7 +2152,7 @@ function InteractiveApproachSection() {
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                      transition={{ duration: 4, repeat: Infinity, delay: 2 }}
                     />
                     
                     <div className="relative z-10">
@@ -2275,7 +2256,6 @@ function CTASection() {
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
@@ -2288,7 +2268,6 @@ function CTASection() {
       transition: { 
         duration: 0.7,
         delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { LoadingButton } from '@/components/ui/loading-button';
-import { Button } from '@/components/ui/button';
 import CalendlyWidget from '@/components/ui/calendly-widget';
 import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
@@ -173,7 +172,7 @@ function ContactFAQSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: [0.25, 0.1, 0.25, 1]
+        ease: "easeOut" as const
       }
     }
   };
@@ -185,7 +184,7 @@ function ContactFAQSection() {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: "easeOut" as const,
         delay: index * 0.05
       }
     })
@@ -570,11 +569,6 @@ export default function ContactsContent() {
               <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
                 Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center button-gap-large">
-                <Button variant="secondary" size="lg" href="#contact-form">
-                  Start Consultation
-                </Button>
-              </div>
             </div>
           </div>
         </div>
