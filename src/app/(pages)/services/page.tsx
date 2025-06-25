@@ -783,7 +783,7 @@ export default function ServicesPage() {
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastClickTimeRef = useRef(0);
   
-  const { isMobile, isDesktop } = useDeviceDetection();
+  const { isMobile } = useDeviceDetection();
   
   // Улучшенный обработчик прокрутки (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {

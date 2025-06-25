@@ -128,7 +128,7 @@ export default function FeaturedCasesSection({
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
-                <div key={index} className="min-h-[450px]">
+                <div key={index}>
                   <CaseCard 
                     id={cardData.id}
                     title={cardData.title}
@@ -257,7 +257,7 @@ export default function FeaturedCasesSection({
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
                 variants={cardVariants}
-                className="min-h-[450px]"
+                className=""
               >
                 <CaseCard 
                   id={cardData.id}
