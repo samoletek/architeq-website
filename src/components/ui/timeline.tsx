@@ -57,7 +57,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       className="w-full bg-dark-gray font-sans md:px-10"
       ref={containerRef}
     >
-      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
+      <div className="max-w-7xl mx-auto py-12 px-4 md:px-8 lg:px-10">
         <div className="text-center section-content-spacing">
           <h2 className="section-title-medium font-bold section-title-spacing"
               style={{
@@ -69,14 +69,13 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             A sharp, proven framework — designed to deliver fast and integrate deep into your ops.
           </p>
         </div>
-      </div>
 
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
+        <div ref={ref} className="relative pb-20">
         <TimelineContext.Provider value={{ activeStep, isMobile }}>
           {data.map((item, index) => (
             <div
               key={index}
-              className={`flex justify-start ${isMobile ? 'pt-6 gap-4' : 'pt-10 md:pt-40 md:gap-10'}`}
+              className={`flex justify-start ${isMobile ? 'pt-6 gap-4' : index === 0 ? 'pt-4 md:pt-8 md:gap-10' : 'pt-10 md:pt-40 md:gap-10'}`}
             >
             <div className={`sticky flex flex-col md:flex-row z-40 items-center ${isMobile ? 'top-20' : 'top-40'} self-start max-w-xs lg:max-w-sm md:w-full`}>
               <div className={`${isMobile ? 'h-8 w-8' : 'h-10 w-10'} absolute ${isMobile ? 'left-2' : 'left-3 md:left-3'} rounded-full bg-dark-gray border border-primary/30 flex items-center justify-center`}>
@@ -130,6 +129,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             }}
             className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-primary via-secondary to-transparent from-[0%] via-[10%] rounded-full"
           />
+        </div>
         </div>
       </div>
     </div>
