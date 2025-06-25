@@ -141,7 +141,7 @@ export default function FeaturedCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
-                    className="case-card-enhanced h-full"
+                    className="case-card-enhanced"
                     index={index}
                     isVisible={isVisible}
                   />
@@ -271,7 +271,7 @@ export default function FeaturedCasesSection({
                   tags={cardData.tags}
                   href={`/cases/${cardData.id}`}
                   isCompact={caseCardVariant === 'compact'}
-                  className="case-card-enhanced h-full"
+                  className="case-card-enhanced"
                 />
               </motion.div>
             );

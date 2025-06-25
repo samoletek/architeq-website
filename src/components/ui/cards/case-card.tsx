@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface CaseCardProps {
   id?: string;
@@ -37,8 +38,6 @@ function SimpleMobileCard({
   results,
   tags,
   href,
-  className,
-  isCompact,
   onClick
 }: CaseCardProps) {
   // Простое сохранение в историю без useEffect
@@ -57,14 +56,10 @@ function SimpleMobileCard({
   };
 
   const cardContent = (
-    <div className={cn(
-      "bg-dark-gray rounded-xl border border-gray-600/50 p-3 transition-colors duration-200 hover:border-secondary/30",
-      "flex flex-col",
-      className
-    )}>
+    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 flex flex-col transition-colors duration-200 hover:border-secondary/30">
       {/* Теги */}
       {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-2">
+        <div className="flex flex-wrap gap-1.5 mb-3">
           {tags.map((tag, index) => (
             <span
               key={index}
@@ -77,20 +72,20 @@ function SimpleMobileCard({
       )}
       
       {/* Заголовок */}
-      <h3 className="text-lg font-semibold text-white leading-tight mb-2">
+      <h3 className="text-base font-semibold text-white leading-tight mb-3">
         {title}
       </h3>
       
       {/* Описание */}
-      {description && !isCompact && (
-        <p className="text-xs text-light-gray leading-relaxed mb-2 line-clamp-2">
+      {description && (
+        <p className="text-[10px] text-light-gray leading-relaxed mb-3 line-clamp-2">
           {description}
         </p>
       )}
       
       {/* Результаты */}
-      {results && results.length > 0 && !isCompact && (
-        <div className="mb-3">
+      {results && results.length > 0 && (
+        <div className="mb-4">
           <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
           <ul className="space-y-0.5">
             {results.slice(0, 3).map((result, index) => (
@@ -109,7 +104,7 @@ function SimpleMobileCard({
       )}
       
       {/* Footer */}
-      <div className="border-t border-gray-600/40 mt-auto pt-2">
+      <div className="border-t border-gray-600 mt-auto pt-3 mb-1">
         <p className="text-[10px] text-white flex items-center mb-1">
           <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
           <span className="font-medium truncate">{company}</span>
@@ -344,18 +339,7 @@ function EnhancedDesktopCard({
 
 // Основной компонент с автоматическим выбором версии
 export function CaseCard(props: CaseCardProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const { isMobile } = useDeviceDetection();
 
   // На мобильных всегда используем простую версию
   if (isMobile) {
