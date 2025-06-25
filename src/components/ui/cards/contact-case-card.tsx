@@ -17,7 +17,7 @@ function SimpleMobileContactCard({ className }: ContactCaseCardProps) {
   return (
     <div className={cn("relative", className)}>
       <Link href="/contacts" className="block h-full">
-        <div className="bg-dark-gray rounded-xl border border-gray-600/50 p-3 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-primary/30">
+        <div className="bg-dark-gray rounded-xl border border-gray-600/50 p-3 case-card-enhanced contact-case-card flex flex-col transition-colors duration-200">
           
           {/* Теги */}
           <div className="mb-2">
@@ -96,11 +96,10 @@ function EnhancedDesktopContactCard({
 
   // Анимационные варианты
   const cardVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],
@@ -115,22 +114,23 @@ function EnhancedDesktopContactCard({
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
       className={cn('relative transition-all duration-300 h-full', className)}
+      style={{ zIndex: isHovered ? 999 : 'auto' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href="/contacts" className="block h-full">
-        <div className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card min-h-[360px]">
+        <div className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card case-card-enhanced overflow-hidden border transition-all duration-300">
           
           {/* Теги */}
           <div className="relative z-10 pt-4 px-5 pb-3">
             <div className="flex flex-wrap gap-1.5">
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Custom
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Consultation
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Your Industry
               </span>
             </div>

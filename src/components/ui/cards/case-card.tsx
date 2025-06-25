@@ -225,7 +225,7 @@ function EnhancedDesktopCard({
       variants={cardVariants}
       className={cn(
         'bg-dark-gray rounded-xl overflow-hidden border transition-all duration-300 flex flex-col relative',
-        'case-card-enhanced min-h-[400px]',
+        'case-card-enhanced',
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -239,14 +239,14 @@ function EnhancedDesktopCard({
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: isHovered ? 0.6 : 0.3, 
-              height: isHovered ? '280px' : '220px' 
+              height: isHovered ? 'clamp(260px, 18vh, 320px)' : 'clamp(200px, 14vh, 260px)' 
             }}
             transition={{ duration: 0.4 }}
             style={{
               position: 'absolute',
               bottom: 0,
               left: `${spot.left}%`,
-              width: '220px',
+              width: 'clamp(180px, 12vh, 240px)',
               transform: 'translate(-50%, 50%)',
               borderRadius: '9999px',
               filter: 'blur(80px)',

@@ -252,7 +252,7 @@ const SolutionContent = ({
   return (
     <motion.div 
       className="relative w-full z-10 max-w-6xl mx-auto" 
-      style={{ height: '380px' }}
+      style={{ minHeight: 'clamp(420px, 28vh, 520px)' }}
       animate={hoverAnimation}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
@@ -358,7 +358,7 @@ const SolutionContent = ({
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
         `}
         style={{
-          height: '380px',
+          minHeight: 'clamp(420px, 28vh, 520px)',
           width: '100%',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',

@@ -37,7 +37,7 @@ export function AutomationFlowTimeline() {
           <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
             Align on Scope. Kick Things Off
           </h3>
-          <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
+          <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
             We start by signing an NDA and holding a kickoff meeting to clarify your objectives and expectations. 
             This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning.
           </p>
@@ -70,7 +70,7 @@ export function AutomationFlowTimeline() {
           <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
             Understand Your Reality
           </h3>
-          <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
+          <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
             We dive deep into understanding your business operations through stakeholder interviews and process discovery. 
             We observe your current workflows, uncover inefficiencies, and identify where automation can add the most value.
           </p>
@@ -121,7 +121,7 @@ export function AutomationFlowTimeline() {
           <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
             Map the Process. Spot the Gaps
           </h3>
-          <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
+          <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
             We document your existing business processes in detail, mapping every step, role, and decision point. 
             This step helps us highlight pain points, overlaps, and areas where automation can be implemented effectively.
           </p>
@@ -186,7 +186,7 @@ export function AutomationFlowTimeline() {
           <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
             Design the Future Flow
           </h3>
-          <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
+          <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
             Based on our analysis, we design a custom solution that will optimize your processes. We define what your future workflows should look like and ensure that the solution is tailored to meet your specific needs, with an emphasis on improving efficiency and reducing complexity.
           </p>
           <div className="space-y-6 mb-6">
@@ -248,7 +248,7 @@ export function AutomationFlowTimeline() {
           <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
             Implementation & Deployment
           </h3>
-          <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
+          <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
             We deploy the solution with minimal disruption to your operations, providing comprehensive testing, 
             data migration, system integration, and team training to ensure a smooth transition.
           </p>

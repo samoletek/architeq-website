@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
 import { AutomationFlowTimeline } from '@/components/sections/automation-flow-timeline';
-import ParallaxAuraBackground from '@/components/ui/effects/parallax-aura-background';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 // Типы для данных о услугах
@@ -784,7 +783,7 @@ export default function ServicesPage() {
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastClickTimeRef = useRef(0);
   
-  const { isMobile, isDesktop } = useDeviceDetection();
+  const { isMobile } = useDeviceDetection();
   
   // Улучшенный обработчик прокрутки (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {
@@ -929,14 +928,6 @@ export default function ServicesPage() {
   
   return (
     <SiteLayout>
-      {/* Parallax Aura Background - только для десктопа */}
-      {isDesktop && (
-        <ParallaxAuraBackground 
-          scrollProgress={scrollProgress}
-          activeIndex={activeIndex}
-          className="opacity-80"
-        />
-      )}
 
       {/* Hero section */}
       <section className="section-hero bg-transparent relative z-10">
@@ -998,8 +989,8 @@ export default function ServicesPage() {
           ref={sectionRef}
           className="relative bg-transparent"
           style={{ 
-            height: `${150 + services.length * 130}vh`,
-            minHeight: '900vh'
+            height: `${120 + services.length * 104}vh`,
+            minHeight: '720vh'
           }}
         >
           {/* Заголовки */}
