@@ -44,6 +44,23 @@ export function GCSVideo({
       document.body.style.overflow = 'unset';
     };
   }, [isModalOpen]);
+
+  // Обработчик нажатия клавиши Escape для закрытия модального окна
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isModalOpen]);
   
   // Защита от скачивания (правый клик и перетаскивание)
   useEffect(() => {

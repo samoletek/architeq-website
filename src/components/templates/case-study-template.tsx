@@ -385,18 +385,13 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
 }
 
 function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
-  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <section className="py-12 bg-transparent" id="video-section">
       <div className="container mx-auto px-4">
         {/* Video player - centered and full screen presence */}
         <div className="max-w-6xl mx-auto">
-          <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="cursor-pointer"
-          >
+          <div className="cursor-pointer">
             <div 
               className="rounded-lg shadow-[0_0_8px_rgba(178,75,243,0.3)]"
               style={{
