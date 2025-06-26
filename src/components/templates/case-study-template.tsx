@@ -411,7 +411,6 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 loop={true}
                 muted={true}
                 controls={false}
-                isHovered={isHovered}
                 placeholder={
                   <div className="h-full flex items-center justify-center bg-gradient-to-b from-dark-gray to-medium-gray">
                     <div className="text-center p-4">
