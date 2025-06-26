@@ -34,41 +34,34 @@ export interface TestimonialsSectionProps {
   maxWidth?: string;
 }
 
-// Функция для выделения ключевых слов в тексте
+// Функция для выделения ключевых слов в тексте как в case-study-template
 const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
-  if (!phrases.length) return <>{text}</>;
+  // Ключевые слова для автоматического выделения (как в case-study-template)
+  const keyWords = [
+    'automation', 'efficiency', 'streamlined', 'optimized', 'improved', 
+    'reduced', 'increased', 'enhanced', 'transformation', 'innovative',
+    'solution', 'process', 'workflow', 'integration', 'performance',
+    'quality', 'productivity', 'revenue', 'cost', 'time', 'faster',
+    'savings', 'breakthrough', 'remarkable', 'exceptional', 'outstanding',
+    'automated', 'seamlessly', 'eliminated', 'transformed', 'sped up',
+    'game changer', 'inquiries', 'responses', 'customers', 'workflow'
+  ];
   
-  let lastIndex = 0;
-  const parts: React.ReactNode[] = [];
+  // Объединяем пользовательские фразы с ключевыми словами
+  const allPhrases = [...new Set([...phrases, ...keyWords])];
   
-  phrases.forEach((phrase, i) => {
-    const lowerText = text.toLowerCase();
-    const lowerPhrase = phrase.toLowerCase();
-    const index = lowerText.indexOf(lowerPhrase, lastIndex);
-    
-    if (index !== -1) {
-      // Добавляем текст до фразы
-      if (index > lastIndex) {
-        parts.push(<span key={`text-${i}-1`}>{text.substring(lastIndex, index)}</span>);
-      }
-      
-      // Добавляем выделенную фразу
-      parts.push(
-        <span key={`highlight-${i}`} className="text-secondary font-semibold">
-          {text.substring(index, index + phrase.length)}
-        </span>
-      );
-      
-      lastIndex = index + phrase.length;
-    }
+  if (!allPhrases.length) return <>{text}</>;
+  
+  let highlightedText = text;
+  
+  allPhrases.forEach(phrase => {
+    const regex = new RegExp(`\\b(${phrase})\\b`, 'gi');
+    highlightedText = highlightedText.replace(regex, 
+      `<span class="text-[#B0FF74] font-semibold relative inline-block" style="text-shadow: 0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.4); background: linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%); border-radius: 4px; padding: 1px 3px;">$1</span>`
+    );
   });
   
-  // Добавляем оставшийся текст
-  if (lastIndex < text.length) {
-    parts.push(<span key="text-last">{text.substring(lastIndex)}</span>);
-  }
-  
-  return <>{parts}</>;
+  return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
 };
 
 // Данные для отзывов по умолчанию
@@ -350,10 +343,10 @@ export default function TestimonialsSection({
     );
   }
   
-  // Вариант по умолчанию с каруселью - полностью обновленная структура
+  // Вариант по умолчанию с каруселью - в стиле case-study-template
   return (
     <section 
-      className={cn("pt-96 pb-60 bg-dark-gray", className)}
+      className={cn("py-24 bg-[#0A0A0A] relative overflow-hidden", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -361,8 +354,26 @@ export default function TestimonialsSection({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="container mx-auto px-4">
-        <SectionAnimation className="text-center mb-36">
+      {/* Background Pattern */}
+      <div className="absolute inset-0">
+        <motion.div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-5"
+          animate={{
+            background: [
+              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
+              "radial-gradient(ellipse, rgba(176, 255, 116, 0.6) 0%, transparent 70%)",
+              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)"
+            ]
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <SectionAnimation className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
           {subtitle && (
             <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
@@ -371,48 +382,66 @@ export default function TestimonialsSection({
           )}
         </SectionAnimation>
 
-        {/* Полностью переработанная структура карусели */}
+        {/* Carousel в стиле case-study-template */}
         <div className={cn("relative mx-auto", maxWidthClass)}>
-          {/* Обновленная карусель отзывов */}
           <div className="relative flex flex-col items-center">
-            {/* Блок с отзывом - фиксированная высота */}
-            <div className="w-full mb-16 text-center">
-              <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.8 }}
+                className="max-w-4xl mx-auto text-center mb-12"
+              >
+                {/* Quote Icon */}
                 <motion.div
-                  key={activeIndex}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="w-16 h-16 rounded-full bg-[#B0FF74]/10 flex items-center justify-center mx-auto mb-8"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8 text-[#B0FF74]"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
+                  </svg>
+                </motion.div>
+
+                {/* Quote */}
+                <motion.blockquote
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="w-full"
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  className="text-lg md:text-xl font-light text-white/90 italic leading-relaxed mb-8"
                 >
-                  <p className="text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed max-w-4xl mx-auto">
-                    {testimonials[activeIndex].highlightedPhrases 
-                      ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
-                      : testimonials[activeIndex].quote}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            
-            {/* Отдельный блок для информации об авторе */}
-            <div className="mb-10">
-              <div className="flex items-center justify-center">
-                <div className="flex-shrink-0 mr-4 flex items-center">
-                  <svg className="w-12 h-12 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <p className="font-medium text-lg md:text-xl text-white">
+                  <span>&ldquo;</span>
+                  {testimonials[activeIndex].highlightedPhrases 
+                    ? highlightKeyPhrases(testimonials[activeIndex].quote, testimonials[activeIndex].highlightedPhrases) 
+                    : testimonials[activeIndex].quote}
+                  <span>&rdquo;</span>
+                </motion.blockquote>
+
+                {/* Author */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="flex flex-col items-center"
+                >
+                  <div className="w-1 h-12 bg-[#B0FF74] rounded-full mb-4"></div>
+                  <h4 className="text-xl font-bold text-[#B0FF74] mb-2">
                     {testimonials[activeIndex].author}
-                  </p>
-                  <p className="text-light-gray text-base md:text-lg">
+                  </h4>
+                  <p className="text-white/60">
                     {testimonials[activeIndex].title}
                   </p>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
             
             {/* Навигационные точки */}
             {testimonials.length > 1 && (
@@ -422,10 +451,10 @@ export default function TestimonialsSection({
                     key={index}
                     onClick={() => handleDotClick(index)}
                     className={cn(
-                      "w-6 h-6 rounded-full transition-all duration-300",
+                      "w-3 h-3 rounded-full transition-all duration-300",
                       index === activeIndex 
-                        ? "bg-secondary" 
-                        : "bg-medium-gray hover:bg-light-gray"
+                        ? "bg-[#B0FF74] shadow-[0_0_15px_rgba(176,255,116,0.8)]" 
+                        : "bg-white/20 hover:bg-white/40"
                     )}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
@@ -439,12 +468,12 @@ export default function TestimonialsSection({
             <>
               <button
                 onClick={prevTestimonial}
-                className="absolute top-1/2 -left-28 transform -translate-y-1/2 text-secondary focus:outline-none arrow-nav-button" 
+                className="absolute top-1/2 -left-20 transform -translate-y-1/2 text-[#B0FF74]/60 hover:text-[#B0FF74] focus:outline-none transition-colors duration-300" 
                 aria-label="Previous testimonial"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-10 w-10" 
+                  className="h-8 w-8" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -455,12 +484,12 @@ export default function TestimonialsSection({
               </button>
               <button
                 onClick={nextTestimonial}
-                className="absolute top-1/2 -right-28 transform -translate-y-1/2 text-secondary focus:outline-none arrow-nav-button" 
+                className="absolute top-1/2 -right-20 transform -translate-y-1/2 text-[#B0FF74]/60 hover:text-[#B0FF74] focus:outline-none transition-colors duration-300" 
                 aria-label="Next testimonial"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-10 w-10" 
+                  className="h-8 w-8" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
