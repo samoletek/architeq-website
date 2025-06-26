@@ -26,7 +26,7 @@ export function generateBreadcrumbs(path: string): BreadcrumbItem[] {
     currentPath += `/${part}`;
     
     // Преобразуем slug в читаемый заголовок
-    const name = formatBreadcrumbName(part, pathParts, index);
+    const name = formatBreadcrumbName(part);
     
     breadcrumbs.push({
       name,
@@ -40,7 +40,7 @@ export function generateBreadcrumbs(path: string): BreadcrumbItem[] {
 /**
  * Форматирует имя breadcrumb элемента
  */
-function formatBreadcrumbName(slug: string, pathParts: string[], index: number): string {
+function formatBreadcrumbName(slug: string): string {
   // Специальные случаи для известных путей
   const specialCases: Record<string, string> = {
     'services': 'Services',
