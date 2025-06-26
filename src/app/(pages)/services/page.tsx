@@ -8,6 +8,7 @@ import SiteLayout from '@/components/layout/site-layout';
 import { AutomationFlowTimeline } from '@/components/sections/automation-flow-timeline';
 import { SolutionContent } from '@/components/sections/solutions-section';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { IconName } from '@/components/ui/icons/icon';
 
 // Типы для данных о услугах
 interface Service {
@@ -739,7 +740,7 @@ export default function ServicesPage() {
                           solution={{
                             id: services[activeIndex].id,
                             label: services[activeIndex].title,
-                            icon: services[activeIndex].icon as any,
+                            icon: services[activeIndex].icon as IconName,
                             description: services[activeIndex].description,
                             features: services[activeIndex].features,
                             href: services[activeIndex].href
