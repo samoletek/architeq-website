@@ -10,6 +10,8 @@ import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { cn } from '@/lib/utils/utils';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { BreadcrumbSchema } from '@/lib/seo/schema';
+import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
 
 // Типы для описания секций страницы услуги
 export interface ServiceBenefit {
@@ -210,8 +212,15 @@ export default function ServiceTemplate({
     }
   };
 
+  // Генерируем breadcrumbs для текущей страницы услуги
+  const breadcrumbs = generateServiceBreadcrumbs(serviceId);
+
   return (
-    <SiteLayout>
+    <>
+      {/* BreadcrumbSchema для SEO */}
+      <BreadcrumbSchema items={breadcrumbs} />
+      
+      <SiteLayout>
       {/* Hero section */}
       <section className="section-hero bg-transparent relative overflow-hidden">
         <div className="container mx-auto px-4">
@@ -316,6 +325,7 @@ export default function ServiceTemplate({
       {/* CTA section */}
       <CTASection />
     </SiteLayout>
+    </>
   );
 }
 

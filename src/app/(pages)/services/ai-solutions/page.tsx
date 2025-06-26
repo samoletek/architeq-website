@@ -1,10 +1,11 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { ProfessionalServiceSchema, FAQPageSchema } from '@/lib/seo/schema';
 
 export const metadata = generateServiceMetadata({
   title: 'AI-Powered Solutions',
-  description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice bots, natural language processing, and predictive analytics.',
-  keywords: ['AI solutions', 'artificial intelligence', 'voice bots', 'predictive analytics', 'natural language processing', 'machine learning', 'AI automation'],
+  description: 'Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice agents, natural language processing, and predictive analytics.',
+  keywords: ['AI solutions', 'artificial intelligence', 'AI agents', 'voice agents', 'predictive analytics', 'natural language processing', 'machine learning', 'AI automation'],
   path: '/services/ai-solutions'
 });
 
@@ -36,8 +37,8 @@ export default function AISolutionsPage() {
   // Данные для решений
   const aiSolutions = [
     {
-      title: "AI Voice Bots",
-      description: "Interactive voice assistants that can handle customer inquiries, book appointments, and collect information without human intervention.",
+      title: "AI Voice Agents",
+      description: "Intelligent voice agents that can handle customer inquiries, book appointments, and collect information without human intervention.",
       benefits: [
         "24/7 automated call handling",
         "Reduction in staff workload",
@@ -45,11 +46,11 @@ export default function AISolutionsPage() {
         "Scalable to handle volume fluctuations"
       ],
       icon: "voice",
-      caseId: "ai-voice-bot"
+      caseId: "ai-voice-agent"
     },
     {
-      title: "CRM AI Assistants",
-      description: "Natural language search interfaces that help employees quickly find and summarize information across your CRM and connected systems.",
+      title: "CRM AI Agents",
+      description: "Intelligent agents that help employees quickly find and summarize information across your CRM and connected systems using natural language.",
       benefits: [
         "Faster information retrieval",
         "Reduced training time for new employees",
@@ -57,7 +58,7 @@ export default function AISolutionsPage() {
         "More effective client interactions"
       ],
       icon: "search",
-      caseId: "ai-crm-assistant"
+      caseId: "ai-crm-agent"
     },
     {
       title: "Communication Analysis",
@@ -111,10 +112,10 @@ export default function AISolutionsPage() {
   // Данные для кейсов
   const caseStudies = [
     {
-      id: "ai-voice-bot",
-      title: "AI-Voice Bot for Client Request Processing",
+      id: "ai-voice-agent",
+      title: "AI Voice Agent for Client Request Processing",
       company: "Up-Struct LLC",
-      description: "Multi-level interactive voice assistant for processing client requests without operator participation.",
+      description: "Multi-level intelligent voice agent for processing client requests without operator participation.",
       results: [
         "Automation of 60-70% of incoming requests",
         "Reduction of waiting time to minimum",
@@ -122,10 +123,10 @@ export default function AISolutionsPage() {
       ]
     },
     {
-      id: "ai-crm-assistant",
-      title: "AI Assistant for CRM Information Search",
+      id: "ai-crm-agent",
+      title: "AI Agent for CRM Information Search",
       company: "SUQEAK E CLEAN STUDIOS",
-      description: "Integration of AI assistant into CRM interface for natural language data search and summarization.",
+      description: "Integration of AI agent into CRM interface for natural language data search and summarization.",
       results: [
         "90% reduction in information search time",
         "Fast adaptation of new employees",
@@ -168,7 +169,29 @@ export default function AISolutionsPage() {
 
 
   return (
-    <ServiceTemplate
+    <>
+      {/* Enhanced Schema для AI-решений */}
+      <ProfessionalServiceSchema 
+        name="AI-Powered Solutions"
+        description="Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights. Use AI voice agents, natural language processing, and predictive analytics."
+        url="https://architeq.io/services/ai-solutions"
+        serviceOutput="Automated business processes, AI agents, data analysis systems"
+        serviceArea={["United States", "Canada", "United Kingdom"]}
+        provider="Architeq"
+        hoursAvailable={{
+          opens: "09:00",
+          closes: "17:00", 
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        }}
+      />
+      
+      {/* FAQ Schema для лучшей видимости в AI поиске */}
+      <FAQPageSchema 
+        url="https://architeq.io/services/ai-solutions"
+        mainEntity={faqs}
+      />
+      
+      <ServiceTemplate
       serviceId="ai-solutions"
       serviceTitle="AI-Powered Solutions"
       serviceDescription="Leverage artificial intelligence to automate complex tasks, analyze data, and provide intelligent insights that drive business growth."
@@ -204,5 +227,6 @@ export default function AISolutionsPage() {
       caseStudies={caseStudies}
       faqs={faqs}
     />
+    </>
   );
 }

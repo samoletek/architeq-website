@@ -651,7 +651,7 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'Client Testimonial',
       position: 'Coming Soon'
     },
-    relatedCases: ['ai-crm-assistant', 'financial-calculations', 'monday-integration'],
+    relatedCases: ['ai-crm-agent', 'financial-calculations', 'monday-integration'],
     featured: false,
     image: '/images/cases/music-label-solution.jpg'
   },
@@ -669,7 +669,7 @@ export const allCaseStudies: CaseStudy[] = [
     problem: 'Roofing companies face difficulties in project management, cost estimation, resource planning, and client communication, leading to delays and budget overruns.',
     solution: [
       'Automated system for collecting applications and qualifying clients',
-      'Development of AI-voice bot for receiving client applications and booking roof inspections',
+      'Development of AI voice agent for receiving client applications and booking roof inspections',
       'Cost calculator based on roof parameters and materials',
       'Planning and optimization of Salespersons time',
       'Automatic client notifications about work progress',
@@ -689,28 +689,28 @@ export const allCaseStudies: CaseStudy[] = [
       'Improved customer experience and increased positive reviews'
     ],
     testimonial: {
-      quote: 'The AI components in our roofing business solution have been a game-changer. The voice bot handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We have increased our capacity without adding administrative staff.',
+      quote: 'The AI components in our roofing business solution have been a game-changer. The voice agent handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We have increased our capacity without adding administrative staff.',
       author: 'Alex A.',
       position: 'CEO at Up-Struct LLC'
     },
-    relatedCases: ['ai-voice-bot', 'notification-system', 'telephony-integration'],
+    relatedCases: ['ai-voice-agent', 'notification-system', 'telephony-integration'],
     featured: false,
     image: '/images/cases/roofing-business-solution.jpg'
   },
   {
-    id: 'ai-voice-bot',
-    title: 'AI-Voice Bot for Client Request Processing',
+    id: 'ai-voice-agent',
+    title: 'AI Voice Agent for Client Request Processing',
     company: 'Up-Struct LLC',
     location: 'Lynnwood, WA, USA',
     industryCategory: 'cabinetry-coatings',
     functionCategory: 'ai-powered',
     industry: 'Cabinetry & Coatings',
     solutionType: 'AI-Powered Solutions',
-    description: 'Multi-level interactive voice assistant for processing client requests without operator participation.',
-    shortDescription: 'Multi-level interactive voice assistant for processing client requests without operator participation.',
+    description: 'Multi-level intelligent voice agent for processing client requests without operator participation.',
+    shortDescription: 'Multi-level intelligent voice agent for processing client requests without operator participation.',
     problem: 'Companies cannot handle the growing volume of calls from clients, leading to long waiting times and customer dissatisfaction. Also, errors in operator communication and deviation from scripts lead to lead loss.',
     solution: [
-      'Multi-level interactive voice assistant based on AI',
+      'Multi-level intelligent voice agent based on AI',
       'Integration with CRM for uploading obtained data to lead database',
       'Recognition and processing of typical requests without operator participation',
       'Smart routing of complex requests to specialists',
@@ -732,28 +732,28 @@ export const allCaseStudies: CaseStudy[] = [
       '90% reduction in communication errors'
     ],
     testimonial: {
-      quote: 'The AI voice bot has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we have been able to scale our operations without expanding our support team.',
+      quote: 'The AI voice agent has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we have been able to scale our operations without expanding our support team.',
       author: 'Elena Wang',
       position: 'Customer Service Manager at Up-Struct LLC'
     },
     relatedCases: ['roofing-business-solution', 'telephony-integration', 'speech-to-text-analysis'],
     featured: true,
-    image: '/images/cases/ai-voice-bot.jpg'
+    image: '/images/cases/ai-voice-agent.jpg'
   },
   {
-    id: 'ai-crm-assistant',
-    title: 'AI Assistant for CRM Information Search',
+    id: 'ai-crm-agent',
+    title: 'AI Agent for CRM Information Search',
     company: 'SUQEAK E CLEAN STUDIOS',
     location: 'USA, Australia',
     industryCategory: 'commercial-music',
     functionCategory: 'ai-powered',
     industry: 'Music Production',
     solutionType: 'AI-Powered Solutions',
-    description: 'Integration of AI assistant into CRM interface for natural language data search and summarization.',
-    shortDescription: 'Integration of AI assistant into CRM interface for natural language data search and summarization.',
+    description: 'Integration of AI agent into CRM interface for natural language data search and summarization.',
+    shortDescription: 'Integration of AI agent into CRM interface for natural language data search and summarization.',
     problem: 'Employees spend a lot of time searching for necessary information in CRM system, especially newcomers who find it difficult to navigate the data structure and aggregate information on previous clients.',
     solution: [
-      'Integration of AI assistant directly into CRM interface with custom convenient widget',
+      'Integration of AI agent directly into CRM interface with custom convenient widget',
       'Processing employees natural language requests',
       'Smart search across all related records in CRM',
       'Automatic summarization of information from different sources'
@@ -813,7 +813,7 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'NDA',
       position: 'NDA'
     },
-    relatedCases: ['ai-voice-bot', 'telephony-integration', 'notification-system'],
+    relatedCases: ['ai-voice-agent', 'telephony-integration', 'notification-system'],
     featured: false,
     image: '/images/cases/speech-to-text-analysis.jpg'
   },
@@ -937,7 +937,7 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'Eugene Gourevitch',
       position: 'SEO at EclipseGroup'
     },
-    relatedCases: ['speech-to-text-analysis', 'ai-voice-bot', 'notification-system'],
+    relatedCases: ['speech-to-text-analysis', 'ai-voice-agent', 'notification-system'],
     featured: false,
     image: '/images/cases/telephony-integration.jpg'
   }
