@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GCSVideo } from '@/components/ui/gcs-video';
 import { CaseStudy } from '@/lib/data/case-studies';
-import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 interface CaseStudyTemplateProps {
   caseStudy: CaseStudy;
@@ -386,25 +385,20 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
 }
 
 function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
-  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <section className="py-12 bg-transparent" id="video-section">
       <div className="container mx-auto px-4">
         {/* Video player - centered and full screen presence */}
         <div className="max-w-6xl mx-auto">
-          <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="cursor-pointer"
-          >
-            <TravelingBorderGlow 
-              variant="primary" 
-              intensity="normal" 
-              className="rounded-lg"
-              isHovered={isHovered}
+          <div className="cursor-pointer">
+            <div 
+              className="rounded-lg shadow-[0_0_8px_rgba(178,75,243,0.3)]"
+              style={{
+                border: '2px solid rgba(178, 75, 243, 0.4)'
+              }}
             >
-              <div className="aspect-video rounded-lg overflow-hidden video-button-glow">
+              <div className="aspect-video rounded-lg overflow-hidden">
               <GCSVideo 
                 caseId={caseStudy.id} 
                 autoPlay={true}
@@ -425,7 +419,7 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 onError={() => console.log(`Failed to load video for case: ${caseStudy.id}`)}
               />
               </div>
-            </TravelingBorderGlow>
+            </div>
           </div>
         </div>
       </div>
@@ -1505,7 +1499,6 @@ function TechnicalSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
 function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -1566,16 +1559,9 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 + (caseIndex * 0.1) }}
                 className="group cursor-pointer w-full max-w-sm"
-                onMouseEnter={() => setHoveredCard(relatedCase.id)}
-                onMouseLeave={() => setHoveredCard(null)}
               >
                 <Link href={`/cases/${relatedCase.id}`}>
-                  <TravelingBorderGlow 
-                    variant="secondary" 
-                    intensity="subtle" 
-                    className="rounded-2xl group h-full" 
-                    isHovered={hoveredCard === relatedCase.id}
-                  >
+                  <div className="rounded-2xl group h-full">
                     <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300 h-full min-h-[280px] relative overflow-hidden flex flex-col">
                     {/* Background Glow on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 transition-all duration-500"></div>
@@ -1629,7 +1615,7 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
                       </div>
                     </div>
                   </div>
-                  </TravelingBorderGlow>
+                  </div>
                 </Link>
               </motion.div>
             ))}

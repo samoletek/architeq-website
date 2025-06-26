@@ -30,6 +30,37 @@ export function GCSVideo({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Блокировка скролла при открытии модального окна
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Очистка при размонтировании
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
+
+  // Обработчик нажатия клавиши Escape для закрытия модального окна
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isModalOpen]);
   
   // Защита от скачивания (правый клик и перетаскивание)
   useEffect(() => {
@@ -169,7 +200,8 @@ export function GCSVideo({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black flex items-center justify-center"
+            style={{ zIndex: 9999 }}
             onClick={() => setIsModalOpen(false)}
           >
             {/* Кнопка закрытия */}
