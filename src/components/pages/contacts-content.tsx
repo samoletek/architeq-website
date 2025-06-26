@@ -181,7 +181,6 @@ function ContactFAQSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut" as const
       }
     }
   };
@@ -321,7 +320,6 @@ function ContactFAQSection() {
                         animate={transform}
                         transition={{
                           duration: 0.6,
-                          ease: "easeInOut",
                           type: "tween"
                         }}
                       >

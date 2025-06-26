@@ -49,7 +49,7 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({ children, className = '
       card.removeEventListener('mouseenter', handleMouseEnter);
       card.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [onMouseEnter, onMouseLeave]);
 
   // Определяем цвета в зависимости от варианта
   const getVariantStyles = () => {

@@ -170,8 +170,7 @@ export default function UnifiedCTASection({
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+              }
     }
   };
 
@@ -183,8 +182,7 @@ export default function UnifiedCTASection({
       transition: { 
         duration: 0.7,
         delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+              }
     }
   };
   

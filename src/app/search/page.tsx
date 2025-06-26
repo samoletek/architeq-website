@@ -92,7 +92,6 @@ function SearchResults({
   transition={{ 
     duration: 0.5,
     delay: index * 0.08,
-    ease: [0.25, 0.1, 0.25, 1.0]
   }}
   // Ключевое изменение для мгновенной реакции:
   whileHover={{ 
@@ -103,15 +102,13 @@ function SearchResults({
       // Практически нулевая задержка для мгновенной реакции
       duration: 0.25,  // Быстрее, но сохраняет плавность
       // Специальная кривая с очень быстрым началом
-      ease: [0.05, 0.7, 0.1, 1.0],
       // Индивидуальные настройки для каждого свойства
       y: {
         duration: 0.15,  // Ещё быстрее для вертикального движения
-        ease: [0, 0.7, 0.2, 1.0]  // Максимально быстрый старт (0)
+        // Максимально быстрый старт (0)
       },
       scale: {
         duration: 0.2,
-        ease: [0, 0.6, 0.1, 1.0]
       }
     }
   }}
@@ -294,15 +291,13 @@ function SearchPageContent() {
       y: 0,
       transition: { 
         duration: 1.0, 
-        delay: 0.3,
-        ease: "easeOut" 
+        delay: 0.3
       }
     },
     hover: {
       y: -5,
       transition: {
         duration: 0.7,
-        ease: "easeInOut",
         repeat: Infinity,
         repeatType: "reverse" as const
       }

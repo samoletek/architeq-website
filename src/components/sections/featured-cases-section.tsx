@@ -175,25 +175,16 @@ export default function FeaturedCasesSection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+      y: 0
     }
   };
 
   // Анимационные варианты для карточек
   const cardVariants = {
     hidden: { opacity: 0 },
-    visible: (index: number) => ({
-      opacity: 1,
-      transition: {
-        duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
-        delay: 0.2 + index * 0.1
-      }
-    })
+    visible: {
+      opacity: 1
+    }
   };
 
   // Анимационные варианты для кнопки
@@ -201,12 +192,7 @@ export default function FeaturedCasesSection({
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7,
-        delay: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+      y: 0
     }
   };
 
@@ -224,6 +210,7 @@ export default function FeaturedCasesSection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <h2 
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8"
@@ -242,6 +229,7 @@ export default function FeaturedCasesSection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <h2 className="text-2xl font-bold">{title}</h2>
             {viewAllUrl && (
@@ -266,6 +254,7 @@ export default function FeaturedCasesSection({
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
                 variants={cardVariants}
+                transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 + index * 0.1 }}
                 className="min-h-[450px]"
               >
                 <CaseCard 
@@ -294,6 +283,7 @@ export default function FeaturedCasesSection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={buttonVariants}
+            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
           >
             <Link href={viewAllUrl}>
               <Button variant="secondary" size="lg">

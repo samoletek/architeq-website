@@ -103,8 +103,7 @@ export default function BenefitsSection({
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1]
+        duration: 0.6
       }
     }
   };
@@ -116,7 +115,6 @@ export default function BenefitsSection({
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.15 + index * 0.12
       }
     })
@@ -130,7 +128,6 @@ export default function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.3 + index * 0.15
       }
     })
@@ -144,7 +141,6 @@ export default function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.45 + index * 0.15
       }
     })

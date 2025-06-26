@@ -80,8 +80,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
         }}
         transition={{ 
           duration: 4, 
-          repeat: Infinity, 
-          ease: "easeInOut", 
+          repeat: Infinity,
           repeatType: "mirror"
         }}
       />
@@ -108,8 +107,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
           }}
           transition={{ 
             left: {
-              duration: 2.5, 
-              ease: "easeInOut", 
+              duration: 2.5,
               repeat: Infinity,
               repeatDelay: 1
             },
@@ -141,8 +139,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
           }}
           transition={{ 
             top: {
-              duration: 2.5, 
-              ease: "easeInOut", 
+              duration: 2.5,
               repeat: Infinity,
               repeatDelay: 1,
               delay: 0.6
@@ -177,8 +174,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
           }}
           transition={{ 
             right: {
-              duration: 2.5, 
-              ease: "easeInOut", 
+              duration: 2.5,
               repeat: Infinity,
               repeatDelay: 1,
               delay: 1.2
@@ -213,8 +209,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
           }}
           transition={{ 
             bottom: {
-              duration: 2.5, 
-              ease: "easeInOut", 
+              duration: 2.5,
               repeat: Infinity,
               repeatDelay: 1,
               delay: 1.8

@@ -46,12 +46,7 @@ export default function HeroSection({
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.6,
-        staggerChildren: 0.15,
-        ease: "easeOut"
-      }
+      opacity: 1
     }
   };
 
@@ -59,11 +54,7 @@ export default function HeroSection({
     hidden: { opacity: 0, y: 15 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5,
-        ease: "easeOut" 
-      }
+      y: 0
     }
   };
 
@@ -107,11 +98,13 @@ export default function HeroSection({
             variants={containerVariants}
             initial="hidden"
             animate="visible"
+            transition={{ duration: 0.6, staggerChildren: 0.15, ease: "easeOut" }}
           >
             {/* Анимированная версия для десктопа */}
             <motion.h1 
               className="font-bold leading-tight mb-4 sm:mb-6 md:mb-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
               variants={itemVariants}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <span style={staticGradientStyle}>Architect</span> your workflow<br />
               <span style={staticGradientStyle}>Scale</span> with confidence

@@ -279,8 +279,7 @@ export default function CasesContent() {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9]
+        duration: 0.5
       }
     }
   };
