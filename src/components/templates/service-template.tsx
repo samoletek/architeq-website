@@ -260,9 +260,35 @@ export default function ServiceTemplate({
         <OverviewSection 
           title={overview.title}
           description={overview.description}
-          features={overview.features}
-          featuresTitle={overview.featuresTitle}
         />
+      )}
+
+      {/* Customized Features Section - Separate container */}
+      {overview && overview.features && overview.features.length > 0 && (
+        <section className="py-24 bg-transparent relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  {overview.featuresTitle}
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {overview.features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="p-6 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
+                  >
+                    <h3 className="text-lg font-semibold text-white mb-3">
+                      {feature}
+                    </h3>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* Benefits section - ТОЧНО КАК НА ГЛАВНОЙ СТРАНИЦЕ */}
@@ -332,14 +358,10 @@ export default function ServiceTemplate({
 // ОБНОВЛЕННАЯ СЕКЦИЯ OVERVIEW с кастомизируемым заголовком Features
 function OverviewSection({ 
   title, 
-  description, 
-  features,
-  featuresTitle = "Key Features" // Значение по умолчанию
+  description
 }: { 
   title: string; 
-  description: ReactNode; 
-  features?: string[];
-  featuresTitle?: string;
+  description: ReactNode;
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -355,23 +377,10 @@ function OverviewSection({
       y: 0,
       transition: { 
         duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
 
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (index: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.15 + index * 0.08
-      }
-    })
-  };
 
   return (
     <section 
@@ -410,64 +419,6 @@ function OverviewSection({
               </div>
             </div>
             
-            {/* Features на всю ширину ниже с кастомизируемым заголовком */}
-            {features && features.length > 0 && (
-              <div className="text-center">
-                <h3 className="text-2xl md:text-3xl font-bold mb-12 text-white"
-                    style={{
-                      textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                    }}>
-                  {featuresTitle}
-                </h3>
-                
-                <motion.div
-                  initial="hidden"
-                  animate={isVisible ? "visible" : "hidden"}
-                  className="flex flex-wrap justify-center gap-4 lg:gap-6"
-                >
-                  {features.map((feature, index) => (
-                    <motion.div
-                      key={index}
-                      custom={index}
-                      variants={buttonVariants}
-                      className={`
-                        px-6 py-3 rounded-lg transition-all duration-300 relative group border cursor-default
-                        text-white border-transparent
-                      `}
-                    >
-                      {/* Активное свечение */}
-                      <motion.div 
-                        className="absolute inset-0 rounded-lg"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                          boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        }}
-                        animate={{
-                          boxShadow: [
-                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                            '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                          ]
-                        }}
-                        transition={{
-                          duration: 0.3,
-                          boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                        }}
-                      />
-                      
-                      <motion.span 
-                        className="relative z-10 font-medium text-sm lg:text-base text-white"
-                        style={{
-                          textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(178,75,243,0.6)'
-                        }}
-                      >
-                        {feature}
-                      </motion.span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            )}
           </motion.div>
         </div>
       </div>
@@ -519,7 +470,6 @@ function BenefitsSection({
       y: 0,
       transition: { 
         duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -531,8 +481,7 @@ function BenefitsSection({
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.15 + index * 0.12
+                delay: 0.15 + index * 0.12
       }
     })
   };
@@ -544,8 +493,7 @@ function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.3 + index * 0.15
+                delay: 0.3 + index * 0.15
       }
     })
   };
@@ -557,8 +505,7 @@ function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.45 + index * 0.15
+                delay: 0.45 + index * 0.15
       }
     })
   };
@@ -594,10 +541,6 @@ function BenefitsSection({
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: "easeOut" }
-              }}
             >
               <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
                 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
@@ -708,19 +651,16 @@ function FeaturesSection({
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
         delay: 0.2 + index * 0.1
       }
     })
@@ -733,8 +673,7 @@ function FeaturesSection({
       x: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: 0.4 + index * 0.1
+                delay: 0.4 + index * 0.1
       }
     })
   };
@@ -757,8 +696,7 @@ function FeaturesSection({
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
         <motion.div 
           className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full blur-3xl opacity-20"
@@ -772,8 +710,7 @@ function FeaturesSection({
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
       </div>
 
@@ -830,8 +767,7 @@ function FeaturesSection({
                           x: 0,
                           transition: {
                             duration: 0.5,
-                            ease: [0.25, 0.1, 0.25, 1],
-                            delay: 0.4
+                                                        delay: 0.4
                           }
                         }
                       }}
@@ -999,7 +935,6 @@ function ProcessSection({
       y: 0,
       transition: { 
         duration: 0.6, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
@@ -1011,8 +946,7 @@ function ProcessSection({
       x: 0,
       transition: {
         duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: index * 0.08
+                delay: index * 0.08
       }
     })
   };
@@ -1023,15 +957,13 @@ function ProcessSection({
       opacity: 1,
       transition: {
         duration: 0.4,
-        ease: "easeInOut"
-      }
+              }
     },
     exit: { 
       opacity: 0,
       transition: {
         duration: 0.3,
-        ease: "easeInOut"
-      }
+              }
     }
   };
 
@@ -1105,8 +1037,7 @@ function ProcessSection({
                       }}
                       transition={{ 
                         duration: 0.8, 
-                        ease: "easeInOut"
-                      }}
+                                              }}
                     />
                   </div>
                   <div className="text-sm font-medium text-light-gray mt-2 font-mono">
@@ -1242,19 +1173,16 @@ function CaseStudiesSection({
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
         delay: 0.2 + index * 0.1
       }
     })
@@ -1268,7 +1196,6 @@ function CaseStudiesSection({
       transition: { 
         duration: 0.7,
         delay: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
@@ -1476,7 +1403,6 @@ function FAQSection({
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut"
       }
     }
   };
@@ -1488,8 +1414,7 @@ function FAQSection({
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
-        delay: index * 0.05
+                delay: index * 0.05
       }
     })
   };
@@ -1768,7 +1693,6 @@ function CTASection() {
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
@@ -1781,7 +1705,6 @@ function CTASection() {
       transition: { 
         duration: 0.7,
         delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };

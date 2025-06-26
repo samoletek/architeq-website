@@ -170,8 +170,7 @@ export default function UnifiedCTASection({
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+              }
     }
   };
 
@@ -183,8 +182,7 @@ export default function UnifiedCTASection({
       transition: { 
         duration: 0.7,
         delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+              }
     }
   };
   
@@ -230,16 +228,21 @@ export default function UnifiedCTASection({
             animate={isVisible ? "visible" : "hidden"}
             variants={contentVariants}
           >
-            <h2 className={cn(
-              "font-bold mb-8",
-              compact ? "text-2xl" : "section-title-medium"
-            )}>
+            <h2 
+              className={cn(
+                "font-bold mb-6",
+                compact ? "text-2xl" : "text-4xl md:text-5xl"
+              )}
+              style={{
+                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
+              }}
+            >
               {finalConfig.title}
             </h2>
           
             <p className={cn(
-              "text-light-gray mb-16",
-              compact ? "text-base" : "section-subtitle-large"
+              "max-w-2xl mx-auto mb-8",
+              compact ? "text-base text-light-gray" : "text-xl text-white/70"
             )} 
             dangerouslySetInnerHTML={{ __html: finalConfig.description }}
             />

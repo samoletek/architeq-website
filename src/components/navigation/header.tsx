@@ -168,8 +168,7 @@ export default function Header({
       y: 0,
       transition: {
         delay: i * 0.06,
-        duration: 0.2,
-        ease: "easeOut"
+        duration: 0.2
       }
     }),
     exit: { opacity: 0, y: 8, transition: { duration: 0.1 } }
@@ -180,7 +179,7 @@ export default function Header({
       className="fixed top-0 left-0 right-0 z-50 px-4 pt-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: isLoaded ? 1 : 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.8 }}
     >
       <motion.header 
         className={cn(
@@ -359,8 +358,7 @@ export default function Header({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: "-100%" }}
                 transition={{ 
-                  duration: 0.3,
-                  ease: [0.25, 0.1, 0.25, 1]
+                  duration: 0.3
                 }}
               >
                 {/* Верхняя панель с логотипом и кнопкой закрытия */}
@@ -512,7 +510,7 @@ export default function Header({
                       className="absolute inset-0 bg-primary/10 -z-0"
                       initial={{ x: '100%', opacity: 0 }}
                       whileHover={{ x: 0, opacity: 1 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.3 }}
                     />
                   </Link>
                 </motion.div>

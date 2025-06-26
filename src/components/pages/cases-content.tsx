@@ -274,14 +274,12 @@ export default function CasesContent() {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
-      y: 0,
       scale: 1,
       transition: {
-        duration: 0.5,
-        ease: [0.2, 0.65, 0.3, 0.9]
+        duration: 0.5
       }
     }
   };
@@ -293,7 +291,10 @@ export default function CasesContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div data-animate="fade-up">
-              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing">
+              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
+                  style={{
+                    textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                  }}>
                 Case Studies
               </h1>
               <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">

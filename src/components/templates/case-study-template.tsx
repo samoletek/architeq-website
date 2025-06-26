@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GCSVideo } from '@/components/ui/gcs-video';
 import { CaseStudy } from '@/lib/data/case-studies';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 interface CaseStudyTemplateProps {
   caseStudy: CaseStudy;
@@ -205,8 +206,7 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
+        duration: 0.8
       }
     }
   };
@@ -227,8 +227,7 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
           transition={{
             duration: 4,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
         <motion.div 
           className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
@@ -242,8 +241,7 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
       </div>
 
@@ -388,31 +386,46 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
 }
 
 function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
   return (
     <section className="py-12 bg-transparent" id="video-section">
       <div className="container mx-auto px-4">
         {/* Video player - centered and full screen presence */}
         <div className="max-w-6xl mx-auto">
-          <div className="aspect-video rounded-lg overflow-hidden video-button-glow">
-            <GCSVideo 
-              caseId={caseStudy.id} 
-              autoPlay={true}
-              loop={true}
-              muted={true}
-              controls={false}
-              placeholder={
-                <div className="h-full flex items-center justify-center bg-gradient-to-b from-dark-gray to-medium-gray">
-                  <div className="text-center p-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-lg text-light-gray">Loading case study visualization...</p>
+          <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="cursor-pointer"
+          >
+            <TravelingBorderGlow 
+              variant="primary" 
+              intensity="normal" 
+              className="rounded-lg"
+              isHovered={isHovered}
+            >
+              <div className="aspect-video rounded-lg overflow-hidden video-button-glow">
+              <GCSVideo 
+                caseId={caseStudy.id} 
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                controls={false}
+                placeholder={
+                  <div className="h-full flex items-center justify-center bg-gradient-to-b from-dark-gray to-medium-gray">
+                    <div className="text-center p-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-light-gray mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <p className="text-lg text-light-gray">Loading case study visualization...</p>
+                    </div>
                   </div>
-                </div>
-              }
-              onError={() => console.log(`Failed to load video for case: ${caseStudy.id}`)}
-            />
+                }
+                onError={() => console.log(`Failed to load video for case: ${caseStudy.id}`)}
+              />
+              </div>
+            </TravelingBorderGlow>
           </div>
         </div>
       </div>
@@ -647,7 +660,6 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
           }}
         />
       </div>
@@ -702,17 +714,17 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+                transition={{ duration: 0.6 }}
                 className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 h-[650px]"
               >
                 {/* Challenge Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 h-[650px] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 h-[650px] relative overflow-hidden">
                     {/* Challenge Background Glow */}
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{ duration: 4, repeat: Infinity }}
                     />
                     
                     <div className="relative z-10">
@@ -722,7 +734,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                           <motion.div 
                             className="w-4 h-4 rounded-full bg-red-500"
                             animate={{ opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{ duration: 3, repeat: Infinity }}
                           />
                           <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
                         </div>
@@ -743,7 +755,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                           className="flex flex-wrap gap-3"
                           initial={{ opacity: 0, x: 30 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                          transition={{ duration: 0.5, delay: 0.2 }}
                         >
                           <span className={`text-xs px-4 py-2 rounded-full border ${getPriorityColor(currentPair.challenge.priority)}`}>
                             {currentPair.challenge.priority} Priority
@@ -758,24 +770,24 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                           className="bg-red-500/10 rounded-lg p-4 border border-red-500/20"
                           initial={{ opacity: 0, x: 30 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                          transition={{ duration: 0.5, delay: 0.3 }}
                         >
                           <div className="text-sm text-red-400 font-medium mb-1">Bottleneck</div>
                           <div className="text-white/80">{currentPair.challenge.impact}</div>
                         </motion.div>
                       </div>
                     </div>
-                  </div>
+                    </div>
                 </div>
 
                 {/* Solutions Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 h-[650px] relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 h-[650px] relative overflow-hidden">
                     {/* Solutions Background Glow */}
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                      transition={{ duration: 4, repeat: Infinity, delay: 2 }}
                     />
                     
                     <div className="relative z-10">
@@ -785,7 +797,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                           <motion.div 
                             className="w-4 h-4 rounded-full bg-[#B0FF74]"
                             animate={{ opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{ duration: 3, repeat: Infinity }}
                           />
                           <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solutions</span>
                         </div>
@@ -815,7 +827,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                                 className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4"
                                 initial={{ opacity: 0, x: 30 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                                transition={{ duration: 0.5, delay: 0.3 }}
                               >
                                 <div className="text-sm text-[#B0FF74] font-medium mb-1">Key Benefit</div>
                                 <div className="text-white/80">{solution.keyBenefit}</div>
@@ -829,7 +841,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                               className="flex flex-wrap gap-2"
                               initial={{ opacity: 0, x: 30 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
                             >
                               {solution.technologies.map((tech, techIndex) => (
                                 <span key={techIndex} className="text-xs px-3 py-1 rounded-full bg-[#B0FF74]/20 text-[#B0FF74] border border-[#B0FF74]/30">
@@ -841,7 +853,7 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                         ))}
                       </div>
                     </div>
-                  </div>
+                    </div>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -1085,14 +1097,14 @@ function InteractiveResultsSection({
             {/* Active Result Analysis */}
             <div className="lg:col-span-2">
               <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 md:p-12 border border-[#B0FF74]/20 relative overflow-hidden"
-                >
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 md:p-12 border border-[#B0FF74]/20 relative overflow-hidden"
+                  >
                   {/* Background Glow */}
                   <motion.div 
                     className="absolute -top-32 -right-32 w-64 h-64 rounded-full blur-3xl opacity-10"
@@ -1106,8 +1118,7 @@ function InteractiveResultsSection({
                     transition={{
                       duration: 3,
                       repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
+                                          }}
                   />
 
                   <div className="relative z-10">
@@ -1157,8 +1168,7 @@ function InteractiveResultsSection({
                                   }}
                                   transition={{ 
                                     duration: 0.8, 
-                                    ease: "easeInOut"
-                                  }}
+                                                                      }}
                                 />
                               </div>
                               
@@ -1253,8 +1263,7 @@ function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimoni
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
       </div>
 
@@ -1410,7 +1419,7 @@ function TechnicalSection({ caseStudy }: { caseStudy: CaseStudy }) {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  transition={{ duration: 0.5 }}
                   className="border-t border-[#B0FF74]/20"
                 >
                   <div className="p-8 space-y-8">
@@ -1496,6 +1505,7 @@ function TechnicalSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
 function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -1530,7 +1540,7 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
               className="text-4xl md:text-5xl font-bold mb-6"
               initial={{ opacity: 0, x: -50 }}
               animate={isVisible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.6,  }}
               style={{
                 textShadow: '0 0 20px rgba(176, 255, 116, 0.8), 0 0 40px rgba(176, 255, 116, 0.4)'
               }}
@@ -1541,53 +1551,54 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
               className="text-xl text-white/70 max-w-3xl mx-auto"
               initial={{ opacity: 0, x: -50 }}
               animate={isVisible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               Explore other transformative automation solutions we&apos;ve delivered
             </motion.p>
           </div>
 
-          {/* Related Cases Grid with dynamic centering */}
-          <div className={`gap-8 ${
-            relatedCases.length <= 2 
-              ? 'flex flex-wrap justify-center' 
-              : 'grid grid-cols-1 md:grid-cols-3 justify-items-center'
-          }`}>
+          {/* Related Cases Grid with uniform sizes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {relatedCases.map((relatedCase, caseIndex) => (
               <motion.div
                 key={relatedCase.id}
                 initial={{ opacity: 0, x: 50 }}
                 animate={isVisible ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 + (caseIndex * 0.1) }}
-                whileHover={{ y: -5 }}
-                className={`group cursor-pointer ${
-                  relatedCases.length <= 2 ? 'w-full max-w-sm' : 'w-full'
-                }`}
+                transition={{ duration: 0.6, delay: 0.2 + (caseIndex * 0.1) }}
+                className="group cursor-pointer w-full max-w-sm"
+                onMouseEnter={() => setHoveredCard(relatedCase.id)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 <Link href={`/cases/${relatedCase.id}`}>
-                  <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300 h-full relative overflow-hidden">
+                  <TravelingBorderGlow 
+                    variant="secondary" 
+                    intensity="subtle" 
+                    className="rounded-2xl group h-full" 
+                    isHovered={hoveredCard === relatedCase.id}
+                  >
+                    <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300 h-full min-h-[280px] relative overflow-hidden flex flex-col">
                     {/* Background Glow on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 transition-all duration-500"></div>
                     
-                    <div className="relative z-10">
+                    <div className="relative z-10 flex flex-col h-full">
                       {/* Company Badge */}
-                      <div className="inline-flex items-center gap-2 bg-white/5 rounded-full px-3 py-1 mb-4">
+                      <div className="inline-flex items-center gap-2 bg-white/5 rounded-full px-3 py-1 mb-3">
                         <div className="w-2 h-2 rounded-full bg-[#B0FF74]"></div>
                         <span className="text-white/70 text-sm">{relatedCase.company}</span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#B0FF74] transition-colors duration-300">
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#B0FF74] transition-colors duration-300">
                         {relatedCase.title}
                       </h3>
 
                       {/* Description */}
-                      <p className="text-white/70 text-sm mb-6 leading-relaxed">
+                      <p className="text-white/70 text-sm mb-4 leading-relaxed flex-grow">
                         {relatedCase.shortDescription || relatedCase.description}
                       </p>
 
                       {/* Technologies */}
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {relatedCase.technologies.slice(0, 3).map((tech, techIndex) => (
                           <span 
                             key={techIndex}
@@ -1599,7 +1610,7 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
                       </div>
 
                       {/* Read More Link */}
-                      <div className="flex items-center text-[#B0FF74] group-hover:gap-2 transition-all duration-300">
+                      <div className="flex items-center text-[#B0FF74] group-hover:gap-2 transition-all duration-300 mt-auto">
                         <span className="text-sm font-medium">Read Case Study</span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -1618,6 +1629,7 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
                       </div>
                     </div>
                   </div>
+                  </TravelingBorderGlow>
                 </Link>
               </motion.div>
             ))}
@@ -1665,8 +1677,7 @@ function CTASection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
         <motion.div 
           className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10"
@@ -1680,8 +1691,7 @@ function CTASection() {
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+                      }}
         />
       </div>
 

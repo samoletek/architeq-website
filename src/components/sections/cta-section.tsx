@@ -102,11 +102,7 @@ export default function CTASection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+      y: 0
     }
   };
 
@@ -115,12 +111,7 @@ export default function CTASection({
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7,
-        delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+      y: 0
     }
   };
   
@@ -170,11 +161,17 @@ export default function CTASection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={contentVariants}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <h2 className={cn(
-              "font-bold mb-8",
-              compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
-            )}>
+            <h2 
+              className={cn(
+                "font-bold mb-8",
+                compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
+              )}
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >
               {title}
             </h2>
           
@@ -190,6 +187,7 @@ export default function CTASection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={buttonVariants}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
           >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={primaryCta.href}>

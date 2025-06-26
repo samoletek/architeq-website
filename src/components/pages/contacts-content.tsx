@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
+import FuturisticCard from '@/components/ui/effects/futuristic-card';
 
 // Типы для формы
 interface ContactFormData extends FormFields {
@@ -125,6 +126,14 @@ function ContactFAQSection() {
     setActiveQuestion(index);
   };
 
+  const handlePrevQuestion = () => {
+    setActiveQuestion(prev => prev === 0 ? contactFaqs.length - 1 : prev - 1);
+  };
+
+  const handleNextQuestion = () => {
+    setActiveQuestion(prev => (prev + 1) % contactFaqs.length);
+  };
+
   // Function for calculating card position and transformation
   const getCardTransform = (index: number) => {
     const diff = index - activeQuestion;
@@ -144,21 +153,21 @@ function ContactFAQSection() {
       };
     } else if (normalizedDiff === -1) {
       return {
-        transform: 'translateY(-65%) scale(0.85) rotateX(8deg)',
+        transform: 'translateY(-65%) scale(0.85) rotateX(2deg)',
         opacity: 0.65,
         zIndex: 5,
       };
     } else if (normalizedDiff === 1) {
       return {
-        transform: 'translateY(65%) scale(0.85) rotateX(-8deg)',
+        transform: 'translateY(65%) scale(0.85) rotateX(-2deg)',
         opacity: 0.65,
         zIndex: 5,
       };
     } else {
       return {
         transform: normalizedDiff < 0 
-          ? 'translateY(-140%) scale(0.7) rotateX(20deg)'
-          : 'translateY(140%) scale(0.7) rotateX(-20deg)',
+          ? 'translateY(-140%) scale(0.7) rotateX(5deg)'
+          : 'translateY(140%) scale(0.7) rotateX(-5deg)',
         opacity: 0,
         zIndex: 1,
       };
@@ -172,7 +181,6 @@ function ContactFAQSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut"
       }
     }
   };
@@ -184,7 +192,7 @@ function ContactFAQSection() {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
+        ease: "easeOut" as const,
         delay: index * 0.05
       }
     })
@@ -217,9 +225,49 @@ function ContactFAQSection() {
         <div className="max-w-7xl mx-auto h-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
             
+            {/* Навигационное меню с стрелками */}
             <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
-                <div className="space-y-2">
+                <div className="space-y-6">
+                  {/* Стрелки навигации в меню */}
+                  <div className="flex items-center justify-between mb-8">
+                    <button
+                      onClick={handlePrevQuestion}
+                      className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center hover:bg-primary/20 transition-all duration-300 group flex-shrink-0"
+                    >
+                      <motion.svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-white group-hover:text-primary transition-colors"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        whileHover={{ x: -2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </motion.svg>
+                    </button>
+                    
+                    <h3 className="text-lg font-semibold text-white flex-grow text-center">Questions</h3>
+                    
+                    <button
+                      onClick={handleNextQuestion}
+                      className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center hover:bg-primary/20 transition-all duration-300 group flex-shrink-0"
+                    >
+                      <motion.svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-white group-hover:text-primary transition-colors"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        whileHover={{ x: 2 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </motion.svg>
+                    </button>
+                  </div>
+
                   {contactFaqs.map((faq, index) => (
                     <motion.button
                       key={index}
@@ -228,34 +276,30 @@ function ContactFAQSection() {
                       animate={isVisible ? "visible" : "hidden"}
                       variants={navVariants}
                       onClick={() => handleQuestionClick(index)}
-                      className={`
-                        w-full text-left p-4 rounded-lg transition-all duration-300 border text-sm
-                        ${activeQuestion === index
-                          ? 'bg-primary/10 border-primary/30 text-white shadow-lg'
-                          : 'bg-transparent border-white/10 text-white/70 hover:bg-white/5 hover:border-white/20'
-                        }
-                      `}
+                      className="w-full text-left cursor-pointer transition-all duration-300 group"
                     >
-                      <div className="flex items-center">
-                        <div className={`
-                          w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 transition-all duration-300
-                          ${activeQuestion === index
-                            ? 'bg-primary text-white'
-                            : 'bg-white/10 text-white/60'
+                      <motion.h4 
+                        className={`
+                          font-sans font-medium text-base leading-relaxed transition-all duration-300
+                          ${activeQuestion === index 
+                            ? 'text-white' 
+                            : 'text-gray-500 group-hover:text-gray-300'
                           }
-                        `}>
-                          {index + 1}
-                        </div>
-                        <span className="font-medium">
-                          {faq.question}
-                        </span>
-                      </div>
+                        `}
+                        style={activeQuestion === index ? {
+                          textShadow: '0 0 20px rgba(255,255,255,0.9), 0 0 40px rgba(255,255,255,0.7), 0 0 60px rgba(178,75,243,0.5)',
+                          filter: 'drop-shadow(0 0 10px rgba(178, 75, 243, 0.6))'
+                        } : {}}
+                      >
+                        {faq.question}
+                      </motion.h4>
                     </motion.button>
                   ))}
                 </div>
               </div>
             </div>
 
+            {/* Карусель ответов (без стрелок) */}
             <div className="lg:col-span-2 flex items-center justify-center">
               <div className="relative w-full" style={{ height: '400px' }}>
                 <div className="relative h-full perspective-1000">
@@ -276,7 +320,6 @@ function ContactFAQSection() {
                         animate={transform}
                         transition={{
                           duration: 0.6,
-                          ease: "easeInOut",
                           type: "tween"
                         }}
                       >
@@ -327,15 +370,15 @@ function ContactFAQSection() {
                               transition={{ duration: 0.5, delay: 0.2 }}
                             >
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center text-secondary text-sm font-medium">
-                                  <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
+                                <div className="flex items-center text-primary text-sm font-medium">
+                                  <div className="w-2 h-2 rounded-full bg-primary mr-3 animate-pulse"></div>
                                   Ready to get started?
                                 </div>
                                 <button 
                                   onClick={() => {
                                     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
                                   }}
-                                  className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium"
+                                  className="text-primary hover:text-primary/80 transition-colors text-sm font-medium"
                                 >
                                   Contact us now →
                                 </button>
@@ -348,14 +391,15 @@ function ContactFAQSection() {
                   })}
                 </div>
 
-                <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
+                {/* Dots indicator (убираем стрелки отсюда) */}
+                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
                   {contactFaqs.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => handleQuestionClick(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         activeQuestion === index 
-                          ? 'bg-secondary shadow-lg' 
+                          ? 'bg-primary shadow-lg' 
                           : 'bg-white/20 hover:bg-white/40'
                       }`}
                     />
@@ -371,6 +415,9 @@ function ContactFAQSection() {
 }
 
 export default function ContactsContent() {
+  // Состояние для синхронизации hover эффектов
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  
   // Состояние формы
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -557,12 +604,19 @@ export default function ContactsContent() {
     <>
       {/* Hero section */}
       <section className="section-hero bg-dark-gray">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacingg">Get in Touch</h1>
-            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
-            Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
-            </p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <div data-animate="fade-up">
+              <h1 className="text-4xl md:text-5xl font-bold hero-title-spacing hero-subtitle-spacing"
+                  style={{
+                    textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                  }}>
+                Get in Touch
+              </h1>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto section-button-spacing">
+                Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -570,169 +624,238 @@ export default function ContactsContent() {
       {/* Contact Form and Calendly */}
       <section className="pt-2 pb-48 bg-dark-gray">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
             {/* Contact Form & Info */}
-            <div>
-              <h2 className="section-title-medium font-bold section-title-spacing pb-12">Send Message</h2>
-              
-              {/* Form status message */}
-              {formState.submitMessage && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className={`p-6 mb-6 rounded-lg ${
-                    formState.submitMessage.type === 'success' 
-                      ? 'bg-green-500/20 text-green-200 border border-green-500/30' 
-                      : 'bg-red-500/20 text-red-200 border border-red-500/30'
-                  }`}
-                >
-                  {formState.submitMessage.text}
-                </motion.div>
-              )}
-              
-              <form id="contact-form" onSubmit={handleSubmit} noValidate>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                  <FormInput
-                    id="name"
-                    name="name"
-                    label="Your Name"
-                    value={formData.name}
-                    onChange={(e) => handleChange('name')(e.target.value)}
-                    onBlur={() => handleBlur('name')}
-                    placeholder="John Doe"
-                    error={formState.errors.name || ''}
-                    touched={!!formState.touched.name}
-                    required
-                    validators={formValidators.name}
-                  />
-                  
-                  <FormInput
-                    id="email"
-                    name="email"
-                    label="Email Address"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange('email')(e.target.value)}
-                    onBlur={() => handleBlur('email')}
-                    placeholder="your@email.com"
-                    error={formState.errors.email || ''}
-                    touched={!!formState.touched.email}
-                    required
-                    validators={formValidators.email}
-                  />
-                </div>
+            <div className="flex flex-col">
+              <div className="flex-grow">
+                <h2 className="section-title-medium font-bold section-title-spacing pb-12">Send Message</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                  <FormInput
-                    id="company"
-                    name="company"
-                    label="Company Name"
-                    value={formData.company}
-                    onChange={(e) => handleChange('company')(e.target.value)}
-                    onBlur={() => handleBlur('company')}
-                    placeholder="Your Company"
-                  />
-                  
-                  <FormInput
-                    id="phone"
-                    name="phone"
-                    label="Phone Number"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleChange('phone')(e.target.value)}
-                    onBlur={() => handleBlur('phone')}
-                    placeholder="+1 (___) ___-____"
-                    error={formState.errors.phone || ''}
-                    touched={!!formState.touched.phone}
-                    validators={formValidators.phone}
-                  />
-                </div>
+                {/* Form status message */}
+                {formState.submitMessage && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={`p-6 mb-6 rounded-lg ${
+                      formState.submitMessage.type === 'success' 
+                        ? 'bg-primary/20 text-primary border border-primary/30' 
+                        : 'bg-red-500/20 text-red-200 border border-red-500/30'
+                    }`}
+                  >
+                    {formState.submitMessage.text}
+                  </motion.div>
+                )}
                 
-                <div className="mb-10">
-                  <FormSelect
-                    id="interest"
-                    name="interest"
-                    label="What Are You Interested In?"
-                    value={formData.interest}
-                    onChange={(e) => handleChange('interest')(e.target.value)}
-                    options={interestOptions}
-                  />
-                </div>
-                
-                <div className="mb-10">
-                  <FormInput
-                    id="message"
-                    name="message"
-                    label="Your Message"
-                    type="textarea"
-                    value={formData.message}
-                    onChange={(e) => handleChange('message')(e.target.value)}
-                    onBlur={() => handleBlur('message')}
-                    rows={5}
-                    placeholder="Please share details about your project or inquiry so we can better prepare for our call with you!"
-                    error={formState.errors.message || ''}
-                    touched={!!formState.touched.message}
-                    required
-                    validators={formValidators.message}
-                  />
-                </div>
-                
-                <LoadingButton 
-                  type="submit" 
-                  isLoading={formState.isSubmitting}
-                  loadingText="Sending..."
-                  className="w-full md:w-auto min-w-40"
-                >
-                  Send Message
-                </LoadingButton>
-              </form>
-              
-              {/* Contact Information */}
-              <div className="mt-29">
-                <div className="bg-[#12071A]/80 rounded-lg p-11 space-y-12">
-                  <div>
-                    <h4 className="font-medium mb-1">Email</h4>
-                    <p className="text-light-gray">hi@architeq.io</p>
+                <form id="contact-form" onSubmit={handleSubmit} noValidate>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <FormInput
+                      id="name"
+                      name="name"
+                      label="Your Name"
+                      value={formData.name}
+                      onChange={(e) => handleChange('name')(e.target.value)}
+                      onBlur={() => handleBlur('name')}
+                      placeholder="John Doe"
+                      error={formState.errors.name || ''}
+                      touched={!!formState.touched.name}
+                      required
+                      validators={formValidators.name}
+                    />
+                    
+                    <FormInput
+                      id="email"
+                      name="email"
+                      label="Email Address"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleChange('email')(e.target.value)}
+                      onBlur={() => handleBlur('email')}
+                      placeholder="your@email.com"
+                      error={formState.errors.email || ''}
+                      touched={!!formState.touched.email}
+                      required
+                      validators={formValidators.email}
+                    />
                   </div>
                   
-                  <div>
-                    <h4 className="font-medium mb-1">Working Hours</h4>
-                    <p className="text-light-gray">We work across different time zones</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <FormInput
+                      id="company"
+                      name="company"
+                      label="Company Name"
+                      value={formData.company}
+                      onChange={(e) => handleChange('company')(e.target.value)}
+                      onBlur={() => handleBlur('company')}
+                      placeholder="Your Company"
+                    />
+                    
+                    <FormInput
+                      id="phone"
+                      name="phone"
+                      label="Phone Number"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleChange('phone')(e.target.value)}
+                      onBlur={() => handleBlur('phone')}
+                      placeholder="+1 (___) ___-____"
+                      error={formState.errors.phone || ''}
+                      touched={!!formState.touched.phone}
+                      validators={formValidators.phone}
+                    />
                   </div>
                   
-                  <div>
-                    <h4 className="font-medium mb-1">Languages</h4>
-                    <p className="text-light-gray">English, Ukrainian, Russian</p>
+                  <div className="mb-10">
+                    <FormSelect
+                      id="interest"
+                      name="interest"
+                      label="What Are You Interested In?"
+                      value={formData.interest}
+                      onChange={(e) => handleChange('interest')(e.target.value)}
+                      options={interestOptions}
+                    />
+                  </div>
+                  
+                  <div className="mb-10">
+                    <FormInput
+                      id="message"
+                      name="message"
+                      label="Your Message"
+                      type="textarea"
+                      value={formData.message}
+                      onChange={(e) => handleChange('message')(e.target.value)}
+                      onBlur={() => handleBlur('message')}
+                      rows={5}
+                      placeholder="Please share details about your project or inquiry so we can better prepare for our call with you!"
+                      error={formState.errors.message || ''}
+                      touched={!!formState.touched.message}
+                      required
+                      validators={formValidators.message}
+                    />
+                  </div>
+                  
+                  <LoadingButton 
+                    type="submit" 
+                    isLoading={formState.isSubmitting}
+                    loadingText="Sending..."
+                    className="text-base py-3 px-8 transition-all duration-300 relative overflow-hidden group w-full md:w-auto min-w-40"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)',
+                      backdropFilter: 'blur(15px)',
+                      WebkitBackdropFilter: 'blur(15px)',
+                      border: 'none',
+                      boxShadow: '0 8px 32px rgba(119, 71, 207, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                    }}
+                  >
+                    {/* Enhanced shimmer effect */}
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"
+                    />
+                    <span className="flex items-center relative z-10 font-semibold justify-center"
+                          style={{
+                            textShadow: '0 0 15px rgba(255,255,255,0.7)'
+                          }}>
+                      Send Message
+                      <motion.svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 ml-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        whileHover={{ x: 4 }}
+                        transition={{ type: "spring", stiffness: 400 }}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </motion.svg>
+                    </span>
+                  </LoadingButton>
+                </form>
+              </div>
+              
+              {/* Contact Information - Размещена в нижней части колонки */}
+              <div 
+                className="mt-20"
+                onMouseEnter={() => setHoveredCard('contact-info')}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                <div className="relative">
+                  {/* Unified container для синхронизации эффектов */}
+                  <div className="relative transform-gpu">
+                    <FuturisticCard 
+                      variant="primary" 
+                      intensity="subtle" 
+                      className="h-[240px]"
+                      disabled={hoveredCard !== 'contact-info'}
+                    >
+                      <div className="p-8 space-y-6 h-full flex flex-col justify-center">
+                        <div>
+                          <h4 className="font-medium mb-1 text-white">Email</h4>
+                          <p className="text-light-gray">hi@architeq.io</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                          <p className="text-light-gray">We work across different time zones</p>
+                        </div>
+                        
+                        <div>
+                          <h4 className="font-medium mb-1 text-white">Languages</h4>
+                          <p className="text-light-gray">English, Ukrainian, Russian</p>
+                        </div>
+                      </div>
+                    </FuturisticCard>
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* Calendly Widget - увеличен размер */}
-            <div>
-              <div className="bg-[#12071A]/80 rounded-lg p-10">
-                <h3 className="section-title-small mb-6 ">Schedule a Call</h3>
-                <p className="text-light-gray mb-4">
-                  Schedule a 30-minute call with our founder.
-                </p>
-                <div className="mt-10 overflow-hidden rounded-lg border border-medium-gray">
-                  <CalendlyWidget 
-                    url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
-                    styles={{
-                      height: "750px",
-                      width: "100%"
-                    }}
-                    prefill={{
-                      name: formData.name,
-                      email: formData.email
-                    }}
-                  />
+            {/* Calendly Widget - Синхронизированная карточка */}
+            <div
+              onMouseEnter={() => setHoveredCard('schedule-call')}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              <div className="relative">
+                {/* Unified container для синхронизации эффектов */}
+                <div className="relative transform-gpu">
+                  <FuturisticCard 
+                    variant="primary" 
+                    intensity="normal" 
+                    className="h-[850px]"
+                    disabled={hoveredCard !== 'schedule-call'}
+                  >
+                    <div className="p-10 h-full flex flex-col">
+                      <h3 className="section-title-small mb-6 text-white text-center" style={{
+                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                      }}>
+                        Schedule a Call
+                      </h3>
+                      <p className="text-light-gray mb-4">
+                        Schedule a 30-minute call with our founder.
+                      </p>
+                      <div className="flex-grow mt-6 overflow-hidden rounded-lg border border-primary/30 bg-black/20 backdrop-blur-sm">
+                        <CalendlyWidget 
+                          url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                          styles={{
+                            height: "650px",
+                            width: "100%"
+                          }}
+                          prefill={{
+                            name: formData.name,
+                            email: formData.email
+                          }}
+                        />
+                      </div>
+                      
+                      <p className="text-xs text-light-gray mt-2 text-center opacity-70">
+                        Powered by Calendly
+                      </p>
+                    </div>
+                  </FuturisticCard>
                 </div>
-                
-                <p className="text-xs text-light-gray mt-2 text-center">
-                  Powered by Calendly
-                </p>
               </div>
             </div>
           </div>

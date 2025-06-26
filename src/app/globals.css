@@ -364,7 +364,7 @@
 
 .case-card-enhanced:hover {
   border-color: rgba(176, 255, 116, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
+  transform: scale(1.02) !important;
   z-index: 20 !important;
   position: relative !important;
   box-shadow: 
@@ -385,7 +385,7 @@
 
 .purple-card-enhanced:hover {
   border-color: rgba(178, 75, 243, 0.5) !important;
-  transform: translateY(-10px) scale(1.02) !important;
+  transform: scale(1.02) !important;
   z-index: 20 !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),

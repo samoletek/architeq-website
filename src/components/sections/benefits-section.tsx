@@ -6,6 +6,8 @@ import { motion, useAnimation } from 'framer-motion';
 import { IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { useScrollAnimation } from '@/lib/utils/animation';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 // Интерфейс для преимущества
 export interface Benefit {
@@ -101,8 +103,7 @@ export default function BenefitsSection({
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1]
+        duration: 0.6
       }
     }
   };
@@ -114,7 +115,6 @@ export default function BenefitsSection({
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.15 + index * 0.12
       }
     })
@@ -128,7 +128,6 @@ export default function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.3 + index * 0.15
       }
     })
@@ -142,7 +141,6 @@ export default function BenefitsSection({
       x: 0,
       transition: {
         duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.45 + index * 0.15
       }
     })
@@ -160,8 +158,15 @@ export default function BenefitsSection({
           animate={titleControls}
           variants={titleVariants}
         >
-          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
-          <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
+          <h2 
+            className="section-title-large font-bold section-title-spacing"
+            style={{
+              textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+            }}
+          >
+            {title}
+          </h2>
+          <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
             {subtitle}
           </p>
         </motion.div>
@@ -175,54 +180,10 @@ export default function BenefitsSection({
               animate={hasAnimated ? "visible" : "hidden"}
               variants={cardVariants}
             >
-              <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
-                bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                before:absolute before:content-[''] before:inset-0 
-                before:bg-[radial-gradient(circle_at_50%_50%,_rgba(119,71,207,0.05)_0%,_transparent_70%)] 
-                backdrop-blur-sm group
-                border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
-                hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                hover:border-primary/40">
-                
-                {/* Эффект свечения для активного элемента */}
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-lg -z-10"
-                  animate={{ 
-                    opacity: [0.5, 0.7, 0.5], 
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity,
-                    ease: "easeInOut" 
-                  }}
-                />
-                
-                {/* Анимированное свечение */}
-                <motion.div 
-                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/40 rounded-lg blur-lg -z-10"
-                  animate={{ 
-                    opacity: [0.6, 0.9, 0.6] 
-                  }}
-                  transition={{ 
-                    duration: 4, 
-                    repeat: Infinity,
-                    ease: "easeInOut" 
-                  }}
-                />
-
-                {/* Свечение при наведении */}
-                <motion.div 
-                  className="absolute -inset-6 bg-gradient-to-br from-[#1F0A2E]/0 via-[#180033]/0 to-[#121212]/0 rounded-lg blur-3xl -z-10 opacity-0 group-hover:opacity-100"
-                  whileHover={{
-                    opacity: 1,
-                    background: "radial-gradient(circle, rgba(31,10,46,0.6) 0%, rgba(24,0,51,0.4) 50%, rgba(18,7,26,0.3) 100%)",
-                    transition: { duration: 0.3 }
-                  }}
-                />
-                
-                <div className="relative z-10">
+              <SimpleGlowCard className="h-full">
+                <div className="p-6 sm:p-8 h-full">
                   <motion.h3 
-                    className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line"
+                    className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line text-white"
                     custom={index}
                     initial="hidden"
                     animate={hasAnimated ? "visible" : "hidden"}
@@ -241,7 +202,7 @@ export default function BenefitsSection({
                     {benefit.description}
                   </motion.p>
                 </div>
-              </div>
+              </SimpleGlowCard>
             </motion.div>
           ))}
         </div>
@@ -262,20 +223,15 @@ export function CompactBenefitsSection({
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {benefits?.map((benefit, index) => (
-          <div 
+          <SimpleGlowCard 
             key={index}
-            className="relative rounded-lg p-4 flex items-start transition-all duration-300 overflow-hidden group
-                      bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                      border border-transparent hover:border-primary/20"
+            className="flex items-start"
           >
-            {/* Компактное свечение для маленьких карточек */}
-            <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/25 via-[#180033]/20 to-[#121212]/30 rounded-lg blur-sm -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            <div className="relative z-10 w-full">
-              <h4 className="text-base sm:text-lg font-semibold mb-2">{benefit.title}</h4>
+            <div className="p-4 w-full">
+              <h4 className="text-base sm:text-lg font-semibold mb-2 text-white">{benefit.title}</h4>
               <p className="text-light-gray text-xs sm:text-sm font-sans">{benefit.description}</p>
             </div>
-          </div>
+          </SimpleGlowCard>
         ))}
       </div>
     </div>
@@ -293,22 +249,18 @@ export function HorizontalBenefits({
   return (
     <div className={cn("flex flex-col md:flex-row gap-6", className)}>
       {benefits.map((benefit, index) => (
-        <div 
-          key={index}
-          className="relative flex-1 rounded-lg p-5 sm:p-6 transition-all duration-300 overflow-hidden group
-                    bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                    border border-primary/10 hover:border-primary/30"
-        >
-          {/* Горизонтальное свечение */}
-          <div className="absolute -inset-0.5 bg-gradient-to-br from-[#1F0A2E]/30 via-[#180033]/25 to-[#121212]/35 rounded-lg blur-md -z-10 opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          <div className="relative z-10">
-            <h4 className="text-lg sm:text-xl font-semibold mb-4 group-hover:text-secondary transition-colors duration-300">
-              {benefit.title}
-            </h4>
-            <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
-          </div>
-        </div>
+        <TravelingBorderGlow key={index} variant="primary" intensity="subtle" className="flex-1 rounded-2xl group">
+          <SimpleGlowCard 
+            className="flex-1"
+          >
+            <div className="p-5 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-semibold mb-4 text-white hover:text-secondary transition-colors duration-300">
+                {benefit.title}
+              </h4>
+              <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
+            </div>
+          </SimpleGlowCard>
+        </TravelingBorderGlow>
       ))}
     </div>
   );

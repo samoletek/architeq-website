@@ -6,6 +6,8 @@ import { useScrollAnimation } from '@/lib/utils/animation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 // Team member interface
 interface TeamMember {
@@ -179,7 +181,6 @@ function HeroSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -200,8 +201,7 @@ function HeroSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
         <motion.div 
           className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
@@ -215,8 +215,7 @@ function HeroSection() {
           transition={{
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -228,7 +227,7 @@ function HeroSection() {
           variants={titleVariants}
         >
           <h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight"
+            className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
             style={{
               textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
             }}
@@ -236,7 +235,7 @@ function HeroSection() {
             About Architeq
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12 leading-relaxed">
+          <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
             We architect digital systems that flex, scale, and adapt — for companies across industries.
           </p>
 
@@ -295,7 +294,6 @@ function MissionVisionSection() {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: index * 0.2
       }
     })
@@ -337,13 +335,13 @@ function MissionVisionSection() {
               <h3 className="text-3xl font-bold mb-6 text-white">The Problem We Saw</h3>
               <div className="space-y-6 text-white/80 leading-relaxed">
               <p>
-                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="text-primary font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
+                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
                 </p>
                 <p>
-                  These scaling businesses were caught in a trap — spending up to <span className="text-primary font-medium">70% of their time</span> <span className="text-primary font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
+                  These scaling businesses were caught in a trap — spending up to <span className="font-medium">70% of their time</span> <span className="font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
                 </p>
                 <p>
-                  We built Architeq to <span className="text-primary font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="text-primary font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
+                  We built Architeq to <span className="font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
                 </p>
               </div>
             </motion.div>
@@ -356,35 +354,23 @@ function MissionVisionSection() {
               variants={contentVariants}
               className="space-y-8"
             >
-              <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
-                  animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                />
-                
-                <div className="relative z-10">
+              <SimpleGlowCard variant="primary">
+                <div className="p-8">
                   <h4 className="text-2xl font-bold mb-4 text-primary">Our Mission</h4>
                   <p className="text-white/80 leading-relaxed">
                     We&apos;re on a mission to liberate ambitious businesses from operational quicksand. By crafting intelligent automation systems, we redirect human talent toward what matters most — strategic thinking and innovation.
                   </p>
                 </div>
-              </div>
+              </SimpleGlowCard>
 
-              <div className="bg-[linear-gradient(to_bottom,_#2A0A2A_0%,_#170A24_50%,_#12071A_100%)] rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-2xl"
-                  animate={{ opacity: [0.5, 0.8, 0.5] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                />
-                
-                <div className="relative z-10">
+              <SimpleGlowCard variant="primary">
+                <div className="p-8">
                   <h4 className="text-2xl font-bold mb-4 text-primary">Our Vision</h4>
                   <p className="text-white/80 leading-relaxed">
                     We&apos;re building toward a world where growing businesses operate through seamlessly integrated systems, not spreadsheets and manual workarounds. Where leadership teams spend Monday mornings discussing market opportunities, not fixing broken processes.
                   </p>
                 </div>
-              </div>
+              </SimpleGlowCard>
             </motion.div>
           </div>
         </div>
@@ -482,7 +468,6 @@ function ValuesSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -503,8 +488,7 @@ function ValuesSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
         <motion.div 
           className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full blur-3xl opacity-20"
@@ -518,8 +502,7 @@ function ValuesSection() {
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -558,7 +541,7 @@ function ValuesSection() {
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-3xl"
                 animate={{ opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 4, repeat: Infinity }}
               />
 
               <div className="relative z-10">
@@ -612,7 +595,7 @@ function ValuesSection() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            transition={{ duration: 0.5 }}
                           >
                             <div className="px-4 pb-4">
                               <p className="text-white leading-relaxed pt-4" dangerouslySetInnerHTML={{
@@ -782,7 +765,6 @@ function TeamSection() {
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut"
       }
     }
   };
@@ -794,7 +776,6 @@ function TeamSection() {
       x: 0,
       transition: {
         duration: 0.3,
-        ease: "easeOut",
         delay: index * 0.05
       }
     })
@@ -865,7 +846,7 @@ function TeamSection() {
                           }}
                           transition={{
                             opacity: { duration: 0.3 },
-                            boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                            boxShadow: { duration: 4, repeat: Infinity }
                           }}
                         />
                       )}
@@ -949,8 +930,7 @@ function TeamSection() {
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ 
                           duration: 0.6, 
-                          ease: [0.25, 0.1, 0.25, 1]
-                        }}
+                                          }}
                         className="w-full"
                       >
                         <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-3xl overflow-hidden border border-white/10 hover:border-secondary/40 transition-all duration-500 shadow-xl shadow-black/20">
@@ -1003,7 +983,7 @@ function TeamSection() {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    transition={{ duration: 0.5 }}
                                     className="mb-6"
                                   >
                                     <div className="border-t border-white/20 pt-6">
@@ -1094,7 +1074,6 @@ function AchievementsSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1106,7 +1085,6 @@ function AchievementsSection() {
       scale: 1,
       transition: {
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.2 + index * 0.1
       }
     })
@@ -1264,7 +1242,6 @@ function MethodologySection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1335,8 +1312,7 @@ function MethodologySection() {
                         transition={{
                           duration: 3,
                           repeat: activeStep === index ? Infinity : 0,
-                          ease: "easeInOut"
-                        }}
+                                          }}
                       >
                         {step.number}
                       </motion.div>
@@ -1363,45 +1339,52 @@ function MethodologySection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden"
                 >
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
-                    animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                  <TravelingBorderGlow 
+                    variant="secondary" 
+                    intensity="normal" 
+                    className="rounded-2xl"
+                  >
+                    <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden">
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
+                        animate={{ opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                      />
 
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-black font-bold text-lg">
-                        {steps[activeStep].number}
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-black font-bold text-lg">
+                            {steps[activeStep].number}
+                          </div>
+                          <h3 
+                            className="text-3xl font-bold text-white"
+                            style={{
+                              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
+                            }}
+                          >
+                            {steps[activeStep].title}
+                          </h3>
+                        </div>
+
+                        <p className="text-white/80 text-lg leading-relaxed mb-6">
+                          {steps[activeStep].description}
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                            <h4 className="text-secondary font-semibold mb-2">Strategic Insight:</h4>
+                            <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].insight}</p>
+                          </div>
+                          
+                          <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                            <h4 className="text-secondary font-semibold mb-2">Key Benefit:</h4>
+                            <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].keyBenefit}</p>
+                          </div>
+                        </div>
                       </div>
-                      <h3 
-                        className="text-3xl font-bold text-white"
-                        style={{
-                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
-                        }}
-                      >
-                        {steps[activeStep].title}
-                      </h3>
                     </div>
-
-                    <p className="text-white/80 text-lg leading-relaxed mb-6">
-                      {steps[activeStep].description}
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-                        <h4 className="text-secondary font-semibold mb-2">Strategic Insight:</h4>
-                        <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].insight}</p>
-                      </div>
-                      
-                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-                        <h4 className="text-secondary font-semibold mb-2">Key Benefit:</h4>
-                        <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].keyBenefit}</p>
-                      </div>
-                    </div>
-                  </div>
+                  </TravelingBorderGlow>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -1671,7 +1654,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
         background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)'
       }}
       layout
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.3 }}
     >
       {/* Dock background glow */}
       <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent rounded-3xl"></div>
@@ -1692,7 +1675,6 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
               repeat: Infinity,
               repeatType: "loop",
               duration: workingTechnologies.length * 2,
-              ease: "linear",
             },
           }}
         >
@@ -1870,7 +1852,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
@@ -1882,7 +1863,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.6, 
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.2
       }
     }
@@ -1895,7 +1875,6 @@ function TechnologyStackSection() {
       y: 0,
       transition: { 
         duration: 0.8, 
-        ease: [0.25, 0.1, 0.25, 1],
         delay: 0.4
       }
     }
@@ -2086,8 +2065,7 @@ function InteractiveApproachSection() {
           transition={{
             duration: 8,
             repeat: Infinity,
-            ease: "easeInOut"
-          }}
+              }}
         />
       </div>
 
@@ -2121,7 +2099,7 @@ function InteractiveApproachSection() {
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+                transition={{ duration: 0.6 }}
                 className="grid grid-cols-1 lg:grid-cols-2 gap-12 h-[500px]"
               >
                 {/* Challenge Side */}
@@ -2130,7 +2108,7 @@ function InteractiveApproachSection() {
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{ duration: 4, repeat: Infinity }}
                     />
                     
                     <div className="relative z-10">
@@ -2171,7 +2149,7 @@ function InteractiveApproachSection() {
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                      transition={{ duration: 4, repeat: Infinity, delay: 2 }}
                     />
                     
                     <div className="relative z-10">
@@ -2275,7 +2253,6 @@ function CTASection() {
       y: 0,
       transition: { 
         duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };
@@ -2288,7 +2265,6 @@ function CTASection() {
       transition: { 
         duration: 0.7,
         delay: 0.2,
-        ease: [0.2, 0.65, 0.3, 0.9]
       }
     }
   };

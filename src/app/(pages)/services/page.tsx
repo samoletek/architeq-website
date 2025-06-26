@@ -7,6 +7,7 @@ import Link from 'next/link';
 import SiteLayout from '@/components/layout/site-layout';
 import { AutomationFlowTimeline } from '@/components/sections/automation-flow-timeline';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 // Типы для данных о услугах
 interface Service {
@@ -144,17 +145,6 @@ function ServiceNavigation({ services, activeIndex, onServiceClick, scrollProgre
                 style={{ height: `${navItemHeight}px` }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(-1)}
-                whileHover={{ 
-                  x: 12,
-                  transition: {
-                    type: "spring",
-                    stiffness: 1000,
-                    damping: 20,
-                    mass: 0.3,
-                    velocity: 15,
-                    duration: 0
-                  }
-                }}
               >
                 <div className="flex-1 flex items-center">
                   <motion.h4 
@@ -556,6 +546,7 @@ function HorizontalServiceCard({ service, isActive, direction, isHovered, onHove
                       style={{
                         boxShadow: isActive ? '0 0 8px rgba(178,75,243,1), 0 0 16px rgba(178,75,243,0.8)' : 'none'
                       }}
+                      whileHover={{ scale: 1.1 }}
                     />
                   </motion.div>
                   <span className="text-white text-base leading-relaxed text-left opacity-95">
@@ -959,13 +950,13 @@ export default function ServicesPage() {
         <section className="py-16 bg-transparent relative z-10">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="section-title-large font-bold text-white mb-6"
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6"
                   style={{
                     textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
                   }}>
                 Our Solutions
               </h2>
-              <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
                 Comprehensive automation solutions designed to transform your business operations
               </p>
             </div>
@@ -995,13 +986,13 @@ export default function ServicesPage() {
         >
           {/* Заголовки */}
           <div className="absolute top-16 left-0 right-0 z-10 text-center">
-            <h3 className="section-title-large font-bold text-white mb-4"
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6"
                 style={{
                   textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
                 }}>
               Solutions
             </h3>
-            <p className="section-subtitle-large text-light-gray opacity-80">
+            <p className="text-xl text-white/70 opacity-80">
               Scroll to explore our services
             </p>
           </div>
@@ -1048,13 +1039,13 @@ export default function ServicesPage() {
       <section className="pt-32 pb-32 bg-dark-gray relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center section-content-spacing">
-            <h2 className="section-title-medium font-bold section-title-spacing"
+            <h2 className="text-4xl md:text-5xl font-bold mb-6"
                 style={{
                   textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                 }}>
               Our Architecture Methodology
             </h2>
-            <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
               We don&apos;t just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
             </p>
           </div>
@@ -1160,10 +1151,14 @@ export default function ServicesPage() {
                   ]
                 }
               ].map((item, index) => (
-                <div
-                  key={index}
-                  className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
-                >
+                <div key={index} className="rounded-2xl">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                    viewport={{ once: true }}
+                    className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
+                  >
                   <div className="flex flex-col">
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-4">
@@ -1241,6 +1236,7 @@ export default function ServicesPage() {
                       })}
                     </div>
                   </div>
+                </motion.div>
                 </div>
               ))}
               </div>
@@ -1249,7 +1245,8 @@ export default function ServicesPage() {
             {/* Architecture Principles - Right Side */}
             <div className="lg:col-span-1 flex items-center">
               <div className="w-full">
-                <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-4 border border-primary/20 relative overflow-hidden">
+                <TravelingBorderGlow variant="secondary" intensity="normal" className="rounded-xl group">
+                  <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-4 border border-primary/20 relative overflow-hidden">
                 
                 {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
@@ -1318,7 +1315,7 @@ export default function ServicesPage() {
                                   transform: isExpanded ? 'scale(1.3)' : 'scale(1)'
                                 }}
                               />
-                              <h4 className="text-white font-semibold text-sm group-hover:text-secondary transition-colors duration-300">
+                              <h4 className="text-white font-semibold text-sm">
                                 {principle.title}
                               </h4>
                             </div>
@@ -1368,6 +1365,7 @@ export default function ServicesPage() {
                   </div>
                   </div>
                 </div>
+                </TravelingBorderGlow>
               </div>
             </div>
           </div>
@@ -1380,13 +1378,13 @@ export default function ServicesPage() {
       {/* CTA section */}
       <section className="section-cta bg-transparent relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="section-title-medium font-bold section-title-spacing"
+          <h2 className="text-4xl md:text-5xl font-bold mb-6"
               style={{
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
               }}>
             Ready to Streamline the Flow?
           </h2>
-          <p className="section-subtitle-small text-light-gray max-w-2xl mx-auto section-button-spacing opacity-90">
+          <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8">
             Trust our team to map your processes and<br />uncover automation potential.
           </p>
           <div className="flex flex-col sm:flex-row justify-center button-gap-default">
