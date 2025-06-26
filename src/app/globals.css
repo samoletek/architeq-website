@@ -366,10 +366,13 @@
   border-color: rgba(176, 255, 116, 0.5) !important;
   transform: scale(1.02) !important;
   z-index: 20 !important;
+  position: relative !important;
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(176, 255, 116, 0.3), 
     0 0 30px rgba(176, 255, 116, 0.2) !important;
+  backdrop-filter: blur(4px) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
 }
 
 /* ========== БАЗОВЫЙ КЛАСС ДЛЯ ФИОЛЕТОВЫХ КАРТОЧЕК ========== */
@@ -388,6 +391,8 @@
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 15px rgba(178, 75, 243, 0.3), 
     0 0 30px rgba(178, 75, 243, 0.2) !important;
+  backdrop-filter: blur(8px) !important;
+  background: rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Алиасы для обратной совместимости */
@@ -487,4 +492,43 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Адаптивные карточки кейсов */
+.case-card-enhanced {
+  min-height: clamp(380px, 24vh, 480px);
+}
+
+/* Специальные размеры для разных экранов */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .case-card-enhanced {
+    min-height: clamp(360px, 22vh, 420px);
+  }
+}
+
+@media (min-width: 1440px) {
+  .case-card-enhanced {
+    min-height: clamp(400px, 26vh, 500px);
+  }
+}
+
+/* Рекламная карточка - фиолетовое свечение */
+.contact-case-card {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative;
+  border: 1.3px solid rgba(178, 75, 243, 0.55) !important;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1), 0 0 18px rgba(178, 75, 243, 0.6) !important;
+}
+
+.contact-case-card:hover {
+  border-color: rgba(178, 75, 243, 0.5) !important;
+  transform: translateY(-10px) scale(1.02) !important;
+  z-index: 20 !important;
+  position: relative !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(178, 75, 243, 0.3), 
+    0 0 30px rgba(178, 75, 243, 0.2) !important;
+  backdrop-filter: blur(8px) !important;
+  background: rgba(0, 0, 0, 0.3) !important;
 }

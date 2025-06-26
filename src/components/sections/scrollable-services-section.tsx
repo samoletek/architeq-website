@@ -62,7 +62,7 @@ const services = [
       'Scalable and customizable solutions',
       'Quick and efficient deployment'
     ],
-    caseStudies: ['ai-voice-bot', 'ai-crm-assistant']
+    caseStudies: ['ai-voice-agent', 'ai-crm-agent']
   },
   {
     id: 'documentation',

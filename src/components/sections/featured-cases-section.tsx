@@ -133,7 +133,7 @@ export default function FeaturedCasesSection({
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
-                <div key={index} className="min-h-[450px]">
+                <div key={index}>
                   <CaseCard 
                     id={cardData.id}
                     title={cardData.title}
@@ -146,7 +146,7 @@ export default function FeaturedCasesSection({
                     tags={cardData.tags}
                     href={`/cases/${cardData.id}`}
                     isCompact={caseCardVariant === 'compact'}
-                    className="case-card-enhanced h-full"
+                    className="case-card-enhanced"
                     index={index}
                     isVisible={isVisible}
                   />
@@ -254,7 +254,6 @@ export default function FeaturedCasesSection({
                 initial="hidden"
                 animate={isVisible ? "visible" : "hidden"}
                 variants={cardVariants}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 + index * 0.1 }}
                 className="min-h-[450px]"
               >
                 <CaseCard 
@@ -269,7 +268,7 @@ export default function FeaturedCasesSection({
                   tags={cardData.tags}
                   href={`/cases/${cardData.id}`}
                   isCompact={caseCardVariant === 'compact'}
-                  className="case-card-enhanced h-full"
+                  className="case-card-enhanced"
                 />
               </motion.div>
             );

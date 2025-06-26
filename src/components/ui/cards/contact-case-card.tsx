@@ -17,7 +17,7 @@ function SimpleMobileContactCard({ className }: ContactCaseCardProps) {
   return (
     <div className={cn("relative", className)}>
       <Link href="/contacts" className="block h-full">
-        <div className="bg-dark-gray rounded-xl border border-gray-600/50 p-3 min-h-[280px] flex flex-col transition-colors duration-200 hover:border-primary/30">
+        <div className="bg-dark-gray rounded-xl border border-gray-600/50 p-3 case-card-enhanced contact-case-card flex flex-col transition-colors duration-200">
           
           {/* Теги */}
           <div className="mb-2">
@@ -94,12 +94,33 @@ function EnhancedDesktopContactCard({
 }: ContactCaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  // Фиолетовые цвета для пятен свечения
+  const purplePalette = ['#B24FF3', '#7743CF', '#9056E3', '#A85FE8'];
+  const getHash = (str: string) => str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const getTwoColors = (key: string) => {
+    const hash = getHash(key);
+    const index1 = hash % purplePalette.length;
+    const index2 = (hash * 7) % purplePalette.length;
+    return [
+      purplePalette[index1],
+      purplePalette[index2 === index1 ? (index2 + 1) % purplePalette.length : index2]
+    ];
+  };
+  const getTwoOffsets = (key: string) => {
+    const hash = getHash(key);
+    return [15 + (hash % 25), 65 + ((hash * 3) % 25)];
+  };
+
+  const gradientKey = 'contact-card-custom';
+  const [color1, color2] = getTwoColors(gradientKey);
+  const [left1, left2] = getTwoOffsets(gradientKey);
+
   // Анимационные варианты
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
-      scale: 1,
+      y: 0,
       transition: {
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],
@@ -113,23 +134,52 @@ function EnhancedDesktopContactCard({
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
-      className={cn('relative transition-all duration-300 h-full', className)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={cn(
+        'relative transition-all duration-300 h-full',
+        className
+      )}
     >
       <Link href="/contacts" className="block h-full">
-        <div className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card min-h-[360px]">
+        <div 
+          className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card case-card-enhanced transition-all duration-300"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Анимированные фиолетовые пятна свечения */}
+          <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+            {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, spotIndex) => (
+              <motion.div
+                key={spotIndex}
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: isHovered ? 0.6 : 0.3, 
+                  height: isHovered ? 'clamp(260px, 18vh, 320px)' : 'clamp(200px, 14vh, 260px)' 
+                }}
+                transition={{ duration: 0.4 }}
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: `${spot.left}%`,
+                  width: 'clamp(180px, 12vh, 240px)',
+                  transform: 'translate(-50%, 50%)',
+                  borderRadius: '9999px',
+                  filter: 'blur(80px)',
+                  background: `radial-gradient(circle, ${spot.color}FF 0%, transparent 70%)`
+                }}
+              />
+            ))}
+          </div>
           
           {/* Теги */}
           <div className="relative z-10 pt-4 px-5 pb-3">
             <div className="flex flex-wrap gap-1.5">
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Custom
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Consultation
               </span>
-              <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded border border-white/10">
+              <span className="bg-black/60 backdrop-blur-sm text-white text-[10px] px-1.5 py-0.5 rounded border border-white/10">
                 Your Industry
               </span>
             </div>

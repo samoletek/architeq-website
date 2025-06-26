@@ -9,6 +9,9 @@ import { ReactNode, useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { cn } from '@/lib/utils/utils';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { BreadcrumbSchema } from '@/lib/seo/schema';
+import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
 
 // Типы для описания секций страницы услуги
 export interface ServiceBenefit {
@@ -84,6 +87,9 @@ export default function ServiceTemplate({
   additionalSections,
   additionalSectionsPosition = 'after-features',
 }: ServiceTemplateProps) {
+  
+  // Device detection for mobile optimizations
+  const { isMobile, isLowPerformance } = useDeviceDetection();
   
   // Функция для рендеринга иконок - полный набор из всех services
   const renderIcon = (icon: string) => {
@@ -206,8 +212,15 @@ export default function ServiceTemplate({
     }
   };
 
+  // Генерируем breadcrumbs для текущей страницы услуги
+  const breadcrumbs = generateServiceBreadcrumbs(serviceId);
+
   return (
-    <SiteLayout>
+    <>
+      {/* BreadcrumbSchema для SEO */}
+      <BreadcrumbSchema items={breadcrumbs} />
+      
+      <SiteLayout>
       {/* Hero section */}
       <section className="section-hero bg-transparent relative overflow-hidden">
         <div className="container mx-auto px-4">
@@ -306,6 +319,8 @@ export default function ServiceTemplate({
           title="Our Process"
           subtitle="We follow a proven methodology to ensure successful implementation tailored to your business needs."
           processes={processes}
+          isMobile={isMobile}
+          isLowPerformance={isLowPerformance}
         />
       )}
 
@@ -325,6 +340,8 @@ export default function ServiceTemplate({
           title="Frequently Asked Questions"
           subtitle="Common questions about our services and solutions."
           faqs={faqs}
+          isMobile={isMobile}
+          isLowPerformance={isLowPerformance}
         />
       )}
 
@@ -334,6 +351,7 @@ export default function ServiceTemplate({
       {/* CTA section */}
       <CTASection />
     </SiteLayout>
+    </>
   );
 }
 
@@ -367,7 +385,7 @@ function OverviewSection({
   return (
     <section 
       ref={ref}
-      className="py-32 bg-transparent relative overflow-hidden"
+      className="pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32 bg-transparent relative overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
@@ -412,11 +430,11 @@ function OverviewSection({
 function BenefitsSection({ 
   title, 
   subtitle, 
-  benefits 
+  benefits
 }: { 
   title: string; 
   subtitle: string; 
-  benefits: ServiceBenefit[]; 
+  benefits: ServiceBenefit[];
 }) {
   const { ref, isVisible, visibilityRatio } = useScrollAnimation({
     threshold: 0.3,
@@ -495,7 +513,7 @@ function BenefitsSection({
   return (
     <section 
       ref={ref}
-      className="section-benefits relative overflow-hidden pt-40 pb-48 bg-dark-gray"
+      className="section-benefits relative overflow-hidden pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32 bg-dark-gray"
     >
       <div className="container mx-auto">
         <motion.div
@@ -663,7 +681,7 @@ function FeaturesSection({
   return (
     <section 
       ref={ref}
-      className="section-solutions bg-transparent relative overflow-hidden"
+      className="section-solutions pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32 bg-transparent relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-dark-purple/5">
         <motion.div 
@@ -726,14 +744,14 @@ function FeaturesSection({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
                 {/* Левая колонка - заголовок, описание и ссылка */}
                 <div className="flex flex-col">
-                  <h3 className="text-3xl md:text-4xl font-bold leading-tight text-white mb-8"
+                  <h3 className="text-xl md:text-2xl font-bold leading-tight text-white mb-6"
                       style={{
                         textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
                       }}>
                     {feature.title}
                   </h3>
                   
-                  <p className="text-white/70 text-lg md:text-xl leading-relaxed mb-8">
+                  <p className="text-white/70 text-sm md:text-base leading-relaxed mb-6">
                     {feature.description}
                   </p>
 
@@ -756,7 +774,7 @@ function FeaturesSection({
                     >
                       <Link 
                         href={`/cases/${feature.caseId}`} 
-                        className="inline-flex items-center text-secondary font-medium transition-all duration-300 group text-lg hover:text-secondary/80"
+                        className="inline-flex items-center text-secondary font-medium transition-all duration-300 group text-sm md:text-base hover:text-secondary/80"
                         style={{
                           textShadow: 'none'
                         }}
@@ -791,7 +809,7 @@ function FeaturesSection({
                 <div>
                   {feature.benefits && feature.benefits.length > 0 && (
                     <div>
-                      <h4 className="text-2xl md:text-3xl font-semibold text-white mb-8">Key Benefits:</h4>
+                      <h4 className="text-lg md:text-xl font-semibold text-white mb-6">Key Benefits:</h4>
                       <div className="space-y-6">
                         {feature.benefits.map((benefit, benefitIndex) => (
                           <motion.div 
@@ -833,7 +851,7 @@ function FeaturesSection({
                                 }}
                               />
                             </motion.div>
-                            <span className="text-white text-lg leading-relaxed">
+                            <span className="text-white text-sm md:text-base leading-relaxed">
                               {benefit}
                             </span>
                           </motion.div>
@@ -859,11 +877,15 @@ function FeaturesSection({
 function ProcessSection({ 
   title, 
   subtitle, 
-  processes 
+  processes,
+  isMobile = false,
+  isLowPerformance = false
 }: { 
   title: string; 
   subtitle: string; 
-  processes: ServiceProcess[]; 
+  processes: ServiceProcess[];
+  isMobile?: boolean;
+  isLowPerformance?: boolean;
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -880,55 +902,31 @@ function ProcessSection({
     }
   }, [isVisible, hasAnimated]);
 
-// Автоматический переход к следующей секции при достижении последнего шага
-useEffect(() => {
-  const processesLength = processes.length;
-  
-  if (activeStep === processesLength - 1) {
-    const timer = setTimeout(() => {
-      // Плавный скролл к следующей секции
-      const currentRef = ref.current;
-      if (currentRef) {
-        const nextSection = currentRef.nextElementSibling as HTMLElement;
-        if (nextSection) {
-          nextSection.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }
-    }, 3000); // Задержка 3 секунды на последнем шаге
-
-    return () => clearTimeout(timer);
-  }
-}, [activeStep, processes, ref]);
-
-  // Автоматическое переключение при скролле (опционально)
+  // Автопереключатель шагов - отключаем на мобильных для экономии батареи  
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const sectionElement = ref.current;
-      
-      if (sectionElement) {
-        const sectionTop = sectionElement.offsetTop;
-        const sectionHeight = sectionElement.offsetHeight;
-        const relativeScroll = scrollPosition - sectionTop;
-        
-        // Вычисляем активный шаг на основе позиции скролла
-        if (relativeScroll > 0 && relativeScroll < sectionHeight) {
-          const stepHeight = sectionHeight / processes.length;
-          const newActiveStep = Math.floor(relativeScroll / stepHeight);
-          
-          if (newActiveStep >= 0 && newActiveStep < processes.length && newActiveStep !== activeStep) {
-            setActiveStep(newActiveStep);
+    if (isMobile || isLowPerformance) return; // Skip auto-switching on mobile/low-performance devices
+    
+    const processesLength = processes.length;
+    
+    if (activeStep === processesLength - 1) {
+      const timer = setTimeout(() => {
+        // Плавный скролл к следующей секции
+        const currentRef = ref.current;
+        if (currentRef) {
+          const nextSection = currentRef.nextElementSibling as HTMLElement;
+          if (nextSection) {
+            nextSection.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
           }
         }
-      }
-    };
+      }, 3000); // Задержка 3 секунды на последнем шаге
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeStep, processes.length, ref]);
+      return () => clearTimeout(timer);
+    }
+  }, [activeStep, processes, ref, isMobile, isLowPerformance]);
+
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -972,7 +970,7 @@ useEffect(() => {
   return (
     <section 
       ref={ref}
-      className="pt-48 pb-96 bg-dark-gray relative overflow-hidden"
+      className="pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32 bg-dark-gray relative overflow-hidden"
     >
       <div className="container mx-auto px-4 relative z-10">
         {/* Заголовок секции */}
@@ -988,17 +986,18 @@ useEffect(() => {
               }}>
             {title}
           </h2>
-          <p className="text-light-gray text-lg md:text-2xl max-w-3xl mx-auto opacity-90">
+          <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto opacity-90">
             {subtitle}
           </p>
         </motion.div>
 
         {/* Основной контент с навигацией */}
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-12 lg:gap-16`}>
             
-            {/* Левая колонка - Навигационное меню */}
-            <div className="lg:col-span-1 -ml-8">
+            {/* Левая колонка - Навигационное меню (скрыта на мобильных) */}
+            {!isMobile && (
+              <div className="lg:col-span-1 -ml-8">
               <div className="sticky top-24">
                 <div className="space-y-2 mb-8">
                   {processes.map((process, index) => (
@@ -1020,7 +1019,7 @@ useEffect(() => {
                            style={{ width: 'calc(80% + 20px)' }}></div>
                       
                       {/* Заголовок без нумерации - выровнен с Progress */}
-                      <h3 className="text-lg md:text-xl font-medium transition-colors duration-300 relative z-10 group-hover:text-black font-mono">
+                      <h3 className="text-base md:text-lg font-medium transition-colors duration-300 relative z-10 group-hover:text-black font-mono">
                         {process.title}
                       </h3>
                     </motion.button>
@@ -1046,10 +1045,11 @@ useEffect(() => {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Правая колонка - Детальное описание активного шага */}
-            <div className="lg:col-span-2 -mr-8">
+            <div className={`${isMobile ? 'col-span-1' : 'lg:col-span-2'} ${isMobile ? '' : '-mr-8'}`}>
               <div className="sticky top-24">
                 {/* Свечение только за блоком */}
                 <div className="absolute -inset-4 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
@@ -1074,7 +1074,7 @@ useEffect(() => {
                         <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mr-6 font-bold text-lg text-black">
                           {processes[activeStep].step}
                         </div>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white"
+                        <h3 className="text-2xl md:text-3xl font-bold text-white"
                             style={{
                               textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                             }}>
@@ -1086,7 +1086,7 @@ useEffect(() => {
                       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                         {/* Левая колонка - описание (3/5 = 60%) */}
                         <div className="lg:col-span-3">
-                          <p className="text-white text-lg md:text-xl leading-relaxed">
+                          <p className="text-white text-base md:text-lg leading-relaxed">
                             {processes[activeStep].description}
                           </p>
                         </div>
@@ -1210,7 +1210,7 @@ function CaseStudiesSection({
   return (
     <section 
       ref={ref}
-      className="section-cases bg-[#121212] pt-48 pb-64"
+      className="section-cases bg-[#121212] pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32"
     >
       <div className="container mx-auto px-4">
         <motion.div
@@ -1223,7 +1223,7 @@ function CaseStudiesSection({
           <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
         </motion.div>
         
-        <div className={cn("grid gap-8", gridCols)}>
+        <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
           {caseStudies.map((caseStudy, index) => (
             <motion.div
               key={index}
@@ -1269,11 +1269,15 @@ function CaseStudiesSection({
 function FAQSection({ 
   title, 
   subtitle, 
-  faqs 
+  faqs,
+  isMobile = false,
+  isLowPerformance = false
 }: { 
   title: string; 
   subtitle: string; 
-  faqs: ServiceFAQ[]; 
+  faqs: ServiceFAQ[];
+  isMobile?: boolean;
+  isLowPerformance?: boolean;
 }) {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -1305,21 +1309,23 @@ function FAQSection({
     };
   }, []);
 
-  // Auto-carousel - completely independent of scroll
+  // Auto-carousel - отключаем на мобильных для экономии батареи
   useEffect(() => {
+    if (isMobile || isLowPerformance) return; // Skip auto-carousel on mobile/low-performance devices
+    
     const autoInterval = setInterval(() => {
       setActiveQuestion(prev => (prev + 1) % faqs.length);
     }, 5000);
 
     return () => clearInterval(autoInterval);
-  }, [faqs.length]);
+  }, [faqs.length, isMobile, isLowPerformance]);
 
   // Функция для переключения активного вопроса
   const handleQuestionClick = (index: number) => {
     setActiveQuestion(index);
   };
 
-  // Функция для вычисления позиции и трансформации карточки (больше видимого пространства)
+  // Функция для вычисления позиции и трансформации карточки
   const getCardTransform = (index: number) => {
     const diff = index - activeQuestion;
     let normalizedDiff = diff;
@@ -1331,29 +1337,55 @@ function FAQSection({
       normalizedDiff = diff + faqs.length;
     }
     
+    // Упрощенная версия для мобильных без 3D эффектов
+    if (isMobile || isLowPerformance) {
+      if (normalizedDiff === 0) {
+        return {
+          transform: 'translateY(0%) scale(1)',
+          opacity: 1,
+          zIndex: 10,
+        };
+      } else if (normalizedDiff === -1) {
+        return {
+          transform: 'translateY(-50%) scale(0.9)',
+          opacity: 0.7,
+          zIndex: 5,
+        };
+      } else if (normalizedDiff === 1) {
+        return {
+          transform: 'translateY(50%) scale(0.9)',
+          opacity: 0.7,
+          zIndex: 5,
+        };
+      } else {
+        return {
+          transform: normalizedDiff < 0 ? 'translateY(-100%)' : 'translateY(100%)',
+          opacity: 0,
+          zIndex: 1,
+        };
+      }
+    }
+    
+    // Полная версия с 3D эффектами для десктопа
     if (normalizedDiff === 0) {
-      // Активная карточка в центре
       return {
         transform: 'translateY(0%) scale(1) rotateX(0deg)',
         opacity: 1,
         zIndex: 10,
       };
     } else if (normalizedDiff === -1) {
-      // Предыдущая карточка - больше видимого пространства
       return {
         transform: 'translateY(-65%) scale(0.85) rotateX(8deg)',
         opacity: 0.65,
         zIndex: 5,
       };
     } else if (normalizedDiff === 1) {
-      // Следующая карточка - больше видимого пространства
       return {
         transform: 'translateY(65%) scale(0.85) rotateX(-8deg)',
         opacity: 0.65,
         zIndex: 5,
       };
     } else {
-      // Все остальные карточки полностью скрыты
       return {
         transform: normalizedDiff < 0 
           ? 'translateY(-140%) scale(0.7) rotateX(20deg)'
@@ -1390,7 +1422,7 @@ function FAQSection({
   return (
     <section 
       ref={sectionRef}
-      className="bg-dark-gray relative overflow-hidden py-16"
+      className="bg-dark-gray relative overflow-hidden pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32"
       style={{ minHeight: '100vh' }}
     >
       <div className="container mx-auto px-4 relative z-10 w-full">
@@ -1406,15 +1438,17 @@ function FAQSection({
               }}>
             {title}
           </h2>
-          <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+          <p className="text-light-gray text-base md:text-lg max-w-3xl mx-auto opacity-90">
             {subtitle}
           </p>
         </motion.div>
 
         <div className="max-w-7xl mx-auto h-full">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
+          <div className={`${isMobile ? 'flex flex-col' : 'grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center'} h-full`}>
             
-            <div className="lg:col-span-1 flex justify-center">
+            {/* Левая колонка - список вопросов (скрыта на мобильных) */}
+            {!isMobile && (
+              <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
                 <div className="space-y-2">
                   {faqs.map((faq, index) => (
@@ -1458,7 +1492,7 @@ function FAQSection({
                         <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                       )}
                       
-                      <span className="relative z-10 font-medium text-base md:text-lg leading-relaxed block">
+                      <span className="relative z-10 font-medium text-sm md:text-base leading-relaxed block">
                         {faq.question}
                       </span>
                       
@@ -1497,11 +1531,12 @@ function FAQSection({
                   </button>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             <div className="lg:col-span-2 flex items-center justify-center">
               <div className="relative w-full" style={{ height: '400px' }}>
-                <div className="relative h-full perspective-1000">
+                <div className={`relative h-full ${isMobile || isLowPerformance ? '' : 'perspective-1000'}`}>
                   {faqs.map((faq, index) => {
                     const transform = getCardTransform(index);
                     
@@ -1547,7 +1582,7 @@ function FAQSection({
                           
                           <div className="flex-1">
                             <motion.h3 
-                              className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-white"
+                              className="text-xl md:text-2xl font-bold mb-6 leading-tight text-white"
                               style={{
                                 textShadow: activeQuestion === index 
                                   ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
@@ -1557,7 +1592,7 @@ function FAQSection({
                               {faq.question}
                             </motion.h3>
 
-                            <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+                            <p className="text-white/90 text-base md:text-lg leading-relaxed">
                               {faq.answer}
                             </p>
                           </div>
@@ -1569,18 +1604,47 @@ function FAQSection({
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.5, delay: 0.2 }}
                             >
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center text-secondary text-sm font-medium">
-                                  <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
-                                  Have more questions?
+                              {/* Mobile navigation inside the card */}
+                              {isMobile ? (
+                                <div className="flex justify-center items-center gap-8">
+                                  <button
+                                    onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
+                                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                                  >
+                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                    Previous
+                                  </button>
+
+                                  <span className="text-white/50 text-sm font-mono">
+                                    {activeQuestion + 1} / {faqs.length}
+                                  </span>
+
+                                  <button
+                                    onClick={() => handleQuestionClick((activeQuestion + 1) % faqs.length)}
+                                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                                  >
+                                    Next
+                                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                  </button>
                                 </div>
-                                <Link 
-                                  href="/contacts" 
-                                  className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium"
-                                >
-                                  Contact our team →
-                                </Link>
-                              </div>
+                              ) : (
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center text-secondary text-sm font-medium">
+                                    <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
+                                    Have more questions?
+                                  </div>
+                                  <Link 
+                                    href="/contacts" 
+                                    className="text-secondary hover:text-secondary/80 transition-colors text-sm font-medium"
+                                  >
+                                    Contact our team →
+                                  </Link>
+                                </div>
+                              )}
                             </motion.div>
                           )}
                         </div>
@@ -1589,19 +1653,22 @@ function FAQSection({
                   })}
                 </div>
 
-                <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
-                  {faqs.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleQuestionClick(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        activeQuestion === index 
-                          ? 'bg-secondary shadow-lg' 
-                          : 'bg-white/20 hover:bg-white/40'
-                      }`}
-                    />
-                  ))}
-                </div>
+                {/* Боковые точки навигации (скрыты на мобильных) */}
+                {!isMobile && (
+                  <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
+                    {faqs.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleQuestionClick(index)}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          activeQuestion === index 
+                            ? 'bg-secondary shadow-lg' 
+                            : 'bg-white/20 hover:bg-white/40'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1645,7 +1712,7 @@ function CTASection() {
   return (
     <section 
       ref={ref}
-      className="section-cta bg-transparent relative overflow-hidden"
+      className="section-cta pt-20 sm:pt-24 md:pt-32 pb-20 sm:pb-24 md:pb-32 bg-transparent relative overflow-hidden"
     >
       <div 
         className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full opacity-5 blur-[100px]"
