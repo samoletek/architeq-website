@@ -94,6 +94,27 @@ function EnhancedDesktopContactCard({
 }: ContactCaseCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
+  // Фиолетовые цвета для пятен свечения
+  const purplePalette = ['#B24FF3', '#7743CF', '#9056E3', '#A85FE8'];
+  const getHash = (str: string) => str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const getTwoColors = (key: string) => {
+    const hash = getHash(key);
+    const index1 = hash % purplePalette.length;
+    const index2 = (hash * 7) % purplePalette.length;
+    return [
+      purplePalette[index1],
+      purplePalette[index2 === index1 ? (index2 + 1) % purplePalette.length : index2]
+    ];
+  };
+  const getTwoOffsets = (key: string) => {
+    const hash = getHash(key);
+    return [15 + (hash % 25), 65 + ((hash * 3) % 25)];
+  };
+
+  const gradientKey = 'contact-card-custom';
+  const [color1, color2] = getTwoColors(gradientKey);
+  const [left1, left2] = getTwoOffsets(gradientKey);
+
   // Анимационные варианты
   const cardVariants = {
     hidden: { opacity: 0, y: 40 },
@@ -113,13 +134,41 @@ function EnhancedDesktopContactCard({
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
-      className={cn('relative transition-all duration-300 h-full', className)}
-      style={{ zIndex: isHovered ? 999 : 'auto' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={cn(
+        'relative transition-all duration-300 h-full',
+        className
+      )}
     >
       <Link href="/contacts" className="block h-full">
-        <div className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card case-card-enhanced overflow-hidden border transition-all duration-300">
+        <div 
+          className="relative bg-dark-gray rounded-xl h-full flex flex-col contact-case-card case-card-enhanced transition-all duration-300"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Анимированные фиолетовые пятна свечения */}
+          <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+            {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, spotIndex) => (
+              <motion.div
+                key={spotIndex}
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: isHovered ? 0.6 : 0.3, 
+                  height: isHovered ? 'clamp(260px, 18vh, 320px)' : 'clamp(200px, 14vh, 260px)' 
+                }}
+                transition={{ duration: 0.4 }}
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: `${spot.left}%`,
+                  width: 'clamp(180px, 12vh, 240px)',
+                  transform: 'translate(-50%, 50%)',
+                  borderRadius: '9999px',
+                  filter: 'blur(80px)',
+                  background: `radial-gradient(circle, ${spot.color}FF 0%, transparent 70%)`
+                }}
+              />
+            ))}
+          </div>
           
           {/* Теги */}
           <div className="relative z-10 pt-4 px-5 pb-3">

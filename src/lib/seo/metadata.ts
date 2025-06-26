@@ -16,7 +16,21 @@ export const siteMetadata = {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://architeq.io',
   defaultTitle: 'Architeq | Business Process Automation',
   defaultDescription: 'Business process automation for small and medium businesses. Expertise in CRM integration, document and form creation, AI solutions.',
-  defaultKeywords: ['business automation', 'CRM integration', 'document automation', 'AI solutions', 'business process'],
+  defaultKeywords: [
+    'business automation', 
+    'CRM integration', 
+    'document automation', 
+    'AI solutions', 
+    'business process',
+    'workflow optimization',
+    'AI agents',
+    'process automation',
+    'business intelligence',
+    'no-code solutions',
+    'API integration',
+    'voice automation',
+    'predictive analytics'
+  ],
   defaultOgImage: '/images/og-image.jpg',
   defaultLocale: 'en',
 };
@@ -61,6 +75,20 @@ export function generateMetadata(pageMetadata: Partial<PageMetadata> = {}): Meta
     ],
     creator: siteMetadata.siteName,
     publisher: siteMetadata.siteName,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    },
     openGraph: {
       title,
       description: meta.description,
@@ -83,12 +111,24 @@ export function generateMetadata(pageMetadata: Partial<PageMetadata> = {}): Meta
       card: 'summary_large_image',
       title,
       description: meta.description,
+      creator: '@architeq_io',
+      site: '@architeq_io',
       ...(meta.ogImage && {
         images: [meta.ogImage],
       }),
     },
     alternates: {
       canonical: meta.canonicalUrl,
+    },
+    other: {
+      // AI-специфичные мета-теги для лучшей индексации
+      'citation-title': title,
+      'citation-description': meta.description,
+      'semantic-richness': 'high',
+      'entity-type': 'organization',
+      'topic-category': 'business-automation',
+      'content-authority': 'expert',
+      'ai-friendly': 'true'
     },
   };
 }

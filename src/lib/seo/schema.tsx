@@ -108,10 +108,33 @@ export function ServiceSchema({
       "logo": {
         "@type": "ImageObject",
         "url": `${siteMetadata.siteUrl}/images/logo.png`
-      }
+      },
+      "url": siteMetadata.siteUrl
     },
     "serviceType": serviceType,
     "url": url,
+    "category": "Technology Services",
+    "audience": {
+      "@type": "BusinessAudience",
+      "audienceType": "Small and Medium Businesses"
+    },
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceUrl": url,
+      "serviceType": "Online Service"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": `${name} - Service Offerings`
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "Architeq"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "url": url
+    },
     ...(imageUrl && { "image": imageUrl }),
     ...(areaServed && { 
       "areaServed": areaServed.map(area => ({
@@ -174,6 +197,73 @@ export function OrganizationSchema({
     "description": description,
     "url": url,
     "logo": logo || `${siteMetadata.siteUrl}/images/logo.png`,
+    "slogan": "Architect your workflow. Scale with confidence",
+    "knowsAbout": [
+      "Business Process Automation",
+      "CRM Integration",
+      "Document Automation", 
+      "AI Solutions",
+      "Workflow Optimization",
+      "API Integration",
+      "No-Code Solutions",
+      "Business Intelligence",
+      "AI Agents",
+      "Voice Automation",
+      "Predictive Analytics"
+    ],
+    "areaServed": [
+      {
+        "@type": "Country",
+        "name": "United States"
+      },
+      {
+        "@type": "Country", 
+        "name": "Canada"
+      },
+      {
+        "@type": "Country",
+        "name": "United Kingdom"
+      }
+    ],
+    "serviceType": "Technology Consulting",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Business Automation Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "CRM Integration Services",
+            "description": "Custom CRM integration and automation solutions"
+          }
+        },
+        {
+          "@type": "Offer", 
+          "itemOffered": {
+            "@type": "Service",
+            "name": "AI-Powered Solutions",
+            "description": "Artificial intelligence implementation for business automation"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service", 
+            "name": "Document Automation",
+            "description": "Automated document generation and processing systems"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service", 
+            "name": "Business Process Automation",
+            "description": "End-to-end workflow automation and optimization"
+          }
+        }
+      ]
+    },
     ...(foundingDate && { "foundingDate": foundingDate }),
     ...(founders && {
       "founders": founders.map(founder => ({
@@ -272,6 +362,82 @@ export function BreadcrumbSchema({
       "name": item.name,
       "item": item.url
     }))
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+    />
+  );
+}
+
+/**
+ * Свойства для ProfessionalServiceSchema
+ */
+interface ProfessionalServiceSchemaProps extends BaseSchemaProps {
+  name: string;
+  description: string;
+  serviceOutput?: string;
+  serviceArea?: string[];
+  provider: string;
+  hoursAvailable?: {
+    opens: string;
+    closes: string;
+    dayOfWeek: string[];
+  };
+}
+
+/**
+ * Схема данных для профессиональных услуг (улучшенная для AI)
+ */
+export function ProfessionalServiceSchema({
+  name,
+  description,
+  url,
+  serviceOutput,
+  serviceArea,
+  provider,
+  hoursAvailable
+}: ProfessionalServiceSchemaProps) {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": name,
+    "description": description,
+    "url": url,
+    "provider": {
+      "@type": "Organization",
+      "name": provider,
+      "url": siteMetadata.siteUrl
+    },
+    "serviceType": "Business Automation",
+    "category": ["Technology Consulting", "Business Process Automation", "AI Implementation"],
+    "audience": {
+      "@type": "BusinessAudience",
+      "audienceType": "Small and Medium Businesses",
+      "geographicArea": "United States"
+    },
+    "additionalType": "https://schema.org/TechnicalService",
+    "potentialAction": {
+      "@type": "ContactAction",
+      "target": `${siteMetadata.siteUrl}/contacts`
+    },
+    ...(serviceOutput && { "serviceOutput": serviceOutput }),
+    ...(serviceArea && {
+      "serviceArea": serviceArea.map(area => ({
+        "@type": "State",
+        "name": area
+      }))
+    }),
+    ...(hoursAvailable && {
+      "hoursAvailable": {
+        "@type": "OpeningHoursSpecification",
+        "opens": hoursAvailable.opens,
+        "closes": hoursAvailable.closes,
+        "dayOfWeek": hoursAvailable.dayOfWeek
+      }
+    })
   };
 
   return (

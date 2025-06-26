@@ -78,11 +78,11 @@ const defaultTestimonials: Testimonial[] = [
   },
   {
     id: 2,
-    quote: "Thanks to Architeq's custom AI bot, we handle 70% more client inquiries without expanding our team — faster responses, happier customers.",
+    quote: "Thanks to Architeq's custom AI agent, we handle 70% more client inquiries without expanding our team — faster responses, happier customers.",
     author: "Alexandr Alexeyev",
     title: "CEO at Up-Struct LLC",
     image: "/images/testimonials/maria-rodriguez.jpg",
-    highlightedPhrases: ["AI bot", "faster responses", "happier customers"]
+    highlightedPhrases: ["AI agent", "faster responses", "happier customers"]
   },
   {
     id: 3,
