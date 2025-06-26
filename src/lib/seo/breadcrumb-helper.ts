@@ -22,7 +22,7 @@ export function generateBreadcrumbs(path: string): BreadcrumbItem[] {
   
   let currentPath = '';
   
-  pathParts.forEach((part, index) => {
+  pathParts.forEach((part) => {
     currentPath += `/${part}`;
     
     // Преобразуем slug в читаемый заголовок
