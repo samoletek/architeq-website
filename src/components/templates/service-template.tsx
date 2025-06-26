@@ -252,6 +252,34 @@ export default function ServiceTemplate({
         />
       )}
 
+      {/* Customized Features Section - Separate container */}
+      {overview && overview.features && overview.features.length > 0 && (
+        <section className="py-24 bg-transparent relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  {overview.featuresTitle}
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {overview.features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="p-6 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
+                  >
+                    <h3 className="text-lg font-semibold text-white mb-3">
+                      {feature}
+                    </h3>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Benefits section - ТОЧНО КАК НА ГЛАВНОЙ СТРАНИЦЕ */}
       {benefits && benefits.length > 0 && (
         <BenefitsSection 
@@ -358,7 +386,7 @@ function OverviewSection({
   return (
     <section 
       ref={ref}
-      className="py-48 bg-transparent relative overflow-hidden"
+      className="py-32 bg-transparent relative overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
@@ -392,64 +420,6 @@ function OverviewSection({
               </div>
             </div>
             
-            {/* Features на всю ширину ниже с кастомизируемым заголовком */}
-            {features && features.length > 0 && (
-              <div className="text-center">
-                <h3 className="text-2xl md:text-3xl font-bold mb-12 text-white"
-                    style={{
-                      textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                    }}>
-                  {featuresTitle}
-                </h3>
-                
-                <motion.div
-                  initial="hidden"
-                  animate={isVisible ? "visible" : "hidden"}
-                  className="flex flex-wrap justify-center gap-4 lg:gap-6"
-                >
-                  {features.map((feature, index) => (
-                    <motion.div
-                      key={index}
-                      custom={index}
-                      variants={buttonVariants}
-                      className={`
-                        px-6 py-3 rounded-lg transition-all duration-300 relative group border cursor-default
-                        text-white border-transparent
-                      `}
-                    >
-                      {/* Активное свечение */}
-                      <motion.div 
-                        className="absolute inset-0 rounded-lg"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                          boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        }}
-                        animate={{
-                          boxShadow: [
-                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                            '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-                            '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                          ]
-                        }}
-                        transition={{
-                          duration: 0.3,
-                          boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                        }}
-                      />
-                      
-                      <motion.span 
-                        className="relative z-10 font-medium text-sm lg:text-base text-white"
-                        style={{
-                          textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(178,75,243,0.6)'
-                        }}
-                      >
-                        {feature}
-                      </motion.span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            )}
           </motion.div>
         </div>
       </div>
@@ -576,10 +546,6 @@ function BenefitsSection({
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
               variants={cardVariants}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: "easeOut" }
-              }}
             >
               <div className="relative rounded-lg p-6 sm:p-8 h-full transition-all duration-500 overflow-hidden
                 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
@@ -696,10 +662,9 @@ function FeaturesSection({
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],
@@ -1248,10 +1213,9 @@ function CaseStudiesSection({
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],

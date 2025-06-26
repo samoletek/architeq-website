@@ -171,10 +171,15 @@ export default function CTASection({
             animate={isVisible ? "visible" : "hidden"}
             variants={contentVariants}
           >
-            <h2 className={cn(
-              "font-bold mb-8",
-              compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
-            )}>
+            <h2 
+              className={cn(
+                "font-bold mb-8",
+                compact ? "text-2xl" : "text-3xl md:text-4xl lg:text-5xl"
+              )}
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >
               {title}
             </h2>
           

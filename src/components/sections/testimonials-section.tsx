@@ -199,7 +199,12 @@ export default function TestimonialsSection({
       <section className={cn("pt-60 pb-36 bg-site-bg", className)}>
         <div className="container mx-auto px-4">
           <SectionAnimation className="text-center mb-36">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <h2 
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8"
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >{title}</h2>
             {subtitle && (
               <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
                 {subtitle}
@@ -269,7 +274,12 @@ export default function TestimonialsSection({
       <section className={cn("pt-84 pb-48 bg-dark-gray", className)}>
         <div className="container mx-auto px-4">
           <SectionAnimation className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">{title}</h2>
+            <h2 
+              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8"
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >{title}</h2>
             {subtitle && (
               <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto">
                 {subtitle}

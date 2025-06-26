@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { cn } from '@/lib/utils/utils';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 const steps = [
   {
@@ -392,7 +393,8 @@ export default function EnhancedProcessSection() {
                     "w-full",
                     isMobile ? "max-w-2xl px-4" : "max-w-3xl px-8"
                   )}>
-                    <motion.div 
+                    <TravelingBorderGlow variant={isActive ? "primary" : "secondary"} intensity="subtle" className="rounded-2xl group">
+                      <motion.div 
                       className={cn(
                         "rounded-2xl transition-all duration-700",
                         isMobile ? "p-3" : "p-8 lg:p-10",
@@ -461,6 +463,7 @@ export default function EnhancedProcessSection() {
                         {step.description}
                       </motion.p>
                     </motion.div>
+                    </TravelingBorderGlow>
                   </div>
                 </motion.div>
               );

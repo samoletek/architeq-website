@@ -7,6 +7,7 @@ import { IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 // Интерфейс для преимущества
 export interface Benefit {
@@ -161,8 +162,15 @@ export default function BenefitsSection({
           animate={titleControls}
           variants={titleVariants}
         >
-          <h2 className="font-bold mb-4 sm:mb-6 md:mb-8">{title}</h2>
-          <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
+          <h2 
+            className="section-title-large font-bold section-title-spacing"
+            style={{
+              textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+            }}
+          >
+            {title}
+          </h2>
+          <p className="section-subtitle-large text-light-gray max-w-3xl mx-auto">
             {subtitle}
           </p>
         </motion.div>
@@ -245,17 +253,18 @@ export function HorizontalBenefits({
   return (
     <div className={cn("flex flex-col md:flex-row gap-6", className)}>
       {benefits.map((benefit, index) => (
-        <SimpleGlowCard 
-          key={index}
-          className="flex-1"
-        >
-          <div className="p-5 sm:p-6">
-            <h4 className="text-lg sm:text-xl font-semibold mb-4 text-white hover:text-secondary transition-colors duration-300">
-              {benefit.title}
-            </h4>
-            <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
-          </div>
-        </SimpleGlowCard>
+        <TravelingBorderGlow key={index} variant="primary" intensity="subtle" className="flex-1 rounded-2xl group">
+          <SimpleGlowCard 
+            className="flex-1"
+          >
+            <div className="p-5 sm:p-6">
+              <h4 className="text-lg sm:text-xl font-semibold mb-4 text-white hover:text-secondary transition-colors duration-300">
+                {benefit.title}
+              </h4>
+              <p className="text-light-gray text-sm sm:text-base font-sans">{benefit.description}</p>
+            </div>
+          </SimpleGlowCard>
+        </TravelingBorderGlow>
       ))}
     </div>
   );

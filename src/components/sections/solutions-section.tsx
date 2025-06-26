@@ -678,8 +678,15 @@ export function SolutionsSection({
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10 md:mb-12">{title}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-4xl mx-auto whitespace-pre-line">
+            <h2 
+              className="section-title-large font-bold section-title-spacing"
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >
+              {title}
+            </h2>
+            <p className="section-subtitle-large text-light-gray max-w-4xl mx-auto whitespace-pre-line">
               {subtitle}
             </p>
           </motion.div>

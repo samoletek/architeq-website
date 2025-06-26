@@ -13,6 +13,7 @@ interface GCSVideoProps {
   controls?: boolean;
   onError?: () => void;
   placeholder?: React.ReactNode;
+  isHovered?: boolean;
 }
 
 export function GCSVideo({
@@ -23,12 +24,12 @@ export function GCSVideo({
   muted = true,
   controls = false,
   onError,
-  placeholder
+  placeholder,
+  isHovered = false
 }: GCSVideoProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   
   // Защита от скачивания (правый клик и перетаскивание)
@@ -107,8 +108,6 @@ export function GCSVideo({
           !isLoaded && "animate-pulse"
         )}
         style={{ aspectRatio: '16/9' }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Загрузка */}
         {!isLoaded && !hasError && (placeholder || (

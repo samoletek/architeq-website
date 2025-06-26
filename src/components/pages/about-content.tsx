@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 // Team member interface
 interface TeamMember {
@@ -334,13 +335,13 @@ function MissionVisionSection() {
               <h3 className="text-3xl font-bold mb-6 text-white">The Problem We Saw</h3>
               <div className="space-y-6 text-white/80 leading-relaxed">
               <p>
-                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="text-primary font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
+                  Architeq emerged in 2023 when we spotted what was holding back promising companies from reaching their potential. We saw founders and their teams <span className="font-medium">drowning in day-to-day operations</span> instead of charting their growth strategy.
                 </p>
                 <p>
-                  These scaling businesses were caught in a trap — spending up to <span className="text-primary font-medium">70% of their time</span> <span className="text-primary font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
+                  These scaling businesses were caught in a trap — spending up to <span className="font-medium">70% of their time</span> <span className="font-medium">firefighting operational issues</span> while their strategic vision gathered dust.
                 </p>
                 <p>
-                  We built Architeq to <span className="text-primary font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="text-primary font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
+                  We built Architeq to <span className="font-medium">break this cycle</span>. Before jumping into solutions, we first <span className="font-medium">map every process</span> in your business — an approach that delivers immediate clarity and efficiency gains.
                 </p>
               </div>
             </motion.div>
@@ -1338,45 +1339,52 @@ function MethodologySection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden"
                 >
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
-                    animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
+                  <TravelingBorderGlow 
+                    variant="secondary" 
+                    intensity="normal" 
+                    className="rounded-2xl"
+                  >
+                    <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden">
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
+                        animate={{ opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                      />
 
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-black font-bold text-lg">
-                        {steps[activeStep].number}
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-black font-bold text-lg">
+                            {steps[activeStep].number}
+                          </div>
+                          <h3 
+                            className="text-3xl font-bold text-white"
+                            style={{
+                              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
+                            }}
+                          >
+                            {steps[activeStep].title}
+                          </h3>
+                        </div>
+
+                        <p className="text-white/80 text-lg leading-relaxed mb-6">
+                          {steps[activeStep].description}
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                            <h4 className="text-secondary font-semibold mb-2">Strategic Insight:</h4>
+                            <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].insight}</p>
+                          </div>
+                          
+                          <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                            <h4 className="text-secondary font-semibold mb-2">Key Benefit:</h4>
+                            <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].keyBenefit}</p>
+                          </div>
+                        </div>
                       </div>
-                      <h3 
-                        className="text-3xl font-bold text-white"
-                        style={{
-                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
-                        }}
-                      >
-                        {steps[activeStep].title}
-                      </h3>
                     </div>
-
-                    <p className="text-white/80 text-lg leading-relaxed mb-6">
-                      {steps[activeStep].description}
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-                        <h4 className="text-secondary font-semibold mb-2">Strategic Insight:</h4>
-                        <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].insight}</p>
-                      </div>
-                      
-                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-                        <h4 className="text-secondary font-semibold mb-2">Key Benefit:</h4>
-                        <p className="text-white/80 text-sm leading-relaxed">{steps[activeStep].keyBenefit}</p>
-                      </div>
-                    </div>
-                  </div>
+                  </TravelingBorderGlow>
                 </motion.div>
               </AnimatePresence>
             </div>

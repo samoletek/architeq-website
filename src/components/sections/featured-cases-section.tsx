@@ -103,7 +103,12 @@ export default function FeaturedCasesSection({
           {/* Заголовок и подзаголовок - более компактные */}
           {!compact && (
             <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">{title}</h2>
+              <h2 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8"
+                style={{
+                  textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                }}
+              >{title}</h2>
               <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
             </div>
           )}
@@ -180,10 +185,9 @@ export default function FeaturedCasesSection({
 
   // Анимационные варианты для карточек
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: (index: number) => ({
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
         ease: [0.2, 0.65, 0.3, 0.9],
@@ -221,7 +225,12 @@ export default function FeaturedCasesSection({
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">{title}</h2>
+            <h2 
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8"
+              style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}
+            >{title}</h2>
             <p className="text-light-gray text-sm sm:text-base md:text-lg max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: subtitle }} />
           </motion.div>
         )}

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
+import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 
 export interface CaseCardProps {
   id?: string;
@@ -206,31 +207,30 @@ function EnhancedDesktopCard({
 
   // Анимационные варианты
   const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
         delay: 0.1 + index * 0.1
       }
     }
   };
 
   const cardContent = (
-    <motion.div
-      initial="hidden"
-      animate={isVisible ? "visible" : "hidden"}
-      variants={cardVariants}
-      className={cn(
-        'bg-dark-gray rounded-xl overflow-hidden border transition-all duration-300 flex flex-col relative',
-        'case-card-enhanced min-h-[400px]',
-        className
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <TravelingBorderGlow variant="secondary" intensity="subtle" className="rounded-xl group">
+      <motion.div
+        initial="hidden"
+        animate={isVisible ? "visible" : "hidden"}
+        variants={cardVariants}
+        className={cn(
+          'bg-dark-gray rounded-xl overflow-hidden border transition-all duration-300 flex flex-col relative',
+          'case-card-enhanced min-h-[400px]',
+          className
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
       {/* Анимированные пятна свечения */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         {[{ color: color1, left: left1 }, { color: color2, left: left2 }].map((spot, spotIndex) => (
@@ -325,6 +325,7 @@ function EnhancedDesktopCard({
         )}
       </div>
     </motion.div>
+    </TravelingBorderGlow>
   );
 
   if (onClick) {
