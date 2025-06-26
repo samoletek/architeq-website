@@ -9,7 +9,6 @@ import { motion } from 'framer-motion';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
-import FuturisticCard from '@/components/ui/effects/futuristic-card';
 
 // Типы для формы
 interface ContactFormData extends FormFields {
@@ -416,7 +415,6 @@ function ContactFAQSection() {
 
 export default function ContactsContent() {
   // Состояние для синхронизации hover эффектов
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   
   // Состояние формы
   const [formData, setFormData] = useState<ContactFormData>({
@@ -777,84 +775,57 @@ export default function ContactsContent() {
               </div>
               
               {/* Contact Information - Размещена в нижней части колонки */}
-              <div 
-                className="mt-20"
-                onMouseEnter={() => setHoveredCard('contact-info')}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <div className="relative">
-                  {/* Unified container для синхронизации эффектов */}
-                  <div className="relative transform-gpu">
-                    <FuturisticCard 
-                      variant="primary" 
-                      intensity="subtle" 
-                      className="h-[240px]"
-                      disabled={hoveredCard !== 'contact-info'}
-                    >
-                      <div className="p-8 space-y-6 h-full flex flex-col justify-center">
-                        <div>
-                          <h4 className="font-medium mb-1 text-white">Email</h4>
-                          <p className="text-light-gray">hi@architeq.io</p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-medium mb-1 text-white">Working Hours</h4>
-                          <p className="text-light-gray">We work across different time zones</p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="font-medium mb-1 text-white">Languages</h4>
-                          <p className="text-light-gray">English, Ukrainian, Russian</p>
-                        </div>
-                      </div>
-                    </FuturisticCard>
+              <div className="mt-20">
+                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8 hover:border-primary/30 transition-all duration-300 h-[240px]">
+                  <div className="space-y-6 h-full flex flex-col justify-center">
+                    <div>
+                      <h4 className="font-medium mb-1 text-white">Email</h4>
+                      <p className="text-light-gray">hi@architeq.io</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                      <p className="text-light-gray">We work across different time zones</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-1 text-white">Languages</h4>
+                      <p className="text-light-gray">English, Ukrainian, Russian</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* Calendly Widget - Синхронизированная карточка */}
-            <div
-              onMouseEnter={() => setHoveredCard('schedule-call')}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              <div className="relative">
-                {/* Unified container для синхронизации эффектов */}
-                <div className="relative transform-gpu">
-                  <FuturisticCard 
-                    variant="primary" 
-                    intensity="normal" 
-                    className="h-[850px]"
-                    disabled={hoveredCard !== 'schedule-call'}
-                  >
-                    <div className="p-10 h-full flex flex-col">
-                      <h3 className="section-title-small mb-6 text-white text-center" style={{
-                        textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                      }}>
-                        Schedule a Call
-                      </h3>
-                      <p className="text-light-gray mb-4">
-                        Schedule a 30-minute call with our founder.
-                      </p>
-                      <div className="flex-grow mt-6 overflow-hidden rounded-lg border border-primary/30 bg-black/20 backdrop-blur-sm">
-                        <CalendlyWidget 
-                          url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
-                          styles={{
-                            height: "650px",
-                            width: "100%"
-                          }}
-                          prefill={{
-                            name: formData.name,
-                            email: formData.email
-                          }}
-                        />
-                      </div>
-                      
-                      <p className="text-xs text-light-gray mt-2 text-center opacity-70">
-                        Powered by Calendly
-                      </p>
-                    </div>
-                  </FuturisticCard>
+            {/* Calendly Widget */}
+            <div>
+              <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-10 hover:border-primary/30 transition-all duration-300 h-[850px]">
+                <div className="h-full flex flex-col">
+                  <h3 className="section-title-small mb-6 text-white text-center" style={{
+                    textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
+                  }}>
+                    Schedule a Call
+                  </h3>
+                  <p className="text-light-gray mb-4">
+                    Schedule a 30-minute call with our founder.
+                  </p>
+                  <div className="flex-grow mt-6 overflow-hidden rounded-lg border border-primary/30 bg-black/20 backdrop-blur-sm">
+                    <CalendlyWidget 
+                      url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                      styles={{
+                        height: "650px",
+                        width: "100%"
+                      }}
+                      prefill={{
+                        name: formData.name,
+                        email: formData.email
+                      }}
+                    />
+                  </div>
+                  
+                  <p className="text-xs text-light-gray mt-2 text-center opacity-70">
+                    Powered by Calendly
+                  </p>
                 </div>
               </div>
             </div>
