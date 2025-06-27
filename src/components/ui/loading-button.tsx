@@ -30,12 +30,7 @@ export const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
     // Анимация для индикатора загрузки
     const spinnerVariants = {
       spin: {
-        rotate: 360,
-        transition: {
-          duration: 1,
-          repeat: Infinity,
-          ease: "linear"
-        }
+        rotate: 360
       }
     };
     
@@ -58,6 +53,11 @@ export const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
               className="mr-2 h-4 w-4"
               variants={spinnerVariants}
               animate="spin"
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: "linear"
+              }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

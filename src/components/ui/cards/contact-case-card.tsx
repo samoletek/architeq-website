@@ -120,12 +120,7 @@ function EnhancedDesktopContactCard({
     hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.2, 0.65, 0.3, 0.9],
-        delay: 0.1 + index * 0.1
-      }
+      y: 0
     }
   };
 
@@ -134,6 +129,11 @@ function EnhancedDesktopContactCard({
       initial="hidden"
       animate={isVisible ? "visible" : "hidden"}
       variants={cardVariants}
+      transition={{
+        duration: 0.7,
+        ease: [0.2, 0.65, 0.3, 0.9],
+        delay: 0.1 + index * 0.1
+      }}
       className={cn(
         'relative transition-all duration-300 h-full',
         className

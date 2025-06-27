@@ -34,7 +34,7 @@ export function AutomationFlowTimeline() {
       title: "Step 1",
       content: (
         <div>
-          <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-bold text-white mb-6`}>
             Align on Scope. Kick Things Off
           </h3>
           <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
@@ -42,13 +42,13 @@ export function AutomationFlowTimeline() {
             This ensures that we are fully aligned on your needs, priorities, and timelines from the very beginning.
           </p>
           <div className={`grid ${isMobile ? 'grid-cols-1 gap-3' : 'grid-cols-1 md:grid-cols-2 gap-4'} mb-6`}>
-            <div className={`bg-dark-purple/50 rounded-lg ${isMobile ? 'p-3' : 'p-4'} border border-primary/20 hover:border-primary/40 transition-all duration-300 group`}>
+            <div className={`bg-gradient-to-r from-primary/20 via-primary/10 to-transparent rounded-lg ${isMobile ? 'p-3' : 'p-4'} border border-primary/30 hover:border-primary/50 transition-all duration-300 group`}>
               <h4 className={`text-white font-semibold ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>NDA Signing</h4>
               <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed font-mono`}>
                 Secure confidentiality agreement to protect your business data and processes
               </p>
             </div>
-            <div className={`bg-dark-purple/50 rounded-lg ${isMobile ? 'p-3' : 'p-4'} border border-primary/20 hover:border-primary/40 transition-all duration-300 group`}>
+            <div className={`bg-gradient-to-r from-secondary/20 via-secondary/10 to-transparent rounded-lg ${isMobile ? 'p-3' : 'p-4'} border border-secondary/30 hover:border-secondary/50 transition-all duration-300 group`}>
               <h4 className={`text-white font-semibold ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>Kickoff Meeting</h4>
               <p className={`text-light-gray ${isMobile ? 'text-xs' : 'text-sm'} leading-relaxed font-mono`}>
                 Define objectives, expectations, and project timeline with all stakeholders
@@ -67,7 +67,7 @@ export function AutomationFlowTimeline() {
       title: "Step 2", 
       content: (
         <div>
-          <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-bold text-white mb-6`}>
             Understand Your Reality
           </h3>
           <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
@@ -77,8 +77,8 @@ export function AutomationFlowTimeline() {
           <div className="space-y-4 mb-6">
             <TimelineBlock
               stepIndex={1}
-              className="bg-gradient-to-r from-dark-purple/30 to-transparent p-4 rounded-lg border-l-2 border-secondary/60 hover:border-secondary transition-all duration-300 group"
-              hoverClassName="!border-secondary"
+              className="bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg p-4 border-l-4 border-secondary"
+              hoverClassName=""
             >
               <h4 className="text-white font-semibold mb-2">
                 Stakeholder Interviews
@@ -87,8 +87,8 @@ export function AutomationFlowTimeline() {
             </TimelineBlock>
             <TimelineBlock
               stepIndex={1}
-              className="bg-gradient-to-r from-dark-purple/30 to-transparent p-4 rounded-lg border-l-2 border-secondary/60 hover:border-secondary transition-all duration-300 group"
-              hoverClassName="!border-secondary"
+              className="bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg p-4 border-l-4 border-secondary"
+              hoverClassName=""
             >
               <h4 className="text-white font-semibold mb-2">
                 Process Discovery
@@ -97,8 +97,8 @@ export function AutomationFlowTimeline() {
             </TimelineBlock>
             <TimelineBlock
               stepIndex={1}
-              className="bg-gradient-to-r from-dark-purple/30 to-transparent p-4 rounded-lg border-l-2 border-secondary/60 hover:border-secondary transition-all duration-300 group"
-              hoverClassName="!border-secondary"
+              className="bg-gradient-to-r from-secondary/20 to-primary/20 rounded-lg p-4 border-l-4 border-secondary"
+              hoverClassName=""
             >
               <h4 className="text-white font-semibold mb-2">
                 Value Identification
@@ -118,7 +118,7 @@ export function AutomationFlowTimeline() {
       title: "Step 3",
       content: (
         <div>
-          <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-bold text-white mb-6`}>
             Map the Process. Spot the Gaps
           </h3>
           <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
@@ -153,8 +153,8 @@ export function AutomationFlowTimeline() {
           </div>
           <TimelineBlock
             stepIndex={2}
-            className="bg-gradient-to-br from-primary/10 to-secondary/5 rounded-lg p-4 border border-primary/20 hover:border-primary/40 transition-all duration-300 group"
-            hoverClassName="!border-primary/40"
+            className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent rounded-lg p-4 border border-primary/30 hover:border-primary/50 transition-all duration-300 group"
+            hoverClassName="!border-primary/50"
           >
             <h4 className={`text-white font-semibold mb-2 ${isMobile ? 'text-sm' : 'text-base'}`}>Key Deliverables:</h4>
             <ul className={`space-y-1 text-light-gray ${isMobile ? 'text-xs' : 'text-sm'} font-mono`}>
@@ -183,7 +183,7 @@ export function AutomationFlowTimeline() {
       title: "Step 4",
       content: (
         <div>
-          <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-bold text-white mb-6`}>
             Design the Future Flow
           </h3>
           <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
@@ -245,7 +245,7 @@ export function AutomationFlowTimeline() {
       title: "Step 5",
       content: (
         <div>
-          <h3 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-white mb-6`}>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-bold text-white mb-6`}>
             Implementation & Deployment
           </h3>
           <p className={`text-light-gray ${isMobile ? 'text-sm' : 'text-sm md:text-base'} font-mono mb-8 leading-relaxed`}>
@@ -256,8 +256,8 @@ export function AutomationFlowTimeline() {
             <div className="space-y-4">
               <TimelineBlock
                 stepIndex={4}
-                className="bg-dark-gray/60 rounded-lg p-4 border border-primary/20 hover:border-primary/40 transition-all duration-300 group"
-                hoverClassName="!border-primary/40"
+                className="bg-dark-gray/60 rounded-lg p-4 border border-secondary/30 hover:border-secondary/50 transition-all duration-300 group"
+                hoverClassName="!border-secondary/50"
               >
                 <h4 className="text-white font-semibold mb-3 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center mr-3 font-bold text-sm text-black">1</div>
@@ -267,8 +267,8 @@ export function AutomationFlowTimeline() {
               </TimelineBlock>
               <TimelineBlock
                 stepIndex={4}
-                className="bg-dark-gray/60 rounded-lg p-4 border border-secondary/20 hover:border-secondary/40 transition-all duration-300 group"
-                hoverClassName="!border-secondary/40"
+                className="bg-dark-gray/60 rounded-lg p-4 border border-secondary/30 hover:border-secondary/50 transition-all duration-300 group"
+                hoverClassName="!border-secondary/50"
               >
                 <h4 className="text-white font-semibold mb-3 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center mr-3 font-bold text-sm text-black">2</div>
@@ -278,8 +278,8 @@ export function AutomationFlowTimeline() {
               </TimelineBlock>
               <TimelineBlock
                 stepIndex={4}
-                className="bg-dark-gray/60 rounded-lg p-4 border border-primary/20 hover:border-primary/40 transition-all duration-300 group"
-                hoverClassName="!border-primary/40"
+                className="bg-dark-gray/60 rounded-lg p-4 border border-secondary/30 hover:border-secondary/50 transition-all duration-300 group"
+                hoverClassName="!border-secondary/50"
               >
                 <h4 className="text-white font-semibold mb-3 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center mr-3 font-bold text-sm text-black">3</div>

@@ -92,7 +92,7 @@ export default function CTASection({
   
   // Настройки для разных вариантов - уменьшенные отступы
   const variantClasses = {
-    default: "section-cta bg-dark-gradient pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-24",
+    default: "section-cta bg-dark-gradient",
     minimal: "py-12 sm:py-16 bg-dark-gray",
     highlight: "py-16 sm:py-20 md:py-24 bg-primary/10 dark:bg-primary/5"
   };

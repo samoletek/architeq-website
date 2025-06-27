@@ -188,50 +188,51 @@ function SolutionNavigation({
 }) {
   return (
     <div className="text-center mb-8">
-      <div className="inline-flex flex-wrap justify-center gap-6 sm:gap-8 relative">
-        {solutions.map((solution, index) => (
-          <motion.button
-            key={solution.id}
-            onClick={() => onSolutionClick(index)}
-            className={`
-              relative px-4 py-3 font-medium transition-all duration-300
-              focus:outline-none focus:ring-0 text-sm sm:text-base
-              ${activeIndex === index 
-                ? 'text-white' 
-                : 'text-gray-400 hover:text-white'
-              }
-            `}
-            style={{
-              background: activeIndex === index ? 
-                'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)' :
-                'transparent',
-              border: activeIndex === index ? 
-                '1px solid rgba(119, 71, 207, 0.4)' :
-                '1px solid transparent',
-              borderRadius: '12px',
-              backdropFilter: activeIndex === index ? 'blur(10px)' : 'none'
-            }}
-            whileHover={{ 
-              scale: 1.05,
-              transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 15
-              }
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            
-            <motion.span 
-              className="relative z-10 font-semibold whitespace-nowrap"
+      {/* Dark purple container matching card width */}
+      <div 
+        className="max-w-5xl mx-auto p-4 rounded-xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
+          border: '1px solid rgba(119, 71, 207, 0.2)',
+          backdropFilter: 'blur(20px)',
+          minHeight: '80px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 relative">
+          {solutions.map((solution, index) => (
+            <motion.span
+              key={solution.id}
+              onClick={() => onSolutionClick(index)}
+              className={`
+                relative cursor-pointer font-medium transition-all duration-300
+                text-sm sm:text-base px-2 py-1
+                ${activeIndex === index 
+                  ? 'text-white' 
+                  : 'text-gray-400 hover:text-white'
+                }
+              `}
               style={activeIndex === index ? {
                 textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 25px rgba(178,75,243,0.6)'
               } : {}}
+              whileHover={{ 
+                scale: 1.05,
+                transition: {
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 15
+                }
+              }}
+              whileTap={{ scale: 0.95 }}
             >
-              {solution.label}
+              <span className="relative z-10 font-semibold whitespace-nowrap">
+                {solution.label}
+              </span>
             </motion.span>
-          </motion.button>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -242,15 +243,11 @@ export const SolutionContent = ({
   solution, 
   isActive = false,
   direction,
-  isHovered,
-  onHover,
   variant = 'default'
 }: { 
   solution: Solution;
   isActive: boolean;
   direction: 'up' | 'down' | 'none';
-  isHovered: boolean;
-  onHover: (hovered: boolean) => void;
   variant?: 'default' | 'services';
 }) => {
   const cardVariants = {
@@ -272,8 +269,8 @@ export const SolutionContent = ({
   };
 
   const hoverAnimation = {
-    y: isHovered ? -2 : 0,
-    scale: isHovered ? 1.01 : 1,
+    y: 0,
+    scale: 1,
   };
 
   // Получаем данные для текущего решения
@@ -283,7 +280,7 @@ export const SolutionContent = ({
   const isServicesVariant = variant === 'services';
   const containerHeight = isServicesVariant ? '650px' : 'auto';
   const maxHeight = isServicesVariant ? 'none' : '70vh';
-  const maxWidth = isServicesVariant ? '5xl' : '7xl';
+  const maxWidth = isServicesVariant ? '5xl' : '5xl';
 
   return (
     <motion.div 
@@ -370,7 +367,7 @@ export const SolutionContent = ({
         className={`
           relative rounded-2xl overflow-hidden group w-full
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
-          ${isServicesVariant ? 'p-8 sm:p-10 lg:p-12' : 'p-10 sm:p-12 lg:p-16'}
+          ${isServicesVariant ? 'p-12 sm:p-14 lg:p-16' : 'p-12 sm:p-14 lg:p-18'}
         `}
         style={{
           width: '100%',
@@ -381,12 +378,27 @@ export const SolutionContent = ({
           border: '1px solid rgba(255, 255, 255, 0.06)',
           boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         }}
-        onMouseEnter={() => onHover(true)}
-        onMouseLeave={() => onHover(false)}
       >
+        {/* View Cases button */}
+        <div className="text-center mb-8">
+          <Link href={`/cases?filter=${solution.id}`}>
+            <div className="inline-flex items-center text-sm text-secondary transition-colors duration-300 cursor-pointer">
+              <motion.div 
+                className="w-2 h-2 rounded-full bg-secondary mr-2"
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.7, 1, 0.7]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              View Cases
+            </div>
+          </Link>
+        </div>
+
         {/* Заголовок решения */}
-        <div className="text-center mb-10">
-          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold leading-tight text-white mb-4"
+        <div className="text-center mb-12">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-white mb-4"
               style={{
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
               }}>
@@ -398,7 +410,7 @@ export const SolutionContent = ({
         </div>
 
         {/* Двухколоночный контент */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 ${isServicesVariant ? 'gap-8 lg:gap-12' : 'gap-12 lg:gap-16'} mb-10`}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 ${isServicesVariant ? 'gap-8 lg:gap-12' : 'gap-12 lg:gap-16'} mb-14`}>
           {/* Левая колонка - Our Solutions */}
           <div className="space-y-4">
             <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-6"
@@ -423,7 +435,7 @@ export const SolutionContent = ({
                   }}
                   className="bg-white/5 rounded-lg p-2.5 backdrop-blur-sm border border-white/10"
                 >
-                  <h5 className="text-white font-semibold text-xs sm:text-sm mb-1 flex items-center">
+                  <h5 className="text-white font-semibold text-base sm:text-lg mb-1 flex items-center">
                     <motion.div 
                       className="w-2 h-2 rounded-full bg-secondary mr-2 flex-shrink-0"
                       animate={{
@@ -521,7 +533,7 @@ export const SolutionContent = ({
             <Link href={solution.href} className="w-full max-w-md">
               <Button 
                 variant="primary" 
-                className={`text-sm px-6 transition-all duration-300 relative overflow-hidden group w-full hover:scale-105 ${
+                className={`text-sm px-6 transition-all duration-300 relative overflow-hidden group w-full ${
                   isServicesVariant ? 'py-3' : 'py-3.5'
                 }`}
                 style={{
@@ -577,7 +589,6 @@ export function SolutionsSection({
     defaultSolutionId ? solutions.findIndex(s => s.id === defaultSolutionId) || 0 : 0
   );
   const [direction, setDirection] = useState<'up' | 'down' | 'none'>('none');
-  const [isHovered, setIsHovered] = useState(false);
 
   // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
@@ -623,11 +634,7 @@ export function SolutionsSection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7, 
-        ease: [0.2, 0.65, 0.3, 0.9]
-      }
+      y: 0
     }
   };
 
@@ -635,19 +642,14 @@ export function SolutionsSection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 1.0,
-        delay: 0.3,
-        ease: [0.1, 0.3, 0.2, 1]
-      }
+      y: 0
     }
   };
   
   return (
     <section 
       ref={sectionRef}
-      className={cn("section-solutions relative overflow-hidden py-16 sm:py-20", className)}
+      className={cn("section-solutions relative overflow-hidden", className)}
     >
       <div className="absolute inset-0 bg-dark-purple/5">
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30"></div>
@@ -661,6 +663,10 @@ export function SolutionsSection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
+            transition={{ 
+              duration: 0.7, 
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
             <h2 
               className="section-title-large font-bold section-title-spacing"
@@ -678,10 +684,15 @@ export function SolutionsSection({
 
         {/* Контент с горизонтальными табами */}
         <motion.div 
-          className="container mx-auto px-4"
+          className="max-w-5xl mx-auto px-4"
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={contentVariants}
+          transition={{ 
+            duration: 1.0,
+            delay: 0.3,
+            ease: [0.4, 0, 0.2, 1]
+          }}
         >
           {/* Горизонтальная навигация */}
           <SolutionNavigation 
@@ -698,8 +709,6 @@ export function SolutionsSection({
                 solution={solutions[activeIndex]}
                 isActive={true}
                 direction={direction}
-                isHovered={isHovered}
-                onHover={setIsHovered}
               />
             </AnimatePresence>
           </div>

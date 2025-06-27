@@ -492,7 +492,6 @@ export default function ServicesPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [direction, setDirection] = useState<'up' | 'down' | 'none'>('none');
-  const [isHovered, setIsHovered] = useState(false);
   const [expandedPrinciple, setExpandedPrinciple] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
@@ -718,21 +717,23 @@ export default function ServicesPage() {
           {/* Sticky контейнер */}
           <div className="sticky top-0 h-screen overflow-hidden">
             <div className="absolute inset-0 pt-32 pb-16">
-              <div className="container mx-auto px-4 h-full flex items-center">
-                <div className="w-full grid grid-cols-12 gap-12">
+              <div className="container mx-auto px-4 h-full flex items-center justify-center">
+                <div className="w-full max-w-6xl grid grid-cols-12 gap-8">
                   
-                  {/* Левая навигация */}
-                  <div className="col-span-5">
-                    <ServiceNavigation 
-                      services={services}
-                      activeIndex={activeIndex}
-                      onServiceClick={handleServiceClick}
-                      scrollProgress={scrollProgress}
-                    />
+                  {/* Левая навигация - центрированная */}
+                  <div className="col-span-4 col-start-1 flex justify-end">
+                    <div className="w-full max-w-xs">
+                      <ServiceNavigation 
+                        services={services}
+                        activeIndex={activeIndex}
+                        onServiceClick={handleServiceClick}
+                        scrollProgress={scrollProgress}
+                      />
+                    </div>
                   </div>
                   
-                  {/* Правая область карточек */}
-                  <div className="col-span-7 flex items-center">
+                  {/* Правая область карточек - центрированная */}
+                  <div className="col-span-8 col-start-5 flex items-center justify-start">
                     <div className="relative w-full max-w-4xl">
                       <AnimatePresence mode="wait" custom={direction}>
                         <SolutionContent
@@ -747,8 +748,6 @@ export default function ServicesPage() {
                           }}
                           isActive={true}
                           direction={direction}
-                          isHovered={isHovered}
-                          onHover={setIsHovered}
                           variant="services"
                         />
                       </AnimatePresence>
@@ -762,124 +761,173 @@ export default function ServicesPage() {
       )}
 
       {/* Architecture Methodology section */}
-      <section className="pt-32 pb-32 bg-dark-gray relative overflow-hidden">
+      <section className="pt-16 pb-16 bg-dark-gray relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center section-content-spacing">
-            <h2 className="section-title-medium font-bold section-title-spacing"
+          <div className="text-center mb-12">
+            <h2 className="section-title-medium font-bold mb-6"
                 style={{
                   textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
                 }}>
               Our Architecture Methodology
             </h2>
-            <p className="text-light-gray text-lg md:text-xl max-w-3xl mx-auto opacity-90">
+            <p className="text-light-gray text-base md:text-lg max-w-2xl mx-auto opacity-90">
               We don&apos;t just build automation — we architect complete business ecosystems. Our methodology ensures every solution is scalable, maintainable, and drives real business value.
             </p>
           </div>
 
-          {/* Main Content Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Main Content Layout - 2x2 grid for steps with right-center principles */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 max-w-7xl mx-auto">
             
-            {/* Methodology Steps - Left Side (3 columns) */}
-            <div className="lg:col-span-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                {/* All 4 Steps in Grid Layout */}
-                {[
-                {
-                  step: "01",
-                  title: "Discovery & Mapping",
-                  description: "We start by understanding your complete business ecosystem — not just individual processes, but how everything connects and flows together.",
-                  features: [
-                    "Business process mapping",
-                    "System inventory & analysis",
-                    "Stakeholder interviews",
-                    "Data flow documentation"
-                  ]
-                },
-                {
-                  step: "02", 
-                  title: "Architecture Design",
-                  description: "Using our findings, we design a comprehensive automation architecture that addresses current needs while building for future growth.",
-                  features: [
-                    "Scalable system design",
-                    "Integration planning",
-                    "Security & compliance framework",
-                    "Performance optimization"
-                  ]
-                },
-                {
-                  step: "03",
-                  title: "Iterative Implementation",
-                  description: "We build in phases, delivering immediate value while progressing toward the complete vision — ensuring you see ROI at every stage.",
-                  features: [
-                    "Phased deployment",
-                    "Continuous testing",
-                    "Real-time monitoring",
-                    "Performance analytics"
-                  ]
-                },
-                {
-                  step: "04",
-                  title: "Evolution & Optimization",
-                  description: "Your business grows and changes — so should your automation. We continuously optimize and evolve your systems to stay ahead.",
-                  features: [
-                    "Performance monitoring",
-                    "Regular optimization",
-                    "Feature enhancements",
-                    "Future-proofing"
-                  ]
-                }
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-2xl p-6 hover:border-primary/30 transition-all duration-300"
-                >
-                  <div className="flex flex-col">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-4">
-                        <span className="text-white font-bold text-sm">{item.step}</span>
+            {/* Top Left - Step 1 */}
+            <div className="lg:col-start-1 lg:col-span-2 lg:row-start-1">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
+                      <span className="text-white font-bold text-xs">01</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                        }}>
+                      Discovery & Mapping
+                    </h3>
+                  </div>
+                  
+                  <p className="text-white/70 text-xs mb-3 leading-relaxed">
+                    We start by understanding your complete business ecosystem — not just individual processes, but how everything connects and flows together.
+                  </p>
+                  
+                  <div className="space-y-1.5">
+                    {["Business process mapping", "System inventory & analysis", "Stakeholder interviews", "Data flow documentation"].map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 flex-shrink-0" />
+                        <span className="text-white text-xs">
+                          {feature}
+                        </span>
                       </div>
-                      <h3 className="text-xl font-bold text-white"
-                          style={{
-                            textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
-                          }}>
-                        {item.title}
-                      </h3>
-                    </div>
-                    
-                    <p className="text-white/70 text-sm mb-4 leading-relaxed">
-                      {item.description}
-                    </p>
-                    
-                    <div className="space-y-2">
-                      {item.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center">
-                          <div className="w-2 h-2 rounded-full bg-secondary mr-3 flex-shrink-0" />
-                          <span className="text-white text-sm">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    ))}
                   </div>
                 </div>
-              ))}
               </div>
             </div>
 
-            {/* Architecture Principles - Right Side */}
-            <div className="lg:col-span-1 flex items-center">
+            {/* Top Right - Step 2 */}
+            <div className="lg:col-start-3 lg:col-span-2 lg:row-start-1">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
+                      <span className="text-white font-bold text-xs">02</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                        }}>
+                      Architecture Design
+                    </h3>
+                  </div>
+                  
+                  <p className="text-white/70 text-xs mb-3 leading-relaxed">
+                    Using our findings, we design a comprehensive automation architecture that addresses current needs while building for future growth.
+                  </p>
+                  
+                  <div className="space-y-1.5">
+                    {["Scalable system design", "Integration planning", "Security & compliance framework", "Performance optimization"].map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 flex-shrink-0" />
+                        <span className="text-white text-xs">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Left - Step 3 */}
+            <div className="lg:col-start-1 lg:col-span-2 lg:row-start-2">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
+                      <span className="text-white font-bold text-xs">03</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                        }}>
+                      Iterative Implementation
+                    </h3>
+                  </div>
+                  
+                  <p className="text-white/70 text-xs mb-3 leading-relaxed">
+                    We build in phases, delivering immediate value while progressing toward the complete vision — ensuring you see ROI at every stage.
+                  </p>
+                  
+                  <div className="space-y-1.5">
+                    {["Phased deployment", "Continuous testing", "Real-time monitoring", "Performance analytics"].map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 flex-shrink-0" />
+                        <span className="text-white text-xs">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Right - Step 4 */}
+            <div className="lg:col-start-3 lg:col-span-2 lg:row-start-2">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
+                      <span className="text-white font-bold text-xs">04</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white"
+                        style={{
+                          textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
+                        }}>
+                      Evolution & Optimization
+                    </h3>
+                  </div>
+                  
+                  <p className="text-white/70 text-xs mb-3 leading-relaxed">
+                    Your business grows and changes — so should your automation. We continuously optimize and evolve your systems to stay ahead.
+                  </p>
+                  
+                  <div className="space-y-1.5">
+                    {["Performance monitoring", "Regular optimization", "Feature enhancements", "Future-proofing"].map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 flex-shrink-0" />
+                        <span className="text-white text-xs">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Center - Architecture Principles */}
+            <div className="lg:col-start-5 lg:col-span-1 lg:row-start-1 lg:row-span-2 flex items-center justify-center">
               <div className="w-full">
-                <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-4 border border-primary/20 relative overflow-hidden">
+                <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-lg p-3 border border-primary/20 relative overflow-hidden">
 
                 <div className="relative z-10">
-                  <h3 className="text-lg font-bold text-white mb-4 text-center"
+                  <h3 className="text-base font-bold text-white mb-3 text-center"
                       style={{
                         textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.4)'
                       }}>
-                    Architeq Architecture Principles
+                    Architecture Principles
                   </h3>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {[
                       {
                         title: "Scalable by Design",
@@ -917,25 +965,25 @@ export default function ServicesPage() {
                       return (
                         <div
                           key={index}
-                          className="border border-primary/20 rounded-lg overflow-hidden bg-primary/5 hover:bg-primary/10 transition-all duration-300"
+                          className="border border-primary/20 rounded-md overflow-hidden bg-primary/5 hover:bg-primary/10 transition-all duration-300"
                         >
                           <motion.div
-                            className="p-3 cursor-pointer flex items-center justify-between group"
+                            className="p-2 cursor-pointer flex items-center justify-between group"
                             onClick={() => togglePrinciple(index)}
                           >
                             <div className="flex items-center flex-1">
                               <div 
-                                className="w-2 h-2 rounded-full bg-secondary mr-3 flex-shrink-0 transition-transform duration-300"
+                                className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 flex-shrink-0 transition-transform duration-300"
                                 style={{
                                   transform: isExpanded ? 'scale(1.3)' : 'scale(1)'
                                 }}
                               />
-                              <h4 className="text-white font-semibold text-sm group-hover:text-secondary transition-colors duration-300">
+                              <h4 className="text-white font-semibold text-xs group-hover:text-secondary transition-colors duration-300">
                                 {principle.title}
                               </h4>
                             </div>
                             <div
-                              className="text-white text-sm font-bold ml-2 transition-transform duration-300"
+                              className="text-white text-xs font-bold ml-1 transition-transform duration-300"
                               style={{
                                 transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)'
                               }}
@@ -953,17 +1001,17 @@ export default function ServicesPage() {
                                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                                 className="overflow-hidden"
                               >
-                                <div className="px-3 pb-3 border-t border-primary/10">
-                                  <p className="text-white text-xs leading-relaxed mb-3 mt-2">
+                                <div className="px-2 pb-2 border-t border-primary/10">
+                                  <p className="text-white text-xs leading-relaxed mb-2 mt-1">
                                     {principle.description}
                                   </p>
-                                  <div className="space-y-1">
+                                  <div className="space-y-0.5">
                                     {principle.details.map((detail, detailIndex) => (
                                       <div
                                         key={detailIndex}
                                         className="flex items-center"
                                       >
-                                        <div className="w-1 h-1 rounded-full bg-secondary/60 mr-2 flex-shrink-0"></div>
+                                        <div className="w-1 h-1 rounded-full bg-secondary/60 mr-1.5 flex-shrink-0"></div>
                                         <span className="text-white text-xs">
                                           {detail}
                                         </span>

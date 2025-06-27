@@ -189,7 +189,7 @@ export default function TestimonialsSection({
   // Выбираем вариант отображения
   if (variant === 'compact') {
     return (
-      <section className={cn("pt-60 pb-36 bg-site-bg", className)}>
+      <section className={cn("section-testimonials bg-site-bg", className)}>
         <div className="container mx-auto px-4">
           <SectionAnimation className="text-center mb-36">
             <h2 
@@ -264,7 +264,7 @@ export default function TestimonialsSection({
   
   if (variant === 'cards') {
     return (
-      <section className={cn("pt-84 pb-48 bg-dark-gray", className)}>
+      <section className={cn("section-testimonials bg-dark-gray", className)}>
         <div className="container mx-auto px-4">
           <SectionAnimation className="text-center mb-16">
             <h2 
@@ -346,7 +346,7 @@ export default function TestimonialsSection({
   // Вариант по умолчанию с каруселью - в стиле case-study-template
   return (
     <section 
-      className={cn("py-24 bg-[#0A0A0A] relative overflow-hidden", className)}
+      className={cn("section-testimonials bg-dark-gradient relative overflow-hidden", className)}
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -354,23 +354,19 @@ export default function TestimonialsSection({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-5"
-          animate={{
-            background: [
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.6) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-          }}
-        />
-      </div>
+      {/* Decorative particles like CTA section */}
+      <div 
+        className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full opacity-5 blur-[100px]"
+        style={{ 
+          transform: 'translate(0, 0)'
+        }}
+      />
+      <div 
+        className="absolute bottom-0 right-0 w-96 h-96 bg-neon-blue rounded-full opacity-5 blur-[100px]"
+        style={{ 
+          transform: 'translate(0, 0)'
+        }}
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <SectionAnimation className="text-center mb-16">
