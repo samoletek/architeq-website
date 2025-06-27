@@ -492,7 +492,6 @@ export default function ServicesPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [direction, setDirection] = useState<'up' | 'down' | 'none'>('none');
-  const [isHovered, setIsHovered] = useState(false);
   const [expandedPrinciple, setExpandedPrinciple] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
@@ -749,8 +748,6 @@ export default function ServicesPage() {
                           }}
                           isActive={true}
                           direction={direction}
-                          isHovered={isHovered}
-                          onHover={setIsHovered}
                           variant="services"
                         />
                       </AnimatePresence>

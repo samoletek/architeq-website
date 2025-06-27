@@ -243,15 +243,11 @@ export const SolutionContent = ({
   solution, 
   isActive = false,
   direction,
-  isHovered: _isHovered,
-  onHover: _onHover,
   variant = 'default'
 }: { 
   solution: Solution;
   isActive: boolean;
   direction: 'up' | 'down' | 'none';
-  isHovered: boolean;
-  onHover: (hovered: boolean) => void;
   variant?: 'default' | 'services';
 }) => {
   const cardVariants = {
@@ -593,7 +589,6 @@ export function SolutionsSection({
     defaultSolutionId ? solutions.findIndex(s => s.id === defaultSolutionId) || 0 : 0
   );
   const [direction, setDirection] = useState<'up' | 'down' | 'none'>('none');
-  const [isHovered, setIsHovered] = useState(false);
 
   // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
@@ -639,11 +634,7 @@ export function SolutionsSection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.7, 
-        ease: "easeOut"
-      }
+      y: 0
     }
   };
 
@@ -651,12 +642,7 @@ export function SolutionsSection({
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 1.0,
-        delay: 0.3,
-        ease: "easeOut"
-      }
+      y: 0
     }
   };
   
@@ -677,6 +663,10 @@ export function SolutionsSection({
             initial="hidden"
             animate={isVisible ? "visible" : "hidden"}
             variants={titleVariants}
+            transition={{ 
+              duration: 0.7, 
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
             <h2 
               className="section-title-large font-bold section-title-spacing"
@@ -698,6 +688,11 @@ export function SolutionsSection({
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={contentVariants}
+          transition={{ 
+            duration: 1.0,
+            delay: 0.3,
+            ease: [0.4, 0, 0.2, 1]
+          }}
         >
           {/* Горизонтальная навигация */}
           <SolutionNavigation 
@@ -714,8 +709,6 @@ export function SolutionsSection({
                 solution={solutions[activeIndex]}
                 isActive={true}
                 direction={direction}
-                isHovered={isHovered}
-                onHover={setIsHovered}
               />
             </AnimatePresence>
           </div>

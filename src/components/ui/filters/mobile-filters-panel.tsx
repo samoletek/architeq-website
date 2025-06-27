@@ -175,21 +175,11 @@ export function MobileFiltersPanel({
   const panelVariants = {
     closed: {
       y: '100%',
-      opacity: 0,
-      transition: {
-        type: 'spring',
-        damping: 25,
-        stiffness: 300
-      }
+      opacity: 0
     },
     open: {
       y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        damping: 25,
-        stiffness: 300
-      }
+      opacity: 1
     }
   };
 
@@ -267,6 +257,11 @@ export function MobileFiltersPanel({
             initial="closed"
             animate="open"
             exit="closed"
+            transition={{
+              type: 'spring',
+              damping: 25,
+              stiffness: 300
+            }}
             data-mobile-filters
             className="fixed bottom-0 left-0 right-0 bg-dark-gray border-t border-primary/20 rounded-t-xl z-[60] max-h-[80vh] overflow-hidden"
           >

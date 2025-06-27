@@ -172,18 +172,20 @@ export function SectionAnimation({
       opacity: 1, 
       y: 0, 
       x: 0,
-      scale: 1,
-      transition: { 
-        duration: actualDuration, 
-        delay: 0, // Задержка обрабатывается в useEffect для лучшей координации
-        ease: [0.25, 0.1, 0.25, 1], // Улучшенная кривая анимации для более естественного движения
-        ...(stagger && {
-          staggerChildren,
-          staggerDirection: staggerDirection === 'forward' ? 1 : -1,
-          delayChildren: 0 // Задержка обрабатывается отдельно
-        })
-      }
+      scale: 1
     }
+  };
+  
+  // Определяем transition отдельно для передачи в motion компонент
+  const transition = {
+    duration: actualDuration, 
+    delay: 0, // Задержка обрабатывается в useEffect для лучшей координации
+    ease: [0.25, 0.1, 0.25, 1] as const, // Улучшенная кривая анимации для более естественного движения
+    ...(stagger && {
+      staggerChildren,
+      staggerDirection: staggerDirection === 'forward' ? 1 : -1,
+      delayChildren: 0 // Задержка обрабатывается отдельно
+    })
   };
   
   // Добавляем индикатор загрузки для отладки
@@ -212,6 +214,7 @@ export function SectionAnimation({
       variants={variants}
       initial="hidden"
       animate={controls}
+      transition={transition}
       className={className}
     >
       {debugMode && (
@@ -300,12 +303,14 @@ export function AnimatedItem({
       opacity: 1, 
       y: 0, 
       x: 0,
-      scale: 1,
-      transition: { 
-        duration, 
-        ease: [0.25, 0.1, 0.25, 1] // Улучшенная кривая анимации
-      }
+      scale: 1
     }
+  };
+  
+  // Определяем transition отдельно для передачи в motion компонент
+  const itemTransition = { 
+    duration, 
+    ease: [0.25, 0.1, 0.25, 1] as const // Улучшенная кривая анимации
   };
   
   // Если компонент не смонтирован, показываем статический контент
@@ -316,6 +321,7 @@ export function AnimatedItem({
   return (
     <motion.div 
       variants={itemVariants}
+      transition={itemTransition}
       className={className}
     >
       {children}
