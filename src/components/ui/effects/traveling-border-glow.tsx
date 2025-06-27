@@ -65,7 +65,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
     <div className={`relative ${className}`}>
       {/* Основное свечение карточки */}
       <motion.div 
-        className="absolute -inset-[1px] transition-all duration-500 pointer-events-none"
+        className="absolute inset-0 transition-all duration-500 pointer-events-none"
         style={{ 
           borderRadius: 'inherit',
           opacity: isHovered ? 0.8 : 1
@@ -87,7 +87,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
 
       {/* Движущиеся световые лучи по границам */}
       <div 
-        className="absolute -inset-[1px] overflow-hidden transition-transform duration-500 pointer-events-none" 
+        className="absolute inset-0 overflow-hidden transition-transform duration-500 pointer-events-none" 
         style={{ 
           borderRadius: 'inherit'
         }}
@@ -281,7 +281,7 @@ const TravelingBorderGlow: React.FC<TravelingBorderGlowProps> = ({
 
       {/* Общее свечение границ */}
       <div 
-        className="absolute -inset-[0.5px] bg-gradient-to-r from-white/5 via-white/10 to-white/5 transition-all duration-500 pointer-events-none" 
+        className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-white/5 transition-all duration-500 pointer-events-none" 
         style={{ 
           borderRadius: 'inherit',
           opacity: isHovered ? 0.8 : 0.6

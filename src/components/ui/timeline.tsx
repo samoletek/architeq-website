@@ -96,7 +96,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                   }}
                 />
               </div>
-              <h3 className={`hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-white ${isMobile ? 'md:text-3xl' : ''}`}
+              <h3 className={`hidden md:block text-2xl md:pl-20 md:text-4xl font-bold text-white ${isMobile ? 'md:text-3xl' : ''}`}
                   style={{
                     textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
                   }}>
@@ -105,7 +105,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             </div>
 
             <div className={`relative ${isMobile ? 'pl-12 pr-2' : 'pl-20 pr-4 md:pl-4'} w-full`}>
-              <h3 className={`md:hidden block ${isMobile ? 'text-lg' : 'text-2xl'} mb-4 text-left font-bold text-white`}
+              <h3 className={`md:hidden block ${isMobile ? 'text-xl' : 'text-2xl'} mb-4 text-left font-bold text-white`}
                   style={{
                     textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
                   }}>
