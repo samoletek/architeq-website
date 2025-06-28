@@ -433,7 +433,7 @@ export const SolutionContent = ({
                     delay: isActive ? index * 0.1 + 0.2 : 0,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="bg-white/5 rounded-lg p-2.5 backdrop-blur-sm border border-white/10"
+                  className="bg-white/5 rounded-lg p-2.5 backdrop-blur-sm border border-white/10 transition-colors duration-300 hover:border-secondary/40"
                 >
                   <h5 className="text-white font-semibold text-base sm:text-lg mb-1 flex items-center">
                     <motion.div 
@@ -476,12 +476,11 @@ export const SolutionContent = ({
                     delay: isActive ? index * 0.1 + 0.3 : 0,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="flex items-start group cursor-pointer"
-                  whileHover={{ x: -4 }}
+                  className="flex items-center group cursor-pointer"
                 >
                   {/* Галочки без кругов */}
                   <motion.div 
-                    className="mr-3 mt-0.5 flex-shrink-0"
+                    className="mr-3 flex-shrink-0"
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ 
                       scale: isActive ? 1 : 0,
@@ -509,7 +508,7 @@ export const SolutionContent = ({
                       ✓
                     </motion.div>
                   </motion.div>
-                  <span className="text-sm sm:text-base font-medium leading-relaxed transition-colors duration-300 text-white font-inter">
+                  <span className="text-sm sm:text-base font-medium leading-relaxed text-white font-inter">
                     {feature}
                   </span>
                 </motion.div>
@@ -533,7 +532,7 @@ export const SolutionContent = ({
             <Link href={solution.href} className="w-full max-w-md">
               <Button 
                 variant="primary" 
-                className={`text-sm px-6 transition-all duration-300 relative overflow-hidden group w-full ${
+                className={`text-sm px-6 transition-all duration-300 relative overflow-hidden group w-full shadow-neon-glow hover:shadow-neon-glow-intense ${
                   isServicesVariant ? 'py-3' : 'py-3.5'
                 }`}
                 style={{

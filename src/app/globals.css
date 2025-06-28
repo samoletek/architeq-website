@@ -338,6 +338,31 @@
   .text-shadow-green {
     text-shadow: 0 0 15px rgba(176, 255, 116, 0.8), 0 0 30px rgba(176, 255, 116, 0.6), 0 0 60px rgba(176, 255, 116, 0.4);
   }
+  
+  .text-shadow-green-soft {
+    text-shadow: 0 0 10px rgba(176, 255, 116, 0.6), 0 0 20px rgba(176, 255, 116, 0.4);
+  }
+  
+  .text-shadow-white-soft {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.4);
+  }
+  
+  /* Shadow effects for buttons */
+  .shadow-neon-glow {
+    box-shadow: 0 0 15px rgba(178, 75, 243, 0.4), 0 4px 20px rgba(178, 75, 243, 0.3);
+  }
+  
+  .shadow-neon-glow-intense {
+    box-shadow: 0 0 25px rgba(178, 75, 243, 0.6), 0 0 40px rgba(178, 75, 243, 0.4), 0 8px 32px rgba(178, 75, 243, 0.3);
+  }
+  
+  .shadow-neon-green-glow {
+    box-shadow: 0 0 15px rgba(176, 255, 116, 0.4), 0 4px 20px rgba(176, 255, 116, 0.3);
+  }
+  
+  .shadow-neon-green-glow-intense {
+    box-shadow: 0 0 25px rgba(176, 255, 116, 0.6), 0 0 40px rgba(176, 255, 116, 0.4), 0 8px 32px rgba(176, 255, 116, 0.3);
+  }
 }
 
 /* Базовые стили без конфликтов */

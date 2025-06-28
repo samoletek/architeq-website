@@ -735,7 +735,7 @@ export default function ContactsContent() {
                     type="submit" 
                     isLoading={formState.isSubmitting}
                     loadingText="Sending..."
-                    className="text-base py-3 px-8 transition-all duration-300 relative overflow-hidden group w-full md:w-auto min-w-40"
+                    className="text-base py-3 px-8 transition-all duration-300 relative overflow-hidden group w-full md:w-auto min-w-40 shadow-neon-glow hover:shadow-neon-glow-intense"
                     style={{
                       background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.3) 0%, rgba(178, 75, 243, 0.2) 100%)',
                       backdropFilter: 'blur(15px)',
