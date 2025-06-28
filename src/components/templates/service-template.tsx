@@ -573,7 +573,7 @@ function BenefitsSection({
   );
 }
 
-// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С АНИМАЦИЯМИ И УЛУЧШЕННЫМ ДИЗАЙНОМ
+// ОБНОВЛЕННАЯ СЕКЦИЯ FEATURES С ОПТИМИЗИРОВАННОЙ ВЫСОТОЙ КАРТОЧЕК
 function FeaturesSection({ 
   title, 
   subtitle, 
@@ -583,17 +583,15 @@ function FeaturesSection({
   subtitle: string; 
   features: ServiceFeature[]; 
 }) {
-  // Логика для динамического выравнивания сетки
+  // Логика для динамического выравнивания сетки - все в одну строку
   const getGridClass = () => {
     if (features.length === 1) return "grid-cols-1 place-items-center";
     if (features.length === 2) return "grid-cols-1 md:grid-cols-2 place-items-center";
     if (features.length === 3) return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center";
-    if (features.length === 4) return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center";
-    return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center";
+    if (features.length === 4) return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center";
+    return "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center";
   };
 
-  // Логика для специального выравнивания 4-го элемента
-  const shouldCenterLastItem = features.length === 4;
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.15,
     rootMargin: '-50px 0px',
@@ -619,8 +617,6 @@ function FeaturesSection({
     }
   };
 
-
-
   return (
     <section 
       ref={ref}
@@ -639,7 +635,7 @@ function FeaturesSection({
           transition={{
             duration: 8,
             repeat: Infinity,
-                      }}
+          }}
         />
         <motion.div 
           className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full blur-3xl opacity-20"
@@ -653,7 +649,7 @@ function FeaturesSection({
           transition={{
             duration: 10,
             repeat: Infinity,
-                      }}
+          }}
         />
       </div>
 
@@ -675,238 +671,125 @@ function FeaturesSection({
           </p>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto">
-          {shouldCenterLastItem ? (
-            // Специальная логика для 4 элементов: 3 в первом ряду, 1 по центру во втором
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-                {features.slice(0, 3).map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
-                    className="group cursor-pointer w-full max-w-sm"
-                  >
-                    <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] 
-                                   rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 
-                                   transition-all duration-300 h-full min-h-[320px] relative overflow-hidden 
-                                   flex flex-col service-card-enhanced"
-                    >
-                      {/* Background Glow on Hover */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 
-                                      group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 
-                                      transition-all duration-500"></div>
-                      
-                      <div className="relative z-10 flex flex-col h-full">
-                        {/* Icon */}
-                        <div className="w-12 h-12 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/40 
-                          flex items-center justify-center mb-4 group-hover:bg-[#B0FF74]/30 transition-colors">
-                          <div className="w-6 h-6 rounded-full bg-[#B0FF74]"></div>
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#B0FF74] transition-colors"
-                            style={{
-                              textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(176,255,116,0.3)'
-                            }}>
-                          {feature.title}
-                        </h3>
-                        
-                        {/* Description */}
-                        <p className="text-white/70 text-sm leading-relaxed mb-6 flex-grow">
-                          {feature.description}
-                        </p>
-
-                        {/* Key Benefits */}
-                        {feature.benefits && feature.benefits.length > 0 && (
-                          <div className="mb-6">
-                            <h4 className="text-sm font-semibold text-white mb-3">Key Benefits:</h4>
-                            <div className="space-y-2">
-                              {feature.benefits.slice(0, 3).map((benefit, benefitIndex) => (
-                                <div key={benefitIndex} className="flex items-start">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-[#B0FF74] mt-2 mr-3 flex-shrink-0"></div>
-                                  <span className="text-white/80 text-xs leading-relaxed">
-                                    {benefit}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Case Study Link */}
-                        {feature.caseId && (
-                          <div className="mt-auto pt-4 border-t border-[#B0FF74]/20">
-                            <Link 
-                              href={`/cases/${feature.caseId}`} 
-                              className="inline-flex items-center text-[#B0FF74] text-sm font-medium hover:text-[#B0FF74]/80 transition-all duration-300 group/link"
-                            >
-                              <span>View Case Study</span>
-                              <svg 
-                                className="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" 
-                                fill="none" 
-                                stroke="currentColor" 
-                                viewBox="0 0 24 24"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-              
-              {/* Второй ряд с центрированным 4-м элементом */}
-              <div className="flex justify-center">
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="group cursor-pointer w-full max-w-sm"
+        <div className="max-w-7xl mx-auto">
+          {/* Обычная сетка для всех случаев */}
+          <div className={`grid ${getGridClass()} gap-8`}>
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
+                className="group cursor-pointer w-full max-w-xs mx-auto"
+              >
+                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col"
+                     style={{
+                       background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
+                       border: '1px solid rgba(176, 255, 116, 0.15)',
+                       backdropFilter: 'blur(20px)',
+                       WebkitBackdropFilter: 'blur(20px)',
+                       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)',
+                       transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                       minHeight: '360px', // Уменьшенная минимальная высота
+                     }}
+                     onMouseEnter={(e) => {
+                       e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                       e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(176, 255, 116, 0.3)';
+                       e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.4)';
+                     }}
+                     onMouseLeave={(e) => {
+                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                       e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)';
+                       e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.15)';
+                     }}
                 >
-                  <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] 
-                                 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 
-                                 transition-all duration-300 h-full min-h-[320px] relative overflow-hidden 
-                                 flex flex-col service-card-enhanced"
-                  >
-                    {/* Background Glow on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 
-                                    group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 
-                                    transition-all duration-500"></div>
-                    
-                    <div className="relative z-10 flex flex-col h-full">
-                      {/* Icon */}
-                      <div className="w-12 h-12 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/40 
-                        flex items-center justify-center mb-4 group-hover:bg-[#B0FF74]/30 transition-colors">
-                        <div className="w-6 h-6 rounded-full bg-[#B0FF74]"></div>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#B0FF74] transition-colors"
-                          style={{
-                            textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(176,255,116,0.3)'
-                          }}>
-                        {features[3].title}
-                      </h3>
-                      
-                      {/* Description */}
-                      <p className="text-white/70 text-sm leading-relaxed mb-6 flex-grow">
-                        {features[3].description}
-                      </p>
-
-                      {/* Key Benefits */}
-                      {features[3].benefits && features[3].benefits.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-semibold text-white mb-3">Key Benefits:</h4>
-                          <div className="space-y-2">
-                            {features[3].benefits.slice(0, 3).map((benefit, benefitIndex) => (
-                              <div key={benefitIndex} className="flex items-start">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[#B0FF74] mt-2 mr-3 flex-shrink-0"></div>
-                                <span className="text-white/80 text-xs leading-relaxed">
-                                  {benefit}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Case Study Link */}
-                      {features[3].caseId && (
-                        <div className="mt-auto pt-4 border-t border-[#B0FF74]/20">
-                          <Link 
-                            href={`/cases/${features[3].caseId}`} 
-                            className="inline-flex items-center text-[#B0FF74] text-sm font-medium hover:text-[#B0FF74]/80 transition-all duration-300 group/link"
-                          >
-                            <span>View Case Study</span>
-                            <svg 
-                              className="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </Link>
-                        </div>
-                      )}
-                    </div>
+                  {/* Animated background glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="absolute top-0 left-0 w-full h-full"
+                         style={{
+                           background: `
+                             radial-gradient(circle at 20% 20%, rgba(176, 255, 116, 0.15) 0%, transparent 50%),
+                             radial-gradient(circle at 80% 80%, rgba(176, 255, 116, 0.1) 0%, transparent 50%),
+                             linear-gradient(135deg, rgba(176, 255, 116, 0.05) 0%, transparent 100%)
+                           `
+                         }}
+                    />
                   </div>
-                </motion.div>
-              </div>
-            </div>
-          ) : (
-            // Обычная сетка для всех остальных случаев
-            <div className={`grid ${getGridClass()} gap-8`}>
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
-                  className="group cursor-pointer w-full max-w-sm mx-auto"
-                >
-                  <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] 
-                                 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 
-                                 transition-all duration-300 h-full min-h-[320px] relative overflow-hidden 
-                                 flex flex-col service-card-enhanced"
-                  >
-                    {/* Background Glow on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 
-                                    group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 
-                                    transition-all duration-500"></div>
-                    
-                    <div className="relative z-10 flex flex-col h-full">
-                      {/* Icon */}
-                      <div className="w-12 h-12 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/40 
-                        flex items-center justify-center mb-4 group-hover:bg-[#B0FF74]/30 transition-colors">
-                        <div className="w-6 h-6 rounded-full bg-[#B0FF74]"></div>
+                  
+                  <div className="relative z-10 p-6 flex flex-col h-full">
+                    {/* Enhanced header with icon and number */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                             style={{
+                               background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.2) 0%, rgba(176, 255, 116, 0.1) 100%)',
+                               border: '1px solid rgba(176, 255, 116, 0.3)',
+                               boxShadow: '0 0 20px rgba(176, 255, 116, 0.2)'
+                             }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                        </div>
                       </div>
+                      <div className="text-[#B0FF74]/40 text-sm font-mono">
+                        0{index + 1}
+                      </div>
+                    </div>
 
-                      {/* Title */}
-                      <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#B0FF74] transition-colors"
-                          style={{
-                            textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(176,255,116,0.3)'
-                          }}>
-                        {feature.title}
-                      </h3>
-                      
-                      {/* Description */}
-                      <p className="text-white/70 text-sm leading-relaxed mb-6 flex-grow">
+                    {/* Title with enhanced styling */}
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#B0FF74] transition-all duration-300"
+                        style={{
+                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.3)',
+                          lineHeight: '1.3'
+                        }}>
+                      {feature.title}
+                    </h3>
+                    
+                    {/* Enhanced Description - компактная высота */}
+                    <div className="mb-4">
+                      <p className="text-white/90 text-sm leading-relaxed">
                         {feature.description}
                       </p>
+                    </div>
 
-                      {/* Key Benefits */}
-                      {feature.benefits && feature.benefits.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="text-sm font-semibold text-white mb-3">Key Benefits:</h4>
-                          <div className="space-y-2">
-                            {feature.benefits.slice(0, 3).map((benefit, benefitIndex) => (
-                              <div key={benefitIndex} className="flex items-start">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[#B0FF74] mt-2 mr-3 flex-shrink-0"></div>
-                                <span className="text-white/80 text-xs leading-relaxed">
+                    {/* Spacer для выталкивания нижней секции */}
+                    <div className="flex-grow"></div>
+
+                    {/* Fixed bottom section с фиксированной высотой */}
+                    <div className="mt-auto">
+                      {/* Enhanced Key Benefits - фиксированная высота 90px */}
+                      <div className="mb-4" style={{ minHeight: '90px' }}>
+                        <h4 className="text-sm font-semibold text-[#B0FF74] mb-3 flex items-center">
+                          <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          Key Benefits
+                        </h4>
+                        {feature.benefits && feature.benefits.length > 0 && (
+                          <div className="space-y-1.5">
+                            {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
+                              <div key={benefitIndex} className="flex items-start group/benefit">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#B0FF74] mt-1.5 mr-2 flex-shrink-0 group-hover/benefit:scale-125 transition-transform"></div>
+                                <span className="text-white/90 text-xs leading-tight">
                                   {benefit}
                                 </span>
                               </div>
                             ))}
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
 
-                      {/* Case Study Link */}
+                      {/* Enhanced Case Study Link - фиксированная позиция */}
                       {feature.caseId && (
-                        <div className="mt-auto pt-4 border-t border-[#B0FF74]/20">
+                        <div>
+                          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-3"></div>
                           <Link 
                             href={`/cases/${feature.caseId}`} 
-                            className="inline-flex items-center text-[#B0FF74] text-sm font-medium hover:text-[#B0FF74]/80 transition-all duration-300 group/link"
+                            className="inline-flex items-center justify-center w-full text-[#B0FF74] text-sm font-semibold hover:text-white transition-all duration-300 group/link py-2.5 px-4 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/10"
                           >
                             <span>View Case Study</span>
                             <svg 
-                              className="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" 
+                              className="w-4 h-4 ml-2 transition-transform group-hover/link:translate-x-1" 
                               fill="none" 
                               stroke="currentColor" 
                               viewBox="0 0 24 24"
@@ -918,10 +801,10 @@ function FeaturesSection({
                       )}
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
