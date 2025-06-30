@@ -682,15 +682,14 @@ function FeaturesSection({
                 transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
                 className="group cursor-pointer w-full max-w-xs mx-auto"
               >
-                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col"
+                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col h-[320px]"
                      style={{
                        background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
                        border: '1px solid rgba(176, 255, 116, 0.15)',
                        backdropFilter: 'blur(20px)',
                        WebkitBackdropFilter: 'blur(20px)',
                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)',
-                       transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                       minHeight: '360px', // Уменьшенная минимальная высота
+                       transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                      }}
                      onMouseEnter={(e) => {
                        e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
@@ -716,28 +715,28 @@ function FeaturesSection({
                     />
                   </div>
                   
-                  <div className="relative z-10 p-6 flex flex-col h-full">
+                  <div className="relative z-10 p-4 flex flex-col h-full">
                     {/* Enhanced header with icon and number */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
                              style={{
                                background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.2) 0%, rgba(176, 255, 116, 0.1) 100%)',
                                border: '1px solid rgba(176, 255, 116, 0.3)',
                                boxShadow: '0 0 20px rgba(176, 255, 116, 0.2)'
                              }}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                           </svg>
                         </div>
                       </div>
-                      <div className="text-[#B0FF74]/40 text-sm font-mono">
+                      <div className="text-[#B0FF74]/40 text-xs font-mono">
                         0{index + 1}
                       </div>
                     </div>
 
                     {/* Title with enhanced styling */}
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#B0FF74] transition-all duration-300"
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#B0FF74] transition-all duration-300"
                         style={{
                           textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.3)',
                           lineHeight: '1.3'
@@ -745,31 +744,23 @@ function FeaturesSection({
                       {feature.title}
                     </h3>
                     
-                    {/* Enhanced Description - компактная высота */}
-                    <div className="mb-4">
-                      <p className="text-white/90 text-sm leading-relaxed">
+                    {/* Enhanced Description - flexible height */}
+                    <div className="flex-grow">
+                      <p className="text-white/90 text-xs leading-tight">
                         {feature.description}
                       </p>
                     </div>
 
-                    {/* Spacer для выталкивания нижней секции */}
-                    <div className="flex-grow"></div>
-
-                    {/* Fixed bottom section с фиксированной высотой */}
+                    {/* Fixed bottom section with Benefits and Button */}
                     <div className="mt-auto">
-                      {/* Enhanced Key Benefits - фиксированная высота 90px */}
-                      <div className="mb-4" style={{ minHeight: '90px' }}>
-                        <h4 className="text-sm font-semibold text-[#B0FF74] mb-3 flex items-center">
-                          <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                          Key Benefits
-                        </h4>
+                      {/* Enhanced Key Benefits - fixed height */}
+                      <div className="mb-1 h-14">
+                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-1">Key Benefits</h4>
                         {feature.benefits && feature.benefits.length > 0 && (
-                          <div className="space-y-1.5">
+                          <div className="space-y-0.5">
                             {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
-                              <div key={benefitIndex} className="flex items-start group/benefit">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[#B0FF74] mt-1.5 mr-2 flex-shrink-0 group-hover/benefit:scale-125 transition-transform"></div>
+                              <div key={benefitIndex} className="flex items-start">
+                                <span className="text-[#B0FF74] text-xs mr-1 mt-0.5">✓</span>
                                 <span className="text-white/90 text-xs leading-tight">
                                   {benefit}
                                 </span>
@@ -779,24 +770,31 @@ function FeaturesSection({
                         )}
                       </div>
 
-                      {/* Enhanced Case Study Link - фиксированная позиция */}
+                      {/* Enhanced Case Study Link - fixed position */}
                       {feature.caseId && (
                         <div>
-                          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-3"></div>
-                          <Link 
-                            href={`/cases/${feature.caseId}`} 
-                            className="inline-flex items-center justify-center w-full text-[#B0FF74] text-sm font-semibold hover:text-white transition-all duration-300 group/link py-2.5 px-4 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/10"
-                          >
-                            <span>View Case Study</span>
-                            <svg 
-                              className="w-4 h-4 ml-2 transition-transform group-hover/link:translate-x-1" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
+                          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-1"></div>
+                          <div className="relative group/button">
+                            <div className="absolute inset-0 rounded-lg opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" 
+                                 style={{
+                                   background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
+                                   boxShadow: '0 0 20px rgba(176, 255, 116, 0.3)'
+                                 }}></div>
+                            <Link 
+                              href={`/cases/${feature.caseId}`} 
+                              className="relative inline-flex items-center justify-center w-full text-[#B0FF74] text-xs font-semibold hover:text-[#B0FF74] transition-all duration-300 py-2 px-3 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/5"
                             >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </Link>
+                              <span>View Case Study</span>
+                              <svg 
+                                className="w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </Link>
+                          </div>
                         </div>
                       )}
                     </div>
