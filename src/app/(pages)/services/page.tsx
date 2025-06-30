@@ -339,7 +339,7 @@ function MobileServiceCard({ service, index }: { service: Service; index: number
                 
                 <div className="flex space-x-2">
                   <Link href={`/services/${service.id}`} className="flex-1">
-                    <Button variant="primary" size="sm" className="w-full">
+                    <Button variant="primary" size="sm" className="w-full shadow-neon-glow hover:shadow-neon-glow-intense">
                       Explore Solution
                     </Button>
                   </Link>

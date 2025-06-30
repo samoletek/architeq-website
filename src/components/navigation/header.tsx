@@ -224,7 +224,7 @@ export default function Header({
                       <Link
                         href={item.href}
                         className={cn(
-                          "transition-all duration-300",
+                          "transition-colors duration-300",
                           isActive(item.href) 
                             ? "text-secondary text-shadow-green-soft" 
                             : "text-white/70 group-hover:text-white group-hover:text-shadow-white-soft"
@@ -262,7 +262,7 @@ export default function Header({
                   <Link
                     href={item.href}
                     className={cn(
-                      "transition-all duration-300",
+                      "transition-colors duration-300",
                       isActive(item.href) 
                         ? "text-secondary text-shadow-green-soft" 
                         : "text-white/70 hover:text-white hover:text-shadow-white-soft"
