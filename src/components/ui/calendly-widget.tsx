@@ -8,6 +8,8 @@ interface CalendlyWidgetProps {
     height?: string;
     minWidth?: string;
     width?: string;
+    transform?: string;
+    transformOrigin?: string;
   };
   className?: string;
   prefill?: {
@@ -36,8 +38,18 @@ export default function CalendlyWidget({
 
   // Функция для инициализации виджета
   const initWidget = useCallback(() => {
-    // Инициализируем виджет, когда Calendly API загружен
+    // Проверяем что виджет еще не инициализирован
     if (typeof window !== 'undefined' && window.Calendly && calendlyRef.current) {
+      // Проверяем что в контейнере еще нет iframe (избегаем дублирования)
+      const existingIframe = calendlyRef.current.querySelector('iframe');
+      if (existingIframe) {
+        setIsLoading(false);
+        return;
+      }
+      
+      // Очищаем контейнер перед инициализацией
+      calendlyRef.current.innerHTML = '';
+      
       if (prefill) {
         // Если есть данные для предзаполнения, используем их
         window.Calendly.initInlineWidget({
@@ -57,43 +69,39 @@ export default function CalendlyWidget({
         });
       }
       
-      // Добавляем обработчик события загрузки
-      const handleWidgetLoad = () => {
-        setIsLoading(false);
-      };
-      
-      // Пытаемся найти iframe внутри виджета
-      const iframe = calendlyRef.current.querySelector('iframe');
-      if (iframe) {
-        iframe.onload = handleWidgetLoad;
-      } else {
-        // Если iframe еще не создан, установим таймер для проверки статуса загрузки
-        setTimeout(() => setIsLoading(false), 3000);
-      }
+      // Устанавливаем таймер для скрытия загрузки
+      setTimeout(() => setIsLoading(false), 2000);
     }
   }, [url, prefill]);
 
   // Загрузка скрипта Calendly
   useEffect(() => {
-    // Убедимся, что Calendly API загружен
-    if (typeof window !== 'undefined' && !window.Calendly) {
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async = true;
-      script.onload = initWidget; // Инициализируем после загрузки скрипта
-      document.head.appendChild(script);
-    } else {
-      // Если скрипт уже загружен, просто инициализируем виджет
-      initWidget();
-    }
+    let loadingTimeout: NodeJS.Timeout;
     
-    // Устанавливаем таймаут на случай, если виджет загружается слишком долго
-    const loadingTimeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
+    const loadWidget = () => {
+      if (typeof window !== 'undefined' && !window.Calendly) {
+        const script = document.createElement('script');
+        script.src = 'https://assets.calendly.com/assets/external/widget.js';
+        script.async = true;
+        script.onload = () => initWidget();
+        document.head.appendChild(script);
+      } else if (window.Calendly) {
+        // Если скрипт уже загружен, инициализируем виджет
+        initWidget();
+      }
+      
+      // Устанавливаем таймаут на случай, если виджет загружается слишком долго
+      loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+      }, 5000);
+    };
     
-    return () => clearTimeout(loadingTimeout);
-  }, [initWidget]);
+    loadWidget();
+    
+    return () => {
+      if (loadingTimeout) clearTimeout(loadingTimeout);
+    };
+  }, [url]); // Зависимость только от URL
 
   // Очистка при размонтировании компонента
   useEffect(() => {

@@ -205,8 +205,8 @@ function ContactFAQSection() {
   return (
     <section 
       ref={sectionRef}
-      className="bg-dark-gray relative overflow-hidden py-16"
-      style={{ minHeight: '100vh' }}
+      className={`bg-dark-gray relative overflow-hidden ${isMobile ? 'py-8 pb-16' : 'py-24'}`}
+      style={{ minHeight: isMobile ? 'auto' : '100vh' }}
     >
       <div className="container mx-auto px-4 relative z-10 w-full">
         <motion.div
@@ -236,53 +236,11 @@ function ContactFAQSection() {
               <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
                 <div className="space-y-6">
-                  {/* Стрелки навигации в меню */}
-                  <div className="flex items-center justify-between mb-8">
-                    <button
-                      onClick={handlePrevQuestion}
-                      className={`rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center transition-all duration-300 group flex-shrink-0 ${
-                        isMobile ? 'w-8 h-8' : 'w-10 h-10'
-                      } ${shouldUseHeavyAnimations ? 'hover:bg-primary/20' : ''}`}
-                    >
-                      <motion.svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`text-white transition-colors ${
-                          isMobile ? 'h-4 w-4' : 'h-5 w-5'
-                        } ${shouldUseHeavyAnimations ? 'group-hover:text-primary' : ''}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        whileHover={shouldUseHeavyAnimations ? { x: -2 } : {}}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </motion.svg>
-                    </button>
-                    
-                    <h3 className={`font-semibold text-white flex-grow text-center ${
+                  {/* Заголовок Questions без стрелок навигации */}
+                  <div className="mb-8">
+                    <h3 className={`font-semibold text-white text-center ${
                       isMobile ? 'text-base' : 'text-lg'
                     }`}>Questions</h3>
-                    
-                    <button
-                      onClick={handleNextQuestion}
-                      className={`rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center transition-all duration-300 group flex-shrink-0 ${
-                        isMobile ? 'w-8 h-8' : 'w-10 h-10'
-                      } ${shouldUseHeavyAnimations ? 'hover:bg-primary/20' : ''}`}
-                    >
-                      <motion.svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`text-white transition-colors ${
-                          isMobile ? 'h-4 w-4' : 'h-5 w-5'
-                        } ${shouldUseHeavyAnimations ? 'group-hover:text-primary' : ''}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        whileHover={shouldUseHeavyAnimations ? { x: 2 } : {}}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </motion.svg>
-                    </button>
                   </div>
 
                   {contactFaqs.map((faq, index) => (
@@ -679,11 +637,11 @@ export default function ContactsContent() {
       </section>
       
       {/* Contact Form and Calendly */}
-      <section className="pt-2 pb-48 bg-dark-gray">
+      <section className={`bg-dark-gray ${isMobile ? 'py-12 pb-48' : 'py-24 pb-48'}`}>
         <div className="container mx-auto px-4">
           <div className={`grid gap-12 ${
             isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
-          } ${isMobile ? 'items-start' : 'items-end'}`}>
+          } ${isMobile ? 'items-start' : 'items-start'}`}>
             {/* Contact Form & Info */}
             <div className="flex flex-col">
               <div className="flex-grow">
@@ -866,47 +824,68 @@ export default function ContactsContent() {
               </div>
             </div>
             
-            {/* Calendly Widget */}
-            <div className={isMobile ? 'order-first' : ''}>
-              <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
-                isMobile ? 'p-6 min-h-[700px]' : 'p-10 h-[850px]'
-              } ${shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
-                <div className="h-full flex flex-col">
-                  <h3 className={`mb-6 text-white text-center ${
-                    isMobile ? 'text-xl' : 'section-title-small'
-                  }`} style={shouldUseHeavyAnimations ? {
-                    textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                  } : {}}>
-                    Schedule a Call
-                  </h3>
-                  <p className={`text-light-gray mb-4 ${
-                    isMobile ? 'text-sm' : ''
-                  }`}>
-                    Schedule a 30-minute call with our founder.
-                  </p>
-                  <div className="flex-grow mt-6 overflow-hidden rounded-lg border border-primary/30 bg-black/20 backdrop-blur-sm">
-                    <CalendlyWidget 
-                      url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
-                      styles={{
-                        height: isMobile ? "550px" : "650px",
-                        width: "100%"
-                      }}
-                      prefill={{
-                        name: formData.name,
-                        email: formData.email
-                      }}
-                    />
+            {/* Calendly Widget - Desktop Right Column */}
+            {!isMobile && (
+              <div className="flex flex-col">
+                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8 h-[1014px]">
+                  <div className="h-full flex flex-col">
+                    <h3 className="text-2xl font-bold text-white text-center mb-4">
+                      Schedule a Call
+                    </h3>
+                    <p className="text-light-gray text-center mb-6 text-sm">
+                      Book a 30-minute consultation
+                    </p>
+                    <div className="flex-grow rounded-lg overflow-hidden border border-primary/30 bg-black/20">
+                      <CalendlyWidget 
+                        url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                        styles={{
+                          height: "862px",
+                          width: "100%"
+                        }}
+                        prefill={{
+                          name: formData.name,
+                          email: formData.email
+                        }}
+                      />
+                    </div>
                   </div>
-                  
-                  <p className="text-xs text-light-gray mt-2 text-center opacity-70">
-                    Powered by Calendly
-                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+      
+      {/* Calendly Widget - Mobile Section */}
+      {isMobile && (
+        <section className="py-8 bg-site-bg">
+          <div className="container mx-auto px-4">
+            <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-4">
+              <h3 className="text-lg font-semibold text-white text-center mb-3">
+                Schedule a Call
+              </h3>
+              <p className="text-light-gray text-center mb-4 text-xs">
+                Book a 30-minute consultation
+              </p>
+              <div className="rounded-lg overflow-hidden border border-primary/30 bg-black/20" style={{ height: "748px" }}>
+                <div style={{ transform: "scale(0.85)", transformOrigin: "top left" }}>
+                  <CalendlyWidget 
+                    url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
+                    styles={{
+                      height: "880px",
+                      width: "118%"
+                    }}
+                  prefill={{
+                    name: formData.name,
+                    email: formData.email
+                  }}
+                />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       
       {/* Interactive FAQ Section */}
       <ContactFAQSection />

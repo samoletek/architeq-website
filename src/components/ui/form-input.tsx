@@ -93,10 +93,21 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
     }
   };
   
+  // Автоматическое изменение размера textarea
+  const autoResizeTextarea = (element: HTMLTextAreaElement) => {
+    element.style.height = 'auto';
+    element.style.height = element.scrollHeight + 'px';
+  };
+
   // Обработчик изменения значения
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setInnerValue(newValue);
+    
+    // Автоматическое изменение размера для textarea
+    if (type === 'textarea' && e.target instanceof HTMLTextAreaElement) {
+      autoResizeTextarea(e.target);
+    }
     
     // Если поле было тронуто, валидируем при изменении
     if (isTouched && validators.length > 0) {
@@ -121,6 +132,7 @@ export const FormInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, Form
     "transition-all duration-300 focus:outline-none",
     showError ? "border-red-500" : "border-medium-gray",
     "hover:shadow-neon-glow focus:shadow-neon-glow-intense",
+    type === 'textarea' && "resize-none min-h-[60px]", // Убираем ручное изменение размера
     inputClassName
   );
   

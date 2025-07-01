@@ -103,3 +103,48 @@
   .animate-fade-in-up:nth-child(4) { animation-delay: 0.4s; }
   .animate-fade-in-up:nth-child(5) { animation-delay: 0.5s; }
   .animate-fade-in-up:nth-child(6) { animation-delay: 0.6s; }
+
+/* GPU-accelerated mobile optimizations */
+@media (max-width: 768px) {
+  .scroll-reveal {
+    transition-duration: 0.4s; /* Faster animations on mobile */
+  }
+  
+  .animate-fade-in-up {
+    animation-duration: 0.35s; /* Faster animations on mobile */
+  }
+  
+  /* Reduce animation delays on mobile for better performance */
+  .animate-fade-in-up:nth-child(1) { animation-delay: 0.05s; }
+  .animate-fade-in-up:nth-child(2) { animation-delay: 0.1s; }
+  .animate-fade-in-up:nth-child(3) { animation-delay: 0.15s; }
+  .animate-fade-in-up:nth-child(4) { animation-delay: 0.2s; }
+  .animate-fade-in-up:nth-child(5) { animation-delay: 0.25s; }
+  .animate-fade-in-up:nth-child(6) { animation-delay: 0.3s; }
+}
+
+/* High-performance dropdown animations - using footer's smooth technique */
+.optimized-dropdown {
+  overflow: hidden;
+  /* Remove CSS transitions - let Framer Motion handle everything for smoothness */
+}
+
+/* Container for consistent heights to prevent layout shifts */
+.consistent-height-container {
+  will-change: transform;
+  transform: translateZ(0);
+  min-height: 400px; /* Minimum height to prevent layout shifts */
+}
+
+@media (max-width: 768px) {
+  .consistent-height-container {
+    min-height: 350px;
+  }
+}
+
+/* Force GPU acceleration for all animations */
+.scroll-reveal,
+.animate-fade-in-up {
+  will-change: opacity, transform;
+  transform: translateZ(0);
+}
