@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
+import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
 
 // Типы для формы
 interface ContactFormData extends FormFields {
@@ -85,6 +86,10 @@ function ContactFAQSection() {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
+  const shouldUseHeavyAnimations = useHeavyAnimations();
 
   // Simple intersection observer for animations only
   useEffect(() => {
@@ -222,44 +227,57 @@ function ContactFAQSection() {
         </motion.div>
 
         <div className="max-w-7xl mx-auto h-full">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
+          <div className={`grid items-center h-full ${
+            isMobile ? 'grid-cols-1 gap-8' : 'grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16'
+          }`}>
             
-            {/* Навигационное меню с стрелками */}
-            <div className="lg:col-span-1 flex justify-center">
+            {/* Навигационное меню с стрелками - скрыто на мобильных */}
+            {!isMobile && (
+              <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
                 <div className="space-y-6">
                   {/* Стрелки навигации в меню */}
                   <div className="flex items-center justify-between mb-8">
                     <button
                       onClick={handlePrevQuestion}
-                      className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center hover:bg-primary/20 transition-all duration-300 group flex-shrink-0"
+                      className={`rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center transition-all duration-300 group flex-shrink-0 ${
+                        isMobile ? 'w-8 h-8' : 'w-10 h-10'
+                      } ${shouldUseHeavyAnimations ? 'hover:bg-primary/20' : ''}`}
                     >
                       <motion.svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-white group-hover:text-primary transition-colors"
+                        className={`text-white transition-colors ${
+                          isMobile ? 'h-4 w-4' : 'h-5 w-5'
+                        } ${shouldUseHeavyAnimations ? 'group-hover:text-primary' : ''}`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        whileHover={{ x: -2 }}
+                        whileHover={shouldUseHeavyAnimations ? { x: -2 } : {}}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </motion.svg>
                     </button>
                     
-                    <h3 className="text-lg font-semibold text-white flex-grow text-center">Questions</h3>
+                    <h3 className={`font-semibold text-white flex-grow text-center ${
+                      isMobile ? 'text-base' : 'text-lg'
+                    }`}>Questions</h3>
                     
                     <button
                       onClick={handleNextQuestion}
-                      className="w-10 h-10 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center hover:bg-primary/20 transition-all duration-300 group flex-shrink-0"
+                      className={`rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center transition-all duration-300 group flex-shrink-0 ${
+                        isMobile ? 'w-8 h-8' : 'w-10 h-10'
+                      } ${shouldUseHeavyAnimations ? 'hover:bg-primary/20' : ''}`}
                     >
                       <motion.svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-white group-hover:text-primary transition-colors"
+                        className={`text-white transition-colors ${
+                          isMobile ? 'h-4 w-4' : 'h-5 w-5'
+                        } ${shouldUseHeavyAnimations ? 'group-hover:text-primary' : ''}`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        whileHover={{ x: 2 }}
+                        whileHover={shouldUseHeavyAnimations ? { x: 2 } : {}}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -296,14 +314,16 @@ function ContactFAQSection() {
                   ))}
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Карусель ответов (без стрелок) */}
-            <div className="lg:col-span-2 flex items-center justify-center">
-              <div className="relative w-full" style={{ height: '400px' }}>
-                <div className="relative h-full perspective-1000">
+            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2 flex items-center justify-center'}>
+              <div className="relative w-full" style={{ height: isMobile ? '320px' : '450px' }}>
+                <div className={`relative h-full ${!isMobile ? 'perspective-1000' : ''}`}>
                   {contactFaqs.map((faq, index) => {
-                    const transform = getCardTransform(index);
+                    const transform = !isMobile ? getCardTransform(index) : 
+                      { opacity: index === activeQuestion ? 1 : 0, zIndex: index === activeQuestion ? 10 : 1 };
                     
                     return (
                       <motion.div
@@ -312,13 +332,13 @@ function ContactFAQSection() {
                         style={{
                           top: '50%',
                           transform: 'translateY(-50%)',
-                          height: '300px',
-                          transformStyle: 'preserve-3d',
-                          backfaceVisibility: 'hidden'
+                          height: isMobile ? '220px' : '350px',
+                          transformStyle: !isMobile ? 'preserve-3d' : 'flat',
+                          backfaceVisibility: !isMobile ? 'hidden' : 'visible'
                         }}
                         animate={transform}
                         transition={{
-                          duration: 0.6,
+                          duration: !isMobile ? 0.6 : 0.3,
                           type: "tween"
                         }}
                       >
@@ -340,15 +360,23 @@ function ContactFAQSection() {
                           />
                         )}
                         
-                        <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
-                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col"
-                          style={{ justifyContent: 'space-between', paddingTop: '3rem', paddingBottom: '3rem' }}>
+                        <div className={`bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                          rounded-2xl h-full transition-all duration-500 flex flex-col ${
+                            isMobile ? 'p-4' : 'p-8 md:p-10'
+                          }`}
+                          style={{ 
+                            justifyContent: 'space-between', 
+                            paddingTop: isMobile ? '1.5rem' : '3rem', 
+                            paddingBottom: isMobile ? '1.5rem' : '3rem' 
+                          }}>
                           
                           <div className="flex-1">
                             <motion.h3 
-                              className="text-2xl md:text-3xl font-bold mb-6 leading-tight text-white"
+                              className={`font-bold leading-tight text-white ${
+                                isMobile ? 'text-lg mb-4' : 'text-2xl md:text-3xl mb-6'
+                              }`}
                               style={{
-                                textShadow: activeQuestion === index 
+                                textShadow: (activeQuestion === index && shouldUseHeavyAnimations)
                                   ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
                                   : 'none'
                               }}
@@ -356,7 +384,9 @@ function ContactFAQSection() {
                               {faq.question}
                             </motion.h3>
 
-                            <p className="text-white/90 text-lg md:text-xl leading-relaxed">
+                            <p className={`text-white/90 leading-relaxed ${
+                              isMobile ? 'text-sm' : 'text-lg md:text-xl'
+                            }`}>
                               {faq.answer}
                             </p>
                           </div>
@@ -390,20 +420,43 @@ function ContactFAQSection() {
                   })}
                 </div>
 
-                {/* Dots indicator (убираем стрелки отсюда) */}
-                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-                  {contactFaqs.map((_, index) => (
+                {/* Navigation - точки на десктопе, кнопки на мобильных */}
+                {isMobile ? (
+                  /* Кнопки Previous/Next для мобильных */
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 z-20">
                     <button
-                      key={index}
-                      onClick={() => handleQuestionClick(index)}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        activeQuestion === index 
-                          ? 'bg-primary shadow-lg' 
-                          : 'bg-white/20 hover:bg-white/40'
-                      }`}
-                    />
-                  ))}
-                </div>
+                      onClick={handlePrevQuestion}
+                      className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                      <span>Previous</span>
+                    </button>
+                    
+                    <button
+                      onClick={handleNextQuestion}
+                      className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                    >
+                      <span>Next</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -414,7 +467,9 @@ function ContactFAQSection() {
 }
 
 export default function ContactsContent() {
-  // Состояние для синхронизации hover эффектов
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
+  const shouldUseHeavyAnimations = useHeavyAnimations();
   
   // Состояние формы
   const [formData, setFormData] = useState<ContactFormData>({
@@ -605,13 +660,17 @@ export default function ContactsContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div data-animate="fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold hero-title-spacing hero-subtitle-spacing"
+              <h1 className={`font-bold hero-title-spacing hero-subtitle-spacing ${
+                  isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'
+                }`}
                   style={{
                     textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
                   }}>
                 Get in Touch
               </h1>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto section-button-spacing">
+              <p className={`text-white/70 max-w-3xl mx-auto section-button-spacing ${
+                  isMobile ? 'text-base' : 'text-xl'
+                }`}>
                 Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
               </p>
             </div>
@@ -622,7 +681,9 @@ export default function ContactsContent() {
       {/* Contact Form and Calendly */}
       <section className="pt-2 pb-48 bg-dark-gray">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+          <div className={`grid gap-12 ${
+            isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
+          } ${isMobile ? 'items-start' : 'items-end'}`}>
             {/* Contact Form & Info */}
             <div className="flex flex-col">
               <div className="flex-grow">
@@ -645,61 +706,67 @@ export default function ContactsContent() {
                 )}
                 
                 <form id="contact-form" onSubmit={handleSubmit} noValidate>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                    <FormInput
-                      id="name"
-                      name="name"
-                      label="Your Name"
-                      value={formData.name}
-                      onChange={(e) => handleChange('name')(e.target.value)}
-                      onBlur={() => handleBlur('name')}
-                      placeholder="John Doe"
-                      error={formState.errors.name || ''}
-                      touched={!!formState.touched.name}
-                      required
-                      validators={formValidators.name}
-                    />
-                    
-                    <FormInput
-                      id="email"
-                      name="email"
-                      label="Email Address"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleChange('email')(e.target.value)}
-                      onBlur={() => handleBlur('email')}
-                      placeholder="your@email.com"
-                      error={formState.errors.email || ''}
-                      touched={!!formState.touched.email}
-                      required
-                      validators={formValidators.email}
-                    />
+                  {/* Мобильная версия: Имя и Email в одной строке */}
+                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                    <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
+                      <FormInput
+                        id="name"
+                        name="name"
+                        label="Your Name"
+                        value={formData.name}
+                        onChange={(e) => handleChange('name')(e.target.value)}
+                        onBlur={() => handleBlur('name')}
+                        placeholder="John Doe"
+                        error={formState.errors.name || ''}
+                        touched={!!formState.touched.name}
+                        required
+                        validators={formValidators.name}
+                      />
+                      
+                      <FormInput
+                        id="email"
+                        name="email"
+                        label="Email Address"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => handleChange('email')(e.target.value)}
+                        onBlur={() => handleBlur('email')}
+                        placeholder="your@email.com"
+                        error={formState.errors.email || ''}
+                        touched={!!formState.touched.email}
+                        required
+                        validators={formValidators.email}
+                      />
+                    </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                    <FormInput
-                      id="company"
-                      name="company"
-                      label="Company Name"
-                      value={formData.company}
-                      onChange={(e) => handleChange('company')(e.target.value)}
-                      onBlur={() => handleBlur('company')}
-                      placeholder="Your Company"
-                    />
-                    
-                    <FormInput
-                      id="phone"
-                      name="phone"
-                      label="Phone Number"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleChange('phone')(e.target.value)}
-                      onBlur={() => handleBlur('phone')}
-                      placeholder="+1 (___) ___-____"
-                      error={formState.errors.phone || ''}
-                      touched={!!formState.touched.phone}
-                      validators={formValidators.phone}
-                    />
+                  {/* Мобильная версия: Компания и Телефон в одной строке */}
+                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                    <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
+                      <FormInput
+                        id="company"
+                        name="company"
+                        label="Company Name"
+                        value={formData.company}
+                        onChange={(e) => handleChange('company')(e.target.value)}
+                        onBlur={() => handleBlur('company')}
+                        placeholder="Your Company"
+                      />
+                      
+                      <FormInput
+                        id="phone"
+                        name="phone"
+                        label="Phone Number"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => handleChange('phone')(e.target.value)}
+                        onBlur={() => handleBlur('phone')}
+                        placeholder="+1 (___) ___-____"
+                        error={formState.errors.phone || ''}
+                        touched={!!formState.touched.phone}
+                        validators={formValidators.phone}
+                      />
+                    </div>
                   </div>
                   
                   <div className="mb-10">
@@ -775,8 +842,10 @@ export default function ContactsContent() {
               </div>
               
               {/* Contact Information - Размещена в нижней части колонки */}
-              <div className="mt-20">
-                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8 hover:border-primary/30 transition-all duration-300 h-[240px]">
+              <div className={isMobile ? 'mt-12' : 'mt-20'}>
+                <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
+                  isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
+                } ${shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
                   <div className="space-y-6 h-full flex flex-col justify-center">
                     <div>
                       <h4 className="font-medium mb-1 text-white">Email</h4>
@@ -798,22 +867,28 @@ export default function ContactsContent() {
             </div>
             
             {/* Calendly Widget */}
-            <div>
-              <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-10 hover:border-primary/30 transition-all duration-300 h-[850px]">
+            <div className={isMobile ? 'order-first' : ''}>
+              <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
+                isMobile ? 'p-6 min-h-[700px]' : 'p-10 h-[850px]'
+              } ${shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
                 <div className="h-full flex flex-col">
-                  <h3 className="section-title-small mb-6 text-white text-center" style={{
+                  <h3 className={`mb-6 text-white text-center ${
+                    isMobile ? 'text-xl' : 'section-title-small'
+                  }`} style={shouldUseHeavyAnimations ? {
                     textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
-                  }}>
+                  } : {}}>
                     Schedule a Call
                   </h3>
-                  <p className="text-light-gray mb-4">
+                  <p className={`text-light-gray mb-4 ${
+                    isMobile ? 'text-sm' : ''
+                  }`}>
                     Schedule a 30-minute call with our founder.
                   </p>
                   <div className="flex-grow mt-6 overflow-hidden rounded-lg border border-primary/30 bg-black/20 backdrop-blur-sm">
                     <CalendlyWidget 
                       url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
                       styles={{
-                        height: "650px",
+                        height: isMobile ? "550px" : "650px",
                         width: "100%"
                       }}
                       prefill={{

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
+import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
 
 // Team member interface
 interface TeamMember {
@@ -173,6 +174,10 @@ function HeroSection() {
     rootMargin: '-10% 0px',
     triggerOnce: true
   });
+  
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
+  const shouldUseHeavyAnimations = useHeavyAnimations();
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -190,32 +195,42 @@ function HeroSection() {
       {/* Animated Background */}
       <div className="absolute inset-0">
         <motion.div 
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-20"
-          animate={{
+          className={`absolute rounded-full blur-3xl opacity-20 ${
+            isMobile ? '-top-16 -right-16 w-48 h-48' : '-top-32 -right-32 w-96 h-96'
+          }`}
+          animate={shouldUseHeavyAnimations ? {
             background: [
               "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(178, 75, 243, 0.4) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)"
             ]
-          }}
-          transition={{
+          } : {}}
+          transition={shouldUseHeavyAnimations ? {
             duration: 8,
             repeat: Infinity,
-              }}
+          } : {}}
+          style={!shouldUseHeavyAnimations ? {
+            background: "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)"
+          } : {}}
         />
         <motion.div 
-          className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
-          animate={{
+          className={`absolute rounded-full blur-3xl opacity-15 ${
+            isMobile ? '-bottom-16 -left-16 w-40 h-40' : '-bottom-32 -left-32 w-80 h-80'
+          }`}
+          animate={shouldUseHeavyAnimations ? {
             background: [
               "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)"
             ]
-          }}
-          transition={{
+          } : {}}
+          transition={shouldUseHeavyAnimations ? {
             duration: 6,
             repeat: Infinity,
-              }}
+          } : {}}
+          style={!shouldUseHeavyAnimations ? {
+            background: "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)"
+          } : {}}
         />
       </div>
 
@@ -227,7 +242,9 @@ function HeroSection() {
           variants={titleVariants}
         >
           <h1 
-            className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
+            className={`font-bold hero-title-spacing hero-subtitle-spacing ${
+              isMobile ? 'text-3xl' : 'section-title-large'
+            }`}
             style={{
               textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
             }}
@@ -235,7 +252,9 @@ function HeroSection() {
             About Architeq
           </h1>
           
-          <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing">
+          <p className={`text-light-gray max-w-3xl mx-auto section-button-spacing ${
+            isMobile ? 'text-base section-subtitle-small' : 'hero-subtitle section-subtitle-medium'
+          }`}>
             We architect digital systems that flex, scale, and adapt — for companies across industries.
           </p>
 
@@ -691,8 +710,12 @@ function ValuesSection() {
 }
 
 function TeamSection() {
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
+  const shouldUseHeavyAnimations = useHeavyAnimations();
+  
   const [activeMember, setActiveMember] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(!isMobile); // Отключаем автопроигрывание на мобильных
   const [isVisible, setIsVisible] = useState(false);
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -785,33 +808,40 @@ function TeamSection() {
   return (
     <section 
       ref={sectionRef}
-      className="section-benefits bg-dark-gray py-24"
+      className={`section-benefits bg-dark-gray ${isMobile ? 'py-12' : 'py-24'}`}
     >
       <div className="container mx-auto px-4">
         <motion.div
-          className="text-center mb-16"
+          className={`text-center ${isMobile ? 'mb-8' : 'mb-16'}`}
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
         >
           <h2 
-            className="text-4xl md:text-5xl font-bold mb-6"
+            className={`font-bold mb-6 ${
+              isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'
+            }`}
             style={{
               textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
             }}
           >
             Meet Our Team
           </h2>
-          <p className="text-xl text-white/70 max-w-3xl mx-auto">
+          <p className={`text-white/70 max-w-3xl mx-auto ${
+            isMobile ? 'text-base' : 'text-xl'
+          }`}>
             The experts behind your business transformation and automation success
           </p>
         </motion.div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-start">
+          <div className={`grid grid-cols-1 lg:grid-cols-3 items-start ${
+            isMobile ? 'gap-6' : 'gap-12 lg:gap-16'
+          }`}>
             
-            {/* Left Navigation - Team member list */}
-            <div className="lg:col-span-1">
+            {/* Left Navigation - Team member list - скрыто на мобильных */}
+            {!isMobile && (
+              <div className="lg:col-span-1">
               <div className="w-full">
                 <div className="space-y-2">
                   {teamMembers.map((member, index) => (
@@ -836,22 +866,22 @@ function TeamSection() {
                             boxShadow: '0 0 20px rgba(176,255,116,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                           }}
                           initial={{ opacity: 0 }}
-                          animate={{ 
+                          animate={shouldUseHeavyAnimations ? { 
                             opacity: 1,
                             boxShadow: [
                               '0 0 20px rgba(176,255,116,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                               '0 0 30px rgba(176,255,116,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
                               '0 0 20px rgba(176,255,116,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                             ]
-                          }}
-                          transition={{
+                          } : { opacity: 1 }}
+                          transition={shouldUseHeavyAnimations ? {
                             opacity: { duration: 0.3 },
                             boxShadow: { duration: 4, repeat: Infinity }
-                          }}
+                          } : { opacity: { duration: 0.3 } }}
                         />
                       )}
                       
-                      {activeMember !== index && (
+                      {activeMember !== index && !isMobile && (
                         <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                       )}
                       
@@ -915,10 +945,11 @@ function TeamSection() {
                   </span>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Right Side - Single active member card */}
-            <div className="lg:col-span-2">
+            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2'}>
               <div className="relative">
                 <AnimatePresence mode="wait">
                   {teamMembers.map((member, index) => (
@@ -933,19 +964,29 @@ function TeamSection() {
                                           }}
                         className="w-full"
                       >
-                        <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-3xl overflow-hidden border border-white/10 hover:border-secondary/40 transition-all duration-500 shadow-xl shadow-black/20">
+                        <div className={`bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-3xl overflow-hidden border border-white/10 transition-all duration-500 shadow-xl shadow-black/20 ${
+                          shouldUseHeavyAnimations ? 'hover:border-secondary/40' : ''
+                        }`}>
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                             {/* Profile Section */}
-                            <div className="lg:col-span-1 p-8 lg:p-12 flex flex-col items-center justify-center text-center bg-gradient-to-br from-white/5 to-transparent">
-                              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-secondary/30 to-secondary/50 flex items-center justify-center mb-6 text-4xl font-bold text-white transition-transform duration-500">
+                            <div className={`lg:col-span-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-white/5 to-transparent ${
+                              isMobile ? 'p-6' : 'p-8 lg:p-12'
+                            }`}>
+                              <div className={`rounded-full bg-gradient-to-br from-secondary/30 to-secondary/50 flex items-center justify-center mb-6 font-bold text-white transition-transform duration-500 ${
+                                isMobile ? 'w-24 h-24 text-3xl' : 'w-32 h-32 text-4xl'
+                              }`}>
                                 {member.name.charAt(0)}
                               </div>
                               
-                              <h3 className="text-2xl font-bold text-white mb-3 transition-colors duration-300">
+                              <h3 className={`font-bold text-white mb-3 transition-colors duration-300 ${
+                                isMobile ? 'text-lg' : 'text-2xl'
+                              }`}>
                                 {member.name}
                               </h3>
                               
-                              <p className="text-secondary text-lg font-semibold mb-4">
+                              <p className={`text-secondary font-semibold mb-4 ${
+                                isMobile ? 'text-base' : 'text-lg'
+                              }`}>
                                 {member.position}
                               </p>
 
@@ -967,11 +1008,17 @@ function TeamSection() {
                             </div>
 
                             {/* Content Section */}
-                            <div className="lg:col-span-2 p-8 lg:p-12">
+                            <div className={`lg:col-span-2 ${
+                              isMobile ? 'p-6' : 'p-8 lg:p-12'
+                            }`}>
                               {/* Bio */}
                               <div className="mb-6">
-                                <h4 className="text-lg font-semibold text-white mb-4">Role</h4>
-                                <p className="text-white/80 leading-relaxed text-base">
+                                <h4 className={`font-semibold text-white mb-4 ${
+                                  isMobile ? 'text-base' : 'text-lg'
+                                }`}>Role</h4>
+                                <p className={`text-white/80 leading-relaxed ${
+                                  isMobile ? 'text-sm' : 'text-base'
+                                }`}>
                                   {member.bio}
                                 </p>
                               </div>
@@ -1043,6 +1090,43 @@ function TeamSection() {
                   ))}
                 </AnimatePresence>
               </div>
+              
+              {/* Mobile Navigation - кнопки под карточкой */}
+              {isMobile && (
+                <div className="mt-8 flex items-center justify-center space-x-4">
+                  <button
+                    onClick={() => handleNavigate('prev')}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Previous</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => handleNavigate('next')}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                  >
+                    <span>Next</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
 
           </div>
@@ -1112,7 +1196,7 @@ function AchievementsSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {achievements.map((achievement, index) => (
             <motion.div
               key={index}
@@ -1168,6 +1252,9 @@ function MethodologySection() {
     rootMargin: '-10% 0px',
     triggerOnce: true
   });
+
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
 
   const [activeStep, setActiveStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -1269,9 +1356,12 @@ function MethodologySection() {
         </motion.div>
 
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Navigation */}
-            <div className="lg:col-span-1">
+          <div className={`grid gap-12 ${
+            isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'
+          }`}>
+            {/* Navigation - скрыто на мобильных */}
+            {!isMobile && (
+              <div className="lg:col-span-1">
               <div className="space-y-4">
                 {steps.map((step, index) => (
                   <motion.button
@@ -1328,10 +1418,11 @@ function MethodologySection() {
                   </motion.button>
                 ))}
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Active Step Detail */}
-            <div className="lg:col-span-2">
+            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2'}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeStep}
@@ -1387,6 +1478,49 @@ function MethodologySection() {
                   </TravelingBorderGlow>
                 </motion.div>
               </AnimatePresence>
+              
+              {/* Mobile Navigation - кнопки под блоком */}
+              {isMobile && (
+                <div className="mt-8 flex items-center justify-center space-x-4">
+                  <button
+                    onClick={() => {
+                      setActiveStep(prev => prev === 0 ? steps.length - 1 : prev - 1);
+                      setHasUserInteracted(true);
+                    }}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span>Previous</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      setActiveStep(prev => (prev + 1) % steps.length);
+                      setHasUserInteracted(true);
+                    }}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
+                  >
+                    <span>Next</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1664,7 +1798,15 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
         className="relative z-10 overflow-hidden py-4"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)'
+        }}
       >
+        {/* Левое размытие */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-dark-gray to-transparent z-10 pointer-events-none" />
+        {/* Правое размытие */}
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-dark-gray to-transparent z-10 pointer-events-none" />
         <motion.div
           className="flex items-center space-x-4"
           animate={{
@@ -1674,7 +1816,7 @@ function AppleDock({ technologies }: { technologies: Technology[] }) {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: workingTechnologies.length * 2,
+              duration: 60, // Увеличена длительность для более медленной прокрутки
             },
           }}
         >
@@ -1986,6 +2128,9 @@ function InteractiveApproachSection() {
     triggerOnce: true
   });
 
+  // Device detection для адаптивности
+  const { isMobile } = useDeviceDetection();
+
   const [activeSlide, setActiveSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -2100,11 +2245,15 @@ function InteractiveApproachSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.6 }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-12 h-[500px]"
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 ${
+                  isMobile ? 'min-h-[800px]' : 'h-[500px]'
+                }`}
               >
                 {/* Challenge Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-red-500/30 h-full relative overflow-hidden">
+                  <div className={`bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-red-500/30 relative overflow-hidden ${
+                    isMobile ? 'h-auto min-h-[360px]' : 'h-full'
+                  }`}>
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
@@ -2145,7 +2294,9 @@ function InteractiveApproachSection() {
 
                 {/* Solution Side */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-secondary/30 h-full relative overflow-hidden">
+                  <div className={`bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-secondary/30 relative overflow-hidden ${
+                    isMobile ? 'h-auto min-h-[360px]' : 'h-full'
+                  }`}>
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-3xl"
                       animate={{ opacity: [0.5, 0.8, 0.5] }}
