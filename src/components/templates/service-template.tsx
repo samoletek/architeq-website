@@ -146,7 +146,7 @@ export default function ServiceTemplate({
       {/* Combined Benefits and Features Section */}
       {((benefits && benefits.length > 0) || (overview && overview.features && overview.features.length > 0)) && (
         <BenefitsSection 
-          title="Key Benefits"
+          title="Solution Features"
           subtitle="Our solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line."
           benefits={benefits}
           features={overview?.features}
@@ -158,7 +158,7 @@ export default function ServiceTemplate({
       {features && features.length > 0 && (
         <FeaturesSection 
           title="Our Solutions"
-          subtitle="We offer a comprehensive range of solutions to address your specific business needs."
+          subtitle="We offer a comprehensive range of solutions to<br />address your specific business needs."
           features={features}
         />
       )}
@@ -389,29 +389,63 @@ function BenefitsSection({
             {subtitle}
           </p>
 
-          {/* Interactive Tab Navigation */}
+          {/* Enhanced Toggle Switch */}
           {benefits && features && (
             <div className="flex justify-center mb-8">
-              <div className="inline-flex rounded-full bg-white/5 p-1 border border-primary/20">
+              <div className="relative inline-flex items-center rounded-full p-1" style={{
+                backgroundColor: '#200040',
+                border: '1px solid rgba(119, 71, 207, 0.3)',
+                width: '400px'
+              }}>
+                {/* Animated background slider */}
+                <motion.div
+                  className="absolute rounded-full transition-all duration-300"
+                  style={{
+                    width: '50%',
+                    height: 'calc(100% - 8px)',
+                    top: '4px',
+                    backgroundColor: activeTab === 'benefits' ? '#7747CF' : '#B0FF74',
+                    left: activeTab === 'benefits' ? '4px' : '50%'
+                  }}
+                  animate={{
+                    left: activeTab === 'benefits' ? '4px' : '50%',
+                    backgroundColor: activeTab === 'benefits' ? '#7747CF' : '#B0FF74'
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                />
+                
+                {/* Toggle buttons */}
                 <button
                   onClick={() => setActiveTab('benefits')}
-                  className={`px-8 py-3 rounded-full transition-all duration-300 font-medium ${
+                  className={`relative z-10 text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
                     activeTab === 'benefits'
-                      ? 'bg-primary text-black shadow-lg'
-                      : 'text-white hover:text-primary hover:bg-white/10'
+                      ? 'text-white'
+                      : 'text-white/70 hover:text-white'
                   }`}
+                  style={{
+                    width: '50%',
+                    padding: '12px 24px',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap'
+                  }}
                 >
-                  Key Benefits
+                  Core Benefits
                 </button>
                 <button
                   onClick={() => setActiveTab('features')}
-                  className={`px-8 py-3 rounded-full transition-all duration-300 font-medium ${
+                  className={`relative z-10 text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
                     activeTab === 'features'
-                      ? 'bg-secondary text-black shadow-lg'
-                      : 'text-white hover:text-secondary hover:bg-white/10'
+                      ? 'text-black'
+                      : 'text-white/70 hover:text-white'
                   }`}
+                  style={{
+                    width: '50%',
+                    padding: '12px 24px',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap'
+                  }}
                 >
-                  {featuresTitle || 'Technologies'}
+                  {featuresTitle || 'AI Technologies'}
                 </button>
               </div>
             </div>
@@ -455,11 +489,6 @@ function BenefitsSection({
                     />
                     
                     <div className="relative z-10">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 
-                          flex items-center justify-center mb-4 group-hover:bg-primary/30 transition-colors">
-                        <div className="w-6 h-6 rounded-full bg-primary"></div>
-                      </div>
-                      
                       <h3 className="text-xl font-semibold text-white mb-4 whitespace-pre-line">
                         {benefit.title}
                       </h3>
@@ -507,15 +536,6 @@ function BenefitsSection({
                     />
                     
                     <div className="relative z-10 text-center">
-                      <motion.div
-                        className="w-10 h-10 rounded-full bg-secondary/20 border border-secondary/40 
-                          flex items-center justify-center mb-4 mx-auto group-hover:bg-secondary/30"
-                        whileHover={{ rotate: 360, scale: 1.1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <div className="w-4 h-4 rounded-full bg-secondary"></div>
-                      </motion.div>
-                      
                       <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-secondary transition-colors">
                         {feature}
                       </h4>
@@ -666,8 +686,7 @@ function FeaturesSection({
               }}>
             {title}
           </h2>
-          <p className="text-light-gray section-subtitle-medium max-w-3xl mx-auto opacity-90">
-            {subtitle}
+          <p className="text-light-gray section-subtitle-medium max-w-3xl mx-auto opacity-90" dangerouslySetInnerHTML={{ __html: subtitle }}>
           </p>
         </motion.div>
 
@@ -755,7 +774,7 @@ function FeaturesSection({
                     <div className="mt-auto">
                       {/* Enhanced Key Benefits - fixed height */}
                       <div className="mb-1 h-14">
-                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-1">Key Benefits</h4>
+                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-1">Deliverables</h4>
                         {feature.benefits && feature.benefits.length > 0 && (
                           <div className="space-y-0.5">
                             {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
@@ -921,8 +940,7 @@ function ProcessSection({
               }}>
             {title}
           </h2>
-          <p className="text-light-gray section-subtitle-medium max-w-3xl mx-auto opacity-90">
-            {subtitle}
+          <p className="text-light-gray section-subtitle-medium max-w-3xl mx-auto opacity-90" dangerouslySetInnerHTML={{ __html: subtitle }}>
           </p>
         </motion.div>
 

@@ -178,8 +178,7 @@ export default function CTASection({
             <p className={cn(
               "text-light-gray mb-8 sm:mb-12 md:mb-16",
               compact ? "text-base" : "text-lg"
-            )}>
-              {description}
+            )} dangerouslySetInnerHTML={{ __html: description }}>
             </p>
           </motion.div>
           
