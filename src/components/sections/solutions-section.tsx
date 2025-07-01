@@ -217,14 +217,6 @@ function SolutionNavigation({
               style={activeIndex === index ? {
                 textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 25px rgba(178,75,243,0.6)'
               } : {}}
-              whileHover={{ 
-                scale: 1.05,
-                transition: {
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 15
-                }
-              }}
               whileTap={{ scale: 0.95 }}
             >
               <span className="relative z-10 font-semibold whitespace-nowrap">
