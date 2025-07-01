@@ -369,6 +369,111 @@ export function useAnimationSettings() {
   return baseSettings;
 }
 
+// Оптимизированные варианты анимации для мобильных устройств - using footer's smooth technique
+export const mobileOptimizedExpandVariants = {
+  collapsed: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.3
+    }
+  },
+  expanded: {
+    height: 'auto',
+    opacity: 1,
+    transition: {
+      duration: 0.3
+    }
+  }
+};
+
+// Оптимизированные варианты для карточек с фиксированной высотой
+export const cardTransitionVariants = {
+  enter: {
+    opacity: 0,
+    x: 300,
+    transform: 'translateZ(0)', // Force GPU acceleration
+    transition: {
+      duration: 0.4,
+      ease: [0.04, 0.62, 0.23, 0.98]
+    }
+  },
+  center: {
+    opacity: 1,
+    x: 0,
+    transform: 'translateZ(0)', // Force GPU acceleration
+    transition: {
+      duration: 0.4,
+      ease: [0.04, 0.62, 0.23, 0.98]
+    }
+  },
+  exit: {
+    opacity: 0,
+    x: -300,
+    transform: 'translateZ(0)', // Force GPU acceleration
+    transition: {
+      duration: 0.3,
+      ease: [0.04, 0.62, 0.23, 0.98]
+    }
+  }
+};
+
+// Улучшенные варианты анимации для десктопа - using footer's smooth technique
+export const desktopExpandVariants = {
+  collapsed: {
+    height: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.3
+    }
+  },
+  expanded: {
+    height: 'auto',
+    opacity: 1,
+    transition: {
+      duration: 0.3
+    }
+  }
+};
+
+// Функция для получения оптимизированных вариантов анимации
+export function useOptimizedExpandVariants() {
+  const { isMobile, isLowPerformance } = useDeviceDetection();
+  
+  // Для устройств с низкой производительностью используем минимальные анимации
+  if (isLowPerformance) {
+    return {
+      collapsed: { opacity: 0, height: 0 },
+      expanded: { opacity: 1, height: 'auto' }
+    };
+  }
+  
+  // Для мобильных устройств используем оптимизированные варианты
+  if (isMobile) {
+    return mobileOptimizedExpandVariants;
+  }
+  
+  // Для десктопа используем полные варианты
+  return desktopExpandVariants;
+}
+
+// Функция для получения оптимизированных вариантов переходов карточек
+export function useOptimizedCardVariants() {
+  const { isLowPerformance } = useDeviceDetection();
+  
+  // Для устройств с низкой производительностью используем только opacity
+  if (isLowPerformance) {
+    return {
+      enter: { opacity: 0 },
+      center: { opacity: 1 },
+      exit: { opacity: 0 }
+    };
+  }
+  
+  // Для всех устройств используем GPU-accelerated варианты
+  return cardTransitionVariants;
+}
+
 // Проверка поддержки Web Animations API
 export function supportsWebAnimations(): boolean {
   return typeof Element !== 'undefined' && 'animate' in Element.prototype;
