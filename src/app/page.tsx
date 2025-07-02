@@ -77,7 +77,7 @@ export default function Home() {
           rootMargin="-10% 0px"
           waitForPrevious={true} // Ждем завершения анимации предыдущей секции
         >
-          <SolutionsSection />
+          <SolutionsSection variant="homepage" />
         </SectionAnimation>
         
         {/* 

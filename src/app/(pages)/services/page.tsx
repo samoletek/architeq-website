@@ -697,8 +697,8 @@ export default function ServicesPage() {
           ref={sectionRef}
           className="relative bg-transparent"
           style={{ 
-            height: `${120 + services.length * 104}vh`,
-            minHeight: '720vh'
+            height: `${100 + services.length * 90}vh`,
+            minHeight: '600vh'
           }}
         >
           {/* Заголовки */}
