@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
-import { motion, AnimatePresence } from 'framer-motion'; 
+import { motion, AnimatePresence } from 'framer-motion';
+import { useDeviceDetection } from '@/lib/utils/device-detection'; 
 
 // Тип для таба решения
 export interface SolutionTab {
@@ -39,7 +40,7 @@ export interface SolutionsSectionProps {
   className?: string;
   defaultSolutionId?: string;
   buttonText?: string;
-  variant?: 'default' | 'alternate';
+  variant?: 'default' | 'alternate' | 'homepage';
 }
 
 // Данные о решениях для каждого сервиса
@@ -176,6 +177,273 @@ const defaultSolutions: Solution[] = [
   }
 ];
 
+// Sales metrics and value propositions data (копия из Services page)
+const salesData = {
+  'business-process': {
+    timeToROI: '2-4 weeks',
+    avgEfficiencyGain: '40-60%',
+    avgTimeSaved: '25-30 hours/week',
+    clientsSaved: '200+',
+    valueProps: [
+      'Eliminate 80% of manual processes',
+      'Reduce processing time by 60%',
+      'Zero human errors in core workflows',
+      'Real-time visibility across operations'
+    ],
+    metrics: [
+      { label: 'Time Saved', value: '30hrs', unit: '/week' },
+      { label: 'Error Rate', value: '0%', unit: '' },
+      { label: 'ROI Timeline', value: '2-4', unit: 'weeks' }
+    ]
+  },
+  'crm-integration': {
+    timeToROI: '3-6 weeks',
+    avgEfficiencyGain: '50-70%',
+    avgTimeSaved: '20-25 hours/week',
+    clientsSaved: '150+',
+    valueProps: [
+      'Unified customer data across all platforms',
+      'Automated lead scoring and nurturing',
+      '360° customer view for better decisions',
+      'Seamless sales pipeline management'
+    ],
+    metrics: [
+      { label: 'Lead Conversion', value: '+45%', unit: '' },
+      { label: 'Data Accuracy', value: '99%', unit: '' },
+      { label: 'Sales Velocity', value: '+60%', unit: '' }
+    ]
+  },
+  'boxed-solutions': {
+    timeToROI: '1-2 weeks',
+    avgEfficiencyGain: '30-50%',
+    avgTimeSaved: '15-20 hours/week',
+    clientsSaved: '100+',
+    valueProps: [
+      'Industry-proven workflows ready to deploy',
+      'Fastest time to value in the market',
+      'Pre-built integrations for common tools',
+      'Scalable foundation for custom needs'
+    ],
+    metrics: [
+      { label: 'Deploy Time', value: '1-2', unit: 'weeks' },
+      { label: 'Setup Cost', value: '-70%', unit: '' },
+      { label: 'Efficiency Gain', value: '40%', unit: '' }
+    ]
+  },
+  'ai-solutions': {
+    timeToROI: '4-8 weeks',
+    avgEfficiencyGain: '60-80%',
+    avgTimeSaved: '35-40 hours/week',
+    clientsSaved: '80+',
+    valueProps: [
+      'AI-powered decision automation',
+      'Natural language processing for communication',
+      'Predictive analytics for business insights',
+      'Smart routing and task assignment'
+    ],
+    metrics: [
+      { label: 'Response Time', value: '90%', unit: 'faster' },
+      { label: 'Decision Accuracy', value: '95%', unit: '' },
+      { label: 'Processing Volume', value: '10x', unit: '' }
+    ]
+  },
+  'documentation': {
+    timeToROI: '2-3 weeks',
+    avgEfficiencyGain: '70-85%',
+    avgTimeSaved: '20-30 hours/week',
+    clientsSaved: '120+',
+    valueProps: [
+      'Zero manual document creation',
+      'Automated approval workflows',
+      'Real-time collaboration and versioning',
+      'Built-in compliance and audit trails'
+    ],
+    metrics: [
+      { label: 'Doc Processing', value: '85%', unit: 'faster' },
+      { label: 'Approval Time', value: '-90%', unit: '' },
+      { label: 'Compliance Rate', value: '100%', unit: '' }
+    ]
+  },
+  'finance': {
+    timeToROI: '3-5 weeks',
+    avgEfficiencyGain: '55-75%',
+    avgTimeSaved: '25-35 hours/week',
+    clientsSaved: '90+',
+    valueProps: [
+      'Real-time financial visibility',
+      'Automated reconciliation and reporting',
+      'Multi-currency and payment method support',
+      'Seamless accounting system integration'
+    ],
+    metrics: [
+      { label: 'Reconciliation', value: '95%', unit: 'automated' },
+      { label: 'Report Generation', value: '80%', unit: 'faster' },
+      { label: 'Payment Processing', value: '24/7', unit: '' }
+    ]
+  }
+};
+
+// Мобильная карточка как на Services page
+function MobileServiceCard({ service, index }: { 
+  service: {
+    id: string;
+    title: string;
+    description: string;
+    features: string[];
+    icon: string;
+    href?: string;
+  }; 
+  index: number;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const currentSalesData = salesData[service.id as keyof typeof salesData];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="relative overflow-hidden rounded-xl border"
+      style={{
+        background: `
+          radial-gradient(circle at 20% 80%, rgba(119, 71, 207, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(178, 75, 243, 0.15) 0%, transparent 50%),
+          linear-gradient(135deg, rgba(23, 10, 36, 0.6) 0%, rgba(21, 9, 32, 0.7) 50%, rgba(18, 7, 26, 0.8) 100%)
+        `,
+        border: '1px solid rgba(119, 71, 207, 0.15)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)'
+      }}
+    >
+      {/* Sales metrics strip */}
+      <div className="flex justify-between items-center p-3 bg-primary/5 border-b border-primary/10">
+        <div className="flex space-x-4">
+          {currentSalesData?.metrics.slice(0, 2).map((metric, metricIndex) => (
+            <div key={metricIndex} className="text-center">
+              <div className="text-sm font-bold text-secondary">
+                {metric.value}
+                <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
+              </div>
+              <div className="text-xs text-white/50">{metric.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center text-xs text-white/60">
+          <motion.div 
+            className="w-1.5 h-1.5 rounded-full bg-secondary mr-1"
+            animate={{
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+          ROI: {currentSalesData?.timeToROI}
+        </div>
+      </div>
+
+      <div className="p-6">
+        <div 
+          className="flex items-center justify-between cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <h3 className="text-lg font-semibold text-white"
+              style={{
+                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+              }}>
+            {service.title}
+          </h3>
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            className="text-light-gray"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </div>
+
+        <p className="text-light-gray mt-3 text-sm leading-relaxed">
+          {service.description}
+        </p>
+
+        {/* Cases link */}
+        <div className="mt-3 flex items-center justify-between">
+          <Link href={`/cases?filter=${service.id}`}>
+            <div className="flex items-center text-xs text-white/60 hover:text-secondary transition-colors duration-300">
+              <motion.div 
+                className="w-1.5 h-1.5 rounded-full bg-secondary mr-2"
+                animate={{
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              View Cases
+            </div>
+          </Link>
+          <div className="text-xs text-secondary font-semibold">
+            +{currentSalesData?.avgEfficiencyGain.split('-')[0]} efficiency
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 pt-4 border-t border-primary/10">
+                {/* Simple Key Features */}
+                <h4 className="text-sm font-semibold text-white mb-3">Key Features:</h4>
+                <div className="space-y-2 mb-4">
+                  {service.features.slice(0, 4).map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-start">
+                      <motion.div 
+                        className="w-3 h-3 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-1 flex-shrink-0"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: featureIndex * 0.1 }}
+                        style={{
+                          background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
+                        }}
+                      >
+                        <div className="w-1 h-1 rounded-full bg-primary" />
+                      </motion.div>
+                      <span className="text-white/80 text-xs leading-relaxed">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex space-x-2">
+                  <Link href={service.href || `/services/${service.id}`} className="flex-1">
+                    <Button variant="primary" size="sm" className="w-full shadow-neon-glow hover:shadow-neon-glow-intense">
+                      Explore Solution
+                    </Button>
+                  </Link>
+                  <Link href="/contacts" className="flex-1">
+                    <div className="flex items-center justify-center text-secondary font-medium text-sm py-2 transition-all duration-300 hover:opacity-80">
+                      <span>Talk to the Team</span>
+                      <motion.div 
+                        className="w-2 h-2 rounded-full bg-secondary ml-2"
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          opacity: [0.7, 1, 0.7]
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
 // Компонент элегантных горизонтальных табов
 function SolutionNavigation({ 
   solutions, 
@@ -270,8 +538,8 @@ export const SolutionContent = ({
 
   // Адаптивные размеры в зависимости от варианта
   const isServicesVariant = variant === 'services';
-  const containerHeight = isServicesVariant ? '650px' : 'auto';
-  const maxHeight = isServicesVariant ? 'none' : '70vh';
+  const containerHeight = isServicesVariant ? 'auto' : 'auto';
+  const maxHeight = isServicesVariant ? '85vh' : '70vh';
   const maxWidth = isServicesVariant ? '5xl' : '5xl';
 
   return (
@@ -359,11 +627,13 @@ export const SolutionContent = ({
         className={`
           relative rounded-2xl overflow-hidden group w-full
           ${isActive ? 'pointer-events-auto' : 'pointer-events-none'}
-          ${isServicesVariant ? 'p-12 sm:p-14 lg:p-16' : 'p-12 sm:p-14 lg:p-18'}
+          ${isServicesVariant ? 'p-8 sm:p-10 lg:p-12' : 'p-12 sm:p-14 lg:p-18'}
         `}
         style={{
           width: '100%',
-          height: isServicesVariant ? '650px' : 'auto',
+          height: isServicesVariant ? 'auto' : 'auto',
+          minHeight: isServicesVariant ? '500px' : 'auto',
+          maxHeight: isServicesVariant ? '85vh' : '70vh',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',
           WebkitBackdropFilter: 'blur(35px)',
@@ -389,8 +659,8 @@ export const SolutionContent = ({
         </div>
 
         {/* Заголовок решения */}
-        <div className="text-center mb-12">
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-tight text-white mb-4"
+        <div className="text-center mb-8">
+          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold leading-tight text-white mb-3"
               style={{
                 textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)'
               }}>
@@ -402,10 +672,10 @@ export const SolutionContent = ({
         </div>
 
         {/* Двухколоночный контент */}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 ${isServicesVariant ? 'gap-8 lg:gap-12' : 'gap-12 lg:gap-16'} mb-14`}>
+        <div className={`grid grid-cols-1 lg:grid-cols-2 ${isServicesVariant ? 'gap-6 lg:gap-8' : 'gap-12 lg:gap-16'} mb-8`}>
           {/* Левая колонка - Our Solutions */}
           <div className="space-y-4">
-            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-6"
+            <h4 className={`${isServicesVariant ? 'text-base sm:text-lg lg:text-xl' : 'text-lg sm:text-xl lg:text-2xl'} font-bold text-white mb-4`}
                 style={{
                   textShadow: '0 0 15px rgba(255,255,255,0.6)'
                 }}>
@@ -448,7 +718,7 @@ export const SolutionContent = ({
 
           {/* Правая колонка - Key Features */}
           <div className="space-y-4">
-            <h4 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-6"
+            <h4 className={`${isServicesVariant ? 'text-base sm:text-lg lg:text-xl' : 'text-lg sm:text-xl lg:text-2xl'} font-bold text-white mb-4`}
                 style={{
                   textShadow: '0 0 15px rgba(255,255,255,0.6)'
                 }}>
@@ -574,7 +844,11 @@ export function SolutionsSection({
   solutions = defaultSolutions,
   className,
   defaultSolutionId,
+  variant = 'default',
 }: SolutionsSectionProps) {
+  const { isMobile } = useDeviceDetection();
+  const isHomepageMobile = variant === 'homepage' && isMobile;
+  
   // Состояние для отслеживания активного решения по индексу
   const [activeIndex, setActiveIndex] = useState<number>(
     defaultSolutionId ? solutions.findIndex(s => s.id === defaultSolutionId) || 0 : 0
@@ -636,6 +910,47 @@ export function SolutionsSection({
       y: 0
     }
   };
+
+  // Для homepage мобильной версии используем тот же компонент, что и на Services page
+  if (isHomepageMobile) {
+    // Преобразуем Solution в Service для совместимости
+    const servicesData = solutions.map(solution => ({
+      id: solution.id,
+      title: solution.label,
+      description: solution.description,
+      features: solution.features,
+      icon: solution.icon,
+      href: solution.href
+    }));
+
+    return (
+      <section className={cn("py-16 bg-transparent relative z-10", className)}>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6"
+                style={{
+                  textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                }}>
+              {title}
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Comprehensive automation solutions designed to transform your business operations
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {servicesData.map((service, index) => (
+              <MobileServiceCard 
+                key={service.id} 
+                service={service} 
+                index={index} 
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section 
