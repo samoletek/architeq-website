@@ -416,6 +416,7 @@ function ValuesSection() {
   const [isAutoRotating, setIsAutoRotating] = useState(true);
   const [userHasInteracted, setUserHasInteracted] = useState(false);
   const [expandedValue, setExpandedValue] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Enhanced company values with deep-dive content
   const enhancedValues = companyValues.map((value, index) => ({
@@ -454,26 +455,26 @@ function ValuesSection() {
     ]
   }));
 
-  // Auto-rotation effect with FAQ-style cycling
+  // Auto-rotation effect with FAQ-style cycling (desktop only)
   useEffect(() => {
-    if (!isVisible || !isAutoRotating || userHasInteracted) return;
+    if (isMobile || !isVisible || !isAutoRotating || userHasInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveValue(prev => (prev + 1) % enhancedValues.length);
-    }, isMobile ? 8000 : 6000); // Longer interval on mobile for better performance
+    }, 6000); // Longer interval for FAQ-style content
     return () => clearInterval(interval);
-  }, [isVisible, isAutoRotating, userHasInteracted, enhancedValues.length, isMobile]);
+  }, [isVisible, isAutoRotating, userHasInteracted, enhancedValues.length, isHovered, isMobile]);
 
-  // Resume auto-rotation after user inactivity
+  // Resume auto-rotation after user inactivity (desktop only)
   useEffect(() => {
-    if (userHasInteracted) {
+    if (userHasInteracted && !isMobile) {
       const timer = setTimeout(() => {
         setUserHasInteracted(false);
         setIsAutoRotating(true);
       }, 12000); // Longer pause for FAQ interactions
       return () => clearTimeout(timer);
     }
-  }, [userHasInteracted]);
+  }, [userHasInteracted, isMobile]);
 
   const handleValueChange = (index: number) => {
     setActiveValue(index);
@@ -553,7 +554,11 @@ function ValuesSection() {
         </motion.div>
 
         {/* FAQ-Style Carousel */}
-        <div className="max-w-4xl mx-auto">
+        <div 
+          className="max-w-4xl mx-auto"
+          onMouseEnter={() => !isMobile && setIsHovered(true)}
+          onMouseLeave={() => !isMobile && setIsHovered(false)}
+        >
           <div className="consistent-height-container">
             <AnimatePresence mode="wait">
               <motion.div
@@ -732,6 +737,8 @@ function TeamSection() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(!isMobile); // Отключаем автопроигрывание на мобильных
   const [isVisible, setIsVisible] = useState(false);
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Simple intersection observer for animations only
@@ -760,29 +767,43 @@ function TeamSection() {
     };
   }, []);
 
-  // Auto-carousel with 6-second intervals
+  // Auto-carousel with 6-second intervals (desktop only)
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (isMobile || !isAutoPlaying || isHovered || userInteracted) return;
 
     const autoInterval = setInterval(() => {
       setActiveMember(prev => (prev + 1) % teamMembers.length);
-    }, isMobile ? 8000 : 6000); // Longer interval on mobile for better performance
+    }, 6000);
 
     return () => clearInterval(autoInterval);
-  }, [isAutoPlaying, isMobile]);
+  }, [isAutoPlaying, isHovered, userInteracted, isMobile]);
+
+  // Resume auto-play after user inactivity (desktop only)
+  useEffect(() => {
+    if (userInteracted && !isMobile) {
+      const timer = setTimeout(() => {
+        setUserInteracted(false);
+        setIsAutoPlaying(true);
+      }, 10000); // Resume after 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [userInteracted, isMobile]);
 
   const handleMemberClick = (index: number) => {
     setActiveMember(index);
     setIsAutoPlaying(false); // Stop auto-play when user interacts
+    setUserInteracted(true);
   };
 
   const handleMemberExpand = (index: number) => {
     setExpandedMember(expandedMember === index ? null : index);
     setIsAutoPlaying(false); // Stop auto-play when expanding details
+    setUserInteracted(true);
   };
 
   const handleNavigate = (direction: 'prev' | 'next') => {
     setIsAutoPlaying(false);
+    setUserInteracted(true);
     // Закрываем дропдаун при переключении участника команды на мобильных
     if (isMobile && expandedMember !== null) {
       setExpandedMember(null);
@@ -853,9 +874,13 @@ function TeamSection() {
         </motion.div>
 
         <div className="max-w-7xl mx-auto">
-          <div className={`grid grid-cols-1 lg:grid-cols-3 items-start ${
-            isMobile ? 'gap-6' : 'gap-12 lg:gap-16'
-          }`}>
+          <div 
+            className={`grid grid-cols-1 lg:grid-cols-3 items-start ${
+              isMobile ? 'gap-6' : 'gap-12 lg:gap-16'
+            }`}
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+          >
             
             {/* Left Navigation - Team member list - скрыто на мобильных */}
             {!isMobile && (
@@ -1281,6 +1306,7 @@ function MethodologySection() {
   const [activeStep, setActiveStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const steps = [
     {
@@ -1317,26 +1343,26 @@ function MethodologySection() {
     }
   ];
 
-  // Auto-progression with user interaction awareness
+  // Auto-progression with user interaction awareness (desktop only)
   useEffect(() => {
-    if (!isVisible || !isAutoPlaying || hasUserInteracted) return;
+    if (isMobile || !isVisible || !isAutoPlaying || hasUserInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveStep(prev => (prev + 1) % steps.length);
-    }, isMobile ? 7000 : 5000); // Longer interval on mobile for better performance
+    }, 5000);
     return () => clearInterval(interval);
-  }, [isVisible, isAutoPlaying, hasUserInteracted, steps.length, isMobile]);
+  }, [isVisible, isAutoPlaying, hasUserInteracted, steps.length, isHovered, isMobile]);
 
-  // Resume auto-play after user inactivity
+  // Resume auto-play after user inactivity (desktop only)
   useEffect(() => {
-    if (hasUserInteracted) {
+    if (hasUserInteracted && !isMobile) {
       const timer = setTimeout(() => {
         setHasUserInteracted(false);
         setIsAutoPlaying(true);
       }, 10000); // Resume after 10 seconds of inactivity
       return () => clearTimeout(timer);
     }
-  }, [hasUserInteracted]);
+  }, [hasUserInteracted, isMobile]);
 
   const handleStepChange = (index: number) => {
     setActiveStep(index);
@@ -1378,9 +1404,13 @@ function MethodologySection() {
         </motion.div>
 
         <div className="max-w-6xl mx-auto">
-          <div className={`grid gap-12 ${
-            isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'
-          }`}>
+          <div 
+            className={`grid gap-12 ${
+              isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'
+            }`}
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+          >
             {/* Navigation - скрыто на мобильных */}
             {!isMobile && (
               <div className="lg:col-span-1">
@@ -2163,6 +2193,8 @@ function InteractiveApproachSection() {
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
 
   // Business challenge-solution pairs
   const approachSlides = [
@@ -2207,19 +2239,31 @@ function InteractiveApproachSection() {
     }
   ];
 
-  // Auto-progression
+  // Auto-progression (desktop only)
   useEffect(() => {
-    if (!isVisible || !isAutoPlaying) return;
+    if (isMobile || !isVisible || !isAutoPlaying || userInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveSlide(prev => (prev + 1) % approachSlides.length);
-    }, isMobile ? 8000 : 6000); // Longer interval on mobile for better performance
+    }, 6000);
     return () => clearInterval(interval);
-  }, [isVisible, isAutoPlaying, approachSlides.length, isMobile]);
+  }, [isVisible, isAutoPlaying, approachSlides.length, userInteracted, isHovered, isMobile]);
+
+  // Resume auto-play after user inactivity (desktop only)
+  useEffect(() => {
+    if (userInteracted && !isMobile) {
+      const timer = setTimeout(() => {
+        setUserInteracted(false);
+        setIsAutoPlaying(true);
+      }, 10000); // Resume after 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [userInteracted, isMobile]);
 
   const handleSlideChange = (index: number) => {
     setActiveSlide(index);
     setIsAutoPlaying(false);
+    setUserInteracted(true);
   };
 
   const currentSlide = approachSlides[activeSlide];
@@ -2267,7 +2311,11 @@ function InteractiveApproachSection() {
           </div>
 
           {/* Interactive Challenge-Solution Comparison */}
-          <div className="relative consistent-height-container">
+          <div 
+            className="relative consistent-height-container"
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide}
