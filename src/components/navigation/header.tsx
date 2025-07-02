@@ -8,6 +8,7 @@ import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { usePathname } from 'next/navigation';
 import { SearchBar } from '@/components/ui/search-bar';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArchiteqLogo } from '@/components/ui/architeq-logo';
 import { GlowingTextButton } from '@/components/ui/buttons/glowing-text-button';
 
 // Тип для элемента навигации
@@ -19,7 +20,6 @@ export interface NavigationItem {
 }
 
 interface HeaderProps {
-  logo?: React.ReactNode;
   navigation?: NavigationItem[];
   ctaButton?: {
     text: string;
@@ -51,7 +51,6 @@ const defaultNavigation: NavigationItem[] = [
 ];
 
 export default function Header({
-  logo,
   navigation = defaultNavigation,
   ctaButton = {
     text: 'Schedule a Call',
@@ -194,13 +193,9 @@ export default function Header({
           <div className="justify-self-start">
             <Link 
               href="/" 
-              className="text-2xl font-bold"
+              className="block group"
             >
-              <span 
-                className="inline-block text-white text-shadow-white transition-all duration-300 hover:text-secondary hover:text-shadow-green"
-              >
-                {logo || "Architeq"}
-              </span>
+              <ArchiteqLogo size="small" disableHover={isMobile} />
             </Link>
           </div>
 
@@ -365,10 +360,10 @@ export default function Header({
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                   <Link 
                     href="/" 
-                    className="text-xl font-bold text-white"
+                    className="block"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Architeq
+                    <ArchiteqLogo size="small" disableHover={true} />
                   </Link>
                   <button 
                     className="text-white/60 hover:text-white p-2"
