@@ -117,25 +117,44 @@ function ContactFAQSection() {
     };
   }, []);
 
-  // Auto-carousel
+  // Auto-carousel with hover pause and manual interaction reset
+  const [isHovered, setIsHovered] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
+
+  // Auto-carousel logic (desktop only)
   useEffect(() => {
+    if (isMobile || isHovered || userInteracted) return;
+
     const autoInterval = setInterval(() => {
       setActiveQuestion(prev => (prev + 1) % contactFaqs.length);
     }, 5000);
 
     return () => clearInterval(autoInterval);
-  }, []);
+  }, [isHovered, userInteracted, isMobile]);
+
+  // Reset user interaction flag after timeout
+  useEffect(() => {
+    if (userInteracted && !isMobile) {
+      const timer = setTimeout(() => {
+        setUserInteracted(false);
+      }, 10000); // Resume auto-switching after 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [userInteracted, isMobile]);
 
   const handleQuestionClick = (index: number) => {
     setActiveQuestion(index);
+    setUserInteracted(true);
   };
 
   const handlePrevQuestion = () => {
     setActiveQuestion(prev => prev === 0 ? contactFaqs.length - 1 : prev - 1);
+    setUserInteracted(true);
   };
 
   const handleNextQuestion = () => {
     setActiveQuestion(prev => (prev + 1) % contactFaqs.length);
+    setUserInteracted(true);
   };
 
   // Function for calculating card position and transformation
@@ -227,9 +246,13 @@ function ContactFAQSection() {
         </motion.div>
 
         <div className="max-w-7xl mx-auto h-full">
-          <div className={`grid items-center h-full ${
-            isMobile ? 'grid-cols-1 gap-8' : 'grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16'
-          }`}>
+          <div 
+            className={`grid items-center h-full ${
+              isMobile ? 'grid-cols-1 gap-8' : 'grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16'
+            }`}
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+          >
             
             {/* Навигационное меню с стрелками - скрыто на мобильных */}
             {!isMobile && (

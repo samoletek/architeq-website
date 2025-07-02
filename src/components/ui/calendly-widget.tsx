@@ -101,7 +101,7 @@ export default function CalendlyWidget({
     return () => {
       if (loadingTimeout) clearTimeout(loadingTimeout);
     };
-  }, [url]); // Зависимость только от URL
+  }, [url, initWidget]); // Зависимость от URL и initWidget
 
   // Очистка при размонтировании компонента
   useEffect(() => {
