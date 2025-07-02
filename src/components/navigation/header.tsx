@@ -20,7 +20,6 @@ export interface NavigationItem {
 }
 
 interface HeaderProps {
-  logo?: React.ReactNode;
   navigation?: NavigationItem[];
   ctaButton?: {
     text: string;
