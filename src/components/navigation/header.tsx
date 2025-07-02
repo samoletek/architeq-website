@@ -52,7 +52,6 @@ const defaultNavigation: NavigationItem[] = [
 ];
 
 export default function Header({
-  logo,
   navigation = defaultNavigation,
   ctaButton = {
     text: 'Schedule a Call',
