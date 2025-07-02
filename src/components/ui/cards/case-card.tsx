@@ -57,7 +57,7 @@ function SimpleMobileCard({
   };
 
   const cardContent = (
-    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 flex flex-col transition-colors duration-200 hover:border-secondary/30">
+    <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 flex flex-col transition-colors duration-200 hover:border-secondary/30 min-h-fit">
       {/* Теги */}
       {tags && tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-3">
@@ -86,10 +86,10 @@ function SimpleMobileCard({
       
       {/* Результаты */}
       {results && results.length > 0 && (
-        <div className="mb-4">
+        <div className="mb-3">
           <h4 className="text-[10px] font-semibold text-secondary mb-1">Key Results:</h4>
           <ul className="space-y-0.5">
-            {results.slice(0, 3).map((result, index) => (
+            {results.slice(0, 2).map((result, index) => (
               <li key={index} className="flex items-start">
                 <span className="text-secondary mr-1 text-[10px] flex-shrink-0 mt-0.5">•</span>
                 <span 
@@ -105,7 +105,7 @@ function SimpleMobileCard({
       )}
       
       {/* Footer */}
-      <div className="border-t border-gray-600 mt-auto pt-3 mb-1">
+      <div className="border-t border-gray-600 mt-auto pt-2">
         <p className="text-[10px] text-white flex items-center mb-1">
           <span className="text-light-gray mr-1.5 flex-shrink-0">Company:</span>
           <span className="font-medium truncate">{company}</span>

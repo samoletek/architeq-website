@@ -8,6 +8,40 @@ import { CaseCard } from '@/components/ui/cards/case-card';
 import { cn } from '@/lib/utils/utils';
 import { getFeaturedCases, toCaseCardFormat, type CaseStudy } from '@/lib/data/case-studies';
 import { motion } from 'framer-motion';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+
+// Простая компактная карточка для мобильных в featured секции
+function SimpleFeaturedCard({ caseItem }: { caseItem: any }) {
+  return (
+    <Link href={`/cases/${caseItem.id}`} className="block">
+      <div className="bg-dark-gray rounded-lg border border-gray-600 p-3 transition-colors duration-200 hover:border-secondary/30">
+        {/* Теги */}
+        {caseItem.tags && caseItem.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {caseItem.tags.slice(0, 2).map((tag: string, index: number) => (
+              <span
+                key={index}
+                className="bg-black/60 text-white text-[8px] px-1 py-0.5 rounded border border-white/10"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        
+        {/* Заголовок */}
+        <h3 className="text-sm font-semibold text-white leading-tight mb-2">
+          {caseItem.title}
+        </h3>
+        
+        {/* Компания */}
+        <p className="text-[10px] text-light-gray">
+          {caseItem.company}
+        </p>
+      </div>
+    </Link>
+  );
+}
 
 // Интерфейс для параметров секции
 export interface FeaturedCasesSectionProps {
@@ -37,6 +71,9 @@ export default function FeaturedCasesSection({
 }: FeaturedCasesSectionProps) {
   // Состояние для отслеживания клиентского рендеринга
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Device detection
+  const { isMobile } = useDeviceDetection();
   
   // Состояние для отслеживания видимости секции
   const [isVisible, setIsVisible] = useState(false);
@@ -76,6 +113,50 @@ export default function FeaturedCasesSection({
   
   // Ограничиваем количество отображаемых кейсов
   const displayCases = featuredCases.slice(0, maxCases);
+  
+  // Мобильная версия - простая и компактная
+  if (isMobile && isMounted) {
+    const mobileCases = displayCases.slice(0, 3);
+    
+    return (
+      <section className={cn("section-cases bg-[#121212] py-12", className)}>
+        <div className="container mx-auto px-4">
+          {/* Заголовок и подзаголовок */}
+          {!compact && (
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold mb-4" style={{
+                textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+              }}>
+                {title}
+              </h2>
+              <p className="text-light-gray text-sm" dangerouslySetInnerHTML={{ __html: subtitle }} />
+            </div>
+          )}
+          
+          {/* Простая сетка карточек */}
+          <div className="grid grid-cols-1 gap-3">
+            {mobileCases.map((caseItem, index) => {
+              const cardData = toCaseCardFormat(caseItem);
+              return (
+                <SimpleFeaturedCard key={index} caseItem={cardData} />
+              );
+            })}
+          </div>
+          
+          {/* Кнопка */}
+          {!compact && viewAllUrl && (
+            <div className="mt-8 text-center">
+              <Link href={viewAllUrl}>
+                <Button variant="secondary" size="lg">
+                  {viewAllText}
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  }
   
   // Определяем фон секции в зависимости от варианта
   const sectionBg = variant === 'default' ? 'bg-[#121212]' : 'bg-dark-gray';
@@ -128,8 +209,8 @@ export default function FeaturedCasesSection({
             </div>
           )}
 
-          {/* Сетка кейсов - уменьшенная ширина */}
-          <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
+          {/* Сетка кейсов - компактные отступы на мобильных */}
+          <div className={cn("grid gap-3 md:gap-6", "max-w-none sm:max-w-5xl mx-auto", gridCols)}>
             {displayCases.map((caseItem, index) => {
               const cardData = toCaseCardFormat(caseItem);
               return (
@@ -243,8 +324,8 @@ export default function FeaturedCasesSection({
           </motion.div>
         )}
 
-        {/* Сетка кейсов - уменьшенная ширина */}
-        <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
+        {/* Сетка кейсов - компактные отступы на мобильных */}
+        <div className={cn("grid gap-3 md:gap-6", "max-w-none sm:max-w-5xl mx-auto", gridCols)}>
           {displayCases.map((caseItem, index) => {
             const cardData = toCaseCardFormat(caseItem);
             return (
