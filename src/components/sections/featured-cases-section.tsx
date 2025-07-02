@@ -10,8 +10,21 @@ import { getFeaturedCases, toCaseCardFormat, type CaseStudy } from '@/lib/data/c
 import { motion } from 'framer-motion';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
+// Define an interface for the format returned by toCaseCardFormat
+interface CaseCardFormat {
+  id: string;
+  title: string;
+  company: string;
+  tags?: string[];
+  description?: string;
+  industry?: string;
+  location?: string;
+  results?: any;
+  image?: string;
+}
+
 // Простая компактная карточка для мобильных в featured секции
-function SimpleFeaturedCard({ caseItem }: { caseItem: any }) {
+function SimpleFeaturedCard({ caseItem }: { caseItem: CaseCardFormat }) {
   return (
     <Link href={`/cases/${caseItem.id}`} className="block">
       <div className="bg-dark-gray rounded-lg border border-gray-600 p-3 transition-colors duration-200 hover:border-secondary/30">
