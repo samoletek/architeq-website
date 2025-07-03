@@ -702,7 +702,7 @@ export default function ServicesPage() {
           }}
         >
           {/* Заголовки */}
-          <div className="absolute top-20 sm:top-24 md:top-28 lg:top-32 xl:top-36 2xl:top-40 left-0 right-0 z-10 text-center px-4">
+          <div className="absolute top-24 sm:top-28 md:top-32 lg:top-36 xl:top-40 2xl:top-44 left-0 right-0 z-10 text-center px-4" style={{ top: 'clamp(6rem, 8vw, 12rem)' }}>
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6"
                 style={{
                   textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
@@ -716,7 +716,7 @@ export default function ServicesPage() {
 
           {/* Sticky контейнер */}
           <div className="sticky top-0 h-screen overflow-hidden">
-            <div className="absolute inset-0 pt-36 sm:pt-40 md:pt-44 lg:pt-48 xl:pt-52 2xl:pt-56 pb-16">
+            <div className="absolute inset-0 pb-16" style={{ paddingTop: 'clamp(10rem, 12vw, 16rem)' }}>
               <div className="container mx-auto px-4 h-full flex items-center justify-center">
                 <div className="w-full max-w-6xl grid grid-cols-12 gap-8">
                   
