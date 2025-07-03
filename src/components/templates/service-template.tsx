@@ -411,13 +411,12 @@ function BenefitsSection({
             {subtitle}
           </p>
 
-          {/* Enhanced Toggle Switch */}
+          {/* Enhanced Toggle Switch - Адаптивный */}
           {benefits && features && (
             <div className="flex justify-center mb-8">
-              <div className="relative inline-flex items-center rounded-full p-1" style={{
+              <div className="relative inline-flex items-center rounded-full p-1 w-full max-w-sm md:max-w-md" style={{
                 backgroundColor: '#200040',
-                border: '1px solid rgba(119, 71, 207, 0.3)',
-                width: '400px'
+                border: '1px solid rgba(119, 71, 207, 0.3)'
               }}>
                 {/* Animated background slider */}
                 <motion.div
@@ -439,14 +438,14 @@ function BenefitsSection({
                 {/* Toggle buttons */}
                 <button
                   onClick={() => setActiveTab('benefits')}
-                  className={`relative z-10 text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
+                  className={`relative z-10 text-xs md:text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
                     activeTab === 'benefits'
                       ? 'text-white'
                       : 'text-white/70 hover:text-white'
                   }`}
                   style={{
                     width: '50%',
-                    padding: '12px 24px',
+                    padding: '8px 12px',
                     textAlign: 'center',
                     whiteSpace: 'nowrap'
                   }}
@@ -455,14 +454,14 @@ function BenefitsSection({
                 </button>
                 <button
                   onClick={() => setActiveTab('features')}
-                  className={`relative z-10 text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
+                  className={`relative z-10 text-xs md:text-sm font-medium transition-all duration-300 rounded-full focus:outline-none ${
                     activeTab === 'features'
                       ? 'text-black'
                       : 'text-white/70 hover:text-white'
                   }`}
                   style={{
                     width: '50%',
-                    padding: '12px 24px',
+                    padding: '8px 12px',
                     textAlign: 'center',
                     whiteSpace: 'nowrap'
                   }}
@@ -723,7 +722,7 @@ function FeaturesSection({
                 transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
                 className="group cursor-pointer w-full max-w-xs mx-auto"
               >
-                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col h-[320px]"
+                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col h-[330px] md:h-[340px] lg:h-[350px]"
                      style={{
                        background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
                        border: '1px solid rgba(176, 255, 116, 0.15)',
@@ -794,9 +793,9 @@ function FeaturesSection({
 
                     {/* Fixed bottom section with Benefits and Button */}
                     <div className="mt-auto">
-                      {/* Enhanced Key Benefits - fixed height */}
-                      <div className="mb-1 h-14">
-                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-1">Deliverables</h4>
+                      {/* Enhanced Key Benefits - increased height and margin */}
+                      <div className="mb-6 h-20">
+                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-2">Deliverables</h4>
                         {feature.benefits && feature.benefits.length > 0 && (
                           <div className="space-y-0.5">
                             {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
@@ -1060,26 +1059,21 @@ function ProcessSection({
                         </h3>
                       </div>
 
-                      {/* Контент в две колонки с правильными пропорциями */}
-                      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                        {/* Левая колонка - описание (3/5 = 60%) */}
-                        <div className="lg:col-span-3">
-                          <p className="text-white text-base md:text-lg leading-relaxed">
-                            {processes[activeStep].description}
+                      {/* Deliverables блок - поднят выше */}
+                      <div className="mb-8">
+                        <div className="border border-secondary/20 rounded-xl p-6 bg-white/5 max-w-md">
+                          <h4 className="text-white font-semibold mb-4">Deliverables:</h4>
+                          <p className="text-light-gray text-sm">
+                            This step ensures maximum efficiency and quality in our implementation process.
                           </p>
                         </div>
+                      </div>
 
-                        {/* Правая колонка - Key Focus (расширенный) */}
-                        <div className="lg:col-span-2">
-                          <div className="pl-4">
-                            <div className="border border-secondary/20 rounded-xl p-6 bg-white/10">
-                              <h4 className="text-white font-semibold mb-4">Key Focus:</h4>
-                              <p className="text-light-gray text-sm">
-                                This step ensures maximum efficiency and quality in our implementation process.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                      {/* Контент описания */}
+                      <div>
+                        <p className="text-white text-base md:text-lg leading-relaxed">
+                          {processes[activeStep].description}
+                        </p>
                       </div>
 
                       {/* Навигационные кнопки */}

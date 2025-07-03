@@ -15,10 +15,23 @@ interface CaseStudyTemplateProps {
 export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudyTemplateProps) {
   const [activeResultIndex, setActiveResultIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Auto-rotate results every 4 seconds
+  // Детекция мобильных устройств
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Auto-rotate results every 4 seconds (отключено на мобильных)
+  useEffect(() => {
+    if (!isAutoPlaying || isMobile) return;
     
     const interval = setInterval(() => {
       setActiveResultIndex((prev) => (prev + 1) % caseStudy.results.length);
@@ -167,7 +180,7 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
       />
       
       {/* Challenge & Solution */}
-      <ChallengeAndSolutionSection caseStudy={caseStudy} />
+      <ChallengeAndSolutionSection caseStudy={caseStudy} isMobile={isMobile} />
       
       
       {/* Client Testimonial */}
@@ -430,7 +443,7 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
 
 
-function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
+function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseStudy; isMobile: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -709,17 +722,19 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.6 }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 h-[650px]"
+                className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16'} min-h-[650px]`}
               >
                 {/* Challenge Side */}
-                <div className="relative">
-                    <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 h-[650px] relative overflow-hidden">
+                <div className="relative flex items-center">
+                    <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 min-h-[650px] h-auto relative overflow-hidden w-full">
                     {/* Challenge Background Glow */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
-                      animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity }}
-                    />
+                    {!isMobile && (
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
+                        animate={{ opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 4, repeat: Infinity }}
+                      />
+                    )}
                     
                     <div className="relative z-10">
                       {/* Challenge Header */}
@@ -775,14 +790,16 @@ function ChallengeAndSolutionSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 </div>
 
                 {/* Solutions Side */}
-                <div className="relative">
-                    <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 h-[650px] relative overflow-hidden">
+                <div className="relative flex items-center">
+                    <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 min-h-[650px] h-auto relative overflow-hidden w-full">
                     {/* Solutions Background Glow */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl"
-                      animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-                    />
+                    {!isMobile && (
+                      <motion.div 
+                        className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl"
+                        animate={{ opacity: [0.5, 0.8, 0.5] }}
+                        transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+                      />
+                    )}
                     
                     <div className="relative z-10">
                       {/* Solutions Header */}

@@ -632,8 +632,8 @@ export const SolutionContent = ({
         style={{
           width: '100%',
           height: isServicesVariant ? 'auto' : 'auto',
-          minHeight: isServicesVariant ? '500px' : 'auto',
-          maxHeight: isServicesVariant ? '85vh' : '70vh',
+          minHeight: isServicesVariant ? '500px' : '600px',
+          maxHeight: isServicesVariant ? '85vh' : 'none',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(35px)',
           WebkitBackdropFilter: 'blur(35px)',

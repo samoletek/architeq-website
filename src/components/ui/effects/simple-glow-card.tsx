@@ -1,7 +1,7 @@
 "use client";
 
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
-import React, { MouseEvent as ReactMouseEvent, useState, ReactNode } from "react";
+import React, { MouseEvent as ReactMouseEvent, useState, ReactNode, useEffect } from "react";
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { cn } from "@/lib/utils/utils";
 
@@ -40,6 +40,19 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
   }
 
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Проверка на мобильное устройство
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   const handleMouseEnterInternal = () => {
     setIsHovering(true);
@@ -112,11 +125,13 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
           animate={{ opacity: isHovering ? 1 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <CanvasRevealEffect
-            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
-            colors={variantStyles.matrixColors}
-            dotSize={3}
-          />
+          {!isMobile && (
+            <CanvasRevealEffect
+              containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+              colors={variantStyles.matrixColors}
+              dotSize={3}
+            />
+          )}
         </motion.div>
       </motion.div>
       
