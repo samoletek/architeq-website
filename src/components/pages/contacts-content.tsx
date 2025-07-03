@@ -10,6 +10,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
 import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Типы для формы
 interface ContactFormData extends FormFields {
@@ -450,7 +451,7 @@ function ContactFAQSection() {
 export default function ContactsContent() {
   // Device detection для адаптивности
   const { isMobile } = useDeviceDetection();
-  const shouldUseHeavyAnimations = useHeavyAnimations();
+  // const shouldUseHeavyAnimations = useHeavyAnimations(); // Не используется в этом компоненте
   
   // Состояние формы
   const [formData, setFormData] = useState<ContactFormData>({
@@ -660,10 +661,10 @@ export default function ContactsContent() {
       </section>
       
       {/* Contact Form and Calendly */}
-      <section className={`bg-dark-gray ${isMobile ? 'py-12 pb-48' : 'py-24 pb-48'}`}>
-        <div className="container mx-auto px-4">
-          <div className={`grid gap-12 ${
-            isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
+      <section className={`bg-dark-gray ${isMobile ? 'py-12 pb-48' : 'py-16 md:py-20 lg:py-24 pb-48'}`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+          <div className={`grid gap-8 md:gap-12 ${
+            isMobile ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-2'
           } ${isMobile ? 'items-start' : 'items-start'}`}>
             {/* Contact Form & Info */}
             <div className="flex flex-col">
@@ -687,8 +688,8 @@ export default function ContactsContent() {
                 )}
                 
                 <form id="contact-form" onSubmit={handleSubmit} noValidate>
-                  {/* Мобильная версия: Имя и Email в одной строке */}
-                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                  {/* Адаптивная версия: Имя и Email */}
+                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4'}`}>
                     <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
                       <FormInput
                         id="name"
@@ -721,8 +722,8 @@ export default function ContactsContent() {
                     </div>
                   </div>
                   
-                  {/* Мобильная версия: Компания и Телефон в одной строке */}
-                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                  {/* Адаптивная версия: Компания и Телефон */}
+                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4'}`}>
                     <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
                       <FormInput
                         id="company"
@@ -824,33 +825,52 @@ export default function ContactsContent() {
               
               {/* Contact Information - Размещена в нижней части колонки */}
               <div className={isMobile ? 'mt-12' : 'mt-20'}>
-                <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
-                  isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
-                } ${shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
-                  <div className="space-y-6 h-full flex flex-col justify-center">
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Email</h4>
-                      <p className="text-light-gray">hi@architeq.io</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Working Hours</h4>
-                      <p className="text-light-gray">We work across different time zones</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Languages</h4>
-                      <p className="text-light-gray">English, Ukrainian, Russian</p>
+                {isMobile ? (
+                  <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-6 min-h-[200px]">
+                    <div className="space-y-6 h-full flex flex-col justify-center">
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Email</h4>
+                        <p className="text-light-gray">hi@architeq.io</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                        <p className="text-light-gray">We work across different time zones</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Languages</h4>
+                        <p className="text-light-gray">English, Ukrainian, Russian</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <SimpleGlowCard variant="primary" className="p-6 md:p-8 h-[280px] md:h-[300px]">
+                    <div className="space-y-6 flex flex-col justify-start pt-4">
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Email</h4>
+                        <p className="text-light-gray">hi@architeq.io</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                        <p className="text-light-gray">We work across different time zones</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Languages</h4>
+                        <p className="text-light-gray">English, Ukrainian, Russian</p>
+                      </div>
+                    </div>
+                  </SimpleGlowCard>
+                )}
               </div>
             </div>
             
             {/* Calendly Widget - Desktop Right Column */}
             {!isMobile && (
               <div className="flex flex-col">
-                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8 h-[1014px]">
+                <SimpleGlowCard variant="primary" className="p-6 lg:p-8 h-[980px] lg:h-[1014px] xl:h-[1040px]">
                   <div className="h-full flex flex-col">
                     <h3 className="text-2xl font-bold text-white text-center mb-4">
                       Schedule a Call
@@ -862,7 +882,7 @@ export default function ContactsContent() {
                       <CalendlyWidget 
                         url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
                         styles={{
-                          height: "862px",
+                          height: "828px", // Адаптировано под новые размеры карточки
                           width: "100%"
                         }}
                         prefill={{
@@ -872,7 +892,7 @@ export default function ContactsContent() {
                       />
                     </div>
                   </div>
-                </div>
+                </SimpleGlowCard>
               </div>
             )}
           </div>
