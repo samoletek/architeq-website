@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/utils';
 import { storage } from '@/lib/utils/common';
-import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 export interface CaseCardProps {
@@ -213,7 +212,9 @@ function EnhancedDesktopCard({
   };
 
   const cardContent = (
-    <TravelingBorderGlow variant="secondary" intensity="subtle" className="rounded-xl group">
+    <div className="rounded-xl group relative">
+      {/* Simple static glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 via-secondary/5 to-secondary/10 rounded-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
       <motion.div
         initial="hidden"
         animate={isVisible ? "visible" : "hidden"}
@@ -320,7 +321,7 @@ function EnhancedDesktopCard({
         )}
       </div>
     </motion.div>
-    </TravelingBorderGlow>
+    </div>
   );
 
   if (onClick) {

@@ -10,7 +10,6 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
 import { useScrollAnimation } from '@/lib/utils/animation';
-import { useHeavyAnimations } from '@/lib/utils/device-detection';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Типы для формы
@@ -95,7 +94,6 @@ function ContactFAQSection() {
   // Device detection для адаптивности с защитой от гидратации
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const shouldUseHeavyAnimations = useHeavyAnimations();
 
   useEffect(() => {
     setIsClient(true);
@@ -350,7 +348,7 @@ function ContactFAQSection() {
                                 isClient && isMobile ? 'text-lg mb-4' : 'text-2xl md:text-3xl mb-6'
                               }`}
                               style={{
-                                textShadow: isClient && activeQuestion === index && shouldUseHeavyAnimations
+                                textShadow: isClient && activeQuestion === index
                                   ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
                                   : 'none'
                               }}
@@ -457,7 +455,6 @@ export default function ContactsContent() {
   // Device detection для адаптивности с защитой от гидратации
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const shouldUseHeavyAnimations = useHeavyAnimations();
 
   useEffect(() => {
     setIsClient(true);
@@ -875,12 +872,10 @@ export default function ContactsContent() {
                 </form>
               </div>
               
-              {/* Contact Information - Исправленная логика условного рендеринга */}
+              {/* Contact Information */}
               <div className={isClient && isMobile ? 'mt-12' : 'mt-20'}>
-                {isClient && !shouldUseHeavyAnimations ? (
-                  <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
-                    isClient && isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
-                  } ${isClient && shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
+                {isClient && isMobile ? (
+                  <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-6 min-h-[200px]">
                     <div className="space-y-6 h-full flex flex-col justify-center">
                       <div>
                         <h4 className="font-medium mb-1 text-white">Email</h4>

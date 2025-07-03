@@ -27,15 +27,15 @@ export const CanvasRevealEffect = ({
             opacities ?? [0.25, 0.25, 0.35, 0.4, 0.45, 0.5, 0.7, 0.7, 0.8, 0.9]
           }
           shader={`
-              // Уменьшаем яркость в верхней части (еще менее агрессивно)
-              float y_fade = smoothstep(0.85, 1.0, fragCoord.y / u_resolution.y);
-              opacity *= (1.0 - y_fade * 0.25);
+              // Плавное затемнение начинается с 65% высоты, максимум 50%
+              float y_fade = smoothstep(0.65, 1.0, fragCoord.y / u_resolution.y);
+              opacity *= (1.0 - y_fade * 0.5);
             `}
           center={["x", "y"]}
         />
       </div>
       {showGradient && (
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/80 to-gray-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/50 via-gray-950/20 to-transparent" />
       )}
     </div>
   );
