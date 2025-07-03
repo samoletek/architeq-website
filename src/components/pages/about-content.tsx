@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
-import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
+import { useHeavyAnimations } from '@/lib/utils/device-detection';
 
 // Team member interface
 interface TeamMember {
@@ -175,9 +175,22 @@ function HeroSection() {
     triggerOnce: true
   });
   
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const shouldUseHeavyAnimations = useHeavyAnimations();
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -196,41 +209,41 @@ function HeroSection() {
       <div className="absolute inset-0">
         <motion.div 
           className={`absolute rounded-full blur-3xl opacity-20 ${
-            isMobile ? '-top-16 -right-16 w-48 h-48' : '-top-32 -right-32 w-96 h-96'
+            isClient && isMobile ? '-top-16 -right-16 w-48 h-48' : '-top-32 -right-32 w-96 h-96'
           }`}
-          animate={shouldUseHeavyAnimations ? {
+          animate={isClient && shouldUseHeavyAnimations ? {
             background: [
               "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(178, 75, 243, 0.4) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)"
             ]
           } : {}}
-          transition={shouldUseHeavyAnimations ? {
+          transition={isClient && shouldUseHeavyAnimations ? {
             duration: 8,
             repeat: Infinity,
           } : {}}
-          style={!shouldUseHeavyAnimations ? {
+          style={{
             background: "radial-gradient(circle, rgba(119, 71, 207, 0.3) 0%, transparent 70%)"
-          } : {}}
+          }}
         />
         <motion.div 
           className={`absolute rounded-full blur-3xl opacity-15 ${
-            isMobile ? '-bottom-16 -left-16 w-40 h-40' : '-bottom-32 -left-32 w-80 h-80'
+            isClient && isMobile ? '-bottom-16 -left-16 w-40 h-40' : '-bottom-32 -left-32 w-80 h-80'
           }`}
-          animate={shouldUseHeavyAnimations ? {
+          animate={isClient && shouldUseHeavyAnimations ? {
             background: [
               "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
               "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)"
             ]
           } : {}}
-          transition={shouldUseHeavyAnimations ? {
+          transition={isClient && shouldUseHeavyAnimations ? {
             duration: 6,
             repeat: Infinity,
           } : {}}
-          style={!shouldUseHeavyAnimations ? {
+          style={{
             background: "radial-gradient(circle, rgba(176, 255, 116, 0.2) 0%, transparent 70%)"
-          } : {}}
+          }}
         />
       </div>
 
@@ -243,7 +256,7 @@ function HeroSection() {
         >
           <h1 
             className={`font-bold hero-title-spacing hero-subtitle-spacing ${
-              isMobile ? 'text-3xl' : 'section-title-large'
+              isClient && isMobile ? 'text-3xl' : 'section-title-large'
             }`}
             style={{
               textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
@@ -253,7 +266,7 @@ function HeroSection() {
           </h1>
           
           <p className={`text-light-gray max-w-3xl mx-auto section-button-spacing ${
-            isMobile ? 'text-base section-subtitle-small' : 'hero-subtitle section-subtitle-medium'
+            isClient && isMobile ? 'text-base section-subtitle-small' : 'hero-subtitle section-subtitle-medium'
           }`}>
             We architect digital systems that flex, scale, and adapt — for companies across industries.
           </p>
@@ -306,8 +319,21 @@ function MissionVisionSection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const contentVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -322,7 +348,7 @@ function MissionVisionSection() {
   };
 
   return (
-    <section id="mission" ref={ref} className={`section-benefits bg-dark-gray ${isMobile ? 'py-12' : 'py-24'}`}>
+    <section id="mission" ref={ref} className={`section-benefits bg-dark-gray ${isClient && isMobile ? 'py-12' : 'py-24'}`}>
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
@@ -408,8 +434,21 @@ function ValuesSection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
 
   const [activeValue, setActiveValue] = useState(0);
@@ -457,24 +496,24 @@ function ValuesSection() {
 
   // Auto-rotation effect with FAQ-style cycling (desktop only)
   useEffect(() => {
-    if (isMobile || !isVisible || !isAutoRotating || userHasInteracted || isHovered) return;
+    if (!isClient || isMobile || !isVisible || !isAutoRotating || userHasInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveValue(prev => (prev + 1) % enhancedValues.length);
     }, 6000); // Longer interval for FAQ-style content
     return () => clearInterval(interval);
-  }, [isVisible, isAutoRotating, userHasInteracted, enhancedValues.length, isHovered, isMobile]);
+  }, [isClient, isVisible, isAutoRotating, userHasInteracted, enhancedValues.length, isHovered, isMobile]);
 
   // Resume auto-rotation after user inactivity (desktop only)
   useEffect(() => {
-    if (userHasInteracted && !isMobile) {
+    if (userHasInteracted && isClient && !isMobile) {
       const timer = setTimeout(() => {
         setUserHasInteracted(false);
         setIsAutoRotating(true);
       }, 12000); // Longer pause for FAQ interactions
       return () => clearTimeout(timer);
     }
-  }, [userHasInteracted, isMobile]);
+  }, [userHasInteracted, isClient, isMobile]);
 
   const handleValueChange = (index: number) => {
     setActiveValue(index);
@@ -501,7 +540,7 @@ function ValuesSection() {
 
 
   return (
-    <section id="core-values" ref={ref} className={`section-solutions bg-transparent relative overflow-hidden ${isMobile ? 'py-12' : 'py-24'}`}>
+    <section id="core-values" ref={ref} className={`section-solutions bg-transparent relative overflow-hidden ${isClient && isMobile ? 'py-12' : 'py-24'}`}>
       <div className="absolute inset-0">
         <motion.div 
           className="absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-30"
@@ -556,8 +595,8 @@ function ValuesSection() {
         {/* FAQ-Style Carousel */}
         <div 
           className="max-w-4xl mx-auto"
-          onMouseEnter={() => !isMobile && setIsHovered(true)}
-          onMouseLeave={() => !isMobile && setIsHovered(false)}
+          onMouseEnter={() => isClient && !isMobile && setIsHovered(true)}
+          onMouseLeave={() => isClient && !isMobile && setIsHovered(false)}
         >
           <div className="consistent-height-container">
             <AnimatePresence mode="wait">
@@ -567,7 +606,7 @@ function ValuesSection() {
                 animate={{ opacity: 1, x: 0, transform: 'translateZ(0)' }}
                 exit={{ opacity: 0, x: -50, transform: 'translateZ(0)' }}
                 transition={{ 
-                  duration: isMobile ? 0.4 : 0.5,
+                  duration: isClient && isMobile ? 0.4 : 0.5,
                   ease: [0.04, 0.62, 0.23, 0.98]
                 }}
                 className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-3xl p-8 md:p-12 border border-primary/30 relative overflow-hidden mb-8"
@@ -630,8 +669,8 @@ function ValuesSection() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: isMobile ? 0.2 : 0.3 }}
-                            className={`overflow-hidden ${isMobile ? 'transform-gpu' : ''}`}
+                            transition={{ duration: isClient && isMobile ? 0.2 : 0.3 }}
+                            className={`overflow-hidden ${isClient && isMobile ? 'transform-gpu' : ''}`}
                           >
                             <div className="px-4 pb-4">
                               <p className="text-white leading-relaxed pt-4" dangerouslySetInnerHTML={{
@@ -728,13 +767,32 @@ function ValuesSection() {
 }
 
 function TeamSection() {
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const shouldUseHeavyAnimations = useHeavyAnimations();
-  
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Update autoplay state when client is ready
+  useEffect(() => {
+    if (isClient) {
+      setIsAutoPlaying(isClient && !isMobile);
+    }
+  }, [isClient, isMobile]);
   
   const [activeMember, setActiveMember] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(!isMobile); // Отключаем автопроигрывание на мобильных
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -769,25 +827,25 @@ function TeamSection() {
 
   // Auto-carousel with 6-second intervals (desktop only)
   useEffect(() => {
-    if (isMobile || !isAutoPlaying || isHovered || userInteracted) return;
+    if (!isClient || isMobile || !isAutoPlaying || isHovered || userInteracted) return;
 
     const autoInterval = setInterval(() => {
       setActiveMember(prev => (prev + 1) % teamMembers.length);
     }, 6000);
 
     return () => clearInterval(autoInterval);
-  }, [isAutoPlaying, isHovered, userInteracted, isMobile]);
+  }, [isClient, isAutoPlaying, isHovered, userInteracted, isMobile]);
 
   // Resume auto-play after user inactivity (desktop only)
   useEffect(() => {
-    if (userInteracted && !isMobile) {
+    if (userInteracted && isClient && !isMobile) {
       const timer = setTimeout(() => {
         setUserInteracted(false);
         setIsAutoPlaying(true);
       }, 10000); // Resume after 10 seconds
       return () => clearTimeout(timer);
     }
-  }, [userInteracted, isMobile]);
+  }, [userInteracted, isClient, isMobile]);
 
   const handleMemberClick = (index: number) => {
     setActiveMember(index);
@@ -805,7 +863,7 @@ function TeamSection() {
     setIsAutoPlaying(false);
     setUserInteracted(true);
     // Закрываем дропдаун при переключении участника команды на мобильных
-    if (isMobile && expandedMember !== null) {
+    if (isClient && isMobile && expandedMember !== null) {
       setExpandedMember(null);
     }
     if (direction === 'prev') {
@@ -832,13 +890,14 @@ function TeamSection() {
   };
 
   const navVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.3,
-        delay: index * 0.05
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: index * 0.1
       }
     })
   };
@@ -847,18 +906,18 @@ function TeamSection() {
   return (
     <section 
       ref={sectionRef}
-      className={`section-benefits bg-dark-gray ${isMobile ? 'py-12' : 'py-24'}`}
+      className={`section-benefits bg-dark-gray ${isClient && isMobile ? 'py-12' : 'py-24'}`}
     >
       <div className="container mx-auto px-4">
         <motion.div
-          className={`text-center ${isMobile ? 'mb-8' : 'mb-16'}`}
+          className={`text-center ${isClient && isMobile ? 'mb-8' : 'mb-16'}`}
           initial="hidden"
           animate={isVisible ? "visible" : "hidden"}
           variants={titleVariants}
         >
           <h2 
             className={`font-bold mb-6 ${
-              isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'
+              isClient && isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'
             }`}
             style={{
               textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.4)'
@@ -867,7 +926,7 @@ function TeamSection() {
             Meet Our Team
           </h2>
           <p className={`text-white/70 max-w-3xl mx-auto ${
-            isMobile ? 'text-base' : 'text-xl'
+            isClient && isMobile ? 'text-base' : 'text-xl'
           }`}>
             The experts behind your business transformation and automation success
           </p>
@@ -876,14 +935,14 @@ function TeamSection() {
         <div className="max-w-7xl mx-auto">
           <div 
             className={`grid grid-cols-1 lg:grid-cols-3 items-start ${
-              isMobile ? 'gap-6' : 'gap-12 lg:gap-16'
+              isClient && isMobile ? 'gap-6' : 'gap-12 lg:gap-16'
             }`}
-            onMouseEnter={() => !isMobile && setIsHovered(true)}
-            onMouseLeave={() => !isMobile && setIsHovered(false)}
+            onMouseEnter={() => isClient && !isMobile && setIsHovered(true)}
+            onMouseLeave={() => isClient && !isMobile && setIsHovered(false)}
           >
             
             {/* Left Navigation - Team member list - скрыто на мобильных */}
-            {!isMobile && (
+            {isClient && !isMobile && (
               <div className="lg:col-span-1">
               <div className="w-full">
                 <div className="space-y-2">
@@ -924,7 +983,7 @@ function TeamSection() {
                         />
                       )}
                       
-                      {activeMember !== index && !isMobile && (
+                      {activeMember !== index && isClient && !isMobile && (
                         <div className="absolute inset-0 bg-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                       )}
                       
@@ -992,7 +1051,7 @@ function TeamSection() {
             )}
 
             {/* Right Side - Single active member card */}
-            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2'}>
+            <div className={isClient && isMobile ? 'col-span-1' : 'lg:col-span-2'}>
               <div className="relative">
                 <AnimatePresence mode="wait">
                   {teamMembers.map((member, index) => (
@@ -1003,7 +1062,7 @@ function TeamSection() {
                         animate={{ opacity: 1, x: 0, transform: 'translateZ(0)' }}
                         exit={{ opacity: 0, x: -50, transform: 'translateZ(0)' }}
                         transition={{ 
-                          duration: isMobile ? 0.4 : 0.5,
+                          duration: isClient && isMobile ? 0.4 : 0.5,
                           ease: [0.04, 0.62, 0.23, 0.98]
                         }}
                         className="w-full"
@@ -1014,22 +1073,22 @@ function TeamSection() {
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                             {/* Profile Section */}
                             <div className={`lg:col-span-1 flex flex-col items-center justify-center text-center bg-gradient-to-br from-white/5 to-transparent ${
-                              isMobile ? 'p-6' : 'p-8 lg:p-12'
+                              isClient && isMobile ? 'p-6' : 'p-8 lg:p-12'
                             }`}>
                               <div className={`rounded-full bg-gradient-to-br from-secondary/30 to-secondary/50 flex items-center justify-center mb-6 font-bold text-white transition-transform duration-500 ${
-                                isMobile ? 'w-24 h-24 text-3xl' : 'w-32 h-32 text-4xl'
+                                isClient && isMobile ? 'w-24 h-24 text-3xl' : 'w-32 h-32 text-4xl'
                               }`}>
                                 {member.name.charAt(0)}
                               </div>
                               
                               <h3 className={`font-bold text-white mb-3 transition-colors duration-300 ${
-                                isMobile ? 'text-lg' : 'text-2xl'
+                                isClient && isMobile ? 'text-lg' : 'text-2xl'
                               }`}>
                                 {member.name}
                               </h3>
                               
                               <p className={`text-secondary font-semibold mb-4 ${
-                                isMobile ? 'text-base' : 'text-lg'
+                                isClient && isMobile ? 'text-base' : 'text-lg'
                               }`}>
                                 {member.position}
                               </p>
@@ -1053,15 +1112,15 @@ function TeamSection() {
 
                             {/* Content Section */}
                             <div className={`lg:col-span-2 ${
-                              isMobile ? 'p-6' : 'p-8 lg:p-12'
+                              isClient && isMobile ? 'p-6' : 'p-8 lg:p-12'
                             }`}>
                               {/* Bio */}
                               <div className="mb-6">
                                 <h4 className={`font-semibold text-white mb-4 ${
-                                  isMobile ? 'text-base' : 'text-lg'
+                                  isClient && isMobile ? 'text-base' : 'text-lg'
                                 }`}>Role</h4>
                                 <p className={`text-white/80 leading-relaxed ${
-                                  isMobile ? 'text-sm' : 'text-base'
+                                  isClient && isMobile ? 'text-sm' : 'text-base'
                                 }`}>
                                   {member.bio}
                                 </p>
@@ -1074,8 +1133,8 @@ function TeamSection() {
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: 'auto', opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: isMobile ? 0.2 : 0.3 }}
-                                    className={`overflow-hidden ${isMobile ? 'transform-gpu' : ''}`}
+                                    transition={{ duration: isClient && isMobile ? 0.2 : 0.3 }}
+                                    className={`overflow-hidden ${isClient && isMobile ? 'transform-gpu' : ''}`}
                                   >
                                     <div className="border-t border-white/20 pt-6 mb-6">
                                       <h4 className="text-secondary text-lg font-semibold mb-4">Extended Background</h4>
@@ -1109,8 +1168,8 @@ function TeamSection() {
                                   <motion.button
                                     onClick={() => handleMemberExpand(index)}
                                     className="px-6 py-2 bg-white/10 hover:bg-secondary/20 border border-white/20 hover:border-secondary/40 rounded-full text-white/80 hover:text-white transition-all duration-300 flex items-center gap-2 text-sm font-medium"
-                                    whileHover={!isMobile ? { scale: 1.05 } : {}}
-                                    whileTap={!isMobile ? { scale: 0.95 } : {}}
+                                    whileHover={!isClient && isMobile ? { scale: 1.05 } : {}}
+                                    whileTap={!isClient && isMobile ? { scale: 0.95 } : {}}
                                   >
                                     <span>{expandedMember === index ? 'Show Less' : 'Learn More'}</span>
                                     <motion.svg
@@ -1187,8 +1246,21 @@ function AchievementsSection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const [hasAnimated, setHasAnimated] = useState(false);
 
@@ -1222,7 +1294,7 @@ function AchievementsSection() {
   };
 
   return (
-    <section ref={ref} className={`section-solutions bg-transparent relative overflow-hidden ${isMobile ? 'py-12' : 'py-24'}`}>
+    <section ref={ref} className={`section-solutions bg-transparent relative overflow-hidden ${isClient && isMobile ? 'py-12' : 'py-24'}`}>
       <div className="container mx-auto px-4">
         <motion.div
           className="text-center section-content-spacing"
@@ -1300,8 +1372,21 @@ function MethodologySection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const [activeStep, setActiveStep] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -1345,24 +1430,24 @@ function MethodologySection() {
 
   // Auto-progression with user interaction awareness (desktop only)
   useEffect(() => {
-    if (isMobile || !isVisible || !isAutoPlaying || hasUserInteracted || isHovered) return;
+    if (!isClient || isMobile || !isVisible || !isAutoPlaying || hasUserInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveStep(prev => (prev + 1) % steps.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [isVisible, isAutoPlaying, hasUserInteracted, steps.length, isHovered, isMobile]);
+  }, [isClient, isVisible, isAutoPlaying, hasUserInteracted, steps.length, isHovered, isMobile]);
 
   // Resume auto-play after user inactivity (desktop only)
   useEffect(() => {
-    if (hasUserInteracted && !isMobile) {
+    if (hasUserInteracted && isClient && !isMobile) {
       const timer = setTimeout(() => {
         setHasUserInteracted(false);
         setIsAutoPlaying(true);
       }, 10000); // Resume after 10 seconds of inactivity
       return () => clearTimeout(timer);
     }
-  }, [hasUserInteracted, isMobile]);
+  }, [hasUserInteracted, isClient, isMobile]);
 
   const handleStepChange = (index: number) => {
     setActiveStep(index);
@@ -1382,7 +1467,7 @@ function MethodologySection() {
   };
 
   return (
-    <section ref={ref} className={`section-benefits bg-dark-gray ${isMobile ? 'py-12' : 'py-24'}`}>
+    <section ref={ref} className={`section-benefits bg-dark-gray ${isClient && isMobile ? 'py-12' : 'py-24'}`}>
       <div className="container mx-auto px-4">
         <motion.div
           className="text-center mb-16"
@@ -1406,13 +1491,13 @@ function MethodologySection() {
         <div className="max-w-6xl mx-auto">
           <div 
             className={`grid gap-12 ${
-              isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'
+              isClient && isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'
             }`}
-            onMouseEnter={() => !isMobile && setIsHovered(true)}
-            onMouseLeave={() => !isMobile && setIsHovered(false)}
+            onMouseEnter={() => isClient && !isMobile && setIsHovered(true)}
+            onMouseLeave={() => isClient && !isMobile && setIsHovered(false)}
           >
             {/* Navigation - скрыто на мобильных */}
-            {!isMobile && (
+            {isClient && !isMobile && (
               <div className="lg:col-span-1">
               <div className="space-y-4">
                 {steps.map((step, index) => (
@@ -1474,7 +1559,7 @@ function MethodologySection() {
             )}
 
             {/* Active Step Detail */}
-            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2'}>
+            <div className={isClient && isMobile ? 'col-span-1' : 'lg:col-span-2'}>
               <div className="consistent-height-container">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -1483,7 +1568,7 @@ function MethodologySection() {
                     animate={{ opacity: 1, x: 0, transform: 'translateZ(0)' }}
                     exit={{ opacity: 0, x: -30, transform: 'translateZ(0)' }}
                     transition={{ 
-                      duration: isMobile ? 0.4 : 0.5,
+                      duration: isClient && isMobile ? 0.4 : 0.5,
                       ease: [0.04, 0.62, 0.23, 0.98]
                     }}
                   >
@@ -1950,8 +2035,21 @@ function TechnologyStackSection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -2083,7 +2181,7 @@ function TechnologyStackSection() {
   };
 
   return (
-    <section ref={ref} className={`section-benefits bg-dark-gray ${isMobile ? 'py-12' : 'py-24'}`}>
+    <section ref={ref} className={`section-benefits bg-dark-gray ${isClient && isMobile ? 'py-12' : 'py-24'}`}>
       <div className="container mx-auto px-4">
         <motion.div
           className="text-center mb-16"
@@ -2188,8 +2286,21 @@ function InteractiveApproachSection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -2241,24 +2352,24 @@ function InteractiveApproachSection() {
 
   // Auto-progression (desktop only)
   useEffect(() => {
-    if (isMobile || !isVisible || !isAutoPlaying || userInteracted || isHovered) return;
+    if (!isClient || isMobile || !isVisible || !isAutoPlaying || userInteracted || isHovered) return;
 
     const interval = setInterval(() => {
       setActiveSlide(prev => (prev + 1) % approachSlides.length);
     }, 6000);
     return () => clearInterval(interval);
-  }, [isVisible, isAutoPlaying, approachSlides.length, userInteracted, isHovered, isMobile]);
+  }, [isClient, isVisible, isAutoPlaying, approachSlides.length, userInteracted, isHovered, isMobile]);
 
   // Resume auto-play after user inactivity (desktop only)
   useEffect(() => {
-    if (userInteracted && !isMobile) {
+    if (userInteracted && isClient && !isMobile) {
       const timer = setTimeout(() => {
         setUserInteracted(false);
         setIsAutoPlaying(true);
       }, 10000); // Resume after 10 seconds
       return () => clearTimeout(timer);
     }
-  }, [userInteracted, isMobile]);
+  }, [userInteracted, isClient, isMobile]);
 
   const handleSlideChange = (index: number) => {
     setActiveSlide(index);
@@ -2313,8 +2424,8 @@ function InteractiveApproachSection() {
           {/* Interactive Challenge-Solution Comparison */}
           <div 
             className="relative consistent-height-container"
-            onMouseEnter={() => !isMobile && setIsHovered(true)}
-            onMouseLeave={() => !isMobile && setIsHovered(false)}
+            onMouseEnter={() => isClient && !isMobile && setIsHovered(true)}
+            onMouseLeave={() => isClient && !isMobile && setIsHovered(false)}
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -2323,17 +2434,17 @@ function InteractiveApproachSection() {
                 animate={{ opacity: 1, x: 0, transform: 'translateZ(0)' }}
                 exit={{ opacity: 0, x: -50, transform: 'translateZ(0)' }}
                 transition={{ 
-                  duration: isMobile ? 0.4 : 0.5,
+                  duration: isClient && isMobile ? 0.4 : 0.5,
                   ease: [0.04, 0.62, 0.23, 0.98]
                 }}
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-12 ${
-                  isMobile ? 'min-h-[800px]' : 'h-[500px]'
+                  isClient && isMobile ? 'min-h-[800px]' : 'h-[500px]'
                 }`}
               >
                 {/* Challenge Side */}
                 <div className="relative">
                   <div className={`bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-red-500/30 relative overflow-hidden ${
-                    isMobile ? 'h-auto min-h-[360px]' : 'h-full'
+                    isClient && isMobile ? 'h-auto min-h-[360px]' : 'h-full'
                   }`}>
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
@@ -2359,9 +2470,9 @@ function InteractiveApproachSection() {
                         {currentSlide.challenge.problems.map((problem, index) => (
                           <motion.div 
                             key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                            initial={{ opacity: 0, filter: 'blur(4px)' }}
+                            animate={{ opacity: 1, filter: 'blur(0px)' }}
+                            transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 + index * 0.1 }}
                             className="flex items-center gap-3"
                           >
                             <div className="w-2 h-2 rounded-full bg-red-400"></div>
@@ -2376,7 +2487,7 @@ function InteractiveApproachSection() {
                 {/* Solution Side */}
                 <div className="relative">
                   <div className={`bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 border border-secondary/30 relative overflow-hidden ${
-                    isMobile ? 'h-auto min-h-[360px]' : 'h-full'
+                    isClient && isMobile ? 'h-auto min-h-[360px]' : 'h-full'
                   }`}>
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-3xl"
@@ -2402,9 +2513,9 @@ function InteractiveApproachSection() {
                         {currentSlide.solution.benefits.map((benefit, index) => (
                           <motion.div 
                             key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                            initial={{ opacity: 0, filter: 'blur(4px)' }}
+                            animate={{ opacity: 1, filter: 'blur(0px)' }}
+                            transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 + index * 0.1 }}
                             className="flex items-center gap-3"
                           >
                             <div className="w-2 h-2 rounded-full bg-secondary"></div>
@@ -2478,8 +2589,21 @@ function CTASection() {
     triggerOnce: true
   });
 
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const contentVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -2507,7 +2631,7 @@ function CTASection() {
   return (
     <section 
       ref={ref}
-      className={`section-cta bg-transparent relative overflow-hidden ${isMobile ? 'py-12' : 'py-24'}`}
+      className={`section-cta bg-transparent relative overflow-hidden ${isClient && isMobile ? 'py-12' : 'py-24'}`}
     >
       <div 
         className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full opacity-5 blur-[100px]"

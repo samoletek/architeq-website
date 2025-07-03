@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Плавная загрузка без динамических классов */
+body {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
 @layer base {
   :root {
     --gradient-primary: linear-gradient(90deg, #B24BF3 0%, #4DADFF 100%);

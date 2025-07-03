@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { LoadingButton } from '@/components/ui/loading-button';
 import CalendlyWidget from '@/components/ui/calendly-widget';
 import { FormInput } from '@/components/ui/form-input';
@@ -9,7 +9,8 @@ import { motion } from 'framer-motion';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
-import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
+import { useScrollAnimation } from '@/lib/utils/animation';
+import { useHeavyAnimations } from '@/lib/utils/device-detection';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Типы для формы
@@ -85,38 +86,29 @@ const formValidators = {
 // Интерактивная FAQ секция для контактной страницы
 function ContactFAQSection() {
   const [activeQuestion, setActiveQuestion] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const { ref: sectionRef, isVisible } = useScrollAnimation({
+    threshold: 0.3,
+    rootMargin: '-10% 0px',
+    triggerOnce: true
+  });
   
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const shouldUseHeavyAnimations = useHeavyAnimations();
 
-  // Simple intersection observer for animations only
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      {
-        threshold: 0.2,
-        rootMargin: '0px'
-      }
-    );
-
-    const currentSection = sectionRef.current;
-    if (currentSection) {
-      observer.observe(currentSection);
-    }
-
-    return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
-      }
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
 
   // Auto-carousel with hover pause and manual interaction reset
   const [isHovered, setIsHovered] = useState(false);
@@ -124,24 +116,24 @@ function ContactFAQSection() {
 
   // Auto-carousel logic (desktop only)
   useEffect(() => {
-    if (isMobile || isHovered || userInteracted) return;
+    if (!isClient || isMobile || isHovered || userInteracted) return;
 
     const autoInterval = setInterval(() => {
       setActiveQuestion(prev => (prev + 1) % contactFaqs.length);
     }, 5000);
 
     return () => clearInterval(autoInterval);
-  }, [isHovered, userInteracted, isMobile]);
+  }, [isClient, isHovered, userInteracted, isMobile]);
 
   // Reset user interaction flag after timeout
   useEffect(() => {
-    if (userInteracted && !isMobile) {
+    if (userInteracted && isClient && !isMobile) {
       const timer = setTimeout(() => {
         setUserInteracted(false);
       }, 10000); // Resume auto-switching after 10 seconds
       return () => clearTimeout(timer);
     }
-  }, [userInteracted, isMobile]);
+  }, [userInteracted, isClient, isMobile]);
 
   const handleQuestionClick = (index: number) => {
     setActiveQuestion(index);
@@ -210,14 +202,14 @@ function ContactFAQSection() {
   };
 
   const navVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.3,
-        ease: "easeOut" as const,
-        delay: index * 0.05
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: index * 0.1
       }
     })
   };
@@ -225,8 +217,8 @@ function ContactFAQSection() {
   return (
     <section 
       ref={sectionRef}
-      className={`bg-dark-gray relative overflow-hidden ${isMobile ? 'py-8 pb-16' : 'py-24'}`}
-      style={{ minHeight: isMobile ? 'auto' : '100vh' }}
+      className={`bg-dark-gray relative overflow-hidden ${isClient && isMobile ? 'py-8 pb-16' : 'py-24'}`}
+      style={{ minHeight: isClient && isMobile ? 'auto' : '100vh' }}
     >
       <div className="container mx-auto px-4 relative z-10 w-full">
         <motion.div
@@ -256,7 +248,7 @@ function ContactFAQSection() {
           >
             
             {/* Навигационное меню с стрелками - скрыто на мобильных */}
-            {!isMobile && (
+            {isClient && !isMobile && (
               <div className="lg:col-span-1 flex justify-center">
               <div className="w-full">
                 <div className="space-y-6">
@@ -300,11 +292,11 @@ function ContactFAQSection() {
             )}
 
             {/* Карусель ответов (без стрелок) */}
-            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2 flex items-center justify-center'}>
-              <div className="relative w-full" style={{ height: isMobile ? '320px' : '450px' }}>
-                <div className={`relative h-full ${!isMobile ? 'perspective-1000' : ''}`}>
+            <div className={isClient && isMobile ? 'col-span-1' : 'lg:col-span-2 flex items-center justify-center'}>
+              <div className="relative w-full" style={{ height: isClient && isMobile ? '320px' : '450px' }}>
+                <div className={`relative h-full ${isClient && !isMobile ? 'perspective-1000' : ''}`}>
                   {contactFaqs.map((faq, index) => {
-                    const transform = !isMobile ? getCardTransform(index) : 
+                    const transform = isClient && !isMobile ? getCardTransform(index) : 
                       { opacity: index === activeQuestion ? 1 : 0, zIndex: index === activeQuestion ? 10 : 1 };
                     
                     return (
@@ -314,13 +306,13 @@ function ContactFAQSection() {
                         style={{
                           top: '50%',
                           transform: 'translateY(-50%)',
-                          height: isMobile ? '220px' : '350px',
-                          transformStyle: !isMobile ? 'preserve-3d' : 'flat',
-                          backfaceVisibility: !isMobile ? 'hidden' : 'visible'
+                          height: isClient && isMobile ? '220px' : '350px',
+                          transformStyle: isClient && !isMobile ? 'preserve-3d' : 'flat',
+                          backfaceVisibility: isClient && !isMobile ? 'hidden' : 'visible'
                         }}
                         animate={transform}
                         transition={{
-                          duration: !isMobile ? 0.6 : 0.3,
+                          duration: isClient && !isMobile ? 0.6 : 0.3,
                           type: "tween"
                         }}
                       >
@@ -344,21 +336,21 @@ function ContactFAQSection() {
                         
                         <div className={`bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
                           rounded-2xl h-full transition-all duration-500 flex flex-col ${
-                            isMobile ? 'p-4' : 'p-8 md:p-10'
+                            isClient && isMobile ? 'p-4' : 'p-8 md:p-10'
                           }`}
                           style={{ 
                             justifyContent: 'space-between', 
-                            paddingTop: isMobile ? '1.5rem' : '3rem', 
-                            paddingBottom: isMobile ? '1.5rem' : '3rem' 
+                            paddingTop: isClient && isMobile ? '1.5rem' : '3rem', 
+                            paddingBottom: isClient && isMobile ? '1.5rem' : '3rem' 
                           }}>
                           
                           <div className="flex-1">
                             <motion.h3 
                               className={`font-bold leading-tight text-white ${
-                                isMobile ? 'text-lg mb-4' : 'text-2xl md:text-3xl mb-6'
+                                isClient && isMobile ? 'text-lg mb-4' : 'text-2xl md:text-3xl mb-6'
                               }`}
                               style={{
-                                textShadow: (activeQuestion === index && shouldUseHeavyAnimations)
+                                textShadow: isClient && activeQuestion === index && shouldUseHeavyAnimations
                                   ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
                                   : 'none'
                               }}
@@ -367,7 +359,7 @@ function ContactFAQSection() {
                             </motion.h3>
 
                             <p className={`text-white/90 leading-relaxed ${
-                              isMobile ? 'text-sm' : 'text-lg md:text-xl'
+                              isClient && isMobile ? 'text-sm' : 'text-lg md:text-xl'
                             }`}>
                               {faq.answer}
                             </p>
@@ -449,9 +441,35 @@ function ContactFAQSection() {
 }
 
 export default function ContactsContent() {
-  // Device detection для адаптивности
-  const { isMobile } = useDeviceDetection();
-  // const shouldUseHeavyAnimations = useHeavyAnimations(); // Не используется в этом компоненте
+  // Scroll animation для плавного появления
+  const { ref: heroRef, isVisible: isHeroVisible } = useScrollAnimation({
+    threshold: 0.2,
+    rootMargin: '-5% 0px',
+    triggerOnce: true
+  });
+
+  const { ref: formRef, isVisible: isFormVisible } = useScrollAnimation({
+    threshold: 0.3,
+    rootMargin: '-10% 0px',
+    triggerOnce: true
+  });
+
+  // Device detection для адаптивности с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const shouldUseHeavyAnimations = useHeavyAnimations();
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Состояние формы
   const [formData, setFormData] = useState<ContactFormData>({
@@ -470,6 +488,31 @@ export default function ContactsContent() {
     errors: {},
     touched: {},
   });
+
+  // Animation variants для плавного появления
+  const heroVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.6,
+        delay: 0.2
+      }
+    }
+  };
   
   // Обработчик изменения полей формы
   const handleChange = (name: string) => (value: string) => {
@@ -638,10 +681,14 @@ export default function ContactsContent() {
   return (
     <>
       {/* Hero section */}
-      <section className="section-hero bg-dark-gray">
+      <section ref={heroRef} className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div data-animate="fade-up">
+            <motion.div
+              initial="hidden"
+              animate={isHeroVisible ? "visible" : "hidden"}
+              variants={heroVariants}
+            >
               <h1 className={`font-bold hero-title-spacing hero-subtitle-spacing ${
                   isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'
                 }`}
@@ -655,17 +702,22 @@ export default function ContactsContent() {
                 }`}>
                 Ready to transform your business operations? Let&apos;s discuss how our automation solutions can help you achieve your goals.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
       
       {/* Contact Form and Calendly */}
-      <section className={`bg-dark-gray ${isMobile ? 'py-12 pb-48' : 'py-16 md:py-20 lg:py-24 pb-48'}`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className={`grid gap-8 md:gap-12 ${
-            isMobile ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-2'
-          } ${isMobile ? 'items-start' : 'items-start'}`}>
+      <section ref={formRef} className={`bg-dark-gray ${isClient && isMobile ? 'py-12 pb-48' : 'py-24 pb-48'}`}>
+        <motion.div 
+          className="container mx-auto px-4"
+          initial="hidden"
+          animate={isFormVisible ? "visible" : "hidden"}
+          variants={formVariants}
+        >
+          <div className={`grid gap-12 ${
+            isClient && isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
+          } ${isClient && isMobile ? 'items-start' : 'items-start'}`}>
             {/* Contact Form & Info */}
             <div className="flex flex-col">
               <div className="flex-grow">
@@ -688,9 +740,9 @@ export default function ContactsContent() {
                 )}
                 
                 <form id="contact-form" onSubmit={handleSubmit} noValidate>
-                  {/* Адаптивная версия: Имя и Email */}
-                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4'}`}>
-                    <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
+                  {/* Мобильная версия: Имя и Email в одной строке */}
+                  <div className={`mb-10 ${isClient && isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                    <div className={isClient && isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
                       <FormInput
                         id="name"
                         name="name"
@@ -722,9 +774,9 @@ export default function ContactsContent() {
                     </div>
                   </div>
                   
-                  {/* Адаптивная версия: Компания и Телефон */}
-                  <div className={`mb-10 ${isMobile ? 'space-y-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-4'}`}>
-                    <div className={isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
+                  {/* Мобильная версия: Компания и Телефон в одной строке */}
+                  <div className={`mb-10 ${isClient && isMobile ? 'space-y-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                    <div className={isClient && isMobile ? 'grid grid-cols-2 gap-3' : 'contents'}>
                       <FormInput
                         id="company"
                         name="company"
@@ -823,10 +875,12 @@ export default function ContactsContent() {
                 </form>
               </div>
               
-              {/* Contact Information - Размещена в нижней части колонки */}
-              <div className={isMobile ? 'mt-12' : 'mt-20'}>
-                {isMobile ? (
-                  <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-6 min-h-[200px]">
+              {/* Contact Information - Исправленная логика условного рендеринга */}
+              <div className={isClient && isMobile ? 'mt-12' : 'mt-20'}>
+                {isClient && !shouldUseHeavyAnimations ? (
+                  <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
+                    isClient && isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
+                  } ${isClient && shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
                     <div className="space-y-6 h-full flex flex-col justify-center">
                       <div>
                         <h4 className="font-medium mb-1 text-white">Email</h4>
@@ -868,7 +922,7 @@ export default function ContactsContent() {
             </div>
             
             {/* Calendly Widget - Desktop Right Column */}
-            {!isMobile && (
+            {isClient && !isMobile && (
               <div className="flex flex-col">
                 <SimpleGlowCard variant="primary" className="p-6 lg:p-8 h-[980px] lg:h-[1014px] xl:h-[1040px]">
                   <div className="h-full flex flex-col">
@@ -896,7 +950,7 @@ export default function ContactsContent() {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </section>
       
       {/* Calendly Widget - Mobile Section */}
@@ -918,11 +972,11 @@ export default function ContactsContent() {
                       height: "880px",
                       width: "118%"
                     }}
-                  prefill={{
-                    name: formData.name,
-                    email: formData.email
-                  }}
-                />
+                    prefill={{
+                      name: formData.name,
+                      email: formData.email
+                    }}
+                  />
                 </div>
               </div>
             </div>

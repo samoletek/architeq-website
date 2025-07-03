@@ -127,33 +127,31 @@ export default function BenefitsSection({
       }
     })
   };
-
-  // Варианты анимации для заголовков карточек
+  
+  // Варианты анимации для заголовков карточек (footer-style)
   const cardTitleVariants = {
-    hidden: isMobile ? 
-      { opacity: 0 } : // Просто появление на мобилке
-      { opacity: 0, x: -30 }, // Сложная анимация на десктопе
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: isMobile ? 0.6 : 0.5,
-        delay: isMobile ? 0.2 + index * 0.1 : 0.3 + index * 0.15
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: 0.3 + index * 0.15
       }
     })
   };
 
-  // Варианты анимации для описания карточек
+  // Варианты анимации для описания карточек (footer-style)
   const cardDescriptionVariants = {
-    hidden: isMobile ? 
-      { opacity: 0 } : // Просто появление на мобилке
-      { opacity: 0, x: -20 }, // Сложная анимация на десктопе
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: isMobile ? 0.5 : 0.4,
-        delay: isMobile ? 0.3 + index * 0.1 : 0.45 + index * 0.15
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: 0.45 + index * 0.15
       }
     })
   };
