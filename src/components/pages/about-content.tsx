@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
-import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
 import { useHeavyAnimations } from '@/lib/utils/device-detection';
 
 // Team member interface
@@ -1572,11 +1571,9 @@ function MethodologySection() {
                       ease: [0.04, 0.62, 0.23, 0.98]
                     }}
                   >
-                  <TravelingBorderGlow 
-                    variant="secondary" 
-                    intensity="normal" 
-                    className="rounded-2xl"
-                  >
+                  <div className="rounded-2xl relative">
+                    {/* Simple static glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 via-secondary/5 to-secondary/10 rounded-2xl opacity-70" />
                     <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl py-16 px-8 border border-secondary/20 relative overflow-hidden">
                       <motion.div 
                         className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-transparent rounded-2xl"
@@ -1616,7 +1613,7 @@ function MethodologySection() {
                         </div>
                       </div>
                     </div>
-                  </TravelingBorderGlow>
+                  </div>
                 </motion.div>
               </AnimatePresence>
               </div>
