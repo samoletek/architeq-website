@@ -242,7 +242,7 @@ const ShaderMaterial = ({
 
     preparedUniforms["u_time"] = { value: 0, type: "1f" };
     preparedUniforms["u_resolution"] = {
-      value: new THREE.Vector2(size.width * 2, size.height * 2),
+      value: new THREE.Vector2(size.width, size.height),
     };
     return preparedUniforms;
   }, [uniforms, size.width, size.height]);
@@ -260,7 +260,6 @@ const ShaderMaterial = ({
         float y = position.y;
         gl_Position = vec4(x, y, 0.0, 1.0);
         fragCoord = (position.xy + vec2(1.0)) * 0.5 * u_resolution;
-        fragCoord.y = u_resolution.y - fragCoord.y;
       }
       `,
       fragmentShader: source,
