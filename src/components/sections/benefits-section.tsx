@@ -120,27 +120,29 @@ export default function BenefitsSection({
     })
   };
 
-  // Варианты анимации для заголовков карточек (слева направо)
+  // Варианты анимации для заголовков карточек (footer-style)
   const cardTitleVariants = {
-    hidden: { opacity: 0, x: -30 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.5,
+        duration: 0.8,
+        ease: "easeInOut" as const,
         delay: 0.3 + index * 0.15
       }
     })
   };
 
-  // Варианты анимации для описания карточек (слева направо)
+  // Варианты анимации для описания карточек (footer-style)
   const cardDescriptionVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.4,
+        duration: 0.8,
+        ease: "easeInOut" as const,
         delay: 0.45 + index * 0.15
       }
     })

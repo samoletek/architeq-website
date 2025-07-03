@@ -9,7 +9,6 @@ import { ReactNode, useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import { cn } from '@/lib/utils/utils';
-import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { BreadcrumbSchema } from '@/lib/seo/schema';
 import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
 
@@ -88,8 +87,29 @@ export default function ServiceTemplate({
   additionalSectionsPosition = 'after-features',
 }: ServiceTemplateProps) {
   
-  // Device detection for mobile optimizations
-  const { isMobile, isLowPerformance } = useDeviceDetection();
+  // Device detection for mobile optimizations с защитой от гидратации
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLowPerformance, setIsLowPerformance] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const checkDevice = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      
+      // Simple performance detection
+      const connection = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
+      const isLowPerf = Boolean(connection && 
+        (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g'));
+      setIsLowPerformance(isLowPerf);
+    };
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
   
 
   // Генерируем breadcrumbs для текущей страницы услуги
@@ -174,6 +194,7 @@ export default function ServiceTemplate({
           processes={processes}
           isMobile={isMobile}
           isLowPerformance={isLowPerformance}
+          isClient={isClient}
         />
       )}
 
@@ -195,6 +216,7 @@ export default function ServiceTemplate({
           faqs={faqs}
           isMobile={isMobile}
           isLowPerformance={isLowPerformance}
+          isClient={isClient}
         />
       )}
 
@@ -833,13 +855,15 @@ function ProcessSection({
   subtitle, 
   processes,
   isMobile = false,
-  isLowPerformance = false
+  isLowPerformance = false,
+  isClient = false
 }: { 
   title: string; 
   subtitle: string; 
   processes: ServiceProcess[];
   isMobile?: boolean;
   isLowPerformance?: boolean;
+  isClient?: boolean;
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -894,13 +918,14 @@ function ProcessSection({
   };
   
   const navVariants = {
-    hidden: { opacity: 0, x: -30 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.4,
-                delay: index * 0.08
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: index * 0.08
       }
     })
   };
@@ -946,7 +971,7 @@ function ProcessSection({
 
         {/* Основной контент с навигацией */}
         <div className="max-w-7xl mx-auto">
-          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-12 lg:gap-16`}>
+          <div className={`grid ${isClient && isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-12 lg:gap-16`}>
             
             {/* Левая колонка - Навигационное меню (скрыта на мобильных) */}
             {!isMobile && (
@@ -1213,13 +1238,15 @@ function FAQSection({
   subtitle, 
   faqs,
   isMobile = false,
-  isLowPerformance = false
+  isLowPerformance = false,
+  isClient = false
 }: { 
   title: string; 
   subtitle: string; 
   faqs: ServiceFAQ[];
   isMobile?: boolean;
   isLowPerformance?: boolean;
+  isClient?: boolean;
 }) {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -1350,13 +1377,14 @@ function FAQSection({
   };
 
   const navVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, filter: 'blur(4px)' },
     visible: (index: number) => ({
       opacity: 1,
-      x: 0,
+      filter: 'blur(0px)',
       transition: {
-        duration: 0.3,
-                delay: index * 0.05
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: index * 0.05
       }
     })
   };
@@ -1478,7 +1506,7 @@ function FAQSection({
 
             <div className="lg:col-span-2 flex items-center justify-center">
               <div className="relative w-full" style={{ height: '400px' }}>
-                <div className={`relative h-full ${isMobile || isLowPerformance ? '' : 'perspective-1000'}`}>
+                <div className={`relative h-full ${(isClient && (isMobile || isLowPerformance)) ? '' : 'perspective-1000'}`}>
                   {faqs.map((faq, index) => {
                     const transform = getCardTransform(index);
                     
@@ -1547,7 +1575,7 @@ function FAQSection({
                               transition={{ duration: 0.5, delay: 0.2 }}
                             >
                               {/* Mobile navigation inside the card */}
-                              {isMobile ? (
+                              {isClient && isMobile ? (
                                 <div className="flex justify-center items-center gap-8">
                                   <button
                                     onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}

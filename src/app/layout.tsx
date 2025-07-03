@@ -4,6 +4,7 @@ import { Inter, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { siteMetadata } from '@/lib/seo/metadata'
 import { generateFaviconMetadata } from '@/lib/seo/favicon-metadata'
+import { ClientInit } from '@/components/layout/client-init'
 
 // Определяем шрифты с подмножествами
 const inter = Inter({ 
@@ -110,26 +111,6 @@ export default function RootLayout({
             type="font/woff2" 
             crossOrigin="anonymous"
           />
-                {/* Скрипт для предотвращения мигания при загрузке */}
-                <script 
-          dangerouslySetInnerHTML={{ 
-            __html: `
-              document.documentElement.classList.add('is-loading');
-              window.addEventListener('load', function() {
-                setTimeout(function() {
-                  document.documentElement.classList.remove('is-loading');
-                  document.documentElement.classList.add('is-ready');
-                }, 100);
-              });
-              
-              // Определяем поддержку анимаций
-              const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-              if (reducedMotion) {
-                document.documentElement.classList.add('reduced-motion');
-              }
-            `
-          }}
-        />
               </head>
       <body className="font-mono bg-background text-white antialiased">
         {/* Skip Navigation для доступности */}
@@ -142,6 +123,7 @@ export default function RootLayout({
         
         {/* Основное содержимое */}
         <div id="main-content">
+          <ClientInit />
           {children}
         </div>
       </body>
