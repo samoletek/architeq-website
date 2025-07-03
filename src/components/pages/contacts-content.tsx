@@ -875,25 +875,27 @@ export default function ContactsContent() {
                 </form>
               </div>
               
-              {/* Contact Information - Размещена в нижней части колонки */}
+              {/* Contact Information - Исправленная логика условного рендеринга */}
               <div className={isClient && isMobile ? 'mt-12' : 'mt-20'}>
-                <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
-                  isClient && isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
-                } ${isClient && shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
-                  <div className="space-y-6 h-full flex flex-col justify-center">
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Email</h4>
-                      <p className="text-light-gray">hi@architeq.io</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Working Hours</h4>
-                      <p className="text-light-gray">We work across different time zones</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-1 text-white">Languages</h4>
-                      <p className="text-light-gray">English, Ukrainian, Russian</p>
+                {isClient && !shouldUseHeavyAnimations ? (
+                  <div className={`bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl transition-all duration-300 ${
+                    isClient && isMobile ? 'p-6 min-h-[200px]' : 'p-8 h-[240px]'
+                  } ${isClient && shouldUseHeavyAnimations ? 'hover:border-primary/30' : ''}`}>
+                    <div className="space-y-6 h-full flex flex-col justify-center">
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Email</h4>
+                        <p className="text-light-gray">hi@architeq.io</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                        <p className="text-light-gray">We work across different time zones</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Languages</h4>
+                        <p className="text-light-gray">English, Ukrainian, Russian</p>
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -970,11 +972,11 @@ export default function ContactsContent() {
                       height: "880px",
                       width: "118%"
                     }}
-                  prefill={{
-                    name: formData.name,
-                    email: formData.email
-                  }}
-                />
+                    prefill={{
+                      name: formData.name,
+                      email: formData.email
+                    }}
+                  />
                 </div>
               </div>
             </div>
