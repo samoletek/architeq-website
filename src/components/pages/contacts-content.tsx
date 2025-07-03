@@ -9,8 +9,9 @@ import { motion } from 'framer-motion';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
-import { useHeavyAnimations } from '@/lib/utils/device-detection';
 import { useScrollAnimation } from '@/lib/utils/animation';
+import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Типы для формы
 interface ContactFormData extends FormFields {
@@ -895,14 +896,33 @@ export default function ContactsContent() {
                       <p className="text-light-gray">English, Ukrainian, Russian</p>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <SimpleGlowCard variant="primary" className="p-6 md:p-8 h-[280px] md:h-[300px]">
+                    <div className="space-y-6 flex flex-col justify-start pt-4">
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Email</h4>
+                        <p className="text-light-gray">hi@architeq.io</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Working Hours</h4>
+                        <p className="text-light-gray">We work across different time zones</p>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-medium mb-1 text-white">Languages</h4>
+                        <p className="text-light-gray">English, Ukrainian, Russian</p>
+                      </div>
+                    </div>
+                  </SimpleGlowCard>
+                )}
               </div>
             </div>
             
             {/* Calendly Widget - Desktop Right Column */}
             {isClient && !isMobile && (
               <div className="flex flex-col">
-                <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8 h-[1014px]">
+                <SimpleGlowCard variant="primary" className="p-6 lg:p-8 h-[980px] lg:h-[1014px] xl:h-[1040px]">
                   <div className="h-full flex flex-col">
                     <h3 className="text-2xl font-bold text-white text-center mb-4">
                       Schedule a Call
@@ -914,7 +934,7 @@ export default function ContactsContent() {
                       <CalendlyWidget 
                         url={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-username/30min"}
                         styles={{
-                          height: "862px",
+                          height: "828px", // Адаптировано под новые размеры карточки
                           width: "100%"
                         }}
                         prefill={{
@@ -924,7 +944,7 @@ export default function ContactsContent() {
                       />
                     </div>
                   </div>
-                </div>
+                </SimpleGlowCard>
               </div>
             )}
           </div>

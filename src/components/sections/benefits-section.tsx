@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils/utils';
 import { useScrollAnimation } from '@/lib/utils/animation';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 import TravelingBorderGlow from '@/components/ui/effects/traveling-border-glow';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 // Интерфейс для преимущества
 export interface Benefit {
@@ -65,6 +66,9 @@ export default function BenefitsSection({
     visibilityThreshold: 0.3
   });
   
+  // Device detection для адаптивных анимаций
+  const { isMobile } = useDeviceDetection();
+  
   // Состояние для управления анимациями
   const [isReady, setIsReady] = useState(false);
   const titleControls = useAnimation();
@@ -108,18 +112,22 @@ export default function BenefitsSection({
     }
   };
 
+  // Адаптивные варианты анимаций
   const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: isMobile ? 
+      { opacity: 0, filter: 'blur(4px)', y: -8 } : // Простая анимация как в футере
+      { opacity: 0, y: 30 }, // Оригинальная анимация для десктопа
     visible: (index: number) => ({
       opacity: 1,
+      filter: isMobile ? 'blur(0px)' : undefined,
       y: 0,
       transition: {
-        duration: 0.6,
-        delay: 0.15 + index * 0.12
+        duration: isMobile ? 0.8 : 0.6,
+        delay: isMobile ? 0.1 + index * 0.1 : 0.15 + index * 0.12
       }
     })
   };
-
+  
   // Варианты анимации для заголовков карточек (footer-style)
   const cardTitleVariants = {
     hidden: { opacity: 0, filter: 'blur(4px)' },

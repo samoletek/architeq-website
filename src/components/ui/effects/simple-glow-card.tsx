@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect, ReactNode } from 'react';
+import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
+import React, { MouseEvent as ReactMouseEvent, useState, ReactNode } from "react";
+import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import { cn } from "@/lib/utils/utils";
 
 interface SimpleGlowCardProps {
   children: ReactNode;
@@ -8,48 +11,45 @@ interface SimpleGlowCardProps {
   variant?: 'primary' | 'secondary';
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  radius?: number;
 }
 
 /**
- * Simple Glow Card - базовая реализация эффекта свечения при наведении
- * Создает radial gradient, следующий за курсором мыши
+ * CardSpotlight - новый эффект с матрицей точек при наведении
+ * Заменяет SimpleGlowCard с сохранением API
  */
-const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({ children, className = '', variant = 'primary', onMouseEnter, onMouseLeave }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({ 
+  children, 
+  className = '', 
+  variant = 'primary', 
+  onMouseEnter, 
+  onMouseLeave,
+  radius = 350
+}) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  function handleMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: ReactMouseEvent<HTMLDivElement>) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    };
-
-    const handleMouseEnter = () => {
-      card.style.setProperty('--opacity', '1');
-      if (onMouseEnter) onMouseEnter();
-    };
-
-    const handleMouseLeave = () => {
-      card.style.setProperty('--opacity', '0');
-      if (onMouseLeave) onMouseLeave();
-    };
-
-    card.addEventListener('mousemove', handleMouseMove);
-    card.addEventListener('mouseenter', handleMouseEnter);
-    card.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      card.removeEventListener('mousemove', handleMouseMove);
-      card.removeEventListener('mouseenter', handleMouseEnter);
-      card.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [onMouseEnter, onMouseLeave]);
+  const [isHovering, setIsHovering] = useState(false);
+  
+  const handleMouseEnterInternal = () => {
+    setIsHovering(true);
+    if (onMouseEnter) onMouseEnter();
+  };
+  
+  const handleMouseLeaveInternal = () => {
+    setIsHovering(false);
+    if (onMouseLeave) onMouseLeave();
+  };
 
   // Определяем цвета в зависимости от варианта
   const getVariantStyles = () => {
@@ -57,20 +57,22 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({ children, className = '
       case 'secondary':
         return {
           borderColor: 'border-secondary/20',
-          hoverBorderColor: 'hover:border-secondary/40',
-          shadowColor: 'hover:shadow-secondary/20',
-          glowBackground: '#0A2A0A',
-          glowOverlay: 'rgba(176, 255, 116, 0.1)', // secondary green
-          glowBorder: 'rgba(176, 255, 116, 0.3)'
+          backgroundColor: '#0A2A0A',
+          spotlightColor: '#0A2A0A',
+          matrixColors: [
+            [176, 255, 116], // secondary green
+            [139, 255, 90],  // lighter green
+          ]
         };
       default: // primary
         return {
           borderColor: 'border-primary/20',
-          hoverBorderColor: 'hover:border-primary/40',
-          shadowColor: 'hover:shadow-primary/20',
-          glowBackground: '#170A24',
-          glowOverlay: 'rgba(178, 75, 243, 0.1)', // primary purple
-          glowBorder: 'rgba(178, 75, 243, 0.3)'
+          backgroundColor: '#170A24',
+          spotlightColor: '#170A24',
+          matrixColors: [
+            [178, 75, 243],  // primary purple
+            [139, 92, 246],  // lighter purple
+          ]
         };
     }
   };
@@ -79,51 +81,45 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({ children, className = '
 
   return (
     <div
-      ref={cardRef}
-      className={`
-        relative 
-        rounded-2xl 
-        border 
-        ${variantStyles.borderColor}
-        bg-[linear-gradient(to_bottom,_${variant === 'secondary' ? '#0A2A0A' : '#170A24'}_0%,_#150920_50%,_#12071A_100%)]
-        overflow-hidden
-        transition-all 
-        duration-300
-        ${variantStyles.hoverBorderColor}
-        hover:shadow-lg
-        ${variantStyles.shadowColor}
-        group
-        ${className}
-      `}
-      style={{
-        '--mouse-x': '0px',
-        '--mouse-y': '0px',
-        '--opacity': '0',
-      } as React.CSSProperties}
+      className={cn(
+        "group/spotlight relative rounded-2xl border overflow-hidden transition-all duration-300",
+        variantStyles.borderColor,
+        "bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]",
+        className
+      )}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnterInternal}
+      onMouseLeave={handleMouseLeaveInternal}
     >
-      {/* Glow effect overlay */}
-      <div 
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+      <motion.div
+        className="pointer-events-none absolute z-0 -inset-px rounded-2xl transition-all duration-300"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHovering ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         style={{
-          background: `radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), ${variantStyles.glowOverlay}, transparent 40%)`,
-          opacity: 'var(--opacity)',
+          backgroundColor: variantStyles.spotlightColor,
+          maskImage: useMotionTemplate`
+            radial-gradient(
+              ${radius}px circle at ${mouseX}px ${mouseY}px,
+              white,
+              transparent 80%
+            )
+          `,
         }}
-      />
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovering ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <CanvasRevealEffect
+            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+            colors={variantStyles.matrixColors}
+            dotSize={3}
+          />
+        </motion.div>
+      </motion.div>
       
-      {/* Border glow effect */}
-      <div 
-        className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(300px circle at var(--mouse-x) var(--mouse-y), ${variantStyles.glowBorder}, transparent 40%)`,
-          opacity: 'var(--opacity)',
-          mask: 'linear-gradient(white, white) content-box, linear-gradient(white, white)',
-          maskComposite: 'xor',
-          WebkitMask: 'linear-gradient(white, white) content-box, linear-gradient(white, white)',
-          WebkitMaskComposite: 'xor',
-          padding: '1px',
-        }}
-      />
-
       {/* Content */}
       <div className="relative z-10">
         {children}
