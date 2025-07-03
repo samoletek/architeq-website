@@ -365,10 +365,16 @@ export default function Footer() {
           </div>
         )}
 
-        {/* Простой текст логотипа вместо тяжелого градиентного */}
+        {/* Простой текст логотипа с градиентом непрозрачности */}
         <AnimatedContainer delay={0.5}>
           <div className="w-full flex items-center justify-center mt-8 overflow-hidden relative h-32 md:h-40 lg:h-48">
-            <h1 className="text-center text-[8.48rem] md:text-[13.22rem] lg:text-[19.84rem] font-bold text-white/10 select-none leading-none transform translate-y-4 md:translate-y-6 lg:translate-y-8">
+            <h1 
+              className="text-center text-[8.06rem] md:text-[13.22rem] lg:text-[19.84rem] font-bold text-white/20 select-none leading-none transform translate-y-8 md:translate-y-6 lg:translate-y-8"
+              style={{
+                maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%)'
+              }}
+            >
               architeq
             </h1>
           </div>
