@@ -10,7 +10,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { required, isEmail, isPhone, validateForm } from '@/lib/utils/validation';
 import type { FormFields, FormErrors } from '@/lib/utils/validation';
 import { useScrollAnimation } from '@/lib/utils/animation';
-import { useDeviceDetection, useHeavyAnimations } from '@/lib/utils/device-detection';
+import { useHeavyAnimations } from '@/lib/utils/device-detection';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 
 // Типы для формы
