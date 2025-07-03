@@ -702,7 +702,7 @@ export default function ServicesPage() {
           }}
         >
           {/* Заголовки */}
-          <div className="absolute top-16 left-0 right-0 z-10 text-center">
+          <div className="absolute top-24 left-0 right-0 z-10 text-center">
             <h3 className="text-4xl md:text-5xl font-bold text-white mb-6"
                 style={{
                   textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
