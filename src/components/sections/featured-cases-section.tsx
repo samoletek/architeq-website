@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 
 // Мобильная карточка точно как на странице кейсов
-function SimpleFeaturedCard({ caseItem }: { caseItem: any }) {
+function SimpleFeaturedCard({ caseItem }: { caseItem: ReturnType<typeof toCaseCardFormat> }) {
   return (
     <Link href={`/cases/${caseItem.id}`} className="block">
       <div className="bg-dark-gray rounded-xl border border-gray-600 p-2.5 flex flex-col transition-colors duration-200 hover:border-secondary/30">
