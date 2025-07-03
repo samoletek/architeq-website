@@ -135,12 +135,12 @@ const DotMatrix: React.FC<DotMatrixProps> = ({
             vec2 st = fragCoord.xy;
             ${
               center.includes("x")
-                ? "st.x -= abs(floor((mod(u_resolution.x, u_total_size) - u_dot_size) * 0.5));"
+                ? "st.x -= floor((mod(u_resolution.x, u_total_size) - u_dot_size) * 0.5);"
                 : ""
             }
             ${
               center.includes("y")
-                ? "st.y -= abs(floor((mod(u_resolution.y, u_total_size) - u_dot_size) * 0.5));"
+                ? "st.y -= floor((mod(u_resolution.y, u_total_size) - u_dot_size) * 0.5);"
                 : ""
             }
       float opacity = step(0.0, st.x);
