@@ -70,7 +70,7 @@ export default function AISolutionsPage() {
         "Training material generation"
       ],
       icon: "analysis",
-      caseId: "speech-to-text-analysis"
+      discountButton: true
     },
     {
       title: "Predictive Analytics",
@@ -81,7 +81,8 @@ export default function AISolutionsPage() {
         "Inventory optimization",
         "Data-driven strategic planning"
       ],
-      icon: "prediction"
+      icon: "prediction",
+      discountButton: true
     }
   ];
 
@@ -133,17 +134,6 @@ export default function AISolutionsPage() {
         "More informed decisions based on complete data"
       ]
     },
-    {
-      id: "speech-to-text-analysis",
-      title: "AI Speech-to-Text Parser for Communication Analysis",
-      company: "Various Companies",
-      description: "System for automatic transcription and analysis of client conversations to improve service quality.",
-      results: [
-        "90% automation of conversation analysis",
-        "75% reduction in time spent on call quality control",
-        "Improvement of customer service quality and sales conversion"
-      ]
-    }
   ];
 
   // Данные для FAQ

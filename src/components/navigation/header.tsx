@@ -34,7 +34,7 @@ interface HeaderProps {
 const defaultNavigation: NavigationItem[] = [
   { name: 'Home', href: '/' },
   { 
-    name: 'Services', 
+    name: 'Solutions', 
     href: '/services',
     children: [
       { name: 'AI Solutions', href: '/services/ai-solutions' },
@@ -403,7 +403,7 @@ export default function Header({
                             {item.name}
                           </Link>
                         ) : (
-                          // Для Services просто ссылка без подменю
+                          // Для Solutions просто ссылка без подменю
                           <Link
                             href={item.href}
                             className={cn(

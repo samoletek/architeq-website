@@ -736,7 +736,7 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'Elena Wang',
       position: 'Customer Service Manager at Up-Struct LLC'
     },
-    relatedCases: ['roofing-business-solution', 'telephony-integration', 'speech-to-text-analysis'],
+    relatedCases: ['roofing-business-solution', 'telephony-integration'],
     featured: true,
     image: '/images/cases/ai-voice-agent.jpg'
   },
@@ -771,51 +771,9 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'Client Testimonial',
       position: 'Coming Soon'
     },
-    relatedCases: ['music-label-solution', 'speech-to-text-analysis', 'dashboards-creation'],
+    relatedCases: ['music-label-solution', 'dashboards-creation'],
     featured: false,
     image: '/images/cases/ai-crm-assistant.jpg'
-  },
-  {
-    id: 'speech-to-text-analysis',
-    title: 'AI Speech-to-Text Parser for Client Communication Analysis',
-    company: 'Various Companies',
-    location: 'Multiple Locations',
-    industryCategory: 'your-industry',
-    functionCategory: 'ai-powered',
-    industry: 'Your Industry',
-    solutionType: 'AI-Powered Solutions',
-    description: 'System for automatic transcription and analysis of client conversations to improve service quality.',
-    shortDescription: 'System for automatic transcription and analysis of client conversations to improve service quality.',
-    problem: 'Companies do not have an accurate way to track and analyze operator interactions with clients. Manual listening to calls takes a lot of time, and identifying problem areas and script compliance is difficult.',
-    solution: [
-      'Automatic speech recognition of operators and clients',
-      'Converting conversations to text with speaker markup',
-      'Analysis of key phrases and deviations from scripts',
-      'Identifying emotional tone and determining problematic calls',
-      'Creating reports with main metrics and identified problems',
-      'Integration with CRM for automatic saving of transcripts'
-    ],
-    technologies: ['OpenAI Whisper', 'Google API', 'Make', 'Monday'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'OpenAI', 'Claude'],
-    clickableTags: {
-      companies: ['Various Companies'],
-      technologies: ['OpenAI Whisper', 'Google API', 'Make'],
-      locations: ['Multiple Locations', 'USA']
-    },
-    results: [
-      '90% automation of conversation analysis',
-      '75% reduction in time spent on call quality control',
-      'Identification of deviations from scripts and problem areas',
-      'Improvement of customer service quality and sales conversion'
-    ],
-    testimonial: {
-      quote: 'The speech-to-text analysis system has transformed our quality control process. We are now able to analyze 100% of customer interactions rather than just a small sample. We have identified patterns in successful calls, coached our team based on data rather than intuition, and significantly improved our conversion rates.',
-      author: 'NDA',
-      position: 'NDA'
-    },
-    relatedCases: ['ai-voice-agent', 'telephony-integration', 'notification-system'],
-    featured: false,
-    image: '/images/cases/speech-to-text-analysis.jpg'
   },
   {
     id: 'financial-calculations',
@@ -937,7 +895,7 @@ export const allCaseStudies: CaseStudy[] = [
       author: 'Eugene Gourevitch',
       position: 'SEO at EclipseGroup'
     },
-    relatedCases: ['speech-to-text-analysis', 'ai-voice-agent', 'notification-system'],
+    relatedCases: ['ai-voice-agent', 'notification-system'],
     featured: false,
     image: '/images/cases/telephony-integration.jpg'
   }

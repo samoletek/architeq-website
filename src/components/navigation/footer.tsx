@@ -66,7 +66,7 @@ export default function Footer() {
       id: 'pages',
       title: 'Pages',
       items: [
-        { href: '/services', label: 'Services' },
+        { href: '/services', label: 'Solutions' },
         { href: '/cases', label: 'Cases' },
         { href: '/about', label: 'About' },
         { href: '/contacts', label: 'Contact' },
@@ -311,7 +311,7 @@ export default function Footer() {
                   <ul className="space-y-2">
                     <li>
                       <Link href="/services" className="text-light-gray hover:text-white transition-colors text-sm">
-                        Services
+                        Solutions
                       </Link>
                     </li>
                     <li>

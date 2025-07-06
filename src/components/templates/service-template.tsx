@@ -25,6 +25,7 @@ export interface ServiceFeature {
   benefits?: string[];
   icon?: string;
   caseId?: string;
+  discountButton?: boolean;
 }
 
 export interface ServiceCaseStudy {
@@ -177,9 +178,10 @@ export default function ServiceTemplate({
       {/* Features section - ОБНОВЛЕННЫЙ LAYOUT С УВЕЛИЧЕННЫМИ ТЕКСТАМИ */}
       {features && features.length > 0 && (
         <FeaturesSection 
-          title="Our Solutions"
+          title="Our Services"
           subtitle="We offer a comprehensive range of solutions to<br />address your specific business needs."
           features={features}
+          isMobile={isMobile}
         />
       )}
 
@@ -618,11 +620,13 @@ function BenefitsSection({
 function FeaturesSection({ 
   title, 
   subtitle, 
-  features, 
+  features,
+  isMobile = false
 }: { 
   title: string; 
   subtitle: string; 
-  features: ServiceFeature[]; 
+  features: ServiceFeature[];
+  isMobile?: boolean;
 }) {
   // Логика для динамического выравнивания сетки - все в одну строку
   const getGridClass = () => {
@@ -729,31 +733,35 @@ function FeaturesSection({
                        backdropFilter: 'blur(20px)',
                        WebkitBackdropFilter: 'blur(20px)',
                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)',
-                       transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                       transition: isMobile ? 'none' : 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
                      }}
-                     onMouseEnter={(e) => {
-                       e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
-                       e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(176, 255, 116, 0.3)';
-                       e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.4)';
-                     }}
-                     onMouseLeave={(e) => {
-                       e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                       e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)';
-                       e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.15)';
-                     }}
+                     {...(!isMobile && {
+                       onMouseEnter: (e) => {
+                         e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                         e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(176, 255, 116, 0.3)';
+                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.4)';
+                       },
+                       onMouseLeave: (e) => {
+                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                         e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)';
+                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.15)';
+                       }
+                     })}
                 >
-                  {/* Animated background glow */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div className="absolute top-0 left-0 w-full h-full"
-                         style={{
-                           background: `
-                             radial-gradient(circle at 20% 20%, rgba(176, 255, 116, 0.15) 0%, transparent 50%),
-                             radial-gradient(circle at 80% 80%, rgba(176, 255, 116, 0.1) 0%, transparent 50%),
-                             linear-gradient(135deg, rgba(176, 255, 116, 0.05) 0%, transparent 100%)
-                           `
-                         }}
-                    />
-                  </div>
+                  {/* Animated background glow - disabled on mobile */}
+                  {!isMobile && (
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                      <div className="absolute top-0 left-0 w-full h-full"
+                           style={{
+                             background: `
+                               radial-gradient(circle at 20% 20%, rgba(176, 255, 116, 0.15) 0%, transparent 50%),
+                               radial-gradient(circle at 80% 80%, rgba(176, 255, 116, 0.1) 0%, transparent 50%),
+                               linear-gradient(135deg, rgba(176, 255, 116, 0.05) 0%, transparent 100%)
+                             `
+                           }}
+                      />
+                    </div>
+                  )}
                   
                   <div className="relative z-10 p-4 flex flex-col h-full">
                     {/* Enhanced header with icon and number */}
@@ -763,7 +771,7 @@ function FeaturesSection({
                              style={{
                                background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.2) 0%, rgba(176, 255, 116, 0.1) 100%)',
                                border: '1px solid rgba(176, 255, 116, 0.3)',
-                               boxShadow: '0 0 20px rgba(176, 255, 116, 0.2)'
+                               boxShadow: isMobile ? 'none' : '0 0 20px rgba(176, 255, 116, 0.2)'
                              }}>
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -810,30 +818,63 @@ function FeaturesSection({
                         )}
                       </div>
 
-                      {/* Enhanced Case Study Link - fixed position */}
-                      {feature.caseId && (
+                      {/* Enhanced Case Study Link or Discount Button - fixed position */}
+                      {(feature.caseId || feature.discountButton) && (
                         <div>
                           <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-1"></div>
                           <div className="relative group/button">
                             <div className="absolute inset-0 rounded-lg opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" 
                                  style={{
-                                   background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
-                                   boxShadow: '0 0 20px rgba(176, 255, 116, 0.3)'
+                                   background: feature.discountButton 
+                                     ? 'linear-gradient(135deg, rgba(119, 71, 207, 0.1) 0%, rgba(119, 71, 207, 0.05) 100%)'
+                                     : 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
+                                   boxShadow: feature.discountButton 
+                                     ? '0 0 20px rgba(119, 71, 207, 0.3)'
+                                     : '0 0 20px rgba(176, 255, 116, 0.3)'
                                  }}></div>
-                            <Link 
-                              href={`/cases/${feature.caseId}`} 
-                              className="relative inline-flex items-center justify-center w-full text-[#B0FF74] text-xs font-semibold hover:text-[#B0FF74] transition-all duration-300 py-2 px-3 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/5"
-                            >
-                              <span>View Case Study</span>
-                              <svg 
-                                className="w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" 
-                                fill="none" 
-                                stroke="currentColor" 
-                                viewBox="0 0 24 24"
+                            {feature.discountButton ? (
+                              <Link 
+                                href="/contacts"
+                                className={cn(
+                                  "relative inline-flex items-center justify-center w-full text-xs font-medium transition-all duration-300 py-2 px-3 rounded-lg group/discount focus:outline-none",
+                                  isMobile 
+                                    ? "hover:bg-secondary/50" 
+                                    : "hover:bg-secondary hover:shadow-neon-green-glow-intense"
+                                )}
                               >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </Link>
+                                <span className={cn(
+                                  "transition-all duration-300 group-hover/discount:font-medium",
+                                  isMobile
+                                    ? "text-white group-hover/discount:text-white"
+                                    : "text-white text-shadow-white group-hover/discount:text-site-bg"
+                                )}>
+                                  Be our first case!
+                                </span>
+                                <svg 
+                                  className="w-4 h-4 ml-2 transition-transform group-hover/discount:translate-x-1" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </Link>
+                            ) : (
+                              <Link 
+                                href={`/cases/${feature.caseId}`}
+                                className="relative inline-flex items-center justify-center w-full text-[#B0FF74] text-xs font-semibold hover:text-[#B0FF74] transition-all duration-300 py-2 px-3 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/5"
+                              >
+                                <span>View Case Study</span>
+                                <svg 
+                                  className="w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" 
+                                  fill="none" 
+                                  stroke="currentColor" 
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </Link>
+                            )}
                           </div>
                         </div>
                       )}
@@ -985,15 +1026,15 @@ function ProcessSection({
                       animate={isVisible ? "visible" : "hidden"}
                       variants={navVariants}
                       onClick={() => setActiveStep(index)}
-                      className={`w-full text-left py-3 px-4 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
+                      className={`text-left py-3 px-4 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
                         activeStep === index 
                           ? 'text-secondary' 
                           : 'text-white/70 hover:text-white'
                       }`}
+                      style={{ width: 'calc(80% + 20px)' }}
                     >
-                      {/* Зеленый фон при hover - выходит за пределы текста */}
-                      <div className="absolute -left-1 top-0 bottom-0 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 rounded-lg" 
-                           style={{ width: 'calc(80% + 20px)' }}></div>
+                      {/* Зеленый фон при hover - точно по размеру кнопки */}
+                      <div className="absolute inset-0 bg-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 rounded-lg"></div>
                       
                       {/* Заголовок без нумерации - выровнен с Progress */}
                       <h3 className="text-base md:text-lg font-medium transition-colors duration-300 relative z-10 group-hover:text-black font-mono">

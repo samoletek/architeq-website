@@ -83,7 +83,7 @@ export default function BoxedSolutionsPage() {
         "Agent and property analytics"
       ],
       icon: "dashboard",
-      caseId: "real-estate-solution"
+      discountButton: true
     }
   ];
 
