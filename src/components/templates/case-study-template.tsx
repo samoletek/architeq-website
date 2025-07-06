@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { GCSVideo } from '@/components/ui/gcs-video';
+import { SectionAnimation } from '@/components/ui/section-animation';
+import { useScrollAnimation } from '@/lib/utils/animation';
 import { CaseStudy } from '@/lib/data/case-studies';
 
 interface CaseStudyTemplateProps {
@@ -16,6 +18,7 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
   const [activeResultIndex, setActiveResultIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
 
   // Детекция мобильных устройств
   useEffect(() => {
@@ -37,7 +40,7 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
       setActiveResultIndex((prev) => (prev + 1) % caseStudy.results.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [caseStudy.results.length, isAutoPlaying]);
+  }, [caseStudy.results.length, isAutoPlaying, isMobile]);
 
   const handleManualIndexChange = (index: number) => {
     setIsAutoPlaying(false);
@@ -168,63 +171,75 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
       <HeroSection caseStudy={caseStudy} />
       
       {/* Video Section - Full Screen Presence */}
-      <VideoSection caseStudy={caseStudy} />
+      <SectionAnimation>
+        <VideoSection caseStudy={caseStudy} />
+      </SectionAnimation>
       
       {/* Business Impact Analysis */}
-      <InteractiveResultsSection 
-        caseStudy={caseStudy} 
-        activeIndex={activeResultIndex}
-        onIndexChange={handleManualIndexChange}
-        getResultDescription={getResultDescription}
-        isAutoPlaying={isAutoPlaying}
-      />
+      <SectionAnimation>
+        <InteractiveResultsSection 
+          caseStudy={caseStudy} 
+          activeIndex={activeResultIndex}
+          onIndexChange={handleManualIndexChange}
+          getResultDescription={getResultDescription}
+          isAutoPlaying={isAutoPlaying}
+        />
+      </SectionAnimation>
       
       {/* Challenge & Solution */}
-      <ChallengeAndSolutionSection caseStudy={caseStudy} isMobile={isMobile} />
+      <SectionAnimation>
+        <ChallengeAndSolutionSection caseStudy={caseStudy} isMobile={isMobile} />
+      </SectionAnimation>
       
       
       {/* Client Testimonial */}
       {caseStudy.testimonial && (
-        <TestimonialSection testimonial={caseStudy.testimonial} />
+        <SectionAnimation>
+          <TestimonialSection testimonial={caseStudy.testimonial} />
+        </SectionAnimation>
       )}
       
       {/* Technical Deep-dive */}
-      <TechnicalSection caseStudy={caseStudy} />
+      <SectionAnimation>
+        <TechnicalSection caseStudy={caseStudy} />
+      </SectionAnimation>
       
       {/* Related Cases */}
       {relatedCases.length > 0 && (
-        <RelatedCasesSection relatedCases={relatedCases} />
+        <SectionAnimation>
+          <RelatedCasesSection relatedCases={relatedCases} />
+        </SectionAnimation>
       )}
       
       {/* Call to Action */}
-      <CTASection />
+      <SectionAnimation>
+        <CTASection />
+      </SectionAnimation>
     </div>
   );
 }
 
 function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
-  const titleControls = useAnimation();
+  // Hero scroll animation как в about page
+  const { ref: heroRef, isVisible: isHeroVisible } = useScrollAnimation({
+    threshold: 0.3,
+    rootMargin: '-10% 0px',
+    triggerOnce: true
+  });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      titleControls.start("visible");
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [titleControls]);
-
-  const titleVariants = {
+  const heroVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.8
+        duration: 0.8, 
       }
     }
   };
 
   return (
-    <section className="section-hero bg-transparent relative overflow-hidden">
+    <section ref={heroRef} className="section-hero bg-transparent relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <motion.div 
@@ -258,7 +273,12 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
       </div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <motion.div 
+          className="max-w-5xl mx-auto"
+          initial="hidden"
+          animate={isHeroVisible ? "visible" : "hidden"}
+          variants={heroVariants}
+        >
           {/* Breadcrumb Navigation */}
           <div className="flex items-center justify-center text-light-gray mb-6">
             <Link href="/cases" className="hover:text-white transition-colors text-xs">
@@ -269,48 +289,30 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
           </div>
 
           {/* Company Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-full px-4 py-2 mb-8 border border-[#B0FF74]/20"
-          >
+          <div className="inline-flex items-center gap-2 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-full px-4 py-2 mb-8 border border-[#B0FF74]/20">
             <div className="w-3 h-3 rounded-full bg-[#B0FF74] animate-pulse"></div>
             <span className="text-white font-medium">{caseStudy.company}</span>
             <span className="text-gray-400">•</span>
             <span className="text-gray-400">{caseStudy.location}</span>
-          </motion.div>
+          </div>
 
           {/* Main Title */}
-          <motion.h1
-            initial="hidden"
-            animate={titleControls}
-            variants={titleVariants}
+          <h1
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight"
             style={{
               textShadow: '0 0 30px rgba(176, 255, 116, 0.8), 0 0 60px rgba(176, 255, 116, 0.5)'
             }}
           >
             {caseStudy.title}
-          </motion.h1>
+          </h1>
 
           {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto mb-12 leading-relaxed"
-          >
+          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto mb-12 leading-relaxed">
             {caseStudy.shortDescription || caseStudy.description}
-          </motion.p>
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16"
-          >
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-16">
             <Button 
               variant="secondary" 
               size="lg"
@@ -343,14 +345,10 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 </svg>
               </span>
             </Link>
-          </motion.div>
+          </div>
 
           {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
           >
             <div className="text-center">
               <div className="text-lg md:text-xl font-bold text-[#B0FF74] mb-2">
@@ -370,17 +368,12 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
               </div>
               <div className="text-gray-400 text-xs">Technologies</div>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -392,7 +385,7 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
             className="w-1 h-3 bg-[#B0FF74] rounded-full mt-2"
           />
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }

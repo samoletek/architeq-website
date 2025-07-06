@@ -13,6 +13,8 @@ import { IntegratedSearchFilters } from '@/components/ui/filters/integrated-sear
 import { MobileFiltersPanel } from '@/components/ui/filters/mobile-filters-panel';
 import { RecentlyViewedCases } from '@/components/ui/recently-viewed-cases';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { useScrollAnimation } from '@/lib/utils/animation';
+import { SectionAnimation } from '@/components/ui/section-animation';
 import UnifiedCTASection from '@/components/sections/unified-cta-section';
 import { cn } from '@/lib/utils/utils';
 
@@ -186,6 +188,24 @@ export default function CasesContent() {
   
   const { isMobile, isTablet } = useDeviceDetection();
   
+  // Hero scroll animation как в about page
+  const { ref: heroRef, isVisible: isHeroVisible } = useScrollAnimation({
+    threshold: 0.3,
+    rootMargin: '-10% 0px',
+    triggerOnce: true
+  });
+
+  const heroVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.8, 
+      }
+    }
+  };
+  
   // Обработчики для изменения фильтров
   const handleIndustryChange = useCallback((industry: IndustryCategory) => {
     setSelectedIndustries(prev => {
@@ -287,10 +307,14 @@ export default function CasesContent() {
   return (
     <>
       {/* Hero section */}
-      <section className="section-hero bg-dark-gray">
+      <section ref={heroRef} className="section-hero bg-dark-gray">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div data-animate="fade-up">
+            <motion.div
+              initial="hidden"
+              animate={isHeroVisible ? "visible" : "hidden"}
+              variants={heroVariants}
+            >
               <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
                   style={{
                     textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
@@ -305,16 +329,17 @@ export default function CasesContent() {
                   Request a Similar Solution
                 </Button>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Main content section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-site-bg">
-        
-        {/* Mobile */}
-        {isMobile ? (
+      <SectionAnimation>
+        <section className="py-12 sm:py-16 lg:py-20 bg-site-bg">
+          
+          {/* Mobile */}
+          {isMobile ? (
           <div className="container mx-auto px-4">
             <div className="space-y-4">
               
@@ -517,9 +542,10 @@ export default function CasesContent() {
                 )}
               </div>
             </div>
-          </div>
-        )}
-      </section>
+            </div>
+          )}
+        </section>
+      </SectionAnimation>
       
       {/* CTA section */}
       <UnifiedCTASection preset="cases" />

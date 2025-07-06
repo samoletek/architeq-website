@@ -8,6 +8,7 @@ import SiteLayout from '@/components/layout/site-layout';
 import { AutomationFlowTimeline } from '@/components/sections/automation-flow-timeline';
 import { SolutionContent } from '@/components/sections/solutions-section';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { SectionAnimation } from '@/components/ui/section-animation';
 import { IconName } from '@/components/ui/icons/icon';
 
 // Типы для данных о услугах
@@ -504,6 +505,8 @@ export default function ServicesPage() {
   
   const { isMobile } = useDeviceDetection();
   
+  // Простая анимация героя - сразу появляется при загрузке
+  
   // Улучшенный обработчик прокрутки (ТОЛЬКО ДЛЯ ДЕСКТОПА)
   useEffect(() => {
     if (isMobile) return;
@@ -641,78 +644,87 @@ export default function ServicesPage() {
       <section className="section-hero bg-transparent relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
-            <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
-                style={{
-                  textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
-                }}>
-              How We Architect
-            </h1>
-            <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing opacity-90">
-              We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
-            </p>
-            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="section-title-large font-bold hero-title-spacing hero-subtitle-spacing"
+                  style={{
+                    textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                  }}>
+                How We Architect
+              </h1>
+              <p className="hero-subtitle text-light-gray max-w-3xl mx-auto section-subtitle-medium section-button-spacing opacity-90">
+                We design and build automation systems that connect, optimize, and scale your operations — from tools to teams to outcomes.
+              </p>
+              
 
-            {/* Enhanced CTA */}
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <Button variant="secondary" size="lg" href="/contacts">
-                See How It Works 
-              </Button>
-            </div>
+              {/* Enhanced CTA */}
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <Button variant="secondary" size="lg" href="/contacts">
+                  See How It Works 
+                </Button>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* МОБИЛЬНАЯ ВЕРСИЯ - простые карточки */}
       {isMobile && (
-        <section className="py-16 bg-transparent relative z-10">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6"
-                  style={{
-                    textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
-                  }}>
-                Our Solutions
-              </h2>
-              <p className="text-xl text-white/70 max-w-3xl mx-auto">
-                Comprehensive automation solutions designed to transform your business operations
-              </p>
-            </div>
+        <SectionAnimation>
+          <section className="py-16 bg-transparent relative z-10">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6"
+                    style={{
+                      textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                    }}>
+                  Our Solutions
+                </h2>
+                <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                  Comprehensive automation solutions designed to transform your business operations
+                </p>
+              </div>
 
-            <div className="space-y-4">
-              {services.map((service, index) => (
-                <MobileServiceCard 
-                  key={service.id} 
-                  service={service} 
-                  index={index} 
-                />
-              ))}
+              <div className="space-y-4">
+                {services.map((service, index) => (
+                  <MobileServiceCard 
+                    key={service.id} 
+                    service={service} 
+                    index={index} 
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </SectionAnimation>
       )}
 
       {/* ДЕСКТОПНАЯ ВЕРСИЯ - с полными анимациями и улучшенной карточкой */}
       {!isMobile && (
-        <section 
-          ref={sectionRef}
-          className="relative bg-transparent"
-          style={{ 
-            height: `${100 + services.length * 90}vh`,
-            minHeight: '600vh'
-          }}
-        >
-          {/* Заголовки */}
-          <div className="relative z-10 text-center px-4 pt-20 pb-2">
-            <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6"
-                style={{
-                  textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
-                }}>
-              Solutions
-            </h3>
-            <p className="text-lg md:text-xl text-white/70 opacity-80">
-              Scroll to explore our services
-            </p>
-          </div>
+        <SectionAnimation>
+          <section 
+            ref={sectionRef}
+            className="relative bg-transparent"
+            style={{ 
+              height: `${100 + services.length * 90}vh`,
+              minHeight: '600vh'
+            }}
+          >
+            {/* Заголовки */}
+            <div className="relative z-10 text-center px-4 pt-20 pb-2">
+              <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6"
+                  style={{
+                    textShadow: '0 0 25px rgba(255,255,255,0.8), 0 0 50px rgba(178,75,243,0.6)'
+                  }}>
+                Solutions
+              </h3>
+              <p className="text-lg md:text-xl text-white/70 opacity-80">
+                Scroll to explore our services
+              </p>
+            </div>
 
           {/* Sticky контейнер */}
           <div className="sticky top-0 h-screen overflow-hidden">
@@ -757,12 +769,14 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
-        </section>
+          </section>
+        </SectionAnimation>
       )}
 
       {/* Architecture Methodology section */}
-      <section className="pt-16 pb-16 bg-dark-gray relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
+      <SectionAnimation>
+        <section className="pt-16 pb-16 bg-dark-gray relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="section-title-medium font-bold mb-6"
                 style={{
@@ -1031,31 +1045,34 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </SectionAnimation>
 
       {/* Automation Flow Timeline */}
       <AutomationFlowTimeline />
       
       {/* CTA section */}
-      <section className="section-cta bg-transparent relative z-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6"
-              style={{
-                textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
-              }}>
-            Ready to Streamline the Flow?
-          </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8">
-            Trust our team to map your processes and<br />uncover automation potential.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center button-gap-default">
-            <Button variant="secondary" size="lg" href="/contacts">
-              See How It Works
-            </Button>
+      <SectionAnimation>
+        <section className="section-cta bg-transparent relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6"
+                style={{
+                  textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.5)'
+                }}>
+              Ready to Streamline the Flow?
+            </h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto mb-8">
+              Trust our team to map your processes and<br />uncover automation potential.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center button-gap-default">
+              <Button variant="secondary" size="lg" href="/contacts">
+                See How It Works
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </SectionAnimation>
     </SiteLayout>
   );
 }

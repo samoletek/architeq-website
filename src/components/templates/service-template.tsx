@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ReactNode, useState, useEffect, useRef } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '@/lib/utils/animation';
+import { SectionAnimation } from '@/components/ui/section-animation';
 import { cn } from '@/lib/utils/utils';
 import { BreadcrumbSchema } from '@/lib/seo/schema';
 import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
@@ -116,6 +117,9 @@ export default function ServiceTemplate({
   // Генерируем breadcrumbs для текущей страницы услуги
   const breadcrumbs = generateServiceBreadcrumbs(serviceId);
 
+
+  // Простая анимация героя - сразу появляется при загрузке
+
   return (
     <>
       {/* BreadcrumbSchema для SEO */}
@@ -126,63 +130,75 @@ export default function ServiceTemplate({
       <section className="section-hero bg-transparent relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center text-light-gray mb-6">
-              <Link href="/services" className="hover:text-white transition-colors text-sm">
-                Services
-              </Link>
-              <span className="mx-3 text-primary">/</span>
-              <span className="text-white text-sm">{breadcrumbTitle}</span>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
-                style={{
-                  textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
-                }}>
-              {serviceTitle}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-light-gray max-w-4xl mx-auto whitespace-pre-line mb-16 opacity-90">
-              {serviceDescription}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center button-gap-large">
-              <Link href="/cases">
-                <Button variant="secondary" size="lg">
-                  View Related Case Studies
-                </Button>
-              </Link>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center justify-center text-light-gray mb-6">
+                <Link href="/services" className="hover:text-white transition-colors text-sm">
+                  Services
+                </Link>
+                <span className="mx-3 text-primary">/</span>
+                <span className="text-white text-sm">{breadcrumbTitle}</span>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+                  style={{
+                    textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(178,75,243,0.5)'
+                  }}>
+                {serviceTitle}
+              </h1>
+              
+              <p className="text-lg md:text-xl text-light-gray max-w-4xl mx-auto whitespace-pre-line mb-16 opacity-90">
+                {serviceDescription}
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center button-gap-large">
+                <Link href="/cases">
+                  <Button variant="secondary" size="lg">
+                    View Related Case Studies
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Overview section - ОБНОВЛЕННЫЙ LAYOUT */}
       {overview && (
-        <OverviewSection 
-          title={overview.title}
-          description={overview.description}
-        />
+        <SectionAnimation>
+          <OverviewSection 
+            title={overview.title}
+            description={overview.description}
+          />
+        </SectionAnimation>
       )}
 
       {/* Combined Benefits and Features Section */}
       {((benefits && benefits.length > 0) || (overview && overview.features && overview.features.length > 0)) && (
-        <BenefitsSection 
-          title="Solution Features"
-          subtitle="Our solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line."
-          benefits={benefits}
-          features={overview?.features}
-          featuresTitle={overview?.featuresTitle}
-        />
+        <SectionAnimation>
+          <BenefitsSection 
+            title="Solution Features"
+            subtitle="Our solutions deliver tangible benefits that directly impact your organization's efficiency and bottom line."
+            benefits={benefits}
+            features={overview?.features}
+            featuresTitle={overview?.featuresTitle}
+          />
+        </SectionAnimation>
       )}
 
       {/* Features section - ОБНОВЛЕННЫЙ LAYOUT С УВЕЛИЧЕННЫМИ ТЕКСТАМИ */}
       {features && features.length > 0 && (
-        <FeaturesSection 
-          title="Our Services"
-          subtitle="We offer a comprehensive range of solutions to<br />address your specific business needs."
-          features={features}
-          isMobile={isMobile}
-        />
+        <SectionAnimation>
+          <FeaturesSection 
+            title="Our Services"
+            subtitle="We offer a comprehensive range of solutions to<br />address your specific business needs."
+            features={features}
+            isMobile={isMobile}
+          />
+        </SectionAnimation>
       )}
 
       {/* Дополнительные секции - positioned after Features, before Process */}
@@ -190,43 +206,51 @@ export default function ServiceTemplate({
 
       {/* Process section */}
       {processes && processes.length > 0 && (
-        <ProcessSection 
-          title="Our Process"
-          subtitle="We follow a proven methodology to ensure successful implementation tailored to your business needs."
-          processes={processes}
-          isMobile={isMobile}
-          isLowPerformance={isLowPerformance}
-          isClient={isClient}
-        />
+        <SectionAnimation>
+          <ProcessSection 
+            title="Our Process"
+            subtitle="We follow a proven methodology to ensure successful implementation tailored to your business needs."
+            processes={processes}
+            isMobile={isMobile}
+            isLowPerformance={isLowPerformance}
+            isClient={isClient}
+          />
+        </SectionAnimation>
       )}
 
       {/* Case Studies section - ТОЧНО КАК FEATURED CASES НА ГЛАВНОЙ */}
       {caseStudies && caseStudies.length > 0 && (
-        <CaseStudiesSection 
-          title="Success Stories"
-          subtitle="See how our solutions have helped businesses streamline operations and improve efficiency."
-          caseStudies={caseStudies}
-          serviceId={serviceId}
-        />
+        <SectionAnimation>
+          <CaseStudiesSection 
+            title="Success Stories"
+            subtitle="See how our solutions have helped businesses streamline operations and improve efficiency."
+            caseStudies={caseStudies}
+            serviceId={serviceId}
+          />
+        </SectionAnimation>
       )}
 
       {/* FAQ section */}
       {faqs && faqs.length > 0 && (
-        <FAQSection 
-          title="Frequently Asked Questions"
-          subtitle="Common questions about our services and solutions."
-          faqs={faqs}
-          isMobile={isMobile}
-          isLowPerformance={isLowPerformance}
-          isClient={isClient}
-        />
+        <SectionAnimation>
+          <FAQSection 
+            title="Frequently Asked Questions"
+            subtitle="Common questions about our services and solutions."
+            faqs={faqs}
+            isMobile={isMobile}
+            isLowPerformance={isLowPerformance}
+            isClient={isClient}
+          />
+        </SectionAnimation>
       )}
 
       {/* Дополнительные секции - positioned before CTA (for boxed solutions) */}
       {additionalSectionsPosition === 'before-cta' && additionalSections}
       
       {/* CTA section */}
-      <CTASection />
+      <SectionAnimation>
+        <CTASection />
+      </SectionAnimation>
     </SiteLayout>
     </>
   );
