@@ -12,6 +12,9 @@ import { SectionAnimation } from '@/components/ui/section-animation';
 import { cn } from '@/lib/utils/utils';
 import { BreadcrumbSchema } from '@/lib/seo/schema';
 import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
+import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
+import { LinesPatternCard, LinesPatternCardBody } from '@/components/ui/cards/lines-pattern-card';
 
 // Типы для описания секций страницы услуги
 export interface ServiceBenefit {
@@ -349,6 +352,9 @@ function BenefitsSection({
     visibilityThreshold: 0.3
   });
   
+  // Device detection для адаптивных анимаций
+  const { isMobile } = useDeviceDetection();
+  
   const [isReady, setIsReady] = useState(false);
   const titleControls = useAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -380,13 +386,57 @@ function BenefitsSection({
     }
   };
 
+  // Адаптивные варианты анимаций (как в homepage benefits)
+  const cardVariants = {
+    hidden: isMobile ? 
+      { opacity: 0, filter: 'blur(4px)', y: -8 } : // Простая анимация для мобильных
+      { opacity: 0, y: 30 }, // Оригинальная анимация для десктопа
+    visible: (index: number) => ({
+      opacity: 1,
+      filter: isMobile ? 'blur(0px)' : undefined,
+      y: 0,
+      transition: {
+        duration: isMobile ? 0.8 : 0.6,
+        delay: isMobile ? 0.1 + index * 0.1 : 0.15 + index * 0.12
+      }
+    })
+  };
+  
+  // Варианты анимации для заголовков карточек (homepage style)
+  const cardTitleVariants = {
+    hidden: { opacity: 0, filter: 'blur(4px)' },
+    visible: (index: number) => ({
+      opacity: 1,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: 0.3 + index * 0.15
+      }
+    })
+  };
+
+  // Варианты анимации для описания карточек (homepage style)
+  const cardDescriptionVariants = {
+    hidden: { opacity: 0, filter: 'blur(4px)' },
+    visible: (index: number) => ({
+      opacity: 1,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut" as const,
+        delay: 0.45 + index * 0.15
+      }
+    })
+  };
+
 
 
 
   return (
     <section 
       ref={ref}
-      className="pt-16 pb-40 relative overflow-hidden bg-dark-gray"
+      className="pt-16 pb-40 relative overflow-hidden bg-transparent"
     >
       {/* Background Effects */}
       <div className="absolute inset-0">
@@ -501,7 +551,7 @@ function BenefitsSection({
 
         {/* Content Sections */}
         <AnimatePresence mode="wait">
-          {/* Benefits Section */}
+          {/* Benefits Section - Homepage Style */}
           {(activeTab === 'benefits' && benefits && benefits.length > 0) && (
             <motion.div
               key="benefits"
@@ -515,42 +565,39 @@ function BenefitsSection({
                 <motion.div
                   key={index}
                   custom={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
+                  initial="hidden"
+                  animate={hasAnimated ? "visible" : "hidden"}
+                  variants={cardVariants}
                 >
-                  <div className="relative rounded-xl p-6 h-full transition-all duration-500 overflow-hidden
-                    bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                    border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
-                    hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                    hover:border-primary/40 cursor-default hover:scale-105"
-                  >
-                    {/* Interactive Glow Effect */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-primary/0 to-primary/0 rounded-xl"
-                      whileHover={{
-                        background: "linear-gradient(135deg, rgba(178,75,243,0.1) 0%, rgba(119,71,207,0.05) 100%)"
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    
-                    <div className="relative z-10">
-                      <h3 className="text-xl font-semibold text-white mb-4 whitespace-pre-line">
+                  <SimpleGlowCard className="h-full" disableAnimations={isMobile}>
+                    <div className="p-6 sm:p-8 h-full">
+                      <motion.h3 
+                        className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line text-white"
+                        custom={index}
+                        initial="hidden"
+                        animate={hasAnimated ? "visible" : "hidden"}
+                        variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 } } } : cardTitleVariants}
+                      >
                         {benefit.title}
-                      </h3>
+                      </motion.h3>
                       
-                      <p className="text-light-gray section-subtitle-small font-sans leading-relaxed">
+                      <motion.p 
+                        className="text-light-gray text-sm sm:text-base md:text-lg font-sans"
+                        custom={index}
+                        initial="hidden"
+                        animate={hasAnimated ? "visible" : "hidden"}
+                        variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 + 0.2 } } } : cardDescriptionVariants}
+                      >
                         {benefit.description}
-                      </p>
+                      </motion.p>
                     </div>
-                  </div>
+                  </SimpleGlowCard>
                 </motion.div>
               ))}
             </motion.div>
           )}
 
-          {/* Features Section */}
+          {/* Features Section - Lines Pattern Cards */}
           {(activeTab === 'features' && features && features.length > 0) && (
             <motion.div
               key="features"
@@ -564,36 +611,29 @@ function BenefitsSection({
                 <motion.div
                   key={index}
                   custom={index}
-                  initial={{ opacity: 0, rotateY: -20 }}
-                  animate={{ opacity: 1, rotateY: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="group"
+                  initial="hidden"
+                  animate={hasAnimated ? "visible" : "hidden"}
+                  variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 } } } : cardVariants}
                 >
-                  <div className="relative p-6 rounded-xl border border-secondary/20 bg-secondary/5 
-                    hover:bg-secondary/10 hover:border-secondary/40 transition-all duration-300
-                    hover:scale-105 cursor-default h-full"
-                  >
-                    {/* Interactive Glow */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-secondary/0 to-secondary/0 rounded-xl"
-                      whileHover={{
-                        background: "linear-gradient(135deg, rgba(176,255,116,0.1) 0%, rgba(176,255,116,0.05) 100%)"
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    
-                    <div className="relative z-10 text-center">
-                      <h4 className="text-lg font-semibold text-white mb-2 group-hover:text-secondary transition-colors">
+                  <LinesPatternCard className="h-full">
+                    <LinesPatternCardBody className="flex flex-col justify-center h-full">
+                      <motion.h4 
+                        className="text-lg sm:text-xl md:text-2xl font-semibold text-center text-white"
+                        custom={index}
+                        initial="hidden"
+                        animate={hasAnimated ? "visible" : "hidden"}
+                        variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 + 0.2 } } } : cardTitleVariants}
+                      >
                         {feature}
-                      </h4>
-                    </div>
-                  </div>
+                      </motion.h4>
+                    </LinesPatternCardBody>
+                  </LinesPatternCard>
                 </motion.div>
               ))}
             </motion.div>
           )}
 
-          {/* Default Benefits Only View */}
+          {/* Default Benefits Only View - Homepage Style */}
           {(!features && benefits && benefits.length > 0) && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -604,32 +644,33 @@ function BenefitsSection({
                 <motion.div
                   key={index}
                   custom={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
+                  initial="hidden"
+                  animate={hasAnimated ? "visible" : "hidden"}
+                  variants={cardVariants}
                 >
-                  <div className="relative rounded-xl p-6 h-full transition-all duration-500 overflow-hidden
-                    bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]
-                    border border-primary/20 shadow-[0_0_15px_rgba(119,71,207,0.2)]
-                    hover:shadow-[0_0_30px_rgba(119,71,207,0.5)] 
-                    hover:border-primary/40 cursor-default hover:scale-105"
-                  >
-                    <div className="relative z-10">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 
-                          flex items-center justify-center mb-4 group-hover:bg-primary/30 transition-colors">
-                        <div className="w-6 h-6 rounded-full bg-primary"></div>
-                      </div>
-                      
-                      <h3 className="text-xl font-semibold text-white mb-4">
+                  <SimpleGlowCard className="h-full" disableAnimations={isMobile}>
+                    <div className="p-6 sm:p-8 h-full">
+                      <motion.h3 
+                        className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 md:mb-8 whitespace-pre-line text-white"
+                        custom={index}
+                        initial="hidden"
+                        animate={hasAnimated ? "visible" : "hidden"}
+                        variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 } } } : cardTitleVariants}
+                      >
                         {benefit.title}
-                      </h3>
+                      </motion.h3>
                       
-                      <p className="text-light-gray section-subtitle-small font-sans leading-relaxed">
+                      <motion.p 
+                        className="text-light-gray text-sm sm:text-base md:text-lg font-sans"
+                        custom={index}
+                        initial="hidden"
+                        animate={hasAnimated ? "visible" : "hidden"}
+                        variants={isMobile ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: index * 0.1 + 0.2 } } } : cardDescriptionVariants}
+                      >
                         {benefit.description}
-                      </p>
+                      </motion.p>
                     </div>
-                  </div>
+                  </SimpleGlowCard>
                 </motion.div>
               ))}
             </motion.div>
@@ -740,171 +781,248 @@ function FeaturesSection({
         </motion.div>
 
         <div className="max-w-7xl mx-auto">
-          {/* Обычная сетка для всех случаев */}
+          {/* Адаптивная сетка - разные карточки для мобильных и десктопа */}
           <div className={`grid ${getGridClass()} gap-8`}>
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 + (index * 0.1) }}
-                className="group cursor-pointer w-full max-w-xs mx-auto"
+                initial={{ opacity: 0, x: isMobile ? 0 : 50, y: isMobile ? 20 : 0 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ duration: isMobile ? 0.5 : 0.6, delay: 0.2 + (index * 0.1) }}
+                className={cn(
+                  "w-full mx-auto",
+                  isMobile ? "max-w-full" : "group cursor-pointer max-w-xs"
+                )}
               >
-                <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col h-[330px] md:h-[340px] lg:h-[350px]"
-                     style={{
-                       background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
-                       border: '1px solid rgba(176, 255, 116, 0.15)',
-                       backdropFilter: 'blur(20px)',
-                       WebkitBackdropFilter: 'blur(20px)',
-                       boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)',
-                       transition: isMobile ? 'none' : 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                     }}
-                     {...(!isMobile && {
-                       onMouseEnter: (e) => {
-                         e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
-                         e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(176, 255, 116, 0.3)';
-                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.4)';
-                       },
-                       onMouseLeave: (e) => {
-                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                         e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)';
-                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.15)';
-                       }
-                     })}
-                >
-                  {/* Animated background glow - disabled on mobile */}
-                  {!isMobile && (
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                      <div className="absolute top-0 left-0 w-full h-full"
-                           style={{
-                             background: `
-                               radial-gradient(circle at 20% 20%, rgba(176, 255, 116, 0.15) 0%, transparent 50%),
-                               radial-gradient(circle at 80% 80%, rgba(176, 255, 116, 0.1) 0%, transparent 50%),
-                               linear-gradient(135deg, rgba(176, 255, 116, 0.05) 0%, transparent 100%)
-                             `
-                           }}
-                      />
-                    </div>
-                  )}
-                  
-                  <div className="relative z-10 p-4 flex flex-col h-full">
-                    {/* Enhanced header with icon and number */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                             style={{
-                               background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.2) 0%, rgba(176, 255, 116, 0.1) 100%)',
-                               border: '1px solid rgba(176, 255, 116, 0.3)',
-                               boxShadow: isMobile ? 'none' : '0 0 20px rgba(176, 255, 116, 0.2)'
-                             }}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
-                        </div>
+                {isMobile ? (
+                  // Упрощенная мобильная карточка
+                  <div className="relative rounded-xl border border-secondary/20 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] p-4 flex flex-col min-h-[200px]">
+                    <div className="flex items-center mb-3">
+                      <div className="w-8 h-8 rounded-lg bg-secondary/20 border border-secondary/30 flex items-center justify-center mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
                       </div>
-                      <div className="text-[#B0FF74]/40 text-xs font-mono">
-                        0{index + 1}
-                      </div>
+                      <span className="text-secondary/60 text-xs font-mono">0{index + 1}</span>
                     </div>
-
-                    {/* Title with enhanced styling */}
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#B0FF74] transition-all duration-300"
-                        style={{
-                          textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.3)',
-                          lineHeight: '1.3'
-                        }}>
+                    
+                    <h3 className="text-lg font-semibold text-white mb-2">
                       {feature.title}
                     </h3>
                     
-                    {/* Enhanced Description - flexible height */}
-                    <div className="flex-grow">
-                      <p className="text-white/90 text-xs leading-tight">
-                        {feature.description}
-                      </p>
-                    </div>
+                    <p className="text-white/80 text-sm mb-4 flex-grow">
+                      {feature.description}
+                    </p>
+                    
+                    {(feature.caseId || feature.discountButton) && (
+                      <div className="mt-auto">
+                        {feature.discountButton ? (
+                          <Link 
+                            href="/contacts"
+                            className="inline-flex items-center justify-center w-full bg-secondary text-black text-sm font-medium py-2 px-3 rounded-lg transition-all duration-300 hover:bg-secondary/90"
+                          >
+                            <span>Become Our 1st Case</span>
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        ) : (
+                          <Link 
+                            href={`/cases/${feature.caseId}`}
+                            className="inline-flex items-center justify-center w-full border border-secondary/30 text-secondary text-sm font-medium py-2 px-3 rounded-lg transition-all duration-300 hover:bg-secondary/10"
+                          >
+                            <span>View Case Study</span>
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Полная десктопная карточка - оставляем как было
+                  <div className="relative overflow-hidden rounded-2xl group cursor-pointer flex flex-col h-[330px] md:h-[340px] lg:h-[350px]"
+                       style={{
+                         background: 'linear-gradient(135deg, rgba(23, 10, 36, 0.8) 0%, rgba(21, 9, 32, 0.9) 50%, rgba(18, 7, 26, 0.95) 100%)',
+                         border: '1px solid rgba(176, 255, 116, 0.15)',
+                         backdropFilter: 'blur(20px)',
+                         WebkitBackdropFilter: 'blur(20px)',
+                         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)',
+                         transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                       }}
+                       onMouseEnter={(e) => {
+                         e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                         e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(176, 255, 116, 0.3)';
+                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.4)';
+                       }}
+                       onMouseLeave={(e) => {
+                         e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                         e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(176, 255, 116, 0.1)';
+                         e.currentTarget.style.borderColor = 'rgba(176, 255, 116, 0.15)';
+                       }}
+                  >
+                    {/* Animated background glow - disabled on mobile */}
+                    {!isMobile && (
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                        <div className="absolute top-0 left-0 w-full h-full"
+                             style={{
+                               background: `
+                                 radial-gradient(circle at 20% 20%, rgba(176, 255, 116, 0.15) 0%, transparent 50%),
+                                 radial-gradient(circle at 80% 80%, rgba(176, 255, 116, 0.1) 0%, transparent 50%),
+                                 linear-gradient(135deg, rgba(176, 255, 116, 0.05) 0%, transparent 100%)
+                               `
+                             }}
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="relative z-10 p-4 flex flex-col h-full">
+                      {/* Enhanced header with icon and number */}
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                               style={{
+                                 background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.2) 0%, rgba(176, 255, 116, 0.1) 100%)',
+                                 border: '1px solid rgba(176, 255, 116, 0.3)',
+                                 boxShadow: isMobile ? 'none' : '0 0 20px rgba(176, 255, 116, 0.2)'
+                               }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#B0FF74]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="text-[#B0FF74]/40 text-xs font-mono">
+                          0{index + 1}
+                        </div>
+                      </div>
 
-                    {/* Fixed bottom section with Benefits and Button */}
-                    <div className="mt-auto">
-                      {/* Enhanced Key Benefits - increased height and margin */}
-                      <div className="mb-6 h-20">
-                        <h4 className="text-xs font-semibold text-[#B0FF74] mb-2">Deliverables</h4>
-                        {feature.benefits && feature.benefits.length > 0 && (
-                          <div className="space-y-0.5">
-                            {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
-                              <div key={benefitIndex} className="flex items-start">
-                                <span className="text-[#B0FF74] text-xs mr-1 mt-0.5">✓</span>
-                                <span className="text-white/90 text-xs leading-tight">
-                                  {benefit}
-                                </span>
-                              </div>
-                            ))}
+                      {/* Title with enhanced styling */}
+                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#B0FF74] transition-all duration-300"
+                          style={{
+                            textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(176,255,116,0.3)',
+                            lineHeight: '1.3'
+                          }}>
+                        {feature.title}
+                      </h3>
+                      
+                      {/* Enhanced Description - flexible height */}
+                      <div className="flex-grow">
+                        <p className="text-white/90 text-xs leading-tight">
+                          {feature.description}
+                        </p>
+                      </div>
+
+                      {/* Fixed bottom section with Benefits and Button */}
+                      <div className="mt-auto">
+                        {/* Enhanced Key Benefits - increased height and margin */}
+                        <div className="mb-6 h-20">
+                          <h4 className="text-xs font-semibold text-[#B0FF74] mb-2">Deliverables</h4>
+                          {feature.benefits && feature.benefits.length > 0 && (
+                            <div className="space-y-0.5">
+                              {feature.benefits.slice(0, 2).map((benefit, benefitIndex) => (
+                                <div key={benefitIndex} className="flex items-start">
+                                  <span className="text-[#B0FF74] text-xs mr-1 mt-0.5">✓</span>
+                                  <span className="text-white/90 text-xs leading-tight">
+                                    {benefit}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Enhanced Case Study Link or Discount Button - fixed position */}
+                        {(feature.caseId || feature.discountButton) && (
+                          <div>
+                            <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-1"></div>
+                            <div className="relative group/button">
+                              <div className="absolute inset-0 rounded-lg opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" 
+                                   style={{
+                                     background: feature.discountButton 
+                                       ? 'linear-gradient(135deg, rgba(119, 71, 207, 0.1) 0%, rgba(119, 71, 207, 0.05) 100%)'
+                                       : 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
+                                     boxShadow: feature.discountButton 
+                                       ? '0 0 20px rgba(119, 71, 207, 0.3)'
+                                       : '0 0 20px rgba(176, 255, 116, 0.3)'
+                                   }}></div>
+                              {feature.discountButton ? (
+                                <Link 
+                                  href="/contacts"
+                                  className={cn(
+                                    "relative inline-flex items-center justify-center w-full text-xs font-medium transition-all duration-300 py-2 px-3 rounded-lg group/discount focus:outline-none",
+                                    isMobile 
+                                      ? "hover:bg-secondary/50" 
+                                      : "hover:bg-secondary hover:shadow-neon-green-glow-intense"
+                                  )}
+                                >
+                                  <span className={cn(
+                                    "transition-all duration-300 group-hover/discount:font-medium",
+                                    isMobile
+                                      ? "text-white group-hover/discount:text-white"
+                                      : "text-white text-shadow-white group-hover/discount:text-site-bg"
+                                  )}>
+                                    Become Our 1st Case
+                                  </span>
+                                  <svg 
+                                    className={cn(
+                                      "w-4 h-4 ml-2 transition-all duration-300 group-hover/discount:translate-x-1",
+                                      isMobile 
+                                        ? "group-hover/discount:text-black" 
+                                        : "group-hover/discount:text-black"
+                                    )}
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </Link>
+                              ) : (
+                                <Link 
+                                  href={`/cases/${feature.caseId}`}
+                                  className={cn(
+                                    "relative inline-flex items-center justify-center w-full text-xs font-medium transition-all duration-300 py-2 px-3 rounded-lg group/casestudy focus:outline-none",
+                                    isMobile 
+                                      ? "hover:bg-secondary/50" 
+                                      : "hover:bg-secondary hover:shadow-neon-green-glow-intense"
+                                  )}
+                                >
+                                  <div className="absolute inset-0 rounded-lg opacity-0 group-hover/casestudy:opacity-100 transition-opacity duration-300" 
+                                       style={{
+                                         background: 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
+                                         boxShadow: '0 0 20px rgba(176, 255, 116, 0.3)'
+                                       }}></div>
+                                  <span className={cn(
+                                    "relative transition-all duration-300 group-hover/casestudy:font-medium",
+                                    isMobile
+                                      ? "text-secondary group-hover/casestudy:text-white"
+                                      : "text-secondary text-shadow-green group-hover/casestudy:text-site-bg"
+                                  )}>
+                                    View Case Study
+                                  </span>
+                                  <svg 
+                                    className={cn(
+                                      "w-4 h-4 ml-2 transition-all duration-300 group-hover/casestudy:translate-x-1 text-secondary",
+                                      isMobile 
+                                        ? "group-hover/casestudy:text-black" 
+                                        : "group-hover/casestudy:text-black"
+                                    )}
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                  </svg>
+                                </Link>
+                              )}
+                            </div>
                           </div>
                         )}
                       </div>
-
-                      {/* Enhanced Case Study Link or Discount Button - fixed position */}
-                      {(feature.caseId || feature.discountButton) && (
-                        <div>
-                          <div className="w-full h-px bg-gradient-to-r from-transparent via-[#B0FF74]/30 to-transparent mb-1"></div>
-                          <div className="relative group/button">
-                            <div className="absolute inset-0 rounded-lg opacity-0 group-hover/button:opacity-100 transition-opacity duration-300" 
-                                 style={{
-                                   background: feature.discountButton 
-                                     ? 'linear-gradient(135deg, rgba(119, 71, 207, 0.1) 0%, rgba(119, 71, 207, 0.05) 100%)'
-                                     : 'linear-gradient(135deg, rgba(176, 255, 116, 0.1) 0%, rgba(176, 255, 116, 0.05) 100%)',
-                                   boxShadow: feature.discountButton 
-                                     ? '0 0 20px rgba(119, 71, 207, 0.3)'
-                                     : '0 0 20px rgba(176, 255, 116, 0.3)'
-                                 }}></div>
-                            {feature.discountButton ? (
-                              <Link 
-                                href="/contacts"
-                                className={cn(
-                                  "relative inline-flex items-center justify-center w-full text-xs font-medium transition-all duration-300 py-2 px-3 rounded-lg group/discount focus:outline-none",
-                                  isMobile 
-                                    ? "hover:bg-secondary/50" 
-                                    : "hover:bg-secondary hover:shadow-neon-green-glow-intense"
-                                )}
-                              >
-                                <span className={cn(
-                                  "transition-all duration-300 group-hover/discount:font-medium",
-                                  isMobile
-                                    ? "text-white group-hover/discount:text-white"
-                                    : "text-white text-shadow-white group-hover/discount:text-site-bg"
-                                )}>
-                                  Be our first case!
-                                </span>
-                                <svg 
-                                  className="w-4 h-4 ml-2 transition-transform group-hover/discount:translate-x-1" 
-                                  fill="none" 
-                                  stroke="currentColor" 
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </Link>
-                            ) : (
-                              <Link 
-                                href={`/cases/${feature.caseId}`}
-                                className="relative inline-flex items-center justify-center w-full text-[#B0FF74] text-xs font-semibold hover:text-[#B0FF74] transition-all duration-300 py-2 px-3 rounded-lg border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 hover:bg-[#B0FF74]/5"
-                              >
-                                <span>View Case Study</span>
-                                <svg 
-                                  className="w-4 h-4 ml-2 transition-transform group-hover/button:translate-x-1" 
-                                  fill="none" 
-                                  stroke="currentColor" 
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
-                </div>
+                )}
               </motion.div>
             ))}
           </div>

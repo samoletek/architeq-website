@@ -104,6 +104,9 @@ const config: Config = {
         'radial-glow-secondary': 'radial-gradient(circle, rgba(176, 255, 116, 0.7) 0%, rgba(176, 255, 116, 0) 70%)',
         'radial-glow-blue': 'radial-gradient(circle, rgba(77, 173, 255, 0.7) 0%, rgba(77, 173, 255, 0) 70%)',
         'radial-glow-white': 'radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%)',
+        
+        // Lines pattern для карточек
+        'lines-pattern-green': `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cg stroke-width='3.5' stroke='hsla(84, 100%25, 72%25, 0.3)' fill='none'%3E%3Cline x1='0' y1='0' x2='400' y2='400'%3E%3C/line%3E%3Cline x1='400' y1='0' x2='800' y2='400'%3E%3C/line%3E%3Cline x1='800' y1='0' x2='1200' y2='400'%3E%3C/line%3E%3Cline x1='0' y1='400' x2='400' y2='800'%3E%3C/line%3E%3Cline x1='400' y1='400' x2='800' y2='800'%3E%3C/line%3E%3Cline x1='800' y1='400' x2='1200' y2='800'%3E%3C/line%3E%3Cline x1='0' y1='800' x2='400' y2='1200'%3E%3C/line%3E%3Cline x1='400' y1='800' x2='800' y2='1200'%3E%3C/line%3E%3Cline x1='800' y1='800' x2='1200' y2='1200'%3E%3C/line%3E%3C/g%3E%3C/svg%3E")`,
       },
          spacing: {
          '29': '7.25rem', // 1.8 * 16px (в Tailwind mt-16 = 4rem = 16 * 4px = 64px, поэтому 64px * 1.8 = 115.2px ≈ 7.25rem)

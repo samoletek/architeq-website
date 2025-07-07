@@ -12,6 +12,7 @@ interface SimpleGlowCardProps {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   radius?: number;
+  disableAnimations?: boolean;
 }
 
 /**
@@ -24,7 +25,8 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
   variant = 'primary', 
   onMouseEnter, 
   onMouseLeave,
-  radius = 350
+  radius = 350,
+  disableAnimations = false
 }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -55,12 +57,16 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
   }, []);
   
   const handleMouseEnterInternal = () => {
-    setIsHovering(true);
+    if (!disableAnimations && !isMobile) {
+      setIsHovering(true);
+    }
     if (onMouseEnter) onMouseEnter();
   };
   
   const handleMouseLeaveInternal = () => {
-    setIsHovering(false);
+    if (!disableAnimations && !isMobile) {
+      setIsHovering(false);
+    }
     if (onMouseLeave) onMouseLeave();
   };
 
@@ -72,6 +78,7 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
           borderColor: 'border-secondary/20',
           backgroundColor: '#0A2A0A',
           spotlightColor: '#0A2A0A',
+          backgroundGradient: 'bg-dark-gray',
           matrixColors: [
             [176, 255, 116], // secondary green
             [139, 255, 90],  // lighter green
@@ -82,6 +89,7 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
           borderColor: 'border-primary/20',
           backgroundColor: '#170A24',
           spotlightColor: '#170A24',
+          backgroundGradient: 'bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]',
           matrixColors: [
             [178, 75, 243],  // primary purple
             [139, 92, 246],  // lighter purple
@@ -97,10 +105,10 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
       className={cn(
         "group/spotlight relative rounded-2xl border overflow-hidden transition-all duration-300",
         variantStyles.borderColor,
-        "bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)]",
+        variantStyles.backgroundGradient,
         className
       )}
-      onMouseMove={handleMouseMove}
+      onMouseMove={!disableAnimations && !isMobile ? handleMouseMove : undefined}
       onMouseEnter={handleMouseEnterInternal}
       onMouseLeave={handleMouseLeaveInternal}
     >
@@ -125,7 +133,7 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
           animate={{ opacity: isHovering ? 1 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          {!isMobile && (
+          {!isMobile && !disableAnimations && (
             <CanvasRevealEffect
               containerClassName="bg-transparent absolute inset-0 pointer-events-none"
               colors={variantStyles.matrixColors}

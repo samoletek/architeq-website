@@ -204,12 +204,12 @@ export default function AISolutionsPage() {
         features: [
           "Natural Language Processing",
           "Speech Recognition", 
-          "Machine Learning",
-          "Predictive Analytics",
-          "OpenAI GPT Models",
-          "Text-to-Speech"
+          "OpenAI Models",
+          "Anthropic Models",
+          "Real-Time Voice Generation",
+          "Smart Research"
         ],
-        featuresTitle: "AI Technologies"
+        featuresTitle: "AI Services"
       }}
       benefits={benefits}
       features={aiSolutions}

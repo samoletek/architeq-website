@@ -349,14 +349,14 @@ export default function DocumentationPage() {
           </>
         ),
         features: [
-          "Time-Consuming Manual Processes",
+          "Manual Docs Creation",
           "Errors and Inconsistencies",
           "Signing Delays",
           "Compliance Requirements",
           "Version Control",
           "Data Security"
         ],
-        featuresTitle: "Common Document Challenges"
+        featuresTitle: "Document Challenges"
       }}
       benefits={benefits}
       features={documentSolutions}

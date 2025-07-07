@@ -350,14 +350,14 @@ export default function CRMIntegrationPage() {
           </>
         ),
         features: [
-          "Monday.com",
+          "Monday",
           "HubSpot",
           "Salesforce",
           "Zoho CRM",
           "Pipedrive",
-          "Custom CRM Systems"
+          "clickup"
         ],
-        featuresTitle: "Supported CRM Platforms"
+        featuresTitle: "Supported SRM"
       }}
       benefits={benefits}
       features={integrationOptions}

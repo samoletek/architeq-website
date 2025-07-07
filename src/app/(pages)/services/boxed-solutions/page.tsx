@@ -47,7 +47,7 @@ export default function BoxedSolutionsPage() {
       caseId: "car-hauling-solution"
     },
     {
-      title: "Kitchen Cabinetry Manufacturers",
+      title: "Cabinetry Manufacturers",
       description: "Centralized system for kitchen furniture manufacturing companies to manage orders, designs, production, and inventory.",
       benefits: [
         "Integration with design software",
@@ -60,8 +60,8 @@ export default function BoxedSolutionsPage() {
       caseId: "kitchen-cabinetry-solution"
     },
     {
-      title: "Music Labels",
-      description: "Comprehensive solution for music labels to manage assets, calculate royalties, control copyright, and automate reporting.",
+      title: "Music Production Company",
+      description: "Comprehensive solution for music production to manage assets, calculate royalties, control copyright, and automate reporting.",
       benefits: [
         "Centralized music asset management",
         "Automatic royalty calculations",
@@ -73,17 +73,17 @@ export default function BoxedSolutionsPage() {
       caseId: "music-label-solution"
     },
     {
-      title: "Real Estate Companies",
-      description: "Solution for real estate agencies to coordinate showings, prepare documents, track deals, and generate analytics.",
+      title: "Roofing Companies",
+      description: "Comprehensive solution for roofing companies with AI components for client communication, cost estimation, and project management.",
       benefits: [
-        "Lead capture and qualification automation",
-        "Calendar integration for showings",
-        "Automatic client reminders",
-        "Document flow management",
-        "Agent and property analytics"
+        "AI voice agent for client applications",
+        "Automated cost calculation system",
+        "Salesperson time optimization",
+        "Automatic client progress notifications",
+        "Warranty service management"
       ],
-      icon: "dashboard",
-      discountButton: true
+      icon: "workflow",
+      caseId: "roofing-business-solution"
     }
   ];
 
@@ -139,14 +139,14 @@ export default function BoxedSolutionsPage() {
       ]
     },
     {
-      id: "real-estate-solution",
-      title: "Boxed Solution for Real Estate Companies",
-      company: "Ameriland Capital",
-      description: "Automation solution for real estate agencies to coordinate showings, prepare documents, and track deals.",
+      id: "roofing-business-solution",
+      title: "Boxed Solution for Roofing Business with AI Components",
+      company: "Up-Struct LLC",
+      description: "Comprehensive solution for roofing companies with AI components for client communication and cost estimation.",
       results: [
-        "55% increase in processed leads",
-        "40% reduction in deal closing time",
-        "35% increase in successful deals"
+        "40% increase in project cost estimation accuracy",
+        "25% reduction in project completion time",
+        "Automation of client call reception"
       ]
     }
   ];

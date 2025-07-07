@@ -348,10 +348,10 @@ export default function FinancePage() {
           "Delayed Payments", 
           "Reconciliation Errors",
           "Limited Visibility",
-          "Process Inefficiencies",
+          "Money Loss",
           "Compliance Challenges"
         ],
-        featuresTitle: "Financial Process Challenges"
+        featuresTitle: "Financial Challenges"
       }}
       benefits={benefits}
       features={financeSolutions}

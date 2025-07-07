@@ -526,7 +526,7 @@ export const allCaseStudies: CaseStudy[] = [
   },
   {
     id: 'car-hauling-solution',
-    title: 'Boxed Solution for Car Hauling Companies',
+    title: 'Boxed Solution for Car Hauling Company',
     company: 'LaneWise',
     location: 'State College, PA, USA',
     industryCategory: 'car-hauling',
@@ -570,7 +570,7 @@ export const allCaseStudies: CaseStudy[] = [
   },
   {
     id: 'kitchen-cabinetry-solution',
-    title: 'Boxed Solution for Kitchen Cabinetry Manufacturers',
+    title: 'Boxed Solution for Kitchen Cabinetry Manufacturer',
     company: 'AllWood Design',
     location: 'San Diego, CA, USA',
     industryCategory: 'cabinetry-coatings',
@@ -614,7 +614,7 @@ export const allCaseStudies: CaseStudy[] = [
   },
   {
     id: 'music-label-solution',
-    title: 'Boxed Solution for Music Labels',
+    title: 'Boxed Solution for Music Production Company',
     company: 'SUQEAK E CLEAN STUDIOS',
     location: 'USA, Australia',
     industryCategory: 'commercial-music',
