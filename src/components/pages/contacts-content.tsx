@@ -441,14 +441,14 @@ function ContactFAQSection() {
 export default function ContactsContent() {
   // Scroll animation для плавного появления
   const { ref: heroRef, isVisible: isHeroVisible } = useScrollAnimation({
-    threshold: 0.2,
-    rootMargin: '-5% 0px',
+    threshold: 0.1,
+    rootMargin: '0px',
     triggerOnce: true
   });
 
   const { ref: formRef, isVisible: isFormVisible } = useScrollAnimation({
-    threshold: 0.3,
-    rootMargin: '-10% 0px',
+    threshold: 0.2,
+    rootMargin: '0px',
     triggerOnce: true
   });
 

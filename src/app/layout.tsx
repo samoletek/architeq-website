@@ -5,6 +5,7 @@ import './globals.css'
 import { siteMetadata } from '@/lib/seo/metadata'
 import { generateFaviconMetadata } from '@/lib/seo/favicon-metadata'
 import { ClientInit } from '@/components/layout/client-init'
+import Header from '@/components/navigation/header'
 
 // Определяем шрифты с подмножествами
 const inter = Inter({ 
@@ -124,7 +125,10 @@ export default function RootLayout({
         {/* Основное содержимое */}
         <div id="main-content">
           <ClientInit />
-          {children}
+          <Header showSearch={true} />
+          <div className="pt-20">
+            {children}
+          </div>
         </div>
       </body>
     </html>

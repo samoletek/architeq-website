@@ -218,6 +218,7 @@ export default function Header({
                     <div className="flex items-center py-1">
                       <Link
                         href={item.href}
+                        prefetch={true}
                         className={cn(
                           "transition-colors duration-300",
                           isActive(item.href) 
@@ -256,6 +257,7 @@ export default function Header({
                 ) : (
                   <Link
                     href={item.href}
+                    prefetch={!item.isExternal}
                     className={cn(
                       "transition-colors duration-300",
                       isActive(item.href) 
@@ -390,6 +392,7 @@ export default function Header({
                         {!item.children ? (
                           <Link
                             href={item.href}
+                            prefetch={!item.isExternal}
                             className={cn(
                               "block text-3xl font-semibold py-3 transition-colors",
                               isActive(item.href) 
@@ -406,6 +409,7 @@ export default function Header({
                           // Для Solutions просто ссылка без подменю
                           <Link
                             href={item.href}
+                            prefetch={true}
                             className={cn(
                               "block text-3xl font-semibold py-3 transition-colors",
                               isActive(item.href) 

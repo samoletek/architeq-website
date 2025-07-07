@@ -89,8 +89,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({
         animate={animationVariants.animate}
         exit={animationVariants.exit}
         transition={{ 
-          duration: 0.3,
-          ease: [0.25, 0.1, 0.25, 1] // Плавная кривая анимации
+          duration: 0.2,
+          ease: [0.23, 1, 0.32, 1] // Более быстрая и естественная кривая
         }}
         className={cn("min-h-screen", className)}
       >
