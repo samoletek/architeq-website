@@ -408,7 +408,6 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
 function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
   const [isMobile, setIsMobile] = useState(false);
-  const [isInView, setIsInView] = useState(false);
   const [shouldPlay, setShouldPlay] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -428,7 +427,6 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
         // На мобильных не автозапускаем и останавливаем при выходе из зоны видимости
         if (isMobile && !entry.isIntersecting) {
           setShouldPlay(false);
