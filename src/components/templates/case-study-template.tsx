@@ -496,147 +496,7 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
 function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseStudy; isMobile: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Enhanced challenge-solution pairs for interactive slider
-  const challengeSolutionPairs = useMemo(() => [
-    {
-      id: 'data-integration',
-      challenge: {
-        title: 'Disconnected Data Silos',
-        subtitle: `Critical business data trapped in incompatible systems across ${caseStudy.industry} operations`,
-        description: 'Multiple systems operating in isolation prevent real-time insights and create operational blind spots that limit strategic decision-making capabilities.',
-        priority: 'Critical',
-        area: 'Data Integration',
-        impact: 'Blocks scalability and real-time decision making'
-      },
-      solutions: [
-        {
-          title: 'Unified Data Platform',
-          description: 'Custom integration layer connecting all business systems with real-time data synchronization',
-          technologies: ['Azure', 'API Gateway', 'ETL Pipeline'],
-          timeframe: '10',
-          keyBenefit: 'Single source of truth for all business data'
-        },
-        {
-          title: 'Real-time Data Synchronization',
-          description: 'Bidirectional data sync ensuring consistency across all platforms',
-          technologies: ['Webhooks', 'Event Streaming', 'Message Queues'],
-          timeframe: '5',
-          keyBenefit: 'Instant data consistency across systems'
-        }
-      ]
-    },
-    {
-      id: 'process-automation',
-      challenge: {
-        title: 'Manual Process Bottlenecks',
-        subtitle: 'Time-consuming manual tasks blocking business scalability and growth',
-        description: 'Repetitive manual workflows consume valuable resources and create operational inefficiencies that prevent teams from focusing on strategic initiatives.',
-        priority: 'High',
-        area: 'Process Automation',
-        impact: 'Limits operational efficiency and scalability'
-      },
-      solutions: [
-        {
-          title: 'Intelligent Process Automation',
-          description: 'AI-powered workflows that learn and adapt to business patterns',
-          technologies: ['AI/ML', 'RPA', 'Workflow Engine'],
-          timeframe: '8',
-          keyBenefit: 'Self-improving automated processes'
-        },
-        {
-          title: 'Smart Workflow Engine',
-          description: 'Context-aware automation that handles complex business scenarios',
-          technologies: ['OpenAI', 'Logic Apps', 'Decision Trees'],
-          timeframe: '11',
-          keyBenefit: 'Intelligent decision-making automation'
-        }
-      ]
-    },
-    {
-      id: 'legacy-modernization',
-      challenge: {
-        title: 'Outdated Legacy Infrastructure',
-        subtitle: 'Aging systems limiting business growth potential and innovation',
-        description: 'Legacy systems create technical debt, security vulnerabilities, and integration challenges that prevent modern business transformation.',
-        priority: 'High',
-        area: 'System Modernization',
-        impact: 'Prevents digital transformation and innovation'
-      },
-      solutions: [
-        {
-          title: 'Cloud-First Architecture',
-          description: 'Scalable cloud infrastructure replacing legacy on-premise systems',
-          technologies: ['AWS', 'Kubernetes', 'Microservices'],
-          timeframe: '14',
-          keyBenefit: 'Infinite scalability and reduced maintenance'
-        },
-        {
-          title: 'Modern API Layer',
-          description: 'RESTful APIs enabling seamless system integration and extensibility',
-          technologies: ['GraphQL', 'REST', 'API Gateway'],
-          timeframe: '7',
-          keyBenefit: 'Flexible integration and future-proofing'
-        }
-      ]
-    },
-    {
-      id: 'decision-analytics',
-      challenge: {
-        title: 'Slow Decision Making',
-        subtitle: 'Lack of real-time insights delaying critical business decisions',
-        description: 'Without real-time data analytics, business leaders make decisions based on outdated information, missing opportunities and risking competitive disadvantage.',
-        priority: 'Medium',
-        area: 'Analytics',
-        impact: 'Missed opportunities and competitive disadvantage'
-      },
-      solutions: [
-        {
-          title: 'AI-Powered Analytics',
-          description: 'Machine learning models providing predictive business insights',
-          technologies: ['TensorFlow', 'Python', 'Big Data'],
-          timeframe: '12',
-          keyBenefit: 'Predictive insights and trend analysis'
-        },
-        {
-          title: 'Executive Dashboards',
-          description: 'Live business intelligence with customizable KPI monitoring',
-          technologies: ['Power BI', 'React', 'Real-time APIs'],
-          timeframe: '6',
-          keyBenefit: 'Real-time business performance monitoring'
-        }
-      ]
-    },
-    {
-      id: 'compliance-risk',
-      challenge: {
-        title: 'Compliance & Risk Exposure',
-        subtitle: 'Manual compliance processes creating regulatory and operational risks',
-        description: 'Manual compliance tracking increases the risk of regulatory violations and creates administrative overhead that diverts resources from core business activities.',
-        priority: 'Critical',
-        area: 'Risk Management',
-        impact: 'Regulatory violations and operational risks'
-      },
-      solutions: [
-        {
-          title: 'Automated Compliance Engine',
-          description: 'Continuous compliance monitoring with automatic regulatory reporting',
-          technologies: ['Compliance APIs', 'Audit Tools', 'Monitoring'],
-          timeframe: '10',
-          keyBenefit: 'Continuous compliance and risk mitigation'
-        },
-        {
-          title: 'Complete Audit Trails',
-          description: 'Immutable transaction logs ensuring full regulatory compliance',
-          technologies: ['Blockchain', 'Logging', 'Encryption'],
-          timeframe: '8',
-          keyBenefit: 'Immutable compliance records'
-        }
-      ]
-    }
-  ], [caseStudy.industry]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -654,34 +514,6 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
 
     return () => observer.disconnect();
   }, []);
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'Critical': return 'bg-red-500/20 text-red-200 border-red-500/30';
-      case 'High': return 'bg-purple-500/20 text-purple-100 border-purple-500/30';
-      case 'Medium': return 'bg-[#B0FF74]/20 text-[#B0FF74] border-[#B0FF74]/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-    }
-  };
-
-  const getAreaColor = () => {
-    // All area tags have uniform gray background with white text
-    return 'bg-gray-600/20 text-white border-gray-600/30';
-  };
-
-  const handlePrevSlide = () => {
-    setActiveSlide(prev => prev === 0 ? challengeSolutionPairs.length - 1 : prev - 1);
-  };
-
-  const handleNextSlide = () => {
-    setActiveSlide(prev => (prev + 1) % challengeSolutionPairs.length);
-  };
-
-  const handleDotClick = (index: number) => {
-    setActiveSlide(index);
-  };
-
-  const currentPair = challengeSolutionPairs[activeSlide];
 
   return (
     <section ref={sectionRef} className="py-24 bg-[#0A0A0A] relative overflow-hidden">
@@ -707,148 +539,98 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
                 textShadow: '0 0 20px rgba(176, 255, 116, 0.8), 0 0 40px rgba(176, 255, 116, 0.4)'
               }}
             >
-              Challenge & Solution Spotlight
+              Challenge & Solution
             </h2>
             <p className="text-xl text-white/70 max-w-4xl mx-auto">
-              Interactive exploration of business challenges and their intelligent automation solutions
+              Real business challenges and our targeted automation solutions
             </p>
           </div>
 
-          {/* Interactive Slider */}
-          <div className="relative">
-            {/* Navigation Arrows - только на десктопе */}
-            {!isMobile && (
-              <>
-                <button
-                  onClick={handlePrevSlide}
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
-                >
-                  <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-
-                <button
-                  onClick={handleNextSlide}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
-                >
-                  <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </>
-            )}
-
-            {/* Challenge-Solution Pair Display */}
-            <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16'} min-h-[650px]`}>
-              {/* Challenge Side */}
-              <div className="relative flex items-center">
-                <div className={`bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-red-500/30 ${isMobile ? 'min-h-auto' : 'min-h-[650px]'} h-auto relative overflow-hidden w-full`}>
-                  {/* Challenge Background Glow - только на десктопе */}
-                  {!isMobile && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl opacity-60" />
-                  )}
-                  
-                  <div className="relative z-10">
-                    {/* Challenge Header */}
-                    <div className="mb-10">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-4 h-4 rounded-full bg-red-500" />
-                        <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
-                      </div>
-                      
-                      <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                        {currentPair.challenge.title}
-                      </h3>
-                      
-                      <p className="text-white/70 leading-relaxed mb-10">
-                        {currentPair.challenge.description}
-                      </p>
+          {/* Challenge-Solution Display */}
+          <div className="space-y-8">
+            {/* Challenge Section - Top */}
+            <div className="relative">
+              <div className={`bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-red-500/30 relative overflow-hidden w-full max-w-6xl mx-auto`}>
+                {/* Challenge Background Glow - только на десктопе */}
+                {!isMobile && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl opacity-60" />
+                )}
+                
+                <div className="relative z-10">
+                  {/* Challenge Header */}
+                  <div className="mb-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-4 h-4 rounded-full bg-red-500" />
+                      <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
                     </div>
+                    
+                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                      Business Bottleneck
+                    </h3>
+                  </div>
 
-                    {/* Challenge Details */}
-                    <div className="space-y-8">
-                      <div className="flex flex-wrap gap-3">
-                        <span className={`text-xs px-4 py-2 rounded-full border ${getPriorityColor(currentPair.challenge.priority)}`}>
-                          {currentPair.challenge.priority} Priority
-                        </span>
-                        <span className={`text-xs px-4 py-2 rounded-full border ${getAreaColor()}`}>
-                          {currentPair.challenge.area}
-                        </span>
-                      </div>
-                      
-                      <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
-                        <div className="text-sm text-red-400 font-medium mb-1">Bottleneck</div>
-                        <div className="text-white/80">{currentPair.challenge.impact}</div>
-                      </div>
-                    </div>
+                  {/* Challenge Description */}
+                  <div>
+                    <p className="text-white/80 leading-relaxed text-lg">
+                      {caseStudy.problem}
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Arrow between cards on mobile */}
-              {isMobile && (
-                <div className="flex justify-center -my-3">
-                  <div className="w-8 h-8 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/30 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-[#B0FF74]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                    </svg>
-                  </div>
-                </div>
-              )}
+            {/* Arrow Down */}
+            <div className="flex justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/30 flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#B0FF74]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </div>
+            </div>
 
-              {/* Solutions Side */}
-              <div className="relative flex items-center">
-                <div className={`bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-[#B0FF74]/30 ${isMobile ? 'min-h-auto' : 'min-h-[650px]'} h-auto relative overflow-hidden w-full`}>
-                  {/* Solutions Background Glow - только на десктопе */}
-                  {!isMobile && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl opacity-60" />
-                  )}
-                  
-                  <div className="relative z-10">
-                    {/* Solutions Header */}
-                    <div className="mb-10">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-4 h-4 rounded-full bg-[#B0FF74]" />
-                        <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solutions</span>
-                      </div>
-                      
-                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight">
-                        Intelligent Automation Solutions
-                      </h3>
+            {/* Solutions Section - Bottom */}
+            <div className="relative">
+              <div className={`bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-[#B0FF74]/30 relative overflow-hidden w-full max-w-6xl mx-auto`}>
+                {/* Solutions Background Glow - только на десктопе */}
+                {!isMobile && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl opacity-60" />
+                )}
+                
+                <div className="relative z-10">
+                  {/* Solutions Header */}
+                  <div className="mb-8">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-4 h-4 rounded-full bg-[#B0FF74]" />
+                      <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solution</span>
                     </div>
+                    
+                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                      Solution Points
+                    </h3>
+                  </div>
 
-                    {/* Solutions List */}
-                    <div className="space-y-6">
-                      {currentPair.solutions.map((solution, index) => (
+                  {/* Solutions List */}
+                  <div>
+                    <div className="space-y-4">
+                      {caseStudy.solution?.map((solutionPoint, index) => (
                         <div
-                          key={`solution-${activeSlide}-${index}`}
-                          className="bg-[#B0FF74]/5 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300"
+                          key={index}
+                          className="flex items-center gap-4 p-4 bg-[#B0FF74]/5 rounded-xl border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300"
                         >
-                          <div className="mb-4">
-                            <h4 className="text-xl font-bold text-white mb-2">
-                              {solution.title}
-                            </h4>
-                            <p className="text-white/70 leading-relaxed mb-4">
-                              {solution.description}
-                            </p>
-                            
-                            <div className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4">
-                              <div className="text-sm text-[#B0FF74] font-medium mb-1">Key Benefit</div>
-                              <div className="text-white/80">{solution.keyBenefit}</div>
-                            </div>
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/30 flex items-center justify-center">
+                            <span className="text-[#B0FF74] font-semibold text-sm">
+                              {index + 1}
+                            </span>
                           </div>
-
-                          {/* Technologies */}
-                          <div className="flex flex-wrap gap-2">
-                            {solution.technologies.map((tech, techIndex) => (
-                              <span key={techIndex} className="text-xs px-3 py-1 rounded-full bg-[#B0FF74]/20 text-[#B0FF74] border border-[#B0FF74]/30">
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
+                          <p className="text-white/80 leading-relaxed">
+                            {solutionPoint}
+                          </p>
                         </div>
-                      ))}
+                      )) || (
+                        <div className="text-white/60 text-center py-8">
+                          Solution details will be available soon.
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -856,53 +638,7 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
             </div>
           </div>
         </motion.div>
-
-        {/* Navigation buttons for mobile */}
-        {isMobile && (
-          <div className="flex justify-between items-center mt-8">
-            <button
-              onClick={handlePrevSlide}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Previous
-            </button>
-            
-            <span className="text-white/70 text-sm">
-              {activeSlide + 1} / {challengeSolutionPairs.length}
-            </span>
-            
-            <button
-              onClick={handleNextSlide}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
-            >
-              Next
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        )}
       </div>
-
-      {/* Fixed Navigation Dots - только на десктопе */}
-      {!isMobile && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
-          {challengeSolutionPairs.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                activeSlide === index 
-                  ? 'bg-[#B0FF74] shadow-lg shadow-[#B0FF74]/50' 
-                  : 'bg-white/20 hover:bg-white/40'
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </section>
   );
 }
