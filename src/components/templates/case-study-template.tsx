@@ -182,7 +182,6 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
           activeIndex={activeResultIndex}
           onIndexChange={handleManualIndexChange}
           getResultDescription={getResultDescription}
-          isAutoPlaying={isAutoPlaying}
         />
       </SectionAnimation>
       
@@ -220,6 +219,20 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
 }
 
 function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Детекция мобильных устройств
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Hero scroll animation как в about page
   const { ref: heroRef, isVisible: isHeroVisible } = useScrollAnimation({
     threshold: 0.3,
@@ -240,37 +253,39 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
 
   return (
     <section ref={heroRef} className="section-hero bg-transparent relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-20"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(176, 255, 116, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(176, 255, 116, 0.5) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(176, 255, 116, 0.3) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-                      }}
-        />
-        <motion.div 
-          className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(144, 238, 144, 0.2) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(144, 238, 144, 0.4) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(144, 238, 144, 0.2) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-                      }}
-        />
-      </div>
+      {/* Animated Background - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute inset-0">
+          <motion.div 
+            className="absolute -top-32 -right-32 w-96 h-96 rounded-full blur-3xl opacity-20"
+            animate={{
+              background: [
+                "radial-gradient(circle, rgba(176, 255, 116, 0.3) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(176, 255, 116, 0.5) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(176, 255, 116, 0.3) 0%, transparent 70%)"
+              ]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+            }}
+          />
+          <motion.div 
+            className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full blur-3xl opacity-15"
+            animate={{
+              background: [
+                "radial-gradient(circle, rgba(144, 238, 144, 0.2) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(144, 238, 144, 0.4) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(144, 238, 144, 0.2) 0%, transparent 70%)"
+              ]
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+            }}
+          />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 text-center relative z-10">
         <motion.div 
@@ -288,8 +303,8 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
             <span className="text-white text-xs">{caseStudy.title}</span>
           </div>
 
-          {/* Company Badge */}
-          <div className="inline-flex items-center gap-2 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-full px-4 py-2 mb-8 border border-[#B0FF74]/20">
+          {/* Company Badge - уменьшенный на мобилке */}
+          <div className={`inline-flex items-center gap-2 bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-full ${isMobile ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} mb-8 border border-[#B0FF74]/20`}>
             <div className="w-3 h-3 rounded-full bg-[#B0FF74] animate-pulse"></div>
             <span className="text-white font-medium">{caseStudy.company}</span>
             <span className="text-gray-400">•</span>
@@ -306,8 +321,8 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
             {caseStudy.title}
           </h1>
 
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto mb-12 leading-relaxed">
+          {/* Description - уменьшенный на мобилке */}
+          <p className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} text-white/80 max-w-4xl mx-auto mb-12 leading-relaxed`}>
             {caseStudy.shortDescription || caseStudy.description}
           </p>
 
@@ -347,23 +362,22 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
             </Link>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-          >
+          {/* Quick Stats - в одну линию на мобилке */}
+          <div className={`grid ${isMobile ? 'grid-cols-3' : 'grid-cols-1 md:grid-cols-3'} gap-6 max-w-4xl mx-auto`}>
             <div className="text-center">
-              <div className="text-lg md:text-xl font-bold text-[#B0FF74] mb-2">
+              <div className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} font-bold text-[#B0FF74] mb-2`}>
                 {caseStudy.industry}
               </div>
               <div className="text-gray-400 text-xs">Industry</div>
             </div>
             <div className="text-center">
-              <div className="text-lg md:text-xl font-bold text-[#B0FF74] mb-2">
+              <div className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} font-bold text-[#B0FF74] mb-2`}>
                 {caseStudy.solutionType}
               </div>
               <div className="text-gray-400 text-xs">Solution Type</div>
             </div>
             <div className="text-center">
-              <div className="text-lg md:text-xl font-bold text-[#B0FF74] mb-2">
+              <div className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} font-bold text-[#B0FF74] mb-2`}>
                 {caseStudy.technologies.length}+
               </div>
               <div className="text-gray-400 text-xs">Technologies</div>
@@ -372,32 +386,76 @@ function HeroSection({ caseStudy }: { caseStudy: CaseStudy }) {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-[#B0FF74]/50 rounded-full flex justify-center"
-        >
+      {/* Scroll Indicator - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <motion.div
-            animate={{ y: [0, 16, 0] }}
+            animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-1 h-3 bg-[#B0FF74] rounded-full mt-2"
-          />
-        </motion.div>
-      </div>
+            className="w-6 h-10 border-2 border-[#B0FF74]/50 rounded-full flex justify-center"
+          >
+            <motion.div
+              animate={{ y: [0, 16, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-1 h-3 bg-[#B0FF74] rounded-full mt-2"
+            />
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 }
 
 function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
-  
+  const [isMobile, setIsMobile] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [shouldPlay, setShouldPlay] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Детекция мобильных устройств
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Intersection observer для контроля воспроизведения
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        // На мобильных не автозапускаем и останавливаем при выходе из зоны видимости
+        if (isMobile && !entry.isIntersecting) {
+          setShouldPlay(false);
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  const handleVideoClick = () => {
+    if (isMobile) {
+      setShouldPlay(!shouldPlay);
+    }
+  };
+
   return (
-    <section className="py-12 bg-transparent" id="video-section">
+    <section ref={sectionRef} className="py-12 bg-transparent" id="video-section">
       <div className="container mx-auto px-4">
         {/* Video player - centered and full screen presence */}
         <div className="max-w-6xl mx-auto">
-          <div className="cursor-pointer">
+          <div className="cursor-pointer" onClick={handleVideoClick}>
             <div 
               className="rounded-lg shadow-[0_0_8px_rgba(178,75,243,0.3)]"
               style={{
@@ -407,10 +465,10 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
               <div className="aspect-video rounded-lg overflow-hidden">
               <GCSVideo 
                 caseId={caseStudy.id} 
-                autoPlay={true}
+                autoPlay={isMobile ? shouldPlay : true}
                 loop={true}
                 muted={true}
-                controls={false}
+                controls={isMobile}
                 placeholder={
                   <div className="h-full flex items-center justify-center bg-gradient-to-b from-dark-gray to-medium-gray">
                     <div className="text-center p-4">
@@ -418,7 +476,9 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <p className="text-lg text-light-gray">Loading case study visualization...</p>
+                      <p className="text-lg text-light-gray">
+                        {isMobile ? 'Tap to play video' : 'Loading case study visualization...'}
+                      </p>
                     </div>
                   </div>
                 }
@@ -439,7 +499,6 @@ function VideoSection({ caseStudy }: { caseStudy: CaseStudy }) {
 function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseStudy; isMobile: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Enhanced challenge-solution pairs for interactive slider
@@ -581,26 +640,11 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
     }
   ], [caseStudy.industry]);
 
-  // Auto-progression through slides
-  useEffect(() => {
-    if (!isVisible || !isAutoPlaying) return;
-
-    const interval = setInterval(() => {
-      setActiveSlide(prev => (prev + 1) % challengeSolutionPairs.length);
-    }, 5000); // Change every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [isVisible, isAutoPlaying, challengeSolutionPairs.length]);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Reset to auto-playing when section becomes visible
-          setIsAutoPlaying(true);
-        } else {
-          setIsVisible(false);
         }
       },
       { threshold: 0.2 }
@@ -628,17 +672,14 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
   };
 
   const handlePrevSlide = () => {
-    setIsAutoPlaying(false);
     setActiveSlide(prev => prev === 0 ? challengeSolutionPairs.length - 1 : prev - 1);
   };
 
   const handleNextSlide = () => {
-    setIsAutoPlaying(false);
     setActiveSlide(prev => (prev + 1) % challengeSolutionPairs.length);
   };
 
   const handleDotClick = (index: number) => {
-    setIsAutoPlaying(false);
     setActiveSlide(index);
   };
 
@@ -646,23 +687,12 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
 
   return (
     <section ref={sectionRef} className="py-24 bg-[#0A0A0A] relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] rounded-full blur-3xl opacity-5"
-          animate={{
-            background: [
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.3) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.5) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.3) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-          }}
-        />
-      </div>
+      {/* Background Effects - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] rounded-full blur-3xl opacity-5 bg-[radial-gradient(ellipse,_rgba(176,255,116,0.3)_0%,_transparent_70%)]" />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -688,210 +718,193 @@ function ChallengeAndSolutionSection({ caseStudy, isMobile }: { caseStudy: CaseS
 
           {/* Interactive Slider */}
           <div className="relative">
-            {/* Navigation Arrows */}
-            <button
-              onClick={handlePrevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
-            >
-              <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
+            {/* Navigation Arrows - только на десктопе */}
+            {!isMobile && (
+              <>
+                <button
+                  onClick={handlePrevSlide}
+                  className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
+                >
+                  <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
 
-            <button
-              onClick={handleNextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
-            >
-              <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+                <button
+                  onClick={handleNextSlide}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-16 z-20 w-12 h-12 rounded-full bg-[#B0FF74]/10 border border-[#B0FF74]/30 flex items-center justify-center hover:bg-[#B0FF74]/20 transition-all duration-300 group"
+                >
+                  <svg className="w-6 h-6 text-[#B0FF74] transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </>
+            )}
 
             {/* Challenge-Solution Pair Display */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeSlide}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6 }}
-                className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16'} min-h-[650px]`}
-              >
-                {/* Challenge Side */}
-                <div className="relative flex items-center">
-                    <div className="bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-red-500/30 min-h-[650px] h-auto relative overflow-hidden w-full">
-                    {/* Challenge Background Glow */}
-                    {!isMobile && (
-                      <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl"
-                        animate={{ opacity: [0.5, 0.8, 0.5] }}
-                        transition={{ duration: 4, repeat: Infinity }}
-                      />
-                    )}
-                    
-                    <div className="relative z-10">
-                      {/* Challenge Header */}
-                      <div className="mb-10">
-                        <div className="flex items-center gap-3 mb-6">
-                          <motion.div 
-                            className="w-4 h-4 rounded-full bg-red-500"
-                            animate={{ opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                          />
-                          <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
-                        </div>
-                        
-                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                          {currentPair.challenge.title}
-                        </h3>
-                        
-                        <p className="text-white/70 leading-relaxed mb-10">
-                          {currentPair.challenge.description}
-                        </p>
+            <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16'} min-h-[650px]`}>
+              {/* Challenge Side */}
+              <div className="relative flex items-center">
+                <div className={`bg-gradient-to-br from-red-900/20 via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-red-500/30 ${isMobile ? 'min-h-auto' : 'min-h-[650px]'} h-auto relative overflow-hidden w-full`}>
+                  {/* Challenge Background Glow - только на десктопе */}
+                  {!isMobile && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-3xl opacity-60" />
+                  )}
+                  
+                  <div className="relative z-10">
+                    {/* Challenge Header */}
+                    <div className="mb-10">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-4 h-4 rounded-full bg-red-500" />
+                        <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">Business Challenge</span>
                       </div>
+                      
+                      <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+                        {currentPair.challenge.title}
+                      </h3>
+                      
+                      <p className="text-white/70 leading-relaxed mb-10">
+                        {currentPair.challenge.description}
+                      </p>
+                    </div>
 
-                      {/* Challenge Details */}
-                      <div className="space-y-8">
-                        <motion.div 
-                          key={`challenge-tags-${activeSlide}`}
-                          className="flex flex-wrap gap-3"
-                          initial={{ opacity: 0, x: 30 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                          <span className={`text-xs px-4 py-2 rounded-full border ${getPriorityColor(currentPair.challenge.priority)}`}>
-                            {currentPair.challenge.priority} Priority
-                          </span>
-                          <span className={`text-xs px-4 py-2 rounded-full border ${getAreaColor()}`}>
-                            {currentPair.challenge.area}
-                          </span>
-                        </motion.div>
-                        
-                        <motion.div 
-                          key={`challenge-bottleneck-${activeSlide}`}
-                          className="bg-red-500/10 rounded-lg p-4 border border-red-500/20"
-                          initial={{ opacity: 0, x: 30 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3 }}
-                        >
-                          <div className="text-sm text-red-400 font-medium mb-1">Bottleneck</div>
-                          <div className="text-white/80">{currentPair.challenge.impact}</div>
-                        </motion.div>
+                    {/* Challenge Details */}
+                    <div className="space-y-8">
+                      <div className="flex flex-wrap gap-3">
+                        <span className={`text-xs px-4 py-2 rounded-full border ${getPriorityColor(currentPair.challenge.priority)}`}>
+                          {currentPair.challenge.priority} Priority
+                        </span>
+                        <span className={`text-xs px-4 py-2 rounded-full border ${getAreaColor()}`}>
+                          {currentPair.challenge.area}
+                        </span>
+                      </div>
+                      
+                      <div className="bg-red-500/10 rounded-lg p-4 border border-red-500/20">
+                        <div className="text-sm text-red-400 font-medium mb-1">Bottleneck</div>
+                        <div className="text-white/80">{currentPair.challenge.impact}</div>
                       </div>
                     </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
 
-                {/* Solutions Side */}
-                <div className="relative flex items-center">
-                    <div className="bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl p-8 md:p-12 border border-[#B0FF74]/30 min-h-[650px] h-auto relative overflow-hidden w-full">
-                    {/* Solutions Background Glow */}
-                    {!isMobile && (
-                      <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl"
-                        animate={{ opacity: [0.5, 0.8, 0.5] }}
-                        transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-                      />
-                    )}
-                    
-                    <div className="relative z-10">
-                      {/* Solutions Header */}
-                      <div className="mb-10">
-                        <div className="flex items-center gap-3 mb-6">
-                          <motion.div 
-                            className="w-4 h-4 rounded-full bg-[#B0FF74]"
-                            animate={{ opacity: [0.6, 1, 0.6] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                          />
-                          <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solutions</span>
-                        </div>
-                        
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight">
-                          Intelligent Automation Solutions
-                        </h3>
+              {/* Arrow between cards on mobile */}
+              {isMobile && (
+                <div className="flex justify-center -my-3">
+                  <div className="w-8 h-8 rounded-full bg-[#B0FF74]/20 border border-[#B0FF74]/30 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-[#B0FF74]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+
+              {/* Solutions Side */}
+              <div className="relative flex items-center">
+                <div className={`bg-gradient-to-br from-[#0A2A0A] via-[#170A24] to-[#12071A] rounded-3xl ${isMobile ? 'p-6' : 'p-8 md:p-12'} border border-[#B0FF74]/30 ${isMobile ? 'min-h-auto' : 'min-h-[650px]'} h-auto relative overflow-hidden w-full`}>
+                  {/* Solutions Background Glow - только на десктопе */}
+                  {!isMobile && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#B0FF74]/10 to-transparent rounded-3xl opacity-60" />
+                  )}
+                  
+                  <div className="relative z-10">
+                    {/* Solutions Header */}
+                    <div className="mb-10">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-4 h-4 rounded-full bg-[#B0FF74]" />
+                        <span className="text-[#B0FF74] font-semibold text-sm uppercase tracking-wider">Our Solutions</span>
                       </div>
+                      
+                      <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight">
+                        Intelligent Automation Solutions
+                      </h3>
+                    </div>
 
-                      {/* Solutions List */}
-                      <div className="space-y-6">
-                        {currentPair.solutions.map((solution, index) => (
-                          <div
-                            key={`solution-${activeSlide}-${index}`}
-                            className="bg-[#B0FF74]/5 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300"
-                          >
-                            <div className="mb-4">
-                              <h4 className="text-xl font-bold text-white mb-2">
-                                {solution.title}
-                              </h4>
-                              <p className="text-white/70 leading-relaxed mb-4">
-                                {solution.description}
-                              </p>
-                              
-                              <motion.div 
-                                key={`key-benefit-${activeSlide}-${index}`}
-                                className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4"
-                                initial={{ opacity: 0, x: 30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, delay: 0.3 }}
-                              >
-                                <div className="text-sm text-[#B0FF74] font-medium mb-1">Key Benefit</div>
-                                <div className="text-white/80">{solution.keyBenefit}</div>
-                              </motion.div>
+                    {/* Solutions List */}
+                    <div className="space-y-6">
+                      {currentPair.solutions.map((solution, index) => (
+                        <div
+                          key={`solution-${activeSlide}-${index}`}
+                          className="bg-[#B0FF74]/5 rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300"
+                        >
+                          <div className="mb-4">
+                            <h4 className="text-xl font-bold text-white mb-2">
+                              {solution.title}
+                            </h4>
+                            <p className="text-white/70 leading-relaxed mb-4">
+                              {solution.description}
+                            </p>
+                            
+                            <div className="bg-[#B0FF74]/10 rounded-lg p-3 mb-4">
+                              <div className="text-sm text-[#B0FF74] font-medium mb-1">Key Benefit</div>
+                              <div className="text-white/80">{solution.keyBenefit}</div>
                             </div>
-
-
-                            {/* Technologies */}
-                            <motion.div 
-                              key={`technologies-${activeSlide}-${index}`}
-                              className="flex flex-wrap gap-2"
-                              initial={{ opacity: 0, x: 30 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.5, delay: 0.2 }}
-                            >
-                              {solution.technologies.map((tech, techIndex) => (
-                                <span key={techIndex} className="text-xs px-3 py-1 rounded-full bg-[#B0FF74]/20 text-[#B0FF74] border border-[#B0FF74]/30">
-                                  {tech}
-                                </span>
-                              ))}
-                            </motion.div>
                           </div>
-                        ))}
-                      </div>
+
+                          {/* Technologies */}
+                          <div className="flex flex-wrap gap-2">
+                            {solution.technologies.map((tech, techIndex) => (
+                              <span key={techIndex} className="text-xs px-3 py-1 rounded-full bg-[#B0FF74]/20 text-[#B0FF74] border border-[#B0FF74]/30">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    </div>
+                  </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-
-
-            {/* Auto-play Indicator */}
-            <div className="flex justify-center mt-6">
-              <div className="flex items-center gap-2 text-white/50 text-sm">
-                <motion.div
-                  className="w-2 h-2 rounded-full bg-[#B0FF74]"
-                  animate={{ opacity: isAutoPlaying ? [0.3, 1, 0.3] : 0.6 }}
-                  transition={{ duration: 1.5, repeat: isAutoPlaying ? Infinity : 0 }}
-                />
-                <span>{isAutoPlaying ? 'Auto-progression active' : 'Manual control active'}</span>
               </div>
             </div>
           </div>
         </motion.div>
+
+        {/* Navigation buttons for mobile */}
+        {isMobile && (
+          <div className="flex justify-between items-center mt-8">
+            <button
+              onClick={handlePrevSlide}
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
+            </button>
+            
+            <span className="text-white/70 text-sm">
+              {activeSlide + 1} / {challengeSolutionPairs.length}
+            </span>
+            
+            <button
+              onClick={handleNextSlide}
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
+            >
+              Next
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Fixed Navigation Dots - Positioned relative to section */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
-        {challengeSolutionPairs.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleDotClick(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              activeSlide === index 
-                ? 'bg-[#B0FF74] shadow-lg shadow-[#B0FF74]/50' 
-                : 'bg-white/20 hover:bg-white/40'
-            }`}
-          />
-        ))}
-      </div>
+      {/* Fixed Navigation Dots - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
+          {challengeSolutionPairs.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleDotClick(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                activeSlide === index 
+                  ? 'bg-[#B0FF74] shadow-lg shadow-[#B0FF74]/50' 
+                  : 'bg-white/20 hover:bg-white/40'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -901,17 +914,28 @@ function InteractiveResultsSection({
   caseStudy, 
   activeIndex, 
   onIndexChange,
-  getResultDescription,
-  isAutoPlaying
+  getResultDescription
 }: { 
   caseStudy: CaseStudy; 
   activeIndex: number;
   onIndexChange: (index: number) => void;
   getResultDescription: (result: string, index: number) => string;
-  isAutoPlaying: boolean;
 }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Детекция мобильных устройств
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -1032,6 +1056,16 @@ function InteractiveResultsSection({
     };
   };
 
+  const handlePrevious = () => {
+    const newIndex = activeIndex === 0 ? caseStudy.results.length - 1 : activeIndex - 1;
+    onIndexChange(newIndex);
+  };
+
+  const handleNext = () => {
+    const newIndex = activeIndex === caseStudy.results.length - 1 ? 0 : activeIndex + 1;
+    onIndexChange(newIndex);
+  };
+
   return (
     <section ref={sectionRef} className="py-24 bg-transparent relative">
       <div className="container mx-auto px-4">
@@ -1058,147 +1092,133 @@ function InteractiveResultsSection({
           </div>
 
           {/* Interactive Results Display */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Navigation */}
-            <div className="lg:col-span-1">
-              <div className="space-y-3">
-                {caseStudy.results.map((result, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => onIndexChange(index)}
-                    className={`w-full text-left p-4 rounded-lg transition-all duration-300 relative group ${
-                      activeIndex === index 
-                        ? 'bg-[#B0FF74]/10 border border-[#B0FF74]/30' 
-                        : 'bg-white/5 border border-transparent hover:border-[#B0FF74]/20'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {activeIndex === index && (
-                      <motion.div 
-                        className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#B0FF74]/20 to-transparent"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
-                    
-                    <div className="relative z-10 flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                        activeIndex === index ? 'bg-[#B0FF74]' : 'bg-white/30'
-                      }`}></div>
-                      <span className={`font-medium transition-colors duration-300 ${
-                        activeIndex === index ? 'text-white' : 'text-white/70'
-                      }`}>
-                        {getResultDescription(result, index)}
-                      </span>
-                    </div>
-                  </motion.button>
-                ))}
+          <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-8`}>
+            {/* Navigation - hidden on mobile */}
+            {!isMobile && (
+              <div className="lg:col-span-1">
+                <div className="space-y-3">
+                  {caseStudy.results.map((result, index) => (
+                    <button
+                      key={index}
+                      onClick={() => onIndexChange(index)}
+                      className={`w-full text-left p-4 rounded-lg transition-all duration-300 relative group ${
+                        activeIndex === index 
+                          ? 'bg-[#B0FF74]/10 border border-[#B0FF74]/30' 
+                          : 'bg-white/5 border border-transparent hover:border-[#B0FF74]/20'
+                      }`}
+                    >
+                      {activeIndex === index && (
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#B0FF74]/20 to-transparent" />
+                      )}
+                      
+                      <div className="relative z-10 flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${
+                          activeIndex === index ? 'bg-[#B0FF74]' : 'bg-white/30'
+                        }`}></div>
+                        <span className={`font-medium transition-colors duration-300 ${
+                          activeIndex === index ? 'text-white' : 'text-white/70'
+                        }`}>
+                          {getResultDescription(result, index)}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Active Result Analysis */}
-            <div className="lg:col-span-2">
-              <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeIndex}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 md:p-12 border border-[#B0FF74]/20 relative overflow-hidden"
-                  >
-                  {/* Background Glow */}
-                  <motion.div 
-                    className="absolute -top-32 -right-32 w-64 h-64 rounded-full blur-3xl opacity-10"
-                    animate={{
-                      background: [
-                        "radial-gradient(circle, rgba(176, 255, 116, 0.5) 0%, transparent 70%)",
-                        "radial-gradient(circle, rgba(176, 255, 116, 0.7) 0%, transparent 70%)",
-                        "radial-gradient(circle, rgba(176, 255, 116, 0.5) 0%, transparent 70%)"
-                      ]
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                                          }}
-                  />
+            <div className={isMobile ? 'col-span-1' : 'lg:col-span-2'}>
+              <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-8 md:p-12 border border-[#B0FF74]/20 relative overflow-hidden">
+                {/* Background Glow - только на десктопе */}
+                {!isMobile && (
+                  <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full blur-3xl opacity-10 bg-[radial-gradient(circle,_rgba(176,255,116,0.5)_0%,_transparent_70%)]" />
+                )}
 
-                  <div className="relative z-10">
-                    {/* Result Title */}
-                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                      {caseStudy.results[activeIndex]}
-                    </h3>
-                    
-                    {/* Business Insight */}
-                    <div className="space-y-6">
-                      {(() => {
-                        const insight = getBusinessInsight(caseStudy.results[activeIndex]);
-                        return (
-                          <>
-                            <div>
-                              <h4 className="text-lg font-semibold text-[#B0FF74] mb-3">Strategic Impact</h4>
-                              <p className="text-white/80 leading-relaxed">
-                                {insight.insight}
-                              </p>
+                <div className="relative z-10">
+                  {/* Result Title */}
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                    {caseStudy.results[activeIndex]}
+                  </h3>
+                  
+                  {/* Business Insight */}
+                  <div className="space-y-6">
+                    {(() => {
+                      const insight = getBusinessInsight(caseStudy.results[activeIndex]);
+                      return (
+                        <>
+                          <div>
+                            <h4 className="text-lg font-semibold text-[#B0FF74] mb-3">Strategic Impact</h4>
+                            <p className="text-white/80 leading-relaxed">
+                              {insight.insight}
+                            </p>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-white/5 rounded-lg p-4">
+                              <h5 className="text-sm font-medium text-[#B0FF74] mb-2">Key Factor</h5>
+                              <p className="text-white/70">{insight.keyFactor}</p>
                             </div>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              <div className="bg-white/5 rounded-lg p-4">
-                                <h5 className="text-sm font-medium text-[#B0FF74] mb-2">Key Factor</h5>
-                                <p className="text-white/70">{insight.keyFactor}</p>
-                              </div>
-                              
-                              <div className="bg-white/5 rounded-lg p-4">
-                                <h5 className="text-sm font-medium text-[#B0FF74] mb-2">Business Value</h5>
-                                <p className="text-white/70">{insight.businessValue}</p>
-                              </div>
+                            <div className="bg-white/5 rounded-lg p-4">
+                              <h5 className="text-sm font-medium text-[#B0FF74] mb-2">Business Value</h5>
+                              <p className="text-white/70">{insight.businessValue}</p>
+                            </div>
+                          </div>
+                          
+                          {/* Progress Indicator */}
+                          <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full bg-[#B0FF74]"></div>
+                              <span className="text-[#B0FF74] font-medium text-sm">Verified Impact</span>
                             </div>
                             
-                            {/* Progress Indicator */}
-                            <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                              <div className="flex items-center gap-2">
-                                <div className="w-2 h-2 rounded-full bg-[#B0FF74]"></div>
-                                <span className="text-[#B0FF74] font-medium text-sm">Verified Impact</span>
-                              </div>
-                              
-                              <div className="flex-1 bg-white/10 rounded-full h-2 relative overflow-hidden">
-                                <motion.div
-                                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#B0FF74] to-[#B0FF74]/60 rounded-full"
-                                  initial={false}
-                                  animate={{ 
-                                    width: `${(activeIndex + 1) * (100 / caseStudy.results.length)}%` 
-                                  }}
-                                  transition={{ 
-                                    duration: 0.8, 
-                                                                      }}
-                                />
-                              </div>
-                              
-                              <span className="text-white/50 text-sm">
-                                {activeIndex + 1} of {caseStudy.results.length}
-                              </span>
+                            <div className="flex-1 bg-white/10 rounded-full h-2 relative overflow-hidden">
+                              <div
+                                className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#B0FF74] to-[#B0FF74]/60 rounded-full transition-all duration-300"
+                                style={{ width: `${(activeIndex + 1) * (100 / caseStudy.results.length)}%` }}
+                              />
                             </div>
                             
-                            {/* Auto-play Indicator */}
-                            <div className="flex justify-center mt-4">
-                              <div className="flex items-center gap-2 text-white/50 text-xs">
-                                <motion.div
-                                  className="w-1.5 h-1.5 rounded-full bg-[#B0FF74]"
-                                  animate={{ opacity: isAutoPlaying ? [0.3, 1, 0.3] : 0.6 }}
-                                  transition={{ duration: 1.5, repeat: isAutoPlaying ? Infinity : 0 }}
-                                />
-                                <span>{isAutoPlaying ? 'Auto-playing results' : 'Manual control active'}</span>
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </div>
+                            <span className="text-white/50 text-sm">
+                              {activeIndex + 1} of {caseStudy.results.length}
+                            </span>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
-                </motion.div>
-              </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Navigation buttons for mobile */}
+              {isMobile && (
+                <div className="flex justify-between items-center mt-6">
+                  <button
+                    onClick={handlePrevious}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                  </button>
+                  
+                  <span className="text-white/70 text-sm">
+                    {activeIndex + 1} / {caseStudy.results.length}
+                  </span>
+                  
+                  <button
+                    onClick={handleNext}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg border border-[#B0FF74]/30 text-white hover:bg-[#B0FF74]/10 transition-colors"
+                  >
+                    Next
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -1209,7 +1229,20 @@ function InteractiveResultsSection({
 
 function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimonial'] }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Детекция мобильных устройств
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -1253,23 +1286,12 @@ function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimoni
 
   return (
     <section ref={sectionRef} className="py-24 bg-[#0A0A0A] relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-5"
-          animate={{
-            background: [
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.6) 0%, transparent 70%)",
-              "radial-gradient(ellipse, rgba(176, 255, 116, 0.4) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-                      }}
-        />
-      </div>
+      {/* Background Pattern - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-3xl opacity-5 bg-[radial-gradient(ellipse,_rgba(176,255,116,0.4)_0%,_transparent_70%)]" />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -1279,12 +1301,7 @@ function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimoni
           className="max-w-4xl mx-auto text-center"
         >
           {/* Quote Icon */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-16 h-16 rounded-full bg-[#B0FF74]/10 flex items-center justify-center mx-auto mb-8"
-          >
+          <div className="w-16 h-16 rounded-full bg-[#B0FF74]/10 flex items-center justify-center mx-auto mb-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8 text-[#B0FF74]"
@@ -1293,27 +1310,17 @@ function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimoni
             >
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
             </svg>
-          </motion.div>
+          </div>
 
           {/* Quote */}
-          <motion.blockquote
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl font-light text-white/90 italic leading-relaxed mb-8"
-          >
+          <blockquote className="text-lg md:text-xl font-light text-white/90 italic leading-relaxed mb-8">
             <span dangerouslySetInnerHTML={{ 
               __html: `&ldquo;${highlightKeyWords(testimonial.quote)}&rdquo;` 
             }} />
-          </motion.blockquote>
+          </blockquote>
 
           {/* Author */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col items-center"
-          >
+          <div className="flex flex-col items-center">
             <div className="w-1 h-12 bg-[#B0FF74] rounded-full mb-4"></div>
             <h4 className="text-xl font-bold text-[#B0FF74] mb-2">
               {testimonial.author}
@@ -1321,7 +1328,7 @@ function TestimonialSection({ testimonial }: { testimonial: CaseStudy['testimoni
             <p className="text-white/60">
               {testimonial.position}
             </p>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -1375,12 +1382,7 @@ function TechnicalSection({ caseStudy }: { caseStudy: CaseStudy }) {
           </div>
 
           {/* Expandable Technical Content */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isVisible ? { opacity: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl border border-[#B0FF74]/20 overflow-hidden"
-          >
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl border border-[#B0FF74]/20 overflow-hidden">
             {/* Toggle Button */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -1500,7 +1502,7 @@ function TechnicalSection({ caseStudy }: { caseStudy: CaseStudy }) {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -1539,42 +1541,31 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
         >
           {/* Section Header */}
           <div className="text-center mb-16">
-            <motion.h2 
+            <h2 
               className="text-4xl md:text-5xl font-bold mb-6"
-              initial={{ opacity: 0, x: -50 }}
-              animate={isVisible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6,  }}
               style={{
                 textShadow: '0 0 20px rgba(176, 255, 116, 0.8), 0 0 40px rgba(176, 255, 116, 0.4)'
               }}
             >
               Related Success Stories
-            </motion.h2>
-            <motion.p 
-              className="text-xl text-white/70 max-w-3xl mx-auto"
-              initial={{ opacity: 0, x: -50 }}
-              animate={isVisible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
               Explore other transformative automation solutions we&apos;ve delivered
-            </motion.p>
+            </p>
           </div>
 
           {/* Related Cases Grid with uniform sizes */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-            {relatedCases.map((relatedCase, caseIndex) => (
-              <motion.div
+            {relatedCases.map((relatedCase) => (
+              <div
                 key={relatedCase.id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={isVisible ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 + (caseIndex * 0.1) }}
                 className="group cursor-pointer w-full max-w-sm"
               >
                 <Link href={`/cases/${relatedCase.id}`}>
                   <div className="rounded-2xl group h-full">
                     <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-2xl p-6 border border-[#B0FF74]/20 hover:border-[#B0FF74]/40 transition-all duration-300 h-full min-h-[280px] relative overflow-hidden flex flex-col">
-                    {/* Background Glow on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 transition-all duration-500"></div>
+                    {/* Background Glow on Hover - упрощенная */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#B0FF74]/0 to-[#B0FF74]/0 group-hover:from-[#B0FF74]/5 group-hover:to-[#B0FF74]/0 transition-all duration-300"></div>
                     
                     <div className="relative z-10 flex flex-col h-full">
                       {/* Company Badge */}
@@ -1627,7 +1618,7 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
                   </div>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </motion.div>
@@ -1638,7 +1629,20 @@ function RelatedCasesSection({ relatedCases }: { relatedCases: CaseStudy[] }) {
 
 function CTASection() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Детекция мобильных устройств
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -1659,37 +1663,13 @@ function CTASection() {
 
   return (
     <section ref={sectionRef} className="section-cta bg-transparent relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl opacity-10"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(176, 255, 116, 0.4) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(176, 255, 116, 0.6) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(176, 255, 116, 0.4) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-                      }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10"
-          animate={{
-            background: [
-              "radial-gradient(circle, rgba(144, 238, 144, 0.3) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(144, 238, 144, 0.5) 0%, transparent 70%)",
-              "radial-gradient(circle, rgba(144, 238, 144, 0.3) 0%, transparent 70%)"
-            ]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-                      }}
-        />
-      </div>
+      {/* Background Effects - только на десктопе */}
+      {!isMobile && (
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl opacity-10 bg-[radial-gradient(circle,_rgba(176,255,116,0.4)_0%,_transparent_70%)]" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10 bg-[radial-gradient(circle,_rgba(144,238,144,0.3)_0%,_transparent_70%)]" />
+        </div>
+      )}
 
       <div className="container mx-auto px-4 text-center relative z-10">
         <motion.div
@@ -1711,12 +1691,7 @@ function CTASection() {
             Let&apos;s discuss how we can implement a similar automation solution tailored to your specific business needs and challenges.
           </p>
           
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex justify-center"
-          >
+          <div className="flex justify-center">
             <Link href="/contacts">
               <Button 
                 variant="secondary" 
@@ -1742,7 +1717,7 @@ function CTASection() {
                 </span>
               </Button>
             </Link>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
