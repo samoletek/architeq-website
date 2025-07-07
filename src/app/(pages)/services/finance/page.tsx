@@ -58,29 +58,6 @@ export default function FinancePage() {
       caseId: "quickbooks-integration"
     },
     {
-      title: "Payment Processing",
-      description: "Integrate payment gateways with your business systems for smooth and efficient payment handling.",
-      benefits: [
-        "Multiple payment method support (credit cards, ACH, etc.)",
-        "Automatic payment status updates in CRM",
-        "Secure payment processing with compliance focus",
-        "Reduced payment delays and improved cash flow"
-      ],
-      icon: "dollar"
-    },
-    {
-      title: "Financial Reports & Dashboards",
-      description: "Create custom financial dashboards and automated reports for better business visibility.",
-      benefits: [
-        "Real-time financial performance visualization",
-        "Customizable KPIs and metrics tracking",
-        "Automatic scheduled report distribution",
-        "Data-driven financial decision making"
-      ],
-      icon: "dashboard",
-      caseId: "dashboards-creation"
-    },
-    {
       title: "Factoring Automation",
       description: "Streamline the process of submitting receivables to factoring companies and tracking advances.",
       benefits: [

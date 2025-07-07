@@ -42,7 +42,8 @@ export default function BusinessProcessPage() {
         "Prioritization of automation opportunities",
         "Clear roadmap for implementation"
       ],
-      icon: "map"
+      icon: "map",
+      caseId: "car-hauling-solution"
     },
     {
       title: "Custom Workflow Design",
@@ -53,7 +54,8 @@ export default function BusinessProcessPage() {
         "Conditional logic and decision points",
         "Exception handling mechanisms"
       ],
-      icon: "workflow"
+      icon: "workflow",
+      caseId: "financial-calculations"
     },
     {
       title: "System Integration",
@@ -64,7 +66,8 @@ export default function BusinessProcessPage() {
         "Real-time information updates",
         "Unified data environment"
       ],
-      icon: "connect"
+      icon: "connect",
+      caseId: "monday-integration"
     },
     {
       title: "Dashboard Creation",

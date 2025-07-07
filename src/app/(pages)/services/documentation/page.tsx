@@ -78,7 +78,8 @@ export default function DocumentationPage() {
         "Automate document retention and archiving",
         "Control document access with role-based permissions"
       ],
-      icon: "dashboard"
+      icon: "dashboard",
+      caseId: "monday-integration"
     }
   ];
 

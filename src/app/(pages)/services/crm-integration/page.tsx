@@ -44,7 +44,8 @@ export default function CRMIntegrationPage() {
         "Two-way synchronization with email clients",
         "Team chat integration with client records"
       ],
-      icon: "connect"
+      icon: "connect",
+      caseId: "monday-integration"
     },
     {
       title: "Document Management",
@@ -79,7 +80,8 @@ export default function CRMIntegrationPage() {
         "Email marketing integration",
         "Analytics consolidation"
       ],
-      icon: "analysis"
+      icon: "analysis",
+      caseId: "web-forms-integration"
     }
   ];
 
@@ -350,14 +352,14 @@ export default function CRMIntegrationPage() {
           </>
         ),
         features: [
-          "Monday",
+          "Monday CRM",
           "HubSpot",
           "Salesforce",
           "Zoho CRM",
           "Pipedrive",
-          "clickup"
+          "ClickUp"
         ],
-        featuresTitle: "Supported SRM"
+        featuresTitle: "Supported CRM"
       }}
       benefits={benefits}
       features={integrationOptions}
