@@ -1,5 +1,6 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export const metadata = generateServiceMetadata({
   title: 'Financial Systems Integration',
@@ -116,41 +117,12 @@ export default function FinancePage() {
     }
   ];
 
+  // Данные для кейсов из центрального источника
   const caseStudies = [
-    {
-      id: "stripe-invoicing",
-      title: "Stripe Invoicing and Financial Control Automation",
-      company: "EclipseGroup",
-      description: "Integration of CRM with financial systems for automatic invoice creation and payment tracking.",
-      results: [
-        "85% reduction in time spent on invoicing",
-        "30% acceleration in receiving payments",
-        "Elimination of errors in data transfer"
-      ]
-    },
-    {
-      id: "quickbooks-integration",
-      title: "QuickBooks Integration for Automatic Accounting",
-      company: "485 Logistics",
-      description: "Bidirectional synchronization between CRM and QuickBooks for seamless financial data management.",
-      results: [
-        "75% reduction in time spent on financial reporting",
-        "Elimination of double data entry",
-        "Increased accuracy of financial reports"
-      ]
-    },
-    {
-      id: "factoring-automation",
-      title: "Factoring Data Submission Automation",
-      company: "LaneWise",
-      description: "Automatic calculation and submission of accounts receivable data to factoring companies.",
-      results: [
-        "Reduction of process from several hours to several minutes",
-        "Elimination of human errors in calculations",
-        "Faster receipt of financing"
-      ]
-    }
-  ];
+    getCaseStudyById('stripe-invoicing'),
+    getCaseStudyById('quickbooks-integration'),
+    getCaseStudyById('factoring-automation')
+  ].filter(Boolean);
 
   const faqs = [
     {

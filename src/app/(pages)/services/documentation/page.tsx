@@ -1,5 +1,6 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export const metadata = generateServiceMetadata({
   title: 'Documentation & Forms',
@@ -111,41 +112,12 @@ export default function DocumentationPage() {
     }
   ];
 
+  // Данные для кейсов из центрального источника
   const caseStudies = [
-    {
-      id: "document-generation",
-      title: "Document Generation from CRM Status Changes",
-      company: "Affiliated Medical Supplies",
-      description: "Automatic document generation system that creates documents based on CRM data changes.",
-      results: [
-        "Document creation time reduced from 35 minutes to 2-3 minutes",
-        "Complete elimination of data errors",
-        "Standardization of all company documents"
-      ]
-    },
-    {
-      id: "electronic-signatures",
-      title: "Electronic Signature Integration",
-      company: "485 Logistics",
-      description: "Complete document signing cycle with automatic status updates in CRM and cloud storage archiving.",
-      results: [
-        "70% reduction in document signing cycle time",
-        "20% increase in completed deal percentage",
-        "Automatic auditing of all signed documents"
-      ]
-    },
-    {
-      id: "web-forms-integration",
-      title: "Web Forms with CRM Integration",
-      company: "Ameriland Capital",
-      description: "Creation and integration of web forms with direct CRM integration for efficient data collection.",
-      results: [
-        "Increase in form completion conversion to 60%",
-        "Reduction of application processing time by 35%",
-        "Elimination of errors in data transfer"
-      ]
-    }
-  ];
+    getCaseStudyById('document-generation'),
+    getCaseStudyById('electronic-signatures'),
+    getCaseStudyById('web-forms-integration')
+  ].filter(Boolean);
 
   const faqs = [
     {

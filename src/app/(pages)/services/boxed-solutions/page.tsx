@@ -1,5 +1,6 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export const metadata = generateServiceMetadata({
   title: 'Industry-Specific Boxed Solutions',
@@ -115,41 +116,12 @@ export default function BoxedSolutionsPage() {
     }
   ];
 
+  // Данные для кейсов из центрального источника
   const caseStudies = [
-    {
-      id: "car-hauling-solution",
-      title: "Boxed Solution for Car Hauling Companies",
-      company: "LaneWise",
-      description: "Unified system for vehicle transportation companies including order management and payment control.",
-      results: [
-        "60% reduction in order processing time",
-        "Elimination of errors in calculations",
-        "Automated accounts receivable control"
-      ]
-    },
-    {
-      id: "music-label-solution",
-      title: "Boxed Solution for Music Labels",
-      company: "SUQEAK E CLEAN STUDIOS",
-      description: "Comprehensive system for music labels to manage assets, royalty calculations, and copyright control.",
-      results: [
-        "75% reduction in administrative work",
-        "Accurate and timely royalty calculations",
-        "Catalog expansion without increasing staff"
-      ]
-    },
-    {
-      id: "roofing-business-solution",
-      title: "Boxed Solution for Roofing Business with AI Components",
-      company: "Up-Struct LLC",
-      description: "Comprehensive solution for roofing companies with AI components for client communication and cost estimation.",
-      results: [
-        "40% increase in project cost estimation accuracy",
-        "25% reduction in project completion time",
-        "Automation of client call reception"
-      ]
-    }
-  ];
+    getCaseStudyById('car-hauling-solution'),
+    getCaseStudyById('music-label-solution'),
+    getCaseStudyById('roofing-business-solution')
+  ].filter(Boolean);
 
   const faqs = [
     {

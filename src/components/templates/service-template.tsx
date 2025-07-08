@@ -15,6 +15,7 @@ import { generateServiceBreadcrumbs } from '@/lib/seo/breadcrumb-helper';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { LinesPatternCard, LinesPatternCardBody } from '@/components/ui/cards/lines-pattern-card';
+import { CaseStudy } from '@/lib/data/case-studies';
 
 // Типы для описания секций страницы услуги
 export interface ServiceBenefit {
@@ -32,14 +33,7 @@ export interface ServiceFeature {
   discountButton?: boolean;
 }
 
-export interface ServiceCaseStudy {
-  id: string;
-  title: string;
-  company: string;
-  description: string;
-  results: string[];
-  technologies: string[];
-}
+// Using CaseStudy interface from central data source
 
 export interface ServiceProcess {
   step: number;
@@ -69,7 +63,7 @@ export interface ServiceTemplateProps {
   benefits?: ServiceBenefit[];
   features?: ServiceFeature[];
   processes?: ServiceProcess[];
-  caseStudies?: ServiceCaseStudy[];
+  caseStudies?: (CaseStudy | undefined)[];
   faqs?: ServiceFAQ[];
   
   // Дополнительные блоки, если нужно
@@ -223,7 +217,7 @@ export default function ServiceTemplate({
       )}
 
       {/* Case Studies section - ТОЧНО КАК FEATURED CASES НА ГЛАВНОЙ */}
-      {caseStudies && caseStudies.length > 0 && (
+      {caseStudies && caseStudies.filter(Boolean).length > 0 && (
         <SectionAnimation>
           <CaseStudiesSection 
             title="Success Stories"
@@ -1311,7 +1305,7 @@ function CaseStudiesSection({
 }: { 
   title: string; 
   subtitle: string; 
-  caseStudies: ServiceCaseStudy[]; 
+  caseStudies: (CaseStudy | undefined)[]; 
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.15,
@@ -1343,10 +1337,13 @@ function CaseStudiesSection({
     }
   };
 
+  // Фильтруем undefined значения
+  const validCaseStudies = caseStudies.filter(Boolean) as CaseStudy[];
+
   // Определяем количество колонок для сетки
-  const gridCols = caseStudies.length === 1 
+  const gridCols = validCaseStudies.length === 1 
     ? 'grid-cols-1'
-    : caseStudies.length === 2 
+    : validCaseStudies.length === 2 
       ? 'grid-cols-1 md:grid-cols-2' 
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
 
@@ -1367,7 +1364,7 @@ function CaseStudiesSection({
         </motion.div>
         
         <div className={cn("grid gap-6 max-w-5xl mx-auto", gridCols)}>
-          {caseStudies.map((caseStudy, index) => (
+          {validCaseStudies.map((caseStudy, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -1380,7 +1377,7 @@ function CaseStudiesSection({
                 description={caseStudy.description}
                 company={caseStudy.company}
                 results={caseStudy.results}
-                tags={caseStudy.technologies}
+                tags={caseStudy.technologies.filter(tech => tech !== 'Google Workspace API').slice(0, 3)}
                 href={`/cases/${caseStudy.id}`}
                 className="case-card-enhanced"
                 index={index}

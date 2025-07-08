@@ -1,5 +1,6 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 
 export const metadata = generateServiceMetadata({
   title: 'Business Process Automation',
@@ -111,41 +112,12 @@ export default function BusinessProcessPage() {
     }
   ];
 
+  // Данные для кейсов из центрального источника
   const caseStudies = [
-    {
-      id: "monday-integration",
-      title: "Comprehensive Monday Integration",
-      company: "New Age Cabinetry & Coatings",
-      description: "Connected Monday.com with multiple external systems to create a unified information ecosystem for a cabinet manufacturing company.",
-      results: [
-        "60% reduction in time spent switching between systems",
-        "Increased transparency of all processes",
-        "Automation of up to 70% of routine operations"
-      ]
-    },
-    {
-      id: "notification-system",
-      title: "Deep Notification Tree by Triggers",
-      company: "MC Keeper",
-      description: "Created a complex automatic notification system with conditional triggers based on CRM actions to improve team communication.",
-      results: [
-        "75% reduction in reaction time to project changes",
-        "40% increase in customer service satisfaction",
-        "Reduction of missed updates and deadlines to zero"
-      ]
-    },
-    {
-      id: "dashboards-creation",
-      title: "Creating Informative Dashboards",
-      company: "DreamLine",
-      description: "Developed customized interactive dashboards for real-time business monitoring, pulling data from multiple integrated systems.",
-      results: [
-        "80% reduction in time spent on reporting",
-        "Decision-making based on up-to-date data",
-        "35% increase in management efficiency"
-      ]
-    }
-  ];
+    getCaseStudyById('monday-integration'),
+    getCaseStudyById('notification-system'),
+    getCaseStudyById('dashboards-creation')
+  ].filter(Boolean);
 
   const faqs = [
     {

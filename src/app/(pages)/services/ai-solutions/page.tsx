@@ -1,5 +1,6 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
+import { getCaseStudyById } from '@/lib/data/case-studies';
 import { ProfessionalServiceSchema, FAQPageSchema } from '@/lib/seo/schema';
 
 export const metadata = generateServiceMetadata({
@@ -110,31 +111,11 @@ export default function AISolutionsPage() {
     }
   ];
 
-  // Данные для кейсов
+  // Данные для кейсов из центрального источника
   const caseStudies = [
-    {
-      id: "ai-voice-agent",
-      title: "AI Voice Agent for Client Request Processing",
-      company: "Up-Struct LLC",
-      description: "Multi-level intelligent voice agent for processing client requests without operator participation.",
-      results: [
-        "Automation of 60-70% of incoming requests",
-        "Reduction of waiting time to minimum",
-        "24/7 operation mode without increasing staff"
-      ]
-    },
-    {
-      id: "ai-crm-agent",
-      title: "AI Agent for CRM Information Search",
-      company: "SUQEAK E CLEAN STUDIOS",
-      description: "Integration of AI agent into CRM interface for natural language data search and summarization.",
-      results: [
-        "90% reduction in information search time",
-        "Fast adaptation of new employees",
-        "More informed decisions based on complete data"
-      ]
-    },
-  ];
+    getCaseStudyById('ai-voice-agent'),
+    getCaseStudyById('ai-crm-agent')
+  ].filter(Boolean);
 
   // Данные для FAQ
   const faqs = [
