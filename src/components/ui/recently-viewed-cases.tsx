@@ -168,10 +168,7 @@ export function RecentlyViewedCases({
                     
                     {/* Теги */}
                     <div className="flex items-center space-x-1 mt-2">
-                      <span className="text-xs bg-secondary/20 text-secondary px-2 py-0.5 rounded">
-                        {caseItem.solutionType}
-                      </span>
-                      {caseItem.technologies.slice(0, 1).map((tech, techIndex) => (
+                      {caseItem.technologies.filter(tech => tech !== 'Google Workspace API').slice(0, 3).map((tech, techIndex) => (
                         <span 
                           key={techIndex}
                           className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded"

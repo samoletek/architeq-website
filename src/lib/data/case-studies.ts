@@ -133,10 +133,10 @@ export const allCaseStudies: CaseStudy[] = [
       'Email quote delivery system with unique quote tracking',
       'Adaptive, optimized web application for different types of devices'
     ],
-    technologies: ['Next.js', 'TypeScript', 'API integrations', 'Tailwind CSS', 'EmailJS', 'Iron Session'],
+    technologies: ['Next.js', 'TypeScript', 'Google Workspace API', 'EIA API', 'Tailwind CSS', 'EmailJS'],
     clickableTags: {
       companies: ['Car Haul Direct'],
-      technologies: ['React', 'TypeScript', 'API integrations'],
+      technologies: ['React', 'TypeScript', 'Google Workspace API', 'EIA API'],
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
@@ -175,11 +175,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Reminder system for unpaid invoices',
       'Automatic generation of financial reports (Dashboards)'
     ],
-    technologies: ['Monday CRM', 'QuickBooks', 'Stripe', 'Make', 'API integrations'],
-    alternativeTechnologies: ['Hubspot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'PayPal', 'Bill'],
+    technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass API', 'Google Workspace API'],
+    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'PayPal', 'Bill'],
     clickableTags: {
       companies: ['EclipseGroup'],
-      technologies: ['Monday CRM', 'QuickBooks', 'Stripe', 'Make'],
+      technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass API', 'Google Workspace API'],
       locations: ['Miami, FL, USA', 'Florida', 'USA']
     },
     results: [
@@ -215,8 +215,8 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic matching of payments with invoices',
       'Additional Telegram/Slack notifications'
     ],
-    technologies: ['QuickBooks', 'Make', 'Monday', 'GoogleSheets'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'Telegram', 'Slack'],
+    technologies: ['QuickBooks', 'Make', 'Monday', 'Google Workspace API'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Telegram', 'Slack'],
     clickableTags: {
       companies: ['485 Logistics'],
       technologies: ['QuickBooks', 'Make', 'Monday'],
@@ -255,11 +255,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Document version management system',
       'Automatic conversion to various formats (PDF, DOCX)'
     ],
-    technologies: ['Monday CRM', 'Make', 'Google Docs API', 'PandaDoc'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'DocuSign', 'SignNow', 'eSignatures'],
+    technologies: ['Monday', 'Make', 'Google Workspace API', 'PandaDoc'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'DocuSign', 'SignNow', 'eSignature'],
     clickableTags: {
       companies: ['Affiliated Medical Supplies'],
-      technologies: ['Monday CRM', 'Make', 'Google Docs API'],
+      technologies: ['Monday', 'Make', 'Google Workspace API'],
       locations: ['Atlanta, GA, USA', 'Georgia', 'USA']
     },
     results: [
@@ -295,11 +295,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Integration with factoring platform for data transfer',
       'Sending status notifications to Telegram or/and Slack'
     ],
-    technologies: ['GoogleDrive', 'GoogleSheets', 'Make', 'Monday CRM', 'Telegram', 'Slack'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Box', 'DropBox', 'Hubspot', 'Pipedrive', 'Zoho'],
+    technologies: ['Google Workspace API', 'Make', 'Monday', 'Telegram', 'Slack'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'Box', 'DropBox', 'HubSpot', 'Pipedrive', 'Zoho'],
     clickableTags: {
       companies: ['LaneWise'],
-      technologies: ['GoogleDrive', 'GoogleSheets', 'Make', 'Monday CRM'],
+      technologies: ['Google Workspace API', 'Make', 'Monday'],
       locations: ['State College, PA, USA', 'Pennsylvania', 'USA']
     },
     results: [
@@ -336,11 +336,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic status update in CRM after receiving all signatures',
       'Archiving signed documents in cloud storage'
     ],
-    technologies: ['DocuSign', 'Monday', 'Make', 'GoogleDrive'],
-    alternativeTechnologies: ['PandaDoc', 'SignNow', 'eSignatures', 'Pipedrive', 'HubSpot', 'Zoho', 'Zapier', 'n8n', 'Box', 'DropBox'],
+    technologies: ['DocuSign', 'Monday', 'Make', 'Google Workspace API'],
+    alternativeTechnologies: ['PandaDoc', 'SignNow', 'eSignature', 'Pipedrive', 'HubSpot', 'Zoho', 'Zapier', 'n8n', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['485 Logistics'],
-      technologies: ['DocuSign', 'Monday', 'Make', 'GoogleDrive'],
+      technologies: ['DocuSign', 'Monday', 'Make', 'Google Workspace API'],
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
@@ -378,7 +378,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic creation of tasks and client cards in CRM'
     ],
     technologies: ['JotForm', 'Make', 'Monday'],
-    alternativeTechnologies: ['Typeform', 'GoogleForms', 'Cognito', 'Zapier', 'n8n', 'Hubspot', 'Zoho', 'Pipedrive'],
+    alternativeTechnologies: ['Typeform', 'Google Forms', 'Cognito', 'Zapier', 'n8n', 'HubSpot', 'Zoho', 'Pipedrive'],
     clickableTags: {
       companies: ['New Age Cabinetry & Coatings'],
       technologies: ['JotForm', 'Make', 'Monday'],
@@ -408,8 +408,8 @@ export const allCaseStudies: CaseStudy[] = [
     functionCategory: 'crm-integrations',
     industry: 'Cabinetry & Coatings',
     solutionType: 'CRM Integrations',
-    description: 'Comprehensive integration of Monday CRM with multiple external systems for unified data management.',
-    shortDescription: 'Comprehensive integration of Monday CRM with multiple external systems for unified data management.',
+    description: 'Comprehensive integration of Monday with multiple external systems for unified data management.',
+    shortDescription: 'Comprehensive integration of Monday with multiple external systems for unified data management.',
     problem: 'Companies use multiple different services not connected to each other. Information is fragmented, managers spend time transferring data between systems, synchronization problems arise, frequent errors and confusion due to manual entry by people.',
     solution: [
       'Using Monday as a central hub for all business processes',
@@ -419,11 +419,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Automation of task creation and status updates',
       'Creation of database (e.g. licensing)'
     ],
-    technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API'],
-    alternativeTechnologies: ['Hubspot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'Telegram'],
+    technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API', 'AutoCAD'],
+    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'Telegram'],
     clickableTags: {
       companies: ['New Age Cabinetry & Coatings'],
-      technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API'],
+      technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API', 'AutoCAD'],
       locations: ['Phoenix, AZ, USA', 'Arizona', 'USA']
     },
     results: [
@@ -462,7 +462,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Analytics of communication effectiveness through dashboard creation'
     ],
     technologies: ['Monday', 'Make', 'Twilio', 'Slack', 'Email API'],
-    alternativeTechnologies: ['Hubspot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'OpenPhone', 'AirCall', 'Telegram'],
+    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'OpenPhone', 'AirCall', 'Telegram'],
     clickableTags: {
       companies: ['MC Keeper'],
       technologies: ['Monday', 'Make', 'Twilio', 'Slack'],
@@ -502,11 +502,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Customizable filters and data slices',
       'Automatic scheduled report distribution'
     ],
-    technologies: ['Monday', 'Google Data Studio', 'Make', 'API integrations'],
-    alternativeTechnologies: ['Hubspot', 'Zapier', 'n8n', 'Pipedrive', 'Zoho'],
+    technologies: ['Monday', 'Make'],
+    alternativeTechnologies: ['HubSpot', 'Zapier', 'n8n', 'Pipedrive', 'Zoho'],
     clickableTags: {
       companies: ['DreamLine'],
-      technologies: ['Monday', 'Google Data Studio', 'Make'],
+      technologies: ['Monday', 'Make'],
       locations: ['Vancouver, WA, USA', 'Washington', 'USA']
     },
     results: [
@@ -532,7 +532,7 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'car-hauling',
     functionCategory: 'industry-specific',
     industry: 'Car Hauling',
-    solutionType: 'Industry-Specific Products',
+    solutionType: 'Industry-Specific',
     description: 'Unified system for vehicle transportation companies including order management and payment control.',
     shortDescription: 'Unified system for vehicle transportation companies including order management and payment control.',
     problem: 'Companies engaged in vehicle transportation use disparate tools for order management, payment control, factoring, and calculations. This leads to data loss, payment delays, and inefficiency in organizing transportation.',
@@ -576,24 +576,24 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'cabinetry-coatings',
     functionCategory: 'industry-specific',
     industry: 'Cabinetry & Coatings',
-    solutionType: 'Industry-Specific Products',
+    solutionType: 'Industry-Specific',
     description: 'Centralized system for kitchen furniture manufacturing companies to manage orders, design, and production.',
     shortDescription: 'Centralized system for kitchen furniture manufacturing companies to manage orders, design, and production.',
     problem: 'Kitchen furniture manufacturing companies use disparate tools for order management, design, and production. This leads to errors in specifications, information loss, and delays in project completion.',
     solution: [
-      'Centralization of all data in Monday CRM',
+      'Centralization of all data in Monday',
       'CRM setup with custom template specifically for this industry (columns, boards, connects)',
-      'Integration of CabinetVision/AutoCAD with CRM for automatic specification transfer',
+      'Integration of CabinetVision with CRM for automatic specification transfer',
       'Automatic creation of production tasks',
       'Material tracking system and procurement automation',
       'Interactive dashboards for project status visualization',
       'Automated document flow (contracts, estimates, acts)'
     ],
-    technologies: ['Monday', 'CabinetVision', 'Make', 'GoogleSheets', 'QuickBooks'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'Stripe', 'PayPal', 'Bill'],
+    technologies: ['Monday', 'CabinetVision', 'Make', 'Google Workspace API', 'QuickBooks'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Stripe', 'PayPal', 'Bill'],
     clickableTags: {
       companies: ['AllWood Design'],
-      technologies: ['Monday', 'CabinetVision', 'Make', 'GoogleSheets'],
+      technologies: ['Monday', 'CabinetVision', 'Make', 'Google Workspace API'],
       locations: ['San Diego, CA, USA', 'California', 'USA']
     },
     results: [
@@ -620,7 +620,7 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'commercial-music',
     functionCategory: 'industry-specific',
     industry: 'Music Production',
-    solutionType: 'Industry-Specific Products',
+    solutionType: 'Industry-Specific',
     description: 'Centralized system for managing music assets, royalty calculations, and copyright control.',
     shortDescription: 'Centralized system for managing music assets, royalty calculations, and copyright control.',
     problem: 'Music labels face multiple manual processes and a variety of different tools: release management, royalty calculation, track marketing, license tracking happens on different websites and in different programs, which takes time away from creative work, reduces efficiency and engagement.',
@@ -633,11 +633,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Copyright control system',
       'End-to-end calculation of payments and rewards to vendors'
     ],
-    technologies: ['Monday', 'Make', 'GoogleSheets', 'Stripe', 'Bill'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'AirTable'],
+    technologies: ['Monday', 'Make', 'Google Workspace API', 'Stripe', 'Bill'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'AirTable'],
     clickableTags: {
       companies: ['SUQEAK E CLEAN STUDIOS'],
-      technologies: ['Monday', 'Make', 'GoogleSheets', 'Stripe'],
+      technologies: ['Monday', 'Make', 'Google Workspace API', 'Stripe'],
       locations: ['USA', 'Australia']
     },
     results: [
@@ -663,7 +663,7 @@ export const allCaseStudies: CaseStudy[] = [
     industryCategory: 'cabinetry-coatings',
     functionCategory: 'industry-specific',
     industry: 'Cabinetry & Coatings',
-    solutionType: 'Industry-Specific Products',
+    solutionType: 'Industry-Specific',
     description: 'Comprehensive solution for roofing companies with AI components for client communication and cost estimation.',
     shortDescription: 'Comprehensive solution for roofing companies with AI components for client communication and cost estimation.',
     problem: 'Roofing companies face difficulties in project management, cost estimation, resource planning, and client communication, leading to delays and budget overruns.',
@@ -675,11 +675,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic client notifications about work progress',
       'Warranty service management system'
     ],
-    technologies: ['Monday', 'Make', 'Google Workspace', 'Twilio', 'ElevenLabs', 'PlayHT'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'OpenAI', 'Claude', 'OpenPhone', 'AirCall'],
+    technologies: ['Monday', 'Make', 'Google Workspace API', 'Twilio', 'ElevenLabs', 'PlayHT'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'OpenAI', 'Claude', 'OpenPhone', 'AirCall'],
     clickableTags: {
       companies: ['Up-Struct LLC'],
-      technologies: ['Monday', 'Make', 'Google Workspace', 'Twilio'],
+      technologies: ['Monday', 'Make', 'Google Workspace API', 'Twilio'],
       locations: ['Lynnwood, WA, USA', 'Washington', 'USA']
     },
     results: [
@@ -718,7 +718,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Personalized recommendations based on client history'
     ],
     technologies: ['OpenAI', 'ElevenLabs', 'Twilio', 'Monday'],
-    alternativeTechnologies: ['Claude', 'OpenPhone', 'AirCall', 'Hubspot', 'Pipedrive', 'Zoho', 'Make', 'Zapier', 'n8n'],
+    alternativeTechnologies: ['Claude', 'OpenPhone', 'AirCall', 'HubSpot', 'Pipedrive', 'Zoho', 'Make', 'Zapier', 'n8n'],
     clickableTags: {
       companies: ['Up-Struct LLC'],
       technologies: ['OpenAI', 'ElevenLabs', 'Twilio'],
@@ -759,7 +759,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic summarization of information from different sources'
     ],
     technologies: ['OpenAI', 'Monday', 'Retool', 'Make'],
-    alternativeTechnologies: ['Claude', 'Hubspot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n'],
+    alternativeTechnologies: ['Claude', 'HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n'],
     results: [
       '90% reduction in information search time',
       'Fast adaptation of new employees',
@@ -794,11 +794,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Generation of payroll and automatic sending to payment systems (QuickBooks, Bill)',
       'Reports and visualization of calculations for transparency and control (Dashboards)'
     ],
-    technologies: ['Google Sheets', 'Make', 'Monday', 'Stripe'],
+    technologies: ['Google Workspace API', 'Make', 'Monday', 'Stripe'],
     alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'Bill', 'AirTable'],
     clickableTags: {
       companies: ['SUQEAK E CLEAN STUDIOS'],
-      technologies: ['Google Sheets', 'Make', 'Monday'],
+      technologies: ['Google Workspace API', 'Make', 'Monday'],
       locations: ['USA', 'Australia']
     },
     results: [
@@ -836,11 +836,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Integration with Google Sheets for event logging (+logging in Make)',
       'Sending SMS/Telegram alerts for especially important messages'
     ],
-    technologies: ['Slack', 'Make', 'Monday', 'Google Workspace', 'Jira', 'Twilio'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'Hubspot', 'Pipedrive', 'Zoho', 'Telegram', 'OpenPhone', 'AirCall'],
+    technologies: ['Slack', 'Make', 'Monday', 'Google Workspace API', 'Jira', 'Twilio'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Telegram', 'OpenPhone', 'AirCall'],
     clickableTags: {
       companies: ['MC Keeper'],
-      technologies: ['Slack', 'Make', 'Monday', 'Google Workspace'],
+      technologies: ['Slack', 'Make', 'Monday', 'Google Workspace API'],
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
@@ -878,7 +878,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Recording and automatic transcription of conversations using AI'
     ],
     technologies: ['Twilio', 'Monday', 'Make'],
-    alternativeTechnologies: ['AirCall', 'OpenPhone', 'Hubspot', 'Zoho', 'Pipedrive', 'Zapier', 'n8n', 'OpenAI', 'Claude'],
+    alternativeTechnologies: ['AirCall', 'OpenPhone', 'HubSpot', 'Zoho', 'Pipedrive', 'Zapier', 'n8n', 'OpenAI', 'Claude'],
     clickableTags: {
       companies: ['EclipseGroup'],
       technologies: ['Twilio', 'Monday', 'Make'],
@@ -1007,61 +1007,6 @@ export function getFeaturedCases(limit: number = 3): CaseStudy[] {
   return featuredCases.slice(0, limit);
 }
 
-/**
- * Маппинг для красивого отображения тегов
- */
-const tagDisplayNames: Record<string, string> = {
-  // Solution Types - все возможные варианты из твоих кейсов
-  'Custom Solutions': 'Custom',
-  'CRM Integrations': 'CRM',
-  'Documents & Web Forms': 'Documents',
-  'System Integrations': 'Systems',
-  'System & Infrastructure Integrations': 'Systems',
-  'AI-Powered Solutions': 'AI',
-  'Industry-Specific': 'Industry',
-  'Industry-Specific Products': 'Industry',
-  'Finance & Accounting': 'Finance',
-  
-  // Technologies
-  'Monday CRM': 'Monday',
-  'Monday': 'Monday',
-  'API integrations': 'API',
-  'QuickBooks': 'QB',
-  'Make': 'Make',
-  'Zapier': 'Zapier',
-  'OpenAI': 'OpenAI',
-  'Twilio': 'Twilio',
-  'Stripe': 'Stripe',
-  'Next.js': 'Next.js',
-  'TypeScript': 'TypeScript',
-  'DocuSign': 'DocuSign',
-  'JotForm': 'JotForm',
-  'Slack': 'Slack',
-  'Google Sheets': 'Sheets',
-  'GoogleSheets': 'Sheets',
-  'Google Workspace API': 'Google API',
-  'Google Data Studio': 'Analytics',
-  'Google Docs API': 'Google API',
-  'Google API': 'Google API',
-  'ElevenLabs': 'Voice AI',
-  'CabinetVision': 'CAD',
-  'GoogleDrive': 'Drive',
-  'Google Workspace': 'Google',
-  'PlayHT': 'Voice AI',
-  'Retool': 'Retool',
-  'OpenAI Whisper': 'AI Speech',
-  'Email API': 'Email',
-  'Jira': 'Jira',
-  'Bill': 'Bill',
-  'PandaDoc': 'PandaDoc'
-};
-
-/**
- * Функция для форматирования тегов для отображения
- */
-function formatTagForDisplay(tag: string): string {
-  return tagDisplayNames[tag] || tag;
-}
 
 /**
  * Преобразование кейса в формат карточки для featured секции
@@ -1076,10 +1021,7 @@ export function toCaseCardFormat(caseStudy: CaseStudy) {
     location: caseStudy.location,
     results: caseStudy.results,
     image: caseStudy.image,
-    tags: [
-      formatTagForDisplay(caseStudy.solutionType), 
-      ...caseStudy.technologies.slice(0, 2).map(formatTagForDisplay)
-    ],
+    tags: caseStudy.technologies.filter(tech => tech !== 'Google Workspace API').slice(0, 3),
     isSpecialCard: caseStudy.isSpecialCard
   };
 }

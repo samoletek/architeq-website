@@ -110,50 +110,13 @@ const MobileOptimizedCaseCard = ({ caseItem }: { caseItem: MobileCaseCardData })
 function createCaseCardTags(caseStudy: CaseStudy): string[] {
   const tags: string[] = [];
   
-  // Маппинг для коротких названий
-  const tagNames: Record<string, string> = {
-    // Solution Types
-    'Custom Solutions': 'Custom',
-    'CRM Integrations': 'CRM', 
-    'Documents & Web Forms': 'Documents',
-    'System & Infrastructure Integrations': 'Systems',
-    'AI-Powered Solutions': 'AI',
-    'Industry-Specific Products': 'Industry',
-    'Finance & Accounting': 'Finance',
-    
-    // Technologies
-    'Monday CRM': 'Monday',
-    'Monday': 'Monday',
-    'API integrations': 'API',
-    'QuickBooks': 'QB',
-    'Make': 'Make',
-    'Zapier': 'Zapier',
-    'OpenAI': 'OpenAI',
-    'Twilio': 'Twilio',
-    'Stripe': 'Stripe',
-    'Next.js': 'Next.js',
-    'TypeScript': 'TypeScript',
-    'DocuSign': 'DocuSign',
-    'JotForm': 'JotForm',
-    'Slack': 'Slack',
-    'Google Sheets': 'Sheets',
-    'GoogleSheets': 'Sheets',
-    'Google Workspace API': 'Google API',
-    'ElevenLabs': 'Voice AI',
-    'CabinetVision': 'CAD'
-  };
-
-  const formatTag = (tag: string): string => tagNames[tag] || tag;
-  
-  // Первый тег - тип решения + технологии
-  if (caseStudy.solutionType) {
-    tags.push(formatTag(caseStudy.solutionType));
-  }
-  
+  // Показываем только технологии (до 3 штук), исключая Google Workspace API
   if (caseStudy.technologies && Array.isArray(caseStudy.technologies) && caseStudy.technologies.length > 0) {
-    const techs = caseStudy.technologies.slice(0, 2);
+    const techs = caseStudy.technologies
+      .filter(tech => tech !== 'Google Workspace API')
+      .slice(0, 3);
     techs.forEach((tech: string) => {
-      tags.push(formatTag(tech));
+      tags.push(tech);
     });
   }
   

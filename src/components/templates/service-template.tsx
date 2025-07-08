@@ -38,6 +38,7 @@ export interface ServiceCaseStudy {
   company: string;
   description: string;
   results: string[];
+  technologies: string[];
 }
 
 export interface ServiceProcess {
@@ -228,7 +229,6 @@ export default function ServiceTemplate({
             title="Success Stories"
             subtitle="See how our solutions have helped businesses streamline operations and improve efficiency."
             caseStudies={caseStudies}
-            serviceId={serviceId}
           />
         </SectionAnimation>
       )}
@@ -1307,13 +1307,11 @@ function ProcessSection({
 function CaseStudiesSection({ 
   title, 
   subtitle, 
-  caseStudies, 
-  serviceId 
+  caseStudies 
 }: { 
   title: string; 
   subtitle: string; 
   caseStudies: ServiceCaseStudy[]; 
-  serviceId: string; 
 }) {
   const { ref, isVisible } = useScrollAnimation({
     threshold: 0.15,
@@ -1382,7 +1380,7 @@ function CaseStudiesSection({
                 description={caseStudy.description}
                 company={caseStudy.company}
                 results={caseStudy.results}
-                tags={[serviceId]}
+                tags={caseStudy.technologies}
                 href={`/cases/${caseStudy.id}`}
                 className="case-card-enhanced"
                 index={index}

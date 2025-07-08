@@ -352,7 +352,7 @@ export default function CRMIntegrationPage() {
           </>
         ),
         features: [
-          "Monday CRM",
+          "Monday",
           "HubSpot",
           "Salesforce",
           "Zoho CRM",
