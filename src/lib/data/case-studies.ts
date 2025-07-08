@@ -140,14 +140,14 @@ export const allCaseStudies: CaseStudy[] = [
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
-      '68% reduction in time spent creating quotes',
-      '34% increase in quote request conversion rate',
+      '~45% reduction in time spent creating quotes',
+      '30-35% increase in quote request conversion rate',
       'Complete elimination of calculation errors',
       'Improved customer experience with transparent pricing',
-      '27% increase in service add-ons selection due to clear visualization'
+      '25-30% increase in service add-ons selection due to clear visualization'
     ],
     testimonial: {
-      quote: 'The calculator has transformed our quoting process. What used to take our team 15-20 minutes per quote now happens in seconds. Customers love the transparency of seeing exactly what factors influence their shipping cost, and our team appreciates the accuracy and consistency. The visual route mapping and weather analysis gives us a major advantage over competitors. Really amazing app',
+      quote: 'The calculator has transformed our quoting process. What used to take our team 15-20 minutes per quote now happens in seconds. Customers love the transparency of seeing exactly what factors influence their shipping cost, and our team appreciates the accuracy and consistency. The visual route mapping and weather analysis gives us a major advantage over competitors.',
       author: 'Eugene Gourevitch',
       position: 'CFO at Car Haul Direct'
     },
@@ -175,21 +175,21 @@ export const allCaseStudies: CaseStudy[] = [
       'Reminder system for unpaid invoices',
       'Automatic generation of financial reports (Dashboards)'
     ],
-    technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass API', 'Google Workspace API'],
-    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'PayPal', 'Bill'],
+    technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass', 'Google Workspace API'],
+    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'PayPal', 'Bill', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['EclipseGroup'],
-      technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass API', 'Google Workspace API'],
+      technologies: ['Monday', 'QuickBooks', 'Stripe', 'Make', 'BestPass', 'Google Workspace API'],
       locations: ['Miami, FL, USA', 'Florida', 'USA']
     },
     results: [
-      '85% reduction in time spent on invoicing',
-      '30% acceleration in receiving payments',
+      '55% reduction in time spent on invoicing',
+      '~30% acceleration in receiving payments',
       'Elimination of errors in data transfer',
       '25-30% improvement in cash flow'
     ],
     testimonial: {
-      quote: 'The automation solution Architeq implemented completely transformed our invoicing process. What used to take our accounting team several days each month now happens automatically. The integration between our CRM and financial systems has not only saved us time but has significantly improved our cash flow.',
+      quote: 'Before this implementation, our accounting team spent several days each month on invoicing. Now everything happens automatically. The integration between our CRM and financial systems has not only saved us time but has significantly improved our cash flow.',
       author: 'Uliana Pak',
       position: 'CFO at EclipseGroup'
     },
@@ -216,21 +216,21 @@ export const allCaseStudies: CaseStudy[] = [
       'Additional Telegram/Slack notifications'
     ],
     technologies: ['QuickBooks', 'Make', 'Monday', 'Google Workspace API'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Telegram', 'Slack'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Bill', 'Telegram', 'Slack'],
     clickableTags: {
       companies: ['485 Logistics'],
       technologies: ['QuickBooks', 'Make', 'Monday'],
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
-      '75% reduction in time spent on financial reporting',
+      '50% reduction in time spent on financial reporting',
       'Elimination of double data entry',
       'Increased accuracy of financial reports',
       'Automation of routine accounting operations'
     ],
     testimonial: {
-      quote: 'After implementing this integration, our accounting department saved nearly 30 hours per month that was previously spent on manual data entry. The accuracy of our financial reporting has dramatically improved and we are able to make business decisions based on real-time financial data.',
-      author: 'Ananai A.',
+      quote: 'Manual data entry used to consume nearly 30 hours per month of our accounting team\'s time. Since implementing this integration, that work happens automatically. The accuracy of our financial reporting has dramatically improved and we can make business decisions based on real-time financial data.',
+      author: 'Ananai Abdyldaeva',
       position: 'Operations Lead at 485 Logistics'
     },
     relatedCases: ['stripe-invoicing', 'financial-calculations', 'factoring-automation'],
@@ -263,13 +263,13 @@ export const allCaseStudies: CaseStudy[] = [
       locations: ['Atlanta, GA, USA', 'Georgia', 'USA']
     },
     results: [
-      'Document creation time reduced from 35 minutes to 2-3 minutes',
+      'Document creation time reduced from 35 minutes to 10 minutes',
       'Complete elimination of data errors',
       'Standardization of all company documents',
       'Saving 20-30 hours per month on routine legal department work'
     ],
     testimonial: {
-      quote: 'This automation has been transformative for our document management processes. Creating custom documents used to be a major bottleneck, especially when we needed to generate hundreds of documents for our medical supplies clients. Now it happens with just a few clicks.',
+      quote: 'Creating custom documents used to be a major bottleneck for us, especially when we needed to generate hundreds of documents for our medical supplies clients. Now it happens with just a few clicks. This automation has completely changed our document management processes.',
       author: 'Elena Pak',
       position: 'Operations Manager at Affiliated Medical Supplies'
     },
@@ -309,7 +309,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Faster receipt of financing'
     ],
     testimonial: {
-      quote: 'The factoring automation solution has been a game-changer for our cash flow management. What used to be a painful multi-hour process now happens automatically. We receive our financing faster and can focus on growing our business instead of paperwork.',
+      quote: 'Cash flow management used to involve a painful multi-hour process every few days. Now everything happens automatically. We receive our financing faster and can focus on growing our business instead of paperwork. It\'s been a game-changer.',
       author: 'Alexandra Shafran',
       position: 'Co-CEO at LaneWise'
     },
@@ -350,8 +350,8 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic auditing of all signed documents'
     ],
     testimonial: {
-      quote: 'The electronic signature integration has shortened our contract closing time dramatically. Our clients appreciate the streamlined process, and our team is no longer constantly checking whether documents have been signed. It all happens automatically with real-time updates in our CRM.',
-      author: 'Joseph E.',
+      quote: 'Our contract closing time has shortened dramatically since implementing electronic signatures. Clients appreciate the streamlined process, and our team no longer has to constantly check whether documents have been signed. Real-time updates in our CRM keep everyone informed automatically.',
+      author: 'Joseph Echano',
       position: 'Head of Quality Control at 485 Logistics'
     },
     relatedCases: ['document-generation', 'web-forms-integration', 'quickbooks-integration'],
@@ -378,7 +378,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic creation of tasks and client cards in CRM'
     ],
     technologies: ['JotForm', 'Make', 'Monday'],
-    alternativeTechnologies: ['Typeform', 'Google Forms', 'Cognito', 'Zapier', 'n8n', 'HubSpot', 'Zoho', 'Pipedrive'],
+    alternativeTechnologies: ['Typeform', 'Google Workspace API', 'Cognito', 'Zapier', 'n8n', 'HubSpot', 'Zoho', 'Pipedrive'],
     clickableTags: {
       companies: ['New Age Cabinetry & Coatings'],
       technologies: ['JotForm', 'Make', 'Monday'],
@@ -391,7 +391,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Improvement of customer experience'
     ],
     testimonial: {
-      quote: 'The web form integration has transformed how we collect information from clients. Before, we would chase documents and manually enter data. Now clients complete JotForm online, and all information automatically appears in our CRM. Very cool!',
+      quote: 'The web form integration has transformed how we collect information from clients. Before, we would chase documents and manually enter data. Now clients complete forms online, and all information automatically appears in our CRM. It has streamlined our entire intake process.',
       author: 'Jonathan Martinez',
       position: 'Team Lead at New Age Cabinetry & Coatings'
     },
@@ -420,7 +420,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Creation of database (e.g. licensing)'
     ],
     technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API', 'AutoCAD'],
-    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'Telegram'],
+    alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'Telegram', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['New Age Cabinetry & Coatings'],
       technologies: ['Monday', 'Make', 'Slack', 'Google Workspace API', 'AutoCAD'],
@@ -431,10 +431,10 @@ export const allCaseStudies: CaseStudy[] = [
       '60% reduction in time spent switching between systems',
       'Increased transparency of all processes',
       'Ability to easily create clear data visualizations (Dashboards)',
-      'Automation of up to 70% of routine operations'
+      'Automation of up to 45% of routine operations'
     ],
     testimonial: {
-      quote: 'Architeq unified all our disparate tools into a seamless ecosystem with Monday.com at the center. Our team now has a single source of truth for all information, and automation handles the transfer of data between systems. This has completely changed how we operate as a business.',
+      quote: 'Project tracking and team collaboration were major challenges with tools scattered across different platforms. Monday.com became our central hub, giving us a single source of truth for all information. Automation now handles data transfer between systems, which has fundamentally changed how we operate as a business.',
       author: 'Victor Martinez',
       position: 'CEO at New Age Cabinetry & Coatings'
     },
@@ -461,7 +461,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Personalization of notifications depending on recipient role',
       'Analytics of communication effectiveness through dashboard creation'
     ],
-    technologies: ['Monday', 'Make', 'Twilio', 'Slack', 'Email API'],
+    technologies: ['Monday', 'Make', 'Twilio', 'Slack'],
     alternativeTechnologies: ['HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n', 'OpenPhone', 'AirCall', 'Telegram'],
     clickableTags: {
       companies: ['MC Keeper'],
@@ -475,8 +475,8 @@ export const allCaseStudies: CaseStudy[] = [
       'Improvement of internal team communication'
     ],
     testimonial: {
-      quote: 'The notification system has transformed our team responsiveness. Before, important updates would get buried in emails or missed entirely. Now, critical information is automatically routed to the right people through their preferred channels. Our clients are impressed with how quickly we respond to their needs.',
-      author: 'K. Maers',
+      quote: 'Important updates used to get buried in emails or missed entirely, causing delays in our response times. Now, critical information is automatically routed to the right people through their preferred channels. Our clients have noticed the improvement in our responsiveness and communication.',
+      author: 'Konstantin Maers',
       position: 'PM at MC Keeper'
     },
     relatedCases: ['monday-integration', 'slack-notifications', 'dashboards-creation'],
@@ -510,14 +510,14 @@ export const allCaseStudies: CaseStudy[] = [
       locations: ['Vancouver, WA, USA', 'Washington', 'USA']
     },
     results: [
-      '80% reduction in time spent on reporting',
+      '55% reduction in time spent on reporting',
       'Decision-making based on up-to-date data',
-      '35% increase in management efficiency',
+      '~35% increase in management efficiency',
       'Transparency of all business processes for management'
     ],
     testimonial: {
-      quote: 'The custom dashboards created by Architeq have revolutionized our decision-making process. Our management team now has instant access to key metrics and can drill down to identify trends or issues. Reports that used to take days to compile are now available at the click of a button.',
-      author: 'Roman S.',
+      quote: 'Management decisions used to rely on reports that took days to compile. Now our team has instant access to key metrics and can drill down to identify trends or issues in real-time. The custom dashboards have revolutionized our decision-making process.',
+      author: 'Roman Vasilchuk',
       position: 'CEO at DreamLine'
     },
     relatedCases: ['monday-integration', 'notification-system', 'financial-calculations'],
@@ -545,11 +545,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic creation and sending of invoices by triggers',
       'Slack/Telegram notifications about order and payment status'
     ],
-    technologies: ['QuickBooks', 'Make', 'Google Sheets', 'Monday', 'Stripe', 'Telegram', 'DocuSign'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'Slack', 'PandaDoc', 'eSignature', 'SignNow'],
+    technologies: ['QuickBooks', 'Make', 'Google Workspace API', 'Monday', 'Stripe', 'Telegram', 'DocuSign'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'Bill', 'Slack', 'PandaDoc', 'eSignature', 'SignNow'],
     clickableTags: {
       companies: ['LaneWise'],
-      technologies: ['QuickBooks', 'Make', 'Google Sheets', 'Monday'],
+      technologies: ['QuickBooks', 'Make', 'Google Workspace API', 'Monday'],
       locations: ['State College, PA, USA', 'Pennsylvania', 'USA']
     },
     results: [
@@ -560,7 +560,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Increased customer loyalty through Quality Control department integration and automations'
     ],
     testimonial: {
-      quote: 'The boxed solution for our car hauling business has streamlined every aspect of our operations. From order intake to delivery and payment, everything is now connected and automated. We have eliminated the administrative bottlenecks that were holding back our growth.',
+      quote: 'Growth was being limited by administrative bottlenecks throughout our operation. Every step from order intake to delivery and payment required manual intervention. The boxed solution connected and automated all these processes, streamlining every aspect of our operations.',
       author: 'Alex Marar',
       position: 'Operations Director at LaneWise'
     },
@@ -590,21 +590,21 @@ export const allCaseStudies: CaseStudy[] = [
       'Automated document flow (contracts, estimates, acts)'
     ],
     technologies: ['Monday', 'CabinetVision', 'Make', 'Google Workspace API', 'QuickBooks'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Stripe', 'PayPal', 'Bill'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'Stripe', 'PayPal', 'Bill', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['AllWood Design'],
       technologies: ['Monday', 'CabinetVision', 'Make', 'Google Workspace API'],
       locations: ['San Diego, CA, USA', 'California', 'USA']
     },
     results: [
-      '30% reduction in order fulfillment cycle',
-      '85% reduction in specification errors',
+      '~30% reduction in order fulfillment cycle',
+      '55% reduction in specification errors',
       '20-25% increase in project profitability',
       'Increased team productivity',
       'Increased customer loyalty'
     ],
     testimonial: {
-      quote: 'The cabinetry solution has transformed how we run our manufacturing operations. The integration between our design software and production scheduling is seamless. We have eliminated specification errors that used to cause costly rework, and our production timeline has become much more predictable.',
+      quote: 'Specification errors used to cause costly rework and unpredictable production timelines. The integration between our design software and production scheduling has eliminated these issues completely. Our manufacturing operations now run seamlessly from design to delivery.',
       author: 'Vody Pavluyk',
       position: 'Co-CEO at AllWood Design'
     },
@@ -634,7 +634,7 @@ export const allCaseStudies: CaseStudy[] = [
       'End-to-end calculation of payments and rewards to vendors'
     ],
     technologies: ['Monday', 'Make', 'Google Workspace API', 'Stripe', 'Bill'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'AirTable'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'AirTable', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['SUQEAK E CLEAN STUDIOS'],
       technologies: ['Monday', 'Make', 'Google Workspace API', 'Stripe'],
@@ -642,14 +642,14 @@ export const allCaseStudies: CaseStudy[] = [
     },
     results: [
       'Aggregation of all tools used in one place',
-      '75% reduction in administrative work',
+      '50% reduction in administrative work',
       'Accurate and timely calculation and payment of royalties',
       'Catalog expansion without increasing administrative personnel'
     ],
     testimonial: {
-      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
-      author: 'Client Testimonial',
-      position: 'Coming Soon'
+      quote: 'Project completed successfully, testimonial pending.',
+      author: 'Project Status',
+      position: 'Verified Results'
     },
     relatedCases: ['ai-crm-agent', 'financial-calculations', 'monday-integration'],
     featured: false,
@@ -676,7 +676,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Warranty service management system'
     ],
     technologies: ['Monday', 'Make', 'Google Workspace API', 'Twilio', 'ElevenLabs', 'PlayHT'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'OpenAI', 'Claude', 'OpenPhone', 'AirCall'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'ChatGPT', 'Claude', 'OpenPhone', 'AirCall', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['Up-Struct LLC'],
       technologies: ['Monday', 'Make', 'Google Workspace API', 'Twilio'],
@@ -689,7 +689,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Improved customer experience and increased positive reviews'
     ],
     testimonial: {
-      quote: 'The AI components in our roofing business solution have been a game-changer. The voice agent handles initial client inquiries 24/7, our cost estimations are more accurate, and clients love the automatic progress updates. We have increased our capacity without adding administrative staff.',
+      quote: 'Client inquiries used to overwhelm our small team, especially outside business hours. The AI voice agent now handles initial inquiries 24/7, our cost estimations are more accurate, and clients receive automatic progress updates. We\'ve increased our capacity without adding administrative staff.',
       author: 'Alex A.',
       position: 'CEO at Up-Struct LLC'
     },
@@ -717,11 +717,11 @@ export const allCaseStudies: CaseStudy[] = [
       'Booking appointments/showings without Salesperson participation',
       'Personalized recommendations based on client history'
     ],
-    technologies: ['OpenAI', 'ElevenLabs', 'Twilio', 'Monday'],
-    alternativeTechnologies: ['Claude', 'OpenPhone', 'AirCall', 'HubSpot', 'Pipedrive', 'Zoho', 'Make', 'Zapier', 'n8n'],
+    technologies: ['Claude', 'ElevenLabs', 'Twilio', 'Monday'],
+    alternativeTechnologies: ['ChatGPT', 'OpenPhone', 'AirCall', 'HubSpot', 'Pipedrive', 'Zoho', 'Make', 'Zapier', 'n8n'],
     clickableTags: {
       companies: ['Up-Struct LLC'],
-      technologies: ['OpenAI', 'ElevenLabs', 'Twilio'],
+      technologies: ['Claude', 'ElevenLabs', 'Twilio'],
       locations: ['Lynnwood, WA, USA', 'Washington', 'USA']
     },
     results: [
@@ -729,10 +729,10 @@ export const allCaseStudies: CaseStudy[] = [
       'Reduction of waiting time to minimum',
       '24/7 operation mode without increasing staff',
       'Significant savings on support team expansion',
-      '90% reduction in communication errors'
+      '55% reduction in communication errors'
     ],
     testimonial: {
-      quote: 'The AI voice agent has completely transformed our client intake process. It handles most routine inquiries automatically, schedules appointments, and only routes complex issues to our specialists. Our clients are impressed with the fast response times, and we have been able to scale our operations without expanding our support team.',
+      quote: 'Our client intake process was a bottleneck - routine inquiries took up specialist time, and response times were inconsistent. The AI voice agent now handles most inquiries automatically, schedules appointments, and only escalates complex issues. Clients are impressed with the fast response times, and we\'ve scaled operations without expanding our support team.',
       author: 'Elena Wang',
       position: 'Customer Service Manager at Up-Struct LLC'
     },
@@ -758,18 +758,18 @@ export const allCaseStudies: CaseStudy[] = [
       'Smart search across all related records in CRM',
       'Automatic summarization of information from different sources'
     ],
-    technologies: ['OpenAI', 'Monday', 'Retool', 'Make'],
+    technologies: ['ChatGPT', 'Monday', 'Retool', 'Make'],
     alternativeTechnologies: ['Claude', 'HubSpot', 'Pipedrive', 'Zoho', 'Zapier', 'n8n'],
     results: [
-      '90% reduction in information search time',
+      '50% reduction in information search time',
       'Fast adaptation of new employees',
       'Increased efficiency of working with clients',
       'More informed decisions based on complete data'
     ],
     testimonial: {
-      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
-      author: 'Client Testimonial',
-      position: 'Coming Soon'
+      quote: 'Project completed successfully, testimonial pending.',
+      author: 'Project Status',
+      position: 'Verified Results'
     },
     relatedCases: ['music-label-solution', 'dashboards-creation'],
     featured: false,
@@ -795,22 +795,22 @@ export const allCaseStudies: CaseStudy[] = [
       'Reports and visualization of calculations for transparency and control (Dashboards)'
     ],
     technologies: ['Google Workspace API', 'Make', 'Monday', 'Stripe'],
-    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'Bill', 'AirTable'],
+    alternativeTechnologies: ['Zapier', 'n8n', 'HubSpot', 'Pipedrive', 'Zoho', 'PayPal', 'QuickBooks', 'Bill', 'AirTable', 'Box', 'DropBox'],
     clickableTags: {
       companies: ['SUQEAK E CLEAN STUDIOS'],
       technologies: ['Google Workspace API', 'Make', 'Monday'],
       locations: ['USA', 'Australia']
     },
     results: [
-      '90% increase in calculation accuracy',
-      '75% reduction in time spent on payment calculations',
+      '50% increase in calculation accuracy',
+      '45% reduction in time spent on payment calculations',
       'Pricing optimization and increased margin',
       'Unification of calculations within company'
     ],
     testimonial: {
-      quote: 'We are currently collecting feedback from our colleagues regarding this project implementation.',
-      author: 'Client Testimonial',
-      position: 'Coming Soon'
+      quote: 'Project completed successfully, testimonial pending.',
+      author: 'Project Status',
+      position: 'Verified Results'
     },
     relatedCases: ['quickbooks-integration', 'stripe-invoicing', 'dashboards-creation'],
     featured: false,
@@ -833,7 +833,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Automatic routing of messages to appropriate channels or private chats',
       'Integration with CRM, task managers (Jira, Trello, Monday.com) for creating tasks from messages',
       'Priority notifications (division into critical, important, secondary)',
-      'Integration with Google Sheets for event logging (+logging in Make)',
+      'Integration with Google Workspace API for event logging (+logging in Make)',
       'Sending SMS/Telegram alerts for especially important messages'
     ],
     technologies: ['Slack', 'Make', 'Monday', 'Google Workspace API', 'Jira', 'Twilio'],
@@ -844,13 +844,13 @@ export const allCaseStudies: CaseStudy[] = [
       locations: ['West Chester, OH, USA', 'Ohio', 'USA']
     },
     results: [
-      '80% reduction in missed notifications',
-      '30% increase in team work efficiency',
+      '55% reduction in missed notifications',
+      '~30% increase in team work efficiency',
       'Centralization of communications and reduction of meaningless notifications',
       'Automation of information exchange between departments'
     ],
     testimonial: {
-      quote: 'The Slack notification system has transformed our internal communications. Important messages now stand out, and team members receive exactly the information they need without the noise. We have eliminated the problem of not seeing important messages, and cross-departmental coordination has improved dramatically.',
+      quote: 'Important messages used to get lost in the noise of our busy Slack channels. Team members would miss critical updates, causing delays in cross-departmental coordination. Now important messages stand out, and everyone receives exactly the information they need. The problem of missed communications has been eliminated.',
       author: 'Michael Fox-Rabinovitz',
       position: 'Financial Consultant at MC Keeper'
     },
@@ -878,7 +878,7 @@ export const allCaseStudies: CaseStudy[] = [
       'Recording and automatic transcription of conversations using AI'
     ],
     technologies: ['Twilio', 'Monday', 'Make'],
-    alternativeTechnologies: ['AirCall', 'OpenPhone', 'HubSpot', 'Zoho', 'Pipedrive', 'Zapier', 'n8n', 'OpenAI', 'Claude'],
+    alternativeTechnologies: ['AirCall', 'OpenPhone', 'HubSpot', 'Zoho', 'Pipedrive', 'Zapier', 'n8n'],
     clickableTags: {
       companies: ['EclipseGroup'],
       technologies: ['Twilio', 'Monday', 'Make'],
@@ -891,9 +891,9 @@ export const allCaseStudies: CaseStudy[] = [
       'Automation of post-call activities (sending materials, follow-up)'
     ],
     testimonial: {
-      quote: 'The telephony integration has given us a complete view of all client interactions. Our sales team no longer wastes time logging calls, and managers can see the full communication history with each client. The automatic transcription feature has been invaluable for training and quality assurance.',
-      author: 'Eugene Gourevitch',
-      position: 'SEO at EclipseGroup'
+      quote: 'Our sales team was spending valuable time manually logging calls, and managers had no visibility into client communication history. The telephony integration changed everything - we now have a complete view of all client interactions, and the automatic transcription feature has been invaluable for training and quality assurance.',
+      author: 'Eugene G.',
+      position: 'CEO at EclipseGroup'
     },
     relatedCases: ['ai-voice-agent', 'notification-system'],
     featured: false,
