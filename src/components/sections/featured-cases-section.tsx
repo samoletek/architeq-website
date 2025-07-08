@@ -52,7 +52,7 @@ function SimpleFeaturedCard({ caseItem }: { caseItem: ReturnType<typeof toCaseCa
                   <span 
                     className="text-[10px] text-light-gray leading-relaxed"
                     dangerouslySetInnerHTML={{
-                      __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                      __html: result.replace(/(~?\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                     }}
                   />
                 </li>

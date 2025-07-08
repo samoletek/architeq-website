@@ -123,9 +123,11 @@ export default function CaseStudyTemplate({ caseStudy, relatedCases }: CaseStudy
       }
       
       // Percentage-based results get special treatment
-      const percentMatch = result.match(/(\d+)%/);
+      const percentMatch = result.match(/(~?\d+(?:-\d+)?)%/);
       if (percentMatch) {
-        const percent = parseInt(percentMatch[1]);
+        // Extract the numeric part, handling ~ and ranges
+        const numericPart = percentMatch[1].replace(/[~-]/g, '');
+        const percent = parseInt(numericPart);
         if (percent >= 50) {
           return getUniqueLabel('Major Improvement', ['Significant Gain', 'Substantial Progress', 'High Impact']);
         } else {

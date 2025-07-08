@@ -94,7 +94,7 @@ function SimpleMobileCard({
                 <span 
                   className="text-[10px] text-light-gray leading-relaxed"
                   dangerouslySetInnerHTML={{
-                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                    __html: result.replace(/(~?\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                   }}
                 />
               </li>
@@ -295,7 +295,7 @@ function EnhancedDesktopCard({
                     isHovered ? "text-white" : "text-light-gray"
                   )} 
                   dangerouslySetInnerHTML={{ 
-                    __html: result.replace(/(\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
+                    __html: result.replace(/(~?\d+(?:-\d+)?%|\d+x|\d+\.\d+x|\d+ times)/g, '<span class="text-secondary">$1</span>')
                   }} />
                 </li>
               ))}
