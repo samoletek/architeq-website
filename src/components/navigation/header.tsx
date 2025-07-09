@@ -195,7 +195,7 @@ export default function Header({
               href="/" 
               className="block group"
             >
-              <ArchiteqLogo size="small" disableHover={isMobile} />
+              <ArchiteqLogo size="small" />
             </Link>
           </div>
 
@@ -365,7 +365,7 @@ export default function Header({
                     className="block"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <ArchiteqLogo size="small" disableHover={true} />
+                    <ArchiteqLogo size="small" />
                   </Link>
                   <button 
                     className="text-white/60 hover:text-white p-2"

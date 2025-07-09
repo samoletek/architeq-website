@@ -1,12 +1,13 @@
 // src/components/sections/testimonials-section.tsx
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils/utils';
 import { ImageWithFallback } from '@/components/ui/image-with-fallback';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { SectionAnimation } from '@/components/ui/section-animation';
+import { allCaseStudies } from '@/lib/data/case-studies';
 
 // Интерфейс для данных отзыва
 export interface Testimonial {
@@ -64,33 +65,52 @@ const highlightKeyPhrases = (text: string, phrases: string[] = []) => {
   return <span dangerouslySetInnerHTML={{ __html: highlightedText }} />;
 };
 
-// Данные для отзывов по умолчанию
-const defaultTestimonials: Testimonial[] = [
-  {
-    id: 1,
-    quote: "We automated our full invoicing cycle — what used to take days now runs seamlessly. The result? Faster cash flow and zero manual effort.",
-    author: "Uliana Pak",
-    title: "CFO at EclipseGroup",
-    image: "/images/testimonials/alex-johnson.jpg",
-    highlightedPhrases: ["full invoicing cycle", "used to take days"]
-  },
-  {
-    id: 2,
-    quote: "Thanks to Architeq's custom AI agent, we handle 70% more client inquiries without expanding our team — faster responses, happier customers.",
-    author: "Alexandr Alexeyev",
-    title: "CEO at Up-Struct LLC",
-    image: "/images/testimonials/maria-rodriguez.jpg",
-    highlightedPhrases: ["AI agent", "faster responses", "happier customers"]
-  },
-  {
-    id: 3,
-    quote: "Their industry-tailored automation eliminated document errors and sped up our entire logistics workflow. Total game changer.",
-    author: "Anastasiia Trokhymchuk",
-    title: "Legal Officer at LaneWise",
-    image: "/images/testimonials/david-chen.jpg",
-    highlightedPhrases: ["sped up our entire logistics workflow"]
-  },
-];
+// Функция для получения отзывов из базы данных кейсов
+function getTestimonialsFromCaseStudies(): Testimonial[] {
+  return allCaseStudies
+    .filter(caseStudy => caseStudy.testimonial && !caseStudy.isSpecialCard)
+    .map(caseStudy => ({
+      id: caseStudy.id,
+      quote: caseStudy.testimonial!.quote,
+      author: caseStudy.testimonial!.author,
+      title: caseStudy.testimonial!.position,
+      company: caseStudy.company,
+      image: `/images/testimonials/${caseStudy.id}.jpg`,
+      // Автоматически извлекаем ключевые фразы из отзыва
+      highlightedPhrases: extractKeyPhrasesFromTestimonial(caseStudy.testimonial!.quote)
+    }))
+    .slice(0, 6); // Ограничиваем количество отзывов
+}
+
+// Функция для извлечения ключевых фраз из отзыва
+function extractKeyPhrasesFromTestimonial(quote: string): string[] {
+  const phrases: string[] = [];
+  
+  // Ищем специфичные фразы в отзывах
+  const keyPhrasePatterns = [
+    /([\w\s]{10,40}(?:automation|automated|streamlined|optimized|improved|enhanced)[\w\s]{0,20})/gi,
+    /([\w\s]{10,40}(?:reduced|eliminated|faster|increased|saved)[\w\s]{0,20})/gi,
+    /([\w\s]{10,40}(?:efficiency|productivity|workflow|process)[\w\s]{0,20})/gi,
+    /([\w\s]{10,40}(?:game changer|transformed|revolutionized|breakthrough)[\w\s]{0,20})/gi,
+  ];
+  
+  keyPhrasePatterns.forEach(pattern => {
+    const matches = quote.match(pattern);
+    if (matches) {
+      matches.forEach(match => {
+        const cleaned = match.trim().replace(/^[\w\s]*?\b/, '').replace(/\b[\w\s]*?$/, '').trim();
+        if (cleaned.length > 5 && cleaned.length < 50) {
+          phrases.push(cleaned);
+        }
+      });
+    }
+  });
+  
+  return phrases.slice(0, 3); // Ограничиваем количество выделенных фраз
+}
+
+// Получаем отзывы из базы данных по умолчанию
+const defaultTestimonials = getTestimonialsFromCaseStudies();
 
 export default function TestimonialsSection({
   testimonials = defaultTestimonials,
@@ -107,9 +127,11 @@ export default function TestimonialsSection({
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const { isMobile, isTablet } = useDeviceDetection();
   const testimonialsCount = testimonials.length;
   const sectionRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   
   // Функция для перехода к следующему отзыву
   const nextTestimonial = useCallback(() => {
@@ -121,14 +143,30 @@ export default function TestimonialsSection({
     setActiveIndex((prev) => (prev - 1 + testimonialsCount) % testimonialsCount);
   }, [testimonialsCount]);
 
-  // Автопереключение
+  // Отслеживание высоты контента для плавного перехода (только для десктопа)
+  useLayoutEffect(() => {
+    if (!isMobile && contentRef.current) {
+      const updateHeight = () => {
+        if (contentRef.current) {
+          setContainerHeight(contentRef.current.scrollHeight);
+        }
+      };
+      
+      updateHeight();
+      const timeout = setTimeout(updateHeight, 100);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [activeIndex, isMobile]);
+
+  // Автопереключение (только на десктопе)
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || isMobile) return;
     
     const interval = setInterval(nextTestimonial, autoplaySpeed);
     
     return () => clearInterval(interval);
-  }, [isPlaying, nextTestimonial, autoplaySpeed]);
+  }, [isPlaying, nextTestimonial, autoplaySpeed, isMobile]);
 
   // Обработчики для паузы при наведении
   const handleMouseEnter = () => setIsPlaying(false);
@@ -386,20 +424,28 @@ export default function TestimonialsSection({
         {/* Carousel в стиле case-study-template */}
         <div className={cn("relative mx-auto", maxWidthClass)}>
           <div className="relative flex flex-col items-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.8 }}
-                className="max-w-4xl mx-auto text-center mb-12"
-              >
+            <div 
+              className="w-full max-w-4xl mx-auto text-center mb-12 overflow-hidden"
+              style={!isMobile ? { 
+                height: containerHeight ? `${containerHeight}px` : 'auto',
+                transition: 'height 0.4s ease-in-out'
+              } : {}}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  ref={contentRef}
+                  initial={{ opacity: 0, y: isMobile ? 10 : 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: isMobile ? -10 : -30 }}
+                  transition={{ duration: isMobile ? 0.3 : 0.6 }}
+                  className="w-full"
+                >
                 {/* Quote Icon */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, scale: 0.5 }}
+                  animate={isMobile ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+                  transition={{ duration: isMobile ? 0.2 : 0.6, delay: isMobile ? 0 : 0.2 }}
                   className="w-16 h-16 rounded-full bg-[#B0FF74]/10 flex items-center justify-center mx-auto mb-8"
                 >
                   <svg
@@ -414,9 +460,9 @@ export default function TestimonialsSection({
 
                 {/* Quote */}
                 <motion.blockquote
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  animate={isMobile ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  transition={{ duration: isMobile ? 0.2 : 0.8, delay: isMobile ? 0.1 : 0.4 }}
                   className="text-lg md:text-xl font-light text-white/90 italic leading-relaxed mb-8"
                 >
                   <span>&ldquo;</span>
@@ -428,9 +474,9 @@ export default function TestimonialsSection({
 
                 {/* Author */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
+                  initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
+                  animate={isMobile ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                  transition={{ duration: isMobile ? 0.2 : 0.6, delay: isMobile ? 0.2 : 0.6 }}
                   className="flex flex-col items-center"
                 >
                   <div className="w-1 h-12 bg-[#B0FF74] rounded-full mb-4"></div>
@@ -443,6 +489,7 @@ export default function TestimonialsSection({
                 </motion.div>
               </motion.div>
             </AnimatePresence>
+            </div>
             
             {/* Навигационные точки */}
             {testimonials.length > 1 && (

@@ -224,10 +224,10 @@ export default function BoxedSolutionsPage() {
                   ].map((industry, index) => (
                     <div 
                       key={index}
-                      className="group p-4 rounded-lg border border-primary/20 hover:border-primary/40 transition-all duration-300 cursor-default bg-white/5 hover:bg-white/10"
+                      className="group p-4 rounded-lg border border-primary/20 md:hover:border-primary/40 transition-all duration-300 cursor-default bg-white/5 md:hover:bg-white/10"
                     >
                       <div>
-                        <h4 className="text-white font-semibold text-sm group-hover:text-secondary transition-colors duration-300">
+                        <h4 className="text-white font-semibold text-sm md:group-hover:text-secondary transition-colors duration-300">
                           {industry.name}
                         </h4>
                         <p className="text-light-gray text-xs mt-1 leading-relaxed">

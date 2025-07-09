@@ -199,9 +199,8 @@ export function MobileFiltersPanel({
         onClick={onToggle}
         className={cn(
           "w-full flex items-center justify-between p-4 rounded-lg border transition-all duration-200",
-          isOpen 
-            ? "bg-primary/10 border-primary/40 text-white" 
-            : "bg-dark-gray/80 border-medium-gray/40 text-light-gray hover:text-white hover:border-medium-gray/60",
+          "bg-dark-gray/80 border-medium-gray/40 text-light-gray hover:text-white hover:border-medium-gray/60",
+          isOpen && "bg-primary/10 border-primary/40 text-white",
           className
         )}
       >

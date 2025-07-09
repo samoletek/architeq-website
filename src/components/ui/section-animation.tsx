@@ -88,18 +88,10 @@ export function SectionAnimation({
   // Проверяем, должна ли анимация быть включена
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
   
-  // Состояние для отслеживания клиентского рендеринга
-  const [isMounted, setIsMounted] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
   
   // Отслеживание предыдущего состояния видимости для детектирования входа в область видимости
   const prevInViewRef = useRef(false);
-  
-  // Задержка для предотвращения мигания при гидратации
-  useEffect(() => {
-    // Убираем задержку для предотвращения FOUC
-    setIsMounted(true);
-  }, []);
   
   useEffect(() => {
     // Проверяем настройки пользователя для анимаций
@@ -191,23 +183,24 @@ export function SectionAnimation({
   // Добавляем индикатор загрузки для отладки
   const debugMode = false; // Включите для отладки
   
-  // Если анимации отключены или компонент не готов, показываем содержимое без анимации
-  if (!isMounted || disabled || isLowPerformance || !animationsEnabled) {
-    const content = (
+  // Если анимации отключены, показываем содержимое без анимации
+  if (disabled || isLowPerformance || !animationsEnabled) {
+    return (
       <div className={className}>
         {debugMode && <div className="bg-red-500 text-white p-1 text-xs absolute top-0 right-0 z-50">No Animation</div>}
         {children}
       </div>
     );
-    
-    // Добавляем небольшую задержку для предотвращения "прыжков" при гидратации
-    if (!isMounted) {
-      return <div className={className}>{children}</div>;
-    }
-    
-    return content;
   }
 
+  // Проверяем, находимся ли мы в браузере
+  const isBrowser = typeof window !== 'undefined';
+  
+  // Если на сервере, возвращаем простой div
+  if (!isBrowser) {
+    return <div className={className}>{children}</div>;
+  }
+  
   return (
     <motion.div
       ref={ref}

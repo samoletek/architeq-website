@@ -42,7 +42,7 @@ const SimpleGlowCard: React.FC<SimpleGlowCardProps> = ({
   }
 
   const [isHovering, setIsHovering] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Начинаем с мобильного для SSR
   
   // Проверка на мобильное устройство
   useEffect(() => {

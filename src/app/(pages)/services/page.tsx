@@ -672,7 +672,7 @@ export default function ServicesPage() {
       </section>
 
       {/* МОБИЛЬНАЯ ВЕРСИЯ - простые карточки */}
-      {isMobile && (
+      <div className="md:hidden">
         <SectionAnimation>
           <section className="py-16 bg-transparent relative z-10">
             <div className="container mx-auto px-4">
@@ -700,10 +700,10 @@ export default function ServicesPage() {
             </div>
           </section>
         </SectionAnimation>
-      )}
+      </div>
 
       {/* ДЕСКТОПНАЯ ВЕРСИЯ - с полными анимациями и улучшенной карточкой */}
-      {!isMobile && (
+      <div className="hidden md:block">
         <SectionAnimation>
           <section 
             ref={sectionRef}
@@ -771,7 +771,6 @@ export default function ServicesPage() {
           </div>
           </section>
         </SectionAnimation>
-      )}
 
       {/* Architecture Methodology section */}
       <SectionAnimation>
@@ -1048,6 +1047,7 @@ export default function ServicesPage() {
           </div>
         </section>
       </SectionAnimation>
+      </div>
 
       {/* Automation Flow Timeline */}
       <AutomationFlowTimeline />

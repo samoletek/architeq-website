@@ -5,22 +5,23 @@ import React from "react";
 interface ArchiteqLogoProps {
   size?: "small" | "large";
   className?: string;
-  disableHover?: boolean;
 }
 
 export const ArchiteqLogo: React.FC<ArchiteqLogoProps> = ({
   size = "small",
   className = "",
-  disableHover = false,
 }) => {
   const containerSize = size === "small" ? "h-6 w-28" : "h-26 w-128 md:h-32 md:w-160 lg:h-38 lg:w-192";
   
+  // Используем стабильные классы для SSR
   const svgClasses = size === "small" 
-    ? `w-full h-full fill-white drop-shadow-[0_0_7px_rgba(255,255,255,0.8)] ${!disableHover ? 'group-hover:fill-secondary transition-all duration-300 group-hover:drop-shadow-[0_0_8px_#B0FF74]' : ''}`
+    ? "w-full h-full fill-white drop-shadow-[0_0_7px_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:fill-secondary group-hover:drop-shadow-[0_0_8px_#B0FF74]"
     : "w-full h-full fill-white";
+    
+  const finalClassName = `${containerSize} ${className || ''}`;
 
   return (
-    <div className={`${containerSize} ${className}`}>
+    <div className={`${finalClassName} group`}>
       <svg 
         className={svgClasses}
         viewBox="0 0 890.9 180.69" 

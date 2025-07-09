@@ -156,8 +156,8 @@ export default function BusinessProcessPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
           {/* Automation Platforms */}
-          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group hover:border-primary/40 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group md:hover:border-primary/40 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10">
               <h3 className="text-2xl font-semibold mb-6 text-white">Automation Platforms</h3>
               <div className="space-y-4">
@@ -168,7 +168,7 @@ export default function BusinessProcessPage() {
                   { name: 'Microsoft Power Automate', desc: 'Enterprise automation solution' },
                   { name: 'Custom APIs', desc: 'Tailored integration solutions' }
                 ].map((tech, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-300">
+                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg md:hover:bg-white/5 transition-colors duration-300">
                     <div className="w-2 h-2 rounded-full bg-secondary mt-2 flex-shrink-0"></div>
                     <div>
                       <div className="text-white font-medium text-base">{tech.name}</div>
@@ -181,8 +181,8 @@ export default function BusinessProcessPage() {
           </div>
 
           {/* Business Systems */}
-          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group hover:border-primary/40 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group md:hover:border-primary/40 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10">
               <h3 className="text-2xl font-semibold mb-6 text-white">Business Systems</h3>
               <div className="space-y-4">
@@ -193,7 +193,7 @@ export default function BusinessProcessPage() {
                   { name: 'Google Workspace', desc: 'Productivity & collaboration' },
                   { name: 'Airtable', desc: 'Database & workflow management' }
                 ].map((tech, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-300">
+                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg md:hover:bg-white/5 transition-colors duration-300">
                     <div className="w-2 h-2 rounded-full bg-secondary mt-2 flex-shrink-0"></div>
                     <div>
                       <div className="text-white font-medium text-sm">{tech.name}</div>
@@ -206,8 +206,8 @@ export default function BusinessProcessPage() {
           </div>
 
           {/* Document & Communication */}
-          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group hover:border-primary/40 transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-8 border border-primary/20 relative group md:hover:border-primary/40 transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10">
               <h3 className="text-2xl font-semibold mb-6 text-white">Document & Communication</h3>
               <div className="space-y-4">
@@ -218,7 +218,7 @@ export default function BusinessProcessPage() {
                   { name: 'Stripe', desc: 'Payment processing' },
                   { name: 'Twilio', desc: 'SMS & voice automation' }
                 ].map((tech, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-white/5 transition-colors duration-300">
+                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg md:hover:bg-white/5 transition-colors duration-300">
                     <div className="w-2 h-2 rounded-full bg-secondary mt-2 flex-shrink-0"></div>
                     <div>
                       <div className="text-white font-medium text-sm">{tech.name}</div>

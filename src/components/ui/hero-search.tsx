@@ -69,24 +69,16 @@ export default function HeroSearch() {
   const [isDropdownHovered, setIsDropdownHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isReady, setIsReady] = useState(false);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Инициализируем состояние после монтирования
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
 
   // Обработчик наведения на поисковую иконку или контейнер
   const handleSearchHover = () => {
-    if (isReady) {
-      // Очищаем любой таймаут закрытия
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
-        closeTimeoutRef.current = null;
-      }
-      setIsExpanded(true);
+    // Очищаем любой таймаут закрытия
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
     }
+    setIsExpanded(true);
   };
 
   // Обработчик ухода с поисковой иконки или контейнера
@@ -222,28 +214,6 @@ export default function HeroSearch() {
     };
   }, []);
 
-  if (!isReady) {
-    return (
-      <div className="relative h-11 w-11">
-        <div className="flex-shrink-0 w-11 h-11 flex items-center justify-center text-white/80 bg-dark-gray/60 backdrop-blur-sm shadow-sm border border-primary/20 rounded-full">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="22" 
-            height="22" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div 

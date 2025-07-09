@@ -185,7 +185,7 @@ export default function CRMIntegrationPage() {
           {/* Integration Categories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {/* Communication Tools */}
-            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group hover:border-primary/40 transition-all duration-300 cursor-default">
+            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group md:hover:border-primary/40 transition-all duration-300 cursor-default">
               <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -196,7 +196,7 @@ export default function CRMIntegrationPage() {
             </div>
 
             {/* Financial Tools */}
-            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group hover:border-primary/40 transition-all duration-300 cursor-default">
+            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group md:hover:border-primary/40 transition-all duration-300 cursor-default">
               <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -207,7 +207,7 @@ export default function CRMIntegrationPage() {
             </div>
 
             {/* Document Tools */}
-            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group hover:border-primary/40 transition-all duration-300 cursor-default">
+            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group md:hover:border-primary/40 transition-all duration-300 cursor-default">
               <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -218,7 +218,7 @@ export default function CRMIntegrationPage() {
             </div>
 
             {/* Marketing Tools */}
-            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group hover:border-primary/40 transition-all duration-300 cursor-default">
+            <div className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-xl p-6 border border-primary/20 text-center group md:hover:border-primary/40 transition-all duration-300 cursor-default">
               <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
@@ -248,9 +248,9 @@ export default function CRMIntegrationPage() {
           ].map((tool, index) => (
             <div 
               key={index}
-              className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-lg p-4 border border-primary/20 text-center hover:border-primary/40 transition-all duration-300 group cursor-default"
+              className="bg-[linear-gradient(to_bottom,_#170A24_0%,_#150920_50%,_#12071A_100%)] rounded-lg p-4 border border-primary/20 text-center md:hover:border-primary/40 transition-all duration-300 group cursor-default"
             >
-              <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center mx-auto mb-2 group-hover:bg-primary/30 transition-colors duration-300">
+              <div className="w-8 h-8 rounded bg-primary/20 flex items-center justify-center mx-auto mb-2 md:group-hover:bg-primary/30 transition-colors duration-300">
                 <div className="w-4 h-4 rounded bg-primary"></div>
               </div>
               <div className="text-white font-medium text-sm mb-1">{tool.name}</div>

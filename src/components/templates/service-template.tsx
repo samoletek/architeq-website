@@ -236,7 +236,6 @@ export default function ServiceTemplate({
             faqs={faqs}
             isMobile={isMobile}
             isLowPerformance={isLowPerformance}
-            isClient={isClient}
           />
         </SectionAnimation>
       )}
@@ -1404,27 +1403,25 @@ function CaseStudiesSection({
   );
 }
 
-// Clean FAQSection with no scroll interference
+// FAQ Section with desktop service page layout and mobile contact page navigation
 function FAQSection({ 
   title, 
   subtitle, 
   faqs,
   isMobile = false,
-  isLowPerformance = false,
-  isClient = false
+  isLowPerformance = false
 }: { 
   title: string; 
   subtitle: string; 
   faqs: ServiceFAQ[];
   isMobile?: boolean;
   isLowPerformance?: boolean;
-  isClient?: boolean;
 }) {
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Simple intersection observer for animations only - no scroll capture
+  // Simple intersection observer for animations only
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -1450,9 +1447,9 @@ function FAQSection({
     };
   }, []);
 
-  // Auto-carousel - отключаем на мобильных для экономии батареи
+  // Auto-carousel - только для десктопа
   useEffect(() => {
-    if (isMobile || isLowPerformance) return; // Skip auto-carousel on mobile/low-performance devices
+    if (isMobile || isLowPerformance) return;
     
     const autoInterval = setInterval(() => {
       setActiveQuestion(prev => (prev + 1) % faqs.length);
@@ -1461,53 +1458,29 @@ function FAQSection({
     return () => clearInterval(autoInterval);
   }, [faqs.length, isMobile, isLowPerformance]);
 
-  // Функция для переключения активного вопроса
   const handleQuestionClick = (index: number) => {
     setActiveQuestion(index);
   };
 
-  // Функция для вычисления позиции и трансформации карточки
+  const handlePrevQuestion = () => {
+    setActiveQuestion(prev => prev === 0 ? faqs.length - 1 : prev - 1);
+  };
+
+  const handleNextQuestion = () => {
+    setActiveQuestion(prev => (prev + 1) % faqs.length);
+  };
+
+  // Desktop 3D transform function
   const getCardTransform = (index: number) => {
     const diff = index - activeQuestion;
     let normalizedDiff = diff;
     
-    // Нормализация для циклической логики
     if (diff > faqs.length / 2) {
       normalizedDiff = diff - faqs.length;
     } else if (diff < -faqs.length / 2) {
       normalizedDiff = diff + faqs.length;
     }
     
-    // Упрощенная версия для мобильных без 3D эффектов
-    if (isMobile || isLowPerformance) {
-      if (normalizedDiff === 0) {
-        return {
-          transform: 'translateY(0%) scale(1)',
-          opacity: 1,
-          zIndex: 10,
-        };
-      } else if (normalizedDiff === -1) {
-        return {
-          transform: 'translateY(-50%) scale(0.9)',
-          opacity: 0.7,
-          zIndex: 5,
-        };
-      } else if (normalizedDiff === 1) {
-        return {
-          transform: 'translateY(50%) scale(0.9)',
-          opacity: 0.7,
-          zIndex: 5,
-        };
-      } else {
-        return {
-          transform: normalizedDiff < 0 ? 'translateY(-100%)' : 'translateY(100%)',
-          opacity: 0,
-          zIndex: 1,
-        };
-      }
-    }
-    
-    // Полная версия с 3D эффектами для десктопа
     if (normalizedDiff === 0) {
       return {
         transform: 'translateY(0%) scale(1) rotateX(0deg)',
@@ -1565,7 +1538,7 @@ function FAQSection({
     <section 
       ref={sectionRef}
       className="section-benefits bg-dark-gray relative overflow-hidden"
-      style={{ minHeight: '100vh' }}
+      style={{ minHeight: isMobile ? 'auto' : '100vh' }}
     >
       <div className="container mx-auto px-4 relative z-10 w-full">
         <motion.div
@@ -1586,194 +1559,296 @@ function FAQSection({
         </motion.div>
 
         <div className="max-w-7xl mx-auto h-full">
-          <div className={`${isMobile ? 'flex flex-col' : 'grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center'} h-full`}>
-            
-            {/* Левая колонка - список вопросов (скрыта на мобильных) */}
-            {!isMobile && (
-              <div className="lg:col-span-1 flex justify-center">
-              <div className="w-full">
-                <div className="space-y-2">
+          {isMobile ? (
+            /* Mobile Layout: Simple single column with navigation buttons */
+            <div className="flex flex-col">
+              <div className="relative w-full" style={{ height: '320px' }}>
+                <div className="relative h-full">
                   {faqs.map((faq, index) => (
-                    <motion.button
+                    <motion.div
                       key={index}
-                      custom={index}
-                      initial="hidden"
-                      animate={isVisible ? "visible" : "hidden"}
-                      variants={navVariants}
-                      onClick={() => handleQuestionClick(index)}
-                      className={`w-full text-left py-4 px-6 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
-                        activeQuestion === index 
-                          ? 'text-white' 
-                          : 'text-white/70 hover:text-white'
-                      }`}
+                      className="absolute w-full"
+                      style={{
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        height: '220px',
+                        opacity: index === activeQuestion ? 1 : 0,
+                        zIndex: index === activeQuestion ? 10 : 1
+                      }}
+                      animate={{
+                        opacity: index === activeQuestion ? 1 : 0
+                      }}
+                      transition={{
+                        duration: 0.3,
+                        type: "tween"
+                      }}
                     >
                       {activeQuestion === index && (
-                        <motion.div 
-                          className="absolute inset-0 rounded-lg"
-                          style={{
-                            background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
-                            boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                          }}
-                          initial={{ opacity: 0 }}
+                        <motion.div
+                          className="absolute -inset-6 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
+                          initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ 
-                            opacity: 1,
-                            boxShadow: [
-                              '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                              '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-                              '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                            ]
+                            opacity: 1, 
+                            scale: 1
                           }}
                           transition={{
-                            opacity: { duration: 0.3 },
-                            boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                            opacity: { duration: 0.4 },
+                            scale: { duration: 0.4 }
+                          }}
+                          style={{
+                            boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.25)'
                           }}
                         />
                       )}
                       
-                      {activeQuestion !== index && (
-                        <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
-                      )}
-                      
-                      <span className="relative z-10 font-medium text-sm md:text-base leading-relaxed block">
-                        {faq.question}
-                      </span>
-                      
-                      <span className={`relative z-10 text-xs font-mono mt-1 block transition-colors duration-300 ${
-                        activeQuestion === index ? 'text-secondary' : 'text-white/50'
-                      }`}>
-                        Q{String(index + 1).padStart(2, '0')}
-                      </span>
-                    </motion.button>
+                      <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                        rounded-2xl h-full transition-all duration-500 flex flex-col p-4"
+                        style={{ 
+                          justifyContent: 'space-between', 
+                          paddingTop: '1.5rem', 
+                          paddingBottom: '1.5rem' 
+                        }}>
+                        
+                        <div className="flex-1">
+                          <motion.h3 
+                            className="font-bold leading-tight text-white text-lg mb-4"
+                            style={{
+                              textShadow: activeQuestion === index
+                                ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
+                                : 'none'
+                            }}
+                          >
+                            {faq.question}
+                          </motion.h3>
+
+                          <p className="text-white/90 leading-relaxed text-sm">
+                            {faq.answer}
+                          </p>
+                        </div>
+
+                        {activeQuestion === index && (
+                          <motion.div
+                            className="mt-8 pt-6 border-t border-primary/20"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center text-primary text-sm font-medium">
+                                <div className="w-2 h-2 rounded-full bg-primary mr-3 animate-pulse"></div>
+                                Ready to get started?
+                              </div>
+                              <Link 
+                                href="/contacts" 
+                                className="text-primary hover:text-primary/80 transition-colors text-sm font-medium"
+                              >
+                                Contact us now →
+                              </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.div>
                   ))}
                 </div>
 
-                <div className="flex justify-center items-center gap-8 mt-8 px-6">
+                {/* Mobile Navigation buttons */}
+                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 z-20">
                   <button
-                    onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
-                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                    onClick={handlePrevQuestion}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
                   >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    Previous
+                    <span>Previous</span>
                   </button>
-
-                  <span className="text-white/50 text-sm font-mono">
-                    {activeQuestion + 1} / {faqs.length}
-                  </span>
-
+                  
                   <button
-                    onClick={() => handleQuestionClick((activeQuestion + 1) % faqs.length)}
-                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                    onClick={handleNextQuestion}
+                    className="flex items-center space-x-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-white text-sm font-medium hover:bg-primary/30 transition-all duration-300"
                   >
-                    Next
-                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <span>Next</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
                 </div>
               </div>
-              </div>
-            )}
-
-            <div className="lg:col-span-2 flex items-center justify-center">
-              <div className="relative w-full" style={{ height: '400px' }}>
-                <div className={`relative h-full ${(isClient && (isMobile || isLowPerformance)) ? '' : 'perspective-1000'}`}>
-                  {faqs.map((faq, index) => {
-                    const transform = getCardTransform(index);
-                    
-                    return (
-                      <motion.div
+            </div>
+          ) : (
+            /* Desktop Layout: Original service page layout with question sidebar */
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 items-center h-full">
+              
+              {/* Left column - question list */}
+              <div className="lg:col-span-1 flex justify-center">
+                <div className="w-full">
+                  <div className="space-y-2">
+                    {faqs.map((faq, index) => (
+                      <motion.button
                         key={index}
-                        className="absolute w-full"
-                        style={{
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          height: '300px',
-                          transformStyle: 'preserve-3d',
-                          backfaceVisibility: 'hidden'
-                        }}
-                        animate={transform}
-                        transition={{
-                          duration: 0.6,
-                          ease: "easeInOut",
-                          type: "tween"
-                        }}
+                        custom={index}
+                        initial="hidden"
+                        animate={isVisible ? "visible" : "hidden"}
+                        variants={navVariants}
+                        onClick={() => handleQuestionClick(index)}
+                        className={`w-full text-left py-4 px-6 rounded-lg transition-all duration-300 relative overflow-hidden group focus:outline-none ${
+                          activeQuestion === index 
+                            ? 'text-white' 
+                            : 'text-white/70 hover:text-white'
+                        }`}
                       >
                         {activeQuestion === index && (
-                          <motion.div
-                            className="absolute -inset-6 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
-                            initial={{ opacity: 0, scale: 0.95 }}
+                          <motion.div 
+                            className="absolute inset-0 rounded-lg"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(119, 71, 207, 0.2) 0%, rgba(178, 75, 243, 0.15) 100%)',
+                              boxShadow: '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                            }}
+                            initial={{ opacity: 0 }}
                             animate={{ 
-                              opacity: 1, 
-                              scale: 1
+                              opacity: 1,
+                              boxShadow: [
+                                '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                                '0 0 30px rgba(178, 75, 243, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                                '0 0 20px rgba(178, 75, 243, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                              ]
                             }}
                             transition={{
-                              opacity: { duration: 0.4 },
-                              scale: { duration: 0.4 }
-                            }}
-                            style={{
-                              boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.25)'
+                              opacity: { duration: 0.3 },
+                              boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                             }}
                           />
                         )}
                         
-                        <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
-                          rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col"
-                          style={{ justifyContent: 'space-between', paddingTop: '3rem', paddingBottom: '3rem' }}>
-                          
-                          <div className="flex-1">
-                            <motion.h3 
-                              className="text-xl md:text-2xl font-bold mb-6 leading-tight text-white"
-                              style={{
-                                textShadow: activeQuestion === index 
-                                  ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
-                                  : 'none'
-                              }}
-                            >
-                              {faq.question}
-                            </motion.h3>
+                        {activeQuestion !== index && (
+                          <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                        )}
+                        
+                        <span className="relative z-10 font-medium text-sm md:text-base leading-relaxed block">
+                          {faq.question}
+                        </span>
+                        
+                        <span className={`relative z-10 text-xs font-mono mt-1 block transition-colors duration-300 ${
+                          activeQuestion === index ? 'text-secondary' : 'text-white/50'
+                        }`}>
+                          Q{String(index + 1).padStart(2, '0')}
+                        </span>
+                      </motion.button>
+                    ))}
+                  </div>
 
-                            <p className="text-white/90 text-base md:text-lg leading-relaxed">
-                              {faq.answer}
-                            </p>
-                          </div>
+                  <div className="flex justify-center items-center gap-8 mt-8 px-6">
+                    <button
+                      onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
+                      className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                      Previous
+                    </button>
 
+                    <span className="text-white/50 text-sm font-mono">
+                      {activeQuestion + 1} / {faqs.length}
+                    </span>
+
+                    <button
+                      onClick={() => handleQuestionClick((activeQuestion + 1) % faqs.length)}
+                      className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
+                    >
+                      Next
+                      <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right column - 3D carousel */}
+              <div className="lg:col-span-2 flex items-center justify-center">
+                <div className="relative w-full" style={{ height: '400px' }}>
+                  <div className="relative h-full perspective-1000">
+                    {faqs.map((faq, index) => {
+                      const transform = getCardTransform(index);
+                      
+                      return (
+                        <motion.div
+                          key={index}
+                          className="absolute w-full"
+                          style={{
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            height: '300px',
+                            transformStyle: 'preserve-3d',
+                            backfaceVisibility: 'hidden'
+                          }}
+                          animate={transform}
+                          transition={{
+                            duration: 0.6,
+                            ease: "easeInOut",
+                            type: "tween"
+                          }}
+                        >
                           {activeQuestion === index && (
                             <motion.div
-                              className="mt-8 pt-6 border-t border-primary/20"
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.5, delay: 0.2 }}
-                            >
-                              {/* Mobile navigation inside the card */}
-                              {isClient && isMobile ? (
-                                <div className="flex justify-center items-center gap-8">
-                                  <button
-                                    onClick={() => handleQuestionClick((activeQuestion - 1 + faqs.length) % faqs.length)}
-                                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
-                                  >
-                                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                    Previous
-                                  </button>
+                              className="absolute -inset-6 bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] rounded-2xl -z-10"
+                              initial={{ opacity: 0, scale: 0.95 }}
+                              animate={{ 
+                                opacity: 1, 
+                                scale: 1
+                              }}
+                              transition={{
+                                opacity: { duration: 0.4 },
+                                scale: { duration: 0.4 }
+                              }}
+                              style={{
+                                boxShadow: '0 0 40px rgba(0, 0, 0, 0.6), 0 0 80px rgba(119, 71, 207, 0.25)'
+                              }}
+                            />
+                          )}
+                          
+                          <div className="bg-gradient-to-br from-[#2A1A3E] via-[#1F0F2E] to-[#1A0B26] backdrop-blur-sm 
+                            rounded-2xl p-8 md:p-10 h-full transition-all duration-500 flex flex-col"
+                            style={{ justifyContent: 'space-between', paddingTop: '3rem', paddingBottom: '3rem' }}>
+                            
+                            <div className="flex-1">
+                              <motion.h3 
+                                className="text-xl md:text-2xl font-bold mb-6 leading-tight text-white"
+                                style={{
+                                  textShadow: activeQuestion === index 
+                                    ? '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(178,75,243,0.4)' 
+                                    : 'none'
+                                }}
+                              >
+                                {faq.question}
+                              </motion.h3>
 
-                                  <span className="text-white/50 text-sm font-mono">
-                                    {activeQuestion + 1} / {faqs.length}
-                                  </span>
+                              <p className="text-white/90 text-base md:text-lg leading-relaxed">
+                                {faq.answer}
+                              </p>
+                            </div>
 
-                                  <button
-                                    onClick={() => handleQuestionClick((activeQuestion + 1) % faqs.length)}
-                                    className="flex items-center font-medium transition-all duration-300 focus:outline-none text-secondary hover:text-secondary/80"
-                                  >
-                                    Next
-                                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                  </button>
-                                </div>
-                              ) : (
+                            {activeQuestion === index && (
+                              <motion.div
+                                className="mt-8 pt-6 border-t border-primary/20"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                              >
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center text-secondary text-sm font-medium">
                                     <div className="w-2 h-2 rounded-full bg-secondary mr-3 animate-pulse"></div>
@@ -1786,17 +1861,15 @@ function FAQSection({
                                     Contact our team →
                                   </Link>
                                 </div>
-                              )}
-                            </motion.div>
-                          )}
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
+                              </motion.div>
+                            )}
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
 
-                {/* Боковые точки навигации (скрыты на мобильных) */}
-                {!isMobile && (
+                  {/* Side navigation dots */}
                   <div className="absolute -right-16 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20">
                     {faqs.map((_, index) => (
                       <button
@@ -1810,10 +1883,10 @@ function FAQSection({
                       />
                     ))}
                   </div>
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

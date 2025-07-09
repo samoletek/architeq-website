@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDeviceDetection } from '@/lib/utils/device-detection'; 
+ 
 
 // Тип для таба решения
 export interface SolutionTab {
@@ -844,10 +844,8 @@ export function SolutionsSection({
   solutions = defaultSolutions,
   className,
   defaultSolutionId,
-  variant = 'default',
 }: SolutionsSectionProps) {
-  const { isMobile } = useDeviceDetection();
-  const isHomepageMobile = variant === 'homepage' && isMobile;
+  const isHomepageMobile = false; // Убираем условный рендеринг для предотвращения гидратации
   
   // Состояние для отслеживания активного решения по индексу
   const [activeIndex, setActiveIndex] = useState<number>(

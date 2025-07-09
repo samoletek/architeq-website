@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
 import SimpleGlowCard from '@/components/ui/effects/simple-glow-card';
-import { useHeavyAnimations } from '@/lib/utils/device-detection';
 
 // Team member interface
 interface TeamMember {
@@ -177,7 +176,7 @@ function HeroSection() {
   // Device detection для адаптивности с защитой от гидратации
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const shouldUseHeavyAnimations = useHeavyAnimations();
+  const [shouldUseHeavyAnimations, setShouldUseHeavyAnimations] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -190,6 +189,16 @@ function HeroSection() {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Set heavy animations only after client-side hydration to prevent hydration mismatch
+  useEffect(() => {
+    if (isClient) {
+      // Check device capabilities without causing hydration issues
+      const isDesktop = window.innerWidth >= 768;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setShouldUseHeavyAnimations(isDesktop && !prefersReducedMotion);
+    }
+  }, [isClient]);
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -769,7 +778,7 @@ function TeamSection() {
   // Device detection для адаптивности с защитой от гидратации
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const shouldUseHeavyAnimations = useHeavyAnimations();
+  const [shouldUseHeavyAnimations, setShouldUseHeavyAnimations] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -782,6 +791,16 @@ function TeamSection() {
     
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Set heavy animations only after client-side hydration to prevent hydration mismatch
+  useEffect(() => {
+    if (isClient) {
+      // Check device capabilities without causing hydration issues
+      const isDesktop = window.innerWidth >= 768;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setShouldUseHeavyAnimations(isDesktop && !prefersReducedMotion);
+    }
+  }, [isClient]);
 
   // Update autoplay state when client is ready
   useEffect(() => {
