@@ -126,6 +126,8 @@ export default function TestimonialsSection({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { isMobile, isTablet } = useDeviceDetection();
   const testimonialsCount = testimonials.length;
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -228,34 +230,32 @@ export default function TestimonialsSection({
     setTimeout(() => setIsPlaying(autoplay), autoplaySpeed);
   };
   
-  // Обработчики для свайпа убираем - используем только кнопки
-  // const handleTouchStart = (e: React.TouchEvent) => {
-  //   setTouchStart(e.targetTouches[0].clientX);
-  // };
+  // Обработчики для свайпа
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
   
-  // const handleTouchMove = (e: React.TouchEvent) => {
-  //   setTouchEnd(e.targetTouches[0].clientX);
-  // };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
   
-  // const handleTouchEnd = () => {
-  //   if (!touchStart || !touchEnd) return;
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
     
-  //   const distance = touchStart - touchEnd;
-  //   const isSwipe = Math.abs(distance) > 50; // минимальное расстояние для свайпа
+    const distance = touchStart - touchEnd;
+    const isSwipe = Math.abs(distance) > 50; // минимальное расстояние для свайпа
     
-  //   if (isSwipe) {
-  //     if (distance > 0) {
-  //       // Свайп влево - следующий слайд
-  //       nextTestimonial();
-  //     } else {
-  //       // Свайп вправо - предыдущий слайд
-  //       prevTestimonial();
-  //     }
-  //   }
+    if (isSwipe && distance > 0) {
+      // Только свайп влево - следующий слайд
+      nextTestimonial();
+      // Останавливаем автопроигрывание на некоторое время после свайпа
+      setIsPlaying(false);
+      setTimeout(() => setIsPlaying(autoplay), autoplaySpeed);
+    }
     
-  //   setTouchStart(null);
-  //   setTouchEnd(null);
-  // };
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
   
   // Определяем максимальную ширину контейнера
   const maxWidthClass = {
@@ -472,12 +472,15 @@ export default function TestimonialsSection({
             <div 
               className={cn(
                 "w-full mx-auto text-center mb-12 overflow-hidden",
-                isMobile || isTablet ? "max-w-md px-12" : "max-w-4xl"
+                isMobile || isTablet ? "max-w-md" : "max-w-4xl"
               )}
               style={!isMobile ? { 
                 height: containerHeight ? `${containerHeight}px` : 'auto',
                 transition: 'height 0.4s ease-in-out'
               } : {}}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -559,43 +562,6 @@ export default function TestimonialsSection({
             )}
           </div>
           
-          {/* Навигационные стрелки - мобильные кнопки */}
-          {testimonials.length > 1 && (isMobile || isTablet) && (
-            <>
-              <button
-                onClick={prevTestimonial}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 text-[#B0FF74] focus:outline-none active:scale-95 transition-transform duration-150"
-                aria-label="Previous testimonial"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-8 w-8" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <button
-                onClick={nextTestimonial}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 text-[#B0FF74] focus:outline-none active:scale-95 transition-transform duration-150"
-                aria-label="Next testimonial"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-8 w-8" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </>
-          )}
           
           {/* Навигационные стрелки - десктопные кнопки */}
           {testimonials.length > 1 && !isMobile && !isTablet && (

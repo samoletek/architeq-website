@@ -481,6 +481,7 @@ export default function ServicesPage() {
           </div>
           </section>
         </SectionAnimation>
+      </div>
 
       {/* Architecture Methodology section */}
       <SectionAnimation>
@@ -503,7 +504,7 @@ export default function ServicesPage() {
             
             {/* Top Left - Step 1 */}
             <div className="lg:col-start-1 lg:col-span-2 lg:row-start-1">
-              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 md:hover:border-primary/30 transition-all duration-300">
                 <div className="flex flex-col">
                   <div className="flex items-center mb-3">
                     <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
@@ -537,7 +538,7 @@ export default function ServicesPage() {
 
             {/* Top Right - Step 2 */}
             <div className="lg:col-start-3 lg:col-span-2 lg:row-start-1">
-              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 md:hover:border-primary/30 transition-all duration-300">
                 <div className="flex flex-col">
                   <div className="flex items-center mb-3">
                     <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
@@ -571,7 +572,7 @@ export default function ServicesPage() {
 
             {/* Bottom Left - Step 3 */}
             <div className="lg:col-start-1 lg:col-span-2 lg:row-start-2">
-              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 md:hover:border-primary/30 transition-all duration-300">
                 <div className="flex flex-col">
                   <div className="flex items-center mb-3">
                     <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
@@ -605,7 +606,7 @@ export default function ServicesPage() {
 
             {/* Bottom Right - Step 4 */}
             <div className="lg:col-start-3 lg:col-span-2 lg:row-start-2">
-              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 hover:border-primary/30 transition-all duration-300">
+              <div className="relative bg-gradient-to-br from-primary/5 to-transparent border border-primary/10 rounded-xl p-4 md:hover:border-primary/30 transition-all duration-300">
                 <div className="flex flex-col">
                   <div className="flex items-center mb-3">
                     <div className="w-8 h-8 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center relative mr-3">
@@ -688,7 +689,7 @@ export default function ServicesPage() {
                       return (
                         <div
                           key={index}
-                          className="border border-primary/20 rounded-md overflow-hidden bg-primary/5 hover:bg-primary/10 transition-all duration-300"
+                          className="border border-primary/20 rounded-md overflow-hidden bg-primary/5 md:hover:bg-primary/10 transition-all duration-300"
                         >
                           <motion.div
                             className="p-2 cursor-pointer flex items-center justify-between group"
@@ -701,7 +702,7 @@ export default function ServicesPage() {
                                   transform: isExpanded ? 'scale(1.3)' : 'scale(1)'
                                 }}
                               />
-                              <h4 className="text-white font-semibold text-xs group-hover:text-secondary transition-colors duration-300">
+                              <h4 className="text-white font-semibold text-xs group-hover:text-secondary md:group-hover:text-secondary transition-colors duration-300">
                                 {principle.title}
                               </h4>
                             </div>
@@ -757,7 +758,6 @@ export default function ServicesPage() {
           </div>
         </section>
       </SectionAnimation>
-      </div>
 
       {/* Automation Flow Timeline */}
       <AutomationFlowTimeline />
