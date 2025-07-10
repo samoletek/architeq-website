@@ -1,147 +1,30 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 import { getCaseStudyById } from '@/lib/data/case-studies';
+import { getServiceDetails } from '@/lib/data/services';
 
+// Получаем метаданные из централизованного источника
+const serviceDetails = getServiceDetails('finance');
 export const metadata = generateServiceMetadata({
-  title: 'Financial Systems Integration',
-  description: 'Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting. Connect Stripe, QuickBooks, Xero and other systems.',
-  keywords: ['financial automation', 'accounting integration', 'invoice automation', 'payment tracking', 'financial reporting', 'QuickBooks integration', 'Stripe integration'],
+  title: serviceDetails?.seoTitle || 'Financial Systems Integration',
+  description: serviceDetails?.seoDescription || 'Financial systems integration services',
+  keywords: serviceDetails?.seoKeywords || ['financial automation'],
   path: '/services/finance'
 });
 
 export default function FinancePage() {
-  const benefits = [
-    {
-      title: "Improved Cash Flow",
-      description: "Accelerate payment cycles and reduce outstanding receivables through automated invoicing and payment tracking.",
-      icon: "dollar"
-    },
-    {
-      title: "Reduced Administrative Costs",
-      description: "Eliminate manual financial data entry and reconciliation, saving significant staff time and reducing errors.",
-      icon: "clock"
-    },
-    {
-      title: "Financial Transparency",
-      description: "Gain real-time visibility into your financial status across all connected systems and platforms.",
-      icon: "chart"
-    },
-    {
-      title: "Enhanced Compliance",
-      description: "Ensure consistent financial record-keeping and reporting that meets regulatory requirements.",
-      icon: "shield"
-    }
-  ];
+  // Получаем все данные из централизованного источника
+  const serviceDetails = getServiceDetails('finance');
+  
+  if (!serviceDetails) {
+    throw new Error('Finance service data not found');
+  }
 
-  const financeSolutions = [
-    {
-      title: "Invoice Automation",
-      description: "Automate the entire invoicing process from creation to delivery, tracking, and reconciliation.",
-      benefits: [
-        "Automatic invoice generation based on CRM triggers",
-        "Immediate delivery to clients via email or client portal",
-        "Real-time payment tracking and status updates",
-        "Automated reminders for unpaid invoices"
-      ],
-      icon: "document",
-      caseId: "stripe-invoicing"
-    },
-    {
-      title: "Accounting Integration",
-      description: "Connect your CRM with accounting systems for seamless data flow and financial management.",
-      benefits: [
-        "Bidirectional synchronization of financial data",
-        "Automatic transaction matching and reconciliation",
-        "Consolidated financial reporting across systems",
-        "Elimination of double data entry"
-      ],
-      icon: "connect",
-      caseId: "quickbooks-integration"
-    },
-    {
-      title: "Factoring Automation",
-      description: "Streamline the process of submitting receivables to factoring companies and tracking advances.",
-      benefits: [
-        "Automatic aggregation of eligible invoices",
-        "Detailed report generation for factoring submission",
-        "Integration with factoring platforms for data transfer",
-        "Status tracking and notification system"
-      ],
-      icon: "workflow",
-      caseId: "factoring-automation"
-    },
-    {
-      title: "Complex Financial Calculations",
-      description: "Automate complex financial computations like commissions, payroll, and pricing formulas.",
-      benefits: [
-        "Custom calculation engines for specific business needs",
-        "Multi-variable formula support with conditional logic",
-        "Automatic updates when variables change",
-        "Integration with payment and accounting systems"
-      ],
-      icon: "analysis",
-      caseId: "financial-calculations"
-    }
-  ];
+  // Данные для кейсов из централизованного источника
+  const caseStudies = serviceDetails.relatedCaseIds
+    .map(id => getCaseStudyById(id))
+    .filter(Boolean);
 
-  const processes = [
-    {
-      step: 1,
-      title: "Financial Process Assessment",
-      description: "We analyze your current financial processes, systems, and pain points to identify opportunities for automation and integration."
-    },
-    {
-      step: 2,
-      title: "Solution Design",
-      description: "We design a comprehensive financial integration solution tailored to your specific business needs and existing systems."
-    },
-    {
-      step: 3,
-      title: "Data Mapping & Workflow Setup",
-      description: "We create detailed data mapping between systems and establish automated workflows that align with your financial processes."
-    },
-    {
-      step: 4,
-      title: "Integration & Testing",
-      description: "We implement the integrations and thoroughly test all functionality to ensure accurate data flow and processing."
-    },
-    {
-      step: 5,
-      title: "Staff Training & Deployment",
-      description: "We train your team on the new integrated systems and deploy the solution with minimal disruption to your operations."
-    },
-    {
-      step: 6,
-      title: "Ongoing Support & Optimization",
-      description: "We provide continuous support and regularly optimize the solution to adapt to your evolving business needs."
-    }
-  ];
-
-  // Данные для кейсов из центрального источника
-  const caseStudies = [
-    getCaseStudyById('stripe-invoicing'),
-    getCaseStudyById('quickbooks-integration'),
-    getCaseStudyById('factoring-automation')
-  ].filter(Boolean);
-
-  const faqs = [
-    {
-      question: "How will financial automation impact our current accounting practices?",
-      answer: "Financial automation enhances your existing accounting practices rather than replacing them. It eliminates manual data entry, reduces errors, and provides real-time financial visibility, allowing your accounting team to focus on analysis and strategic tasks rather than administrative work."
-    },
-    {
-      question: "Is our financial data secure during integration?",
-      answer: "Yes, security is our top priority. We implement bank-level encryption, secure API connections, and strict access controls. All integrations comply with financial industry security standards, and we can work with your IT security team to ensure all requirements are met."
-    },
-    {
-      question: "How long does it take to implement financial system integrations?",
-      answer: "Implementation time varies based on the complexity of your financial systems and processes. Simple integrations can be completed in 3-4 weeks, while more complex solutions might take 8-12 weeks. We provide a detailed timeline during our initial assessment."
-    },
-    {
-      question: "Can you integrate with our legacy financial systems?",
-      answer: "Yes, we have experience integrating with a wide range of financial systems, including legacy software. As long as your system provides some form of data access (API, database connection, file imports/exports), we can develop a solution to integrate it with your modern business tools."
-    }
-  ];
 
   const integrationSection = (
     <section className="py-20 bg-transparent">
@@ -274,39 +157,15 @@ export default function FinancePage() {
   return (
     <ServiceTemplate
       serviceId="finance"
-      serviceTitle="Financial Systems Integration"
-      serviceDescription="Streamline financial operations by automating invoicing, payment tracking, reconciliation, and financial reporting to improve cash flow and decision-making."
-      breadcrumbTitle="Financial Systems Integration"
-      overview={{
-        title: "What Is Financial Systems Integration?",
-        description: (
-          <>
-            <p className="mb-4">
-              Financial systems integration is the process of connecting your financial tools—such as accounting software, payment processors, and banking platforms—with your CRM and other business systems to create a seamless flow of financial data across your organization.
-            </p>
-            <p className="mb-4">
-              This integration eliminates manual data entry, reduces errors, accelerates financial processes, and provides real-time financial visibility throughout your business.
-            </p>
-            <p>
-              Our approach focuses on creating secure, reliable connections between your existing financial systems and operational tools, automating financial workflows while maintaining data integrity and compliance.
-            </p>
-          </>
-        ),
-        features: [
-          "Manual Data Entry",
-          "Delayed Payments", 
-          "Reconciliation Errors",
-          "Limited Visibility",
-          "Money Loss",
-          "Compliance Challenges"
-        ],
-        featuresTitle: "Financial Challenges"
-      }}
-      benefits={benefits}
-      features={financeSolutions}
-      processes={processes}
+      serviceTitle={serviceDetails.serviceTitle}
+      serviceDescription={serviceDetails.serviceDescription}
+      breadcrumbTitle={serviceDetails.breadcrumbTitle}
+      overview={serviceDetails.overview}
+      benefits={serviceDetails.benefits}
+      features={serviceDetails.features}
+      processes={serviceDetails.processes}
       caseStudies={caseStudies}
-      faqs={faqs}
+      faqs={serviceDetails.faqs}
       additionalSections={integrationSection}
     />
   );

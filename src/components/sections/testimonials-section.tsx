@@ -125,8 +125,6 @@ export default function TestimonialsSection({
 }: TestimonialsSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(autoplay);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [containerHeight, setContainerHeight] = useState<number | null>(null);
   const { isMobile, isTablet } = useDeviceDetection();
   const testimonialsCount = testimonials.length;
@@ -159,14 +157,64 @@ export default function TestimonialsSection({
     }
   }, [activeIndex, isMobile]);
 
-  // Автопереключение (только на десктопе)
+  // Отслеживание видимости секции и активности вкладки
+  const [isInView, setIsInView] = useState(false);
+  const [isTabActive, setIsTabActive] = useState(true);
+  
   useEffect(() => {
-    if (!isPlaying || isMobile) return;
+    const currentRef = sectionRef.current;
+    if (!currentRef) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.3, // Секция должна быть видна хотя бы на 30%
+        rootMargin: '-50px 0px' // Небольшой отступ для более точного определения
+      }
+    );
+
+    observer.observe(currentRef);
     
-    const interval = setInterval(nextTestimonial, autoplaySpeed);
+    return () => observer.unobserve(currentRef);
+  }, []);
+
+  // Отслеживание активности вкладки
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsTabActive(!document.hidden);
+    };
     
-    return () => clearInterval(interval);
-  }, [isPlaying, nextTestimonial, autoplaySpeed, isMobile]);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Оптимизированный автоплей с requestAnimationFrame
+  useEffect(() => {
+    if (!isPlaying || isMobile || !isInView || !isTabActive) return;
+    
+    let timeoutId: NodeJS.Timeout;
+    let rafId: number;
+    
+    const scheduleNext = () => {
+      timeoutId = setTimeout(() => {
+        rafId = requestAnimationFrame(() => {
+          nextTestimonial();
+        });
+      }, autoplaySpeed);
+    };
+    
+    scheduleNext();
+    
+    return () => {
+      clearTimeout(timeoutId);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [isPlaying, nextTestimonial, autoplaySpeed, isMobile, isInView, isTabActive]);
 
   // Обработчики для паузы при наведении
   const handleMouseEnter = () => setIsPlaying(false);
@@ -180,34 +228,34 @@ export default function TestimonialsSection({
     setTimeout(() => setIsPlaying(autoplay), autoplaySpeed);
   };
   
-  // Обработчики для свайпа на тачскринах
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
+  // Обработчики для свайпа убираем - используем только кнопки
+  // const handleTouchStart = (e: React.TouchEvent) => {
+  //   setTouchStart(e.targetTouches[0].clientX);
+  // };
   
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
+  // const handleTouchMove = (e: React.TouchEvent) => {
+  //   setTouchEnd(e.targetTouches[0].clientX);
+  // };
   
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+  // const handleTouchEnd = () => {
+  //   if (!touchStart || !touchEnd) return;
     
-    const distance = touchStart - touchEnd;
-    const isSwipe = Math.abs(distance) > 50; // минимальное расстояние для свайпа
+  //   const distance = touchStart - touchEnd;
+  //   const isSwipe = Math.abs(distance) > 50; // минимальное расстояние для свайпа
     
-    if (isSwipe) {
-      if (distance > 0) {
-        // Свайп влево - следующий слайд
-        nextTestimonial();
-      } else {
-        // Свайп вправо - предыдущий слайд
-        prevTestimonial();
-      }
-    }
+  //   if (isSwipe) {
+  //     if (distance > 0) {
+  //       // Свайп влево - следующий слайд
+  //       nextTestimonial();
+  //     } else {
+  //       // Свайп вправо - предыдущий слайд
+  //       prevTestimonial();
+  //     }
+  //   }
     
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
+  //   setTouchStart(null);
+  //   setTouchEnd(null);
+  // };
   
   // Определяем максимальную ширину контейнера
   const maxWidthClass = {
@@ -388,9 +436,6 @@ export default function TestimonialsSection({
       ref={sectionRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Decorative particles like CTA section */}
       <div 
@@ -425,7 +470,10 @@ export default function TestimonialsSection({
         <div className={cn("relative mx-auto", maxWidthClass)}>
           <div className="relative flex flex-col items-center">
             <div 
-              className="w-full max-w-4xl mx-auto text-center mb-12 overflow-hidden"
+              className={cn(
+                "w-full mx-auto text-center mb-12 overflow-hidden",
+                isMobile || isTablet ? "max-w-md px-12" : "max-w-4xl"
+              )}
               style={!isMobile ? { 
                 height: containerHeight ? `${containerHeight}px` : 'auto',
                 transition: 'height 0.4s ease-in-out'
@@ -463,7 +511,7 @@ export default function TestimonialsSection({
                   initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
                   animate={isMobile ? { opacity: 1 } : { opacity: 1, y: 0 }}
                   transition={{ duration: isMobile ? 0.2 : 0.8, delay: isMobile ? 0.1 : 0.4 }}
-                  className="text-lg md:text-xl font-light text-white/90 italic leading-relaxed mb-8"
+                  className="text-sm md:text-base lg:text-lg font-light text-white/90 italic leading-relaxed mb-8"
                 >
                   <span>&ldquo;</span>
                   {testimonials[activeIndex].highlightedPhrases 
@@ -491,8 +539,8 @@ export default function TestimonialsSection({
             </AnimatePresence>
             </div>
             
-            {/* Навигационные точки */}
-            {testimonials.length > 1 && (
+            {/* Навигационные точки - только на десктопе */}
+            {testimonials.length > 1 && !isMobile && !isTablet && (
               <div className="flex justify-center mb-10 space-x-3">
                 {testimonials.map((_, index) => (
                   <button
@@ -511,8 +559,46 @@ export default function TestimonialsSection({
             )}
           </div>
           
-          {/* Навигационные стрелки */}
-          {(!isMobile && !isTablet) && testimonials.length > 1 && (
+          {/* Навигационные стрелки - мобильные кнопки */}
+          {testimonials.length > 1 && (isMobile || isTablet) && (
+            <>
+              <button
+                onClick={prevTestimonial}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 text-[#B0FF74] focus:outline-none active:scale-95 transition-transform duration-150"
+                aria-label="Previous testimonial"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-8 w-8" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={nextTestimonial}
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 text-[#B0FF74] focus:outline-none active:scale-95 transition-transform duration-150"
+                aria-label="Next testimonial"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-8 w-8" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+          
+          {/* Навигационные стрелки - десктопные кнопки */}
+          {testimonials.length > 1 && !isMobile && !isTablet && (
             <>
               <button
                 onClick={prevTestimonial}
@@ -547,6 +633,25 @@ export default function TestimonialsSection({
                 </svg>
               </button>
             </>
+          )}
+          
+          {/* Простые точки навигации на мобилке - внизу */}
+          {testimonials.length > 1 && (isMobile || isTablet) && (
+            <div className="flex justify-center mt-6 space-x-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDotClick(index)}
+                  className={cn(
+                    "w-2 h-2 rounded-full transition-all duration-300",
+                    index === activeIndex 
+                      ? "bg-[#B0FF74] shadow-[0_0_10px_rgba(176,255,116,0.6)]" 
+                      : "bg-white/30 active:bg-white/50"
+                  )}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>

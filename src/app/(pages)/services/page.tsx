@@ -10,216 +10,17 @@ import { SolutionContent } from '@/components/sections/solutions-section';
 import { useDeviceDetection } from '@/lib/utils/device-detection';
 import { SectionAnimation } from '@/components/ui/section-animation';
 import { IconName } from '@/components/ui/icons/icon';
+import { getServicePreviews, ServicePreview } from '@/lib/data/services';
 
-// Типы для данных о услугах
-interface Service {
-  id: string;
-  title: string;
-  description: string;
-  features: string[];
-  icon: string;
-  href?: string;
-}
-
-// Данные о услугах
-const services: Service[] = [
-  {
-    id: 'business-process',
-    title: 'Workflow Design & Automation',
-    description: 'We reengineer core business processes by removing manual steps, syncing tools, and building flexible, intelligent workflows.',
-    icon: 'process',
-    href: '/services/business-process',
-    features: [
-      'Workflow mapping and optimizing',
-      'Clear roadmap for implementation', 
-      'End-to-end workflow automation',
-      'System integration & error-proof data flow',
-      'Custom dashboards for live insights'
-    ]
-  },
-  {
-    id: 'crm-integration',
-    title: 'CRM Integration',
-    description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
-    icon: 'crm',
-    href: '/services/crm-integration',
-    features: [
-      'Centralized CRM built from scratch — fully tailored to your workflows',
-      'Wide integration capabilities',
-      'Cross-platform consistency',
-      'Document management automation',
-      'Customizable insight dashboards'
-    ]
-  },
-  {
-    id: 'boxed-solutions',
-    title: 'Industry-Specific Boxed Solutions',
-    description: 'Ready-to-run automation kits tailored to your industry — deployed fast, scaled smart, and of course fully customized for your edge.',
-    icon: 'industry',
-    href: '/services/boxed-solutions',
-    features: [
-      'Pre-configured workflows for key sectors',
-      'Custom fields & data structure',
-      'Industry-specific integrations',
-      'Scalable & field-proven automations',
-      'Fast deployment'
-    ]
-  },
-  {
-    id: 'ai-solutions',
-    title: 'AI-Powered Solutions',
-    description: 'Use AI to surface insight and automate high-effort tasks — from client comms to operations logic. Use AI to automate what truly matters — from client comms to operations logic, only where it drives real value.',
-    icon: 'ai',
-    href: '/services/ai-solutions',
-    features: [
-      'AI-driven voice assistants',
-      'CRM-integrated assistant',
-      'Real-time conversation transcription',
-      'Scalable and customizable solutions',
-      'Quick and efficient deployment'
-    ]
-  },
-  {
-    id: 'documentation',
-    title: 'Automated Document Flow',
-    description: 'We automate your entire document flow — creation, approval, compliance — all in sync with your CRM, tools and teams, using our pre-built document generation tools.',
-    icon: 'document',
-    href: '/services/documentation',
-    features: [
-      'Auto-generation from CRM templates',
-      'E-signature & approval flows',
-      'Smart forms & structured capture',
-      'Document version control',
-      'Regulatory compliance built-in'
-    ]
-  },
-  {
-    id: 'finance',
-    title: 'Finance Operations Automation',
-    description: 'Connect and automate your full financial stack — from invoicing to reconciliation — for faster, cleaner, and error-free money flow.',
-    icon: 'finance',
-    href: '/services/finance',
-    features: [
-      'Smart invoice generation',
-      'Real-time payment tracking & reconciliation',
-      'Seamless accounting system integration',
-      'Financial dashboards & custom reports',
-      'Multi-currency, multi-market, and multi-payment method support'
-    ]
-  }
-];
+// Получаем данные из централизованного источника
+const services: ServicePreview[] = getServicePreviews();
 
 
-// Sales metrics and value propositions data  
-const salesData = {
-  'business-process': {
-    timeToROI: '2-4 weeks',
-    avgEfficiencyGain: '40-60%',
-    avgTimeSaved: '25-30 hours/week',
-    clientsSaved: '200+',
-    valueProps: [
-      'Eliminate 80% of manual processes',
-      'Reduce processing time by 60%',
-      'Zero human errors in core workflows',
-      'Real-time visibility across operations'
-    ],
-    metrics: [
-      { label: 'Time Saved', value: '30hrs', unit: '/week' },
-      { label: 'Error Rate', value: '0%', unit: '' },
-      { label: 'ROI Timeline', value: '2-4', unit: 'weeks' }
-    ]
-  },
-  'crm-integration': {
-    timeToROI: '3-6 weeks',
-    avgEfficiencyGain: '50-70%',
-    avgTimeSaved: '20-25 hours/week',
-    clientsSaved: '150+',
-    valueProps: [
-      'Unified customer data across all platforms',
-      'Automated lead scoring and nurturing',
-      '360° customer view for better decisions',
-      'Seamless sales pipeline management'
-    ],
-    metrics: [
-      { label: 'Lead Conversion', value: '+45%', unit: '' },
-      { label: 'Data Accuracy', value: '99%', unit: '' },
-      { label: 'Sales Velocity', value: '+60%', unit: '' }
-    ]
-  },
-  'boxed-solutions': {
-    timeToROI: '1-2 weeks',
-    avgEfficiencyGain: '30-50%',
-    avgTimeSaved: '15-20 hours/week',
-    clientsSaved: '100+',
-    valueProps: [
-      'Industry-proven workflows ready to deploy',
-      'Fastest time to value in the market',
-      'Pre-built integrations for common tools',
-      'Scalable foundation for custom needs'
-    ],
-    metrics: [
-      { label: 'Deploy Time', value: '1-2', unit: 'weeks' },
-      { label: 'Setup Cost', value: '-70%', unit: '' },
-      { label: 'Efficiency Gain', value: '40%', unit: '' }
-    ]
-  },
-  'ai-solutions': {
-    timeToROI: '4-8 weeks',
-    avgEfficiencyGain: '60-80%',
-    avgTimeSaved: '35-40 hours/week',
-    clientsSaved: '80+',
-    valueProps: [
-      'AI-powered decision automation',
-      'Natural language processing for communication',
-      'Predictive analytics for business insights',
-      'Smart routing and task assignment'
-    ],
-    metrics: [
-      { label: 'Response Time', value: '90%', unit: 'faster' },
-      { label: 'Decision Accuracy', value: '95%', unit: '' },
-      { label: 'Processing Volume', value: '10x', unit: '' }
-    ]
-  },
-  'documentation': {
-    timeToROI: '2-3 weeks',
-    avgEfficiencyGain: '70-85%',
-    avgTimeSaved: '20-30 hours/week',
-    clientsSaved: '120+',
-    valueProps: [
-      'Zero manual document creation',
-      'Automated approval workflows',
-      'Real-time collaboration and versioning',
-      'Built-in compliance and audit trails'
-    ],
-    metrics: [
-      { label: 'Doc Processing', value: '85%', unit: 'faster' },
-      { label: 'Approval Time', value: '-90%', unit: '' },
-      { label: 'Compliance Rate', value: '100%', unit: '' }
-    ]
-  },
-  'finance': {
-    timeToROI: '3-5 weeks',
-    avgEfficiencyGain: '55-75%',
-    avgTimeSaved: '25-35 hours/week',
-    clientsSaved: '90+',
-    valueProps: [
-      'Real-time financial visibility',
-      'Automated reconciliation and reporting',
-      'Multi-currency and payment method support',
-      'Seamless accounting system integration'
-    ],
-    metrics: [
-      { label: 'Reconciliation', value: '95%', unit: 'automated' },
-      { label: 'Report Generation', value: '80%', unit: 'faster' },
-      { label: 'Payment Processing', value: '24/7', unit: '' }
-    ]
-  }
-};
+// Sales data теперь поступает из централизованного источника через service.salesData
 
-// Enhanced mobile card component with sales focus
-function MobileServiceCard({ service, index }: { service: Service; index: number }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const currentSalesData = salesData[service.id as keyof typeof salesData];
+// Simplified mobile card component
+function MobileServiceCard({ service, index }: { service: ServicePreview; index: number }) {
+  const currentSalesData = service.salesData;
 
   return (
     <motion.div
@@ -238,137 +39,46 @@ function MobileServiceCard({ service, index }: { service: Service; index: number
         WebkitBackdropFilter: 'blur(20px)'
       }}
     >
-      {/* Sales metrics strip */}
-      <div className="flex justify-between items-center p-3 bg-primary/5 border-b border-primary/10">
-        <div className="flex space-x-4">
-          {currentSalesData?.metrics.slice(0, 2).map((metric, metricIndex) => (
-            <div key={metricIndex} className="text-center">
-              <div className="text-sm font-bold text-secondary">
-                {metric.value}
-                <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
-              </div>
-              <div className="text-xs text-white/50">{metric.label}</div>
+      {/* Sales metrics strip - first metric left, second metric right */}
+      <div className="flex justify-between items-center px-6 py-3 bg-primary/5 border-b border-primary/10">
+        {currentSalesData.metrics.slice(0, 2).map((metric, metricIndex) => (
+          <div key={metricIndex} className="text-center">
+            <div className="text-sm font-bold text-secondary">
+              {metric.value}
+              <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
             </div>
-          ))}
-        </div>
-        <div className="flex items-center text-xs text-white/60">
-          <motion.div 
-            className="w-1.5 h-1.5 rounded-full bg-secondary mr-1"
-            animate={{
-              opacity: [0.5, 1, 0.5]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-          ROI: {currentSalesData?.timeToROI}
-        </div>
+            <div className="text-xs text-white/50">{metric.label}</div>
+          </div>
+        ))}
       </div>
 
       <div className="p-6">
-        <div 
-          className="flex items-center justify-between cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <h3 className="text-lg font-semibold text-white"
-              style={{
-                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
-              }}>
-            {service.title}
-          </h3>
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            className="text-light-gray"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
-        </div>
+        <h3 className="text-lg font-semibold text-white mb-3"
+            style={{
+              textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+            }}>
+          {service.title}
+        </h3>
 
-        <p className="text-light-gray mt-3 text-sm leading-relaxed">
-          {service.description}
+        <p className="text-light-gray text-sm leading-relaxed mb-6">
+          {service.shortDescription}
         </p>
 
-        {/* Cases link */}
-        <div className="mt-3 flex items-center justify-between">
-          <Link href={`/cases?filter=${service.id}`}>
-            <div className="flex items-center text-xs text-white/60 hover:text-secondary transition-colors duration-300">
-              <motion.div 
-                className="w-1.5 h-1.5 rounded-full bg-secondary mr-2"
-                animate={{
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              View Cases
-            </div>
+        {/* Single button aligned to the right */}
+        <div className="flex justify-end">
+          <Link href={`/services/${service.id}`} className="w-1/2">
+            <Button variant="secondary" size="sm" className="w-full shadow-neon-glow">
+              Explore Solution
+            </Button>
           </Link>
-          <div className="text-xs text-secondary font-semibold">
-            +{currentSalesData?.avgEfficiencyGain.split('-')[0]} efficiency
-          </div>
         </div>
-
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-4 pt-4 border-t border-primary/10">
-                {/* Simple Key Features */}
-                <h4 className="text-sm font-semibold text-white mb-3">Key Features:</h4>
-                <div className="space-y-2 mb-4">
-                  {service.features.slice(0, 4).map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-start">
-                      <motion.div 
-                        className="w-3 h-3 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-1 flex-shrink-0"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: featureIndex * 0.1 }}
-                        style={{
-                          background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
-                        }}
-                      >
-                        <div className="w-1 h-1 rounded-full bg-primary" />
-                      </motion.div>
-                      <span className="text-white/80 text-xs leading-relaxed">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="flex space-x-2">
-                  <Link href={`/services/${service.id}`} className="flex-1">
-                    <Button variant="primary" size="sm" className="w-full shadow-neon-glow hover:shadow-neon-glow-intense">
-                      Explore Solution
-                    </Button>
-                  </Link>
-                  <Link href="/contacts" className="flex-1">
-                    <div className="flex items-center justify-center text-secondary font-medium text-sm py-2 transition-all duration-300 hover:opacity-80">
-                      <span>Talk to the Team</span>
-                      <motion.div 
-                        className="w-2 h-2 rounded-full bg-secondary ml-2"
-                        animate={{
-                          scale: [1, 1.3, 1],
-                          opacity: [0.7, 1, 0.7]
-                        }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </motion.div>
   );
 }
 
 interface ServiceNavigationProps {
-  services: Service[];
+  services: ServicePreview[];
   activeIndex: number;
   onServiceClick: (index: number) => void;
   scrollProgress: number;
@@ -754,8 +464,8 @@ export default function ServicesPage() {
                             id: services[activeIndex].id,
                             label: services[activeIndex].title,
                             icon: services[activeIndex].icon as IconName,
-                            description: services[activeIndex].description,
-                            features: services[activeIndex].features,
+                            description: services[activeIndex].shortDescription,
+                            features: services[activeIndex].previewFeatures,
                             href: services[activeIndex].href
                           }}
                           isActive={true}

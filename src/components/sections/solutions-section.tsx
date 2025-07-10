@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getServicePreviews } from '@/lib/data/services';
  
 
 // Тип для таба решения
@@ -83,99 +84,19 @@ const serviceSolutions = {
   ]
 };
 
-// Данные о решениях по умолчанию
-const defaultSolutions: Solution[] = [
-  {
-    id: 'business-process',
-    label: 'Workflow Design & Automation',
-    icon: 'process',
-    description: 'Build smarter workflows, not workarounds. We automate core operations by syncing your tools, mapping logic, and removing manual effort — for faster, cleaner results.',
-    features: [
-      'Clear roadmap for implementation',
-      'End-to-end workflow automation',
-      'System integration & error-proof data flow',
-      'Custom dashboards for live insights',
-      'Smart validation & fail-safes'
-    ],
-    imageUrl: '/images/solutions/business-process.jpg',
-    href: '/services/business-process'
-  },
-  {
-    id: 'crm-integration',
-    label: 'CRM Integration',
-    icon: 'crm',
-    description: 'No more scattered data — we build your first real CRM and turn your operations into a unified ecosystem with full visibility, structure, and flow across tools, teams, and touchpoints.',
-    features: [
-      'Centralized CRM built from scratch — fully tailored to your workflows',
-      'Cross-platform consistency',
-      'Document management automation',
-      'Wide integration capabilities',
-      'Customizable insight dashboards'
-    ],
-    imageUrl: '/images/solutions/crm-integration.jpg',
-    href: '/services/crm-integration'
-  },
-  {
-    id: 'boxed-solutions',
-    label: 'Industry-Specific Boxed Solutions',
-    icon: 'industry',
-    description: 'Prebuilt for your industry. Tailored to your edge. Accelerate with ready-to-run automation kits designed for your field — and customized for your operations.',
-    features: [
-      'Pre-configured workflows for key sectors',
-      'Custom fields & data structure',
-      'Industry-specific integrations',
-      'Scalable & field-proven automations',
-      'Fast deployment'
-    ],
-    imageUrl: '/images/solutions/boxed-solutions.jpg',
-    href: '/services/boxed-solutions'
-  },
-  {
-    id: 'ai-solutions',
-    label: 'AI-Powered Solutions',
-    icon: 'ai',
-    description: 'Automate with intelligence. Operate with insight. Use AI to automate high-effort tasks, reveal patterns, and support decision-making with real-time insights.',
-    features: [
-      'AI-driven voice assistant',
-      'CRM-integrated assistant',
-      'Real-time conversation transcription',
-      'Scalable and customizable solutions',
-      'Quick and efficient deployment'
-    ],
-    imageUrl: '/images/solutions/ai-solutions.jpg',
-    href: '/services/ai-solutions'
-  },
-  {
-    id: 'documentation',
-    label: 'Automated Document Flow',
-    icon: 'document',
-    description: 'Documents that write themselves. Processes that follow through. We automate the full lifecycle of business documentation — from creation to compliance — with regulatory requirements.',
-    features: [
-      'Auto-generation from CRM templates',
-      'E-signature & approval flows',
-      'Smart forms & structured capture',
-      'Document version control',
-      'Regulatory compliance built-in'
-    ],
-    imageUrl: '/images/solutions/documentation.jpg',
-    href: '/services/documentation'
-  },
-  {
-    id: 'finance',
-    label: 'Finance Operations Automations',
-    icon: 'finance',
-    description: 'Streamline the flow of money. Stay in control, always. From invoicing to reconciliation — we connect and automate every part of your financial stack for speed, accuracy, and visibility.',
-    features: [
-      'Smart invoice generation',
-      'Real-time payment tracking & reconciliation',
-      'Financial dashboards & custom reports',
-      'Seamless accounting system integration',
-      'Multi-currency, multi-market, and multi-payment method support'
-    ],
-    imageUrl: '/images/solutions/finance.jpg',
-    href: '/services/finance'
-  }
-];
+// Данные о решениях из централизованного источника  
+const getDefaultSolutions = (): Solution[] => {
+  const servicePreviews = getServicePreviews();
+  return servicePreviews.map(service => ({
+    id: service.id,
+    label: service.title,
+    icon: service.icon as IconName,
+    description: service.shortDescription,
+    features: service.previewFeatures,
+    imageUrl: `/images/solutions/${service.id}.jpg`,
+    href: service.href
+  }));
+};
 
 // Sales metrics and value propositions data (копия из Services page)
 const salesData = {
@@ -585,29 +506,6 @@ export const SolutionContent = ({
           `,
         }}
       >
-        {/* Хаотичное анимированное свечение */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{ 
-            background: [
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.25) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.15) 0%, transparent 40%)`,
-              `radial-gradient(circle at 80% 20%, rgba(119, 71, 207, 0.25) 0%, transparent 40%),
-               radial-gradient(circle at 20% 80%, rgba(178, 75, 243, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.25) 0%, transparent 40%)`,
-              `radial-gradient(circle at 30% 70%, rgba(119, 71, 207, 0.3) 0%, transparent 40%),
-               radial-gradient(circle at 70% 30%, rgba(178, 75, 243, 0.25) 0%, transparent 40%),
-               radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.15) 0%, transparent 40%)`
-            ]
-          }}
-          transition={{ 
-            duration: 8, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            repeatType: "reverse"
-          }}
-        />
       </motion.div>
 
       {/* Основная карточка с двухколоночным макетом */}
@@ -841,7 +739,7 @@ export const SolutionContent = ({
 export function SolutionsSection({
   title = "Our Solutions",
   subtitle = "We offer smart automation that adapts and scales — for faster, \nclearer, more connected workflows. Explore our services.",
-  solutions = defaultSolutions,
+  solutions = getDefaultSolutions(),
   className,
   defaultSolutionId,
 }: SolutionsSectionProps) {
@@ -1024,7 +922,7 @@ export function SolutionsSection({
 
 // Компактная версия остается без изменений
 export function CompactSolutionsSection({
-  solutions = defaultSolutions.slice(0, 4),
+  solutions = getDefaultSolutions().slice(0, 4),
   className,
   title = "Our Solutions",
   viewAllHref = "/services"

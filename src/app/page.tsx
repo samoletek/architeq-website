@@ -107,7 +107,7 @@ export default function Home() {
           delay={0.2}
           waitForPrevious={true} // Координация с предыдущими секциями
         >
-          <TestimonialsSection variant="default" autoplaySpeed={4000} />
+          <TestimonialsSection variant="default" autoplay={true} autoplaySpeed={5000} />
         </SectionAnimation>
         
         {/* 

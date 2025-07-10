@@ -1,142 +1,30 @@
 import { generateServiceMetadata } from '@/lib/seo/service-metadata';
 import ServiceTemplate from '@/components/templates/service-template';
 import { getCaseStudyById } from '@/lib/data/case-studies';
+import { getServiceDetails } from '@/lib/data/services';
 
+// Получаем метаданные из централизованного источника
+const serviceDetails = getServiceDetails('documentation');
 export const metadata = generateServiceMetadata({
-  title: 'Documentation & Forms',
-  description: 'Automate document creation, processing, and management. Streamline form data collection and processing to reduce administrative burden and ensure compliance.',
-  keywords: ['document automation', 'form automation', 'document generation', 'electronic signatures', 'document management', 'web forms', 'form integration'],
+  title: serviceDetails?.seoTitle || 'Documentation & Forms',
+  description: serviceDetails?.seoDescription || 'Documentation automation services',
+  keywords: serviceDetails?.seoKeywords || ['documentation automation'],
   path: '/services/documentation'
 });
 
 export default function DocumentationPage() {
-  const benefits = [
-    {
-      title: "Time Savings",
-      description: "Reduce document creation and processing time by up to 90%, freeing your team for higher-value activities.",
-      icon: "clock"
-    },
-    {
-      title: "Error Reduction",
-      description: "Eliminate manual data entry errors that can lead to costly mistakes and compliance issues.",
-      icon: "shield"
-    },
-    {
-      title: "Improved Compliance",
-      description: "Ensure consistent document formatting and content that meets regulatory requirements.",
-      icon: "check"
-    },
-    {
-      title: "Enhanced Customer Experience",
-      description: "Provide a seamless, modern experience for customers submitting information and signing documents.",
-      icon: "user"
-    }
-  ];
+  // Получаем все данные из централизованного источника
+  const serviceDetails = getServiceDetails('documentation');
+  
+  if (!serviceDetails) {
+    throw new Error('Documentation service data not found');
+  }
 
-  const documentSolutions = [
-    {
-      title: "Automatic Document Generation",
-      description: "Create standardized documents automatically from templates using data from your CRM or other systems.",
-      benefits: [
-        "Eliminate manual document creation",
-        "Ensure consistency across all documents",
-        "Reduce errors in document content",
-        "Save significant time on document preparation"
-      ],
-      icon: "document",
-      caseId: "document-generation"
-    },
-    {
-      title: "Electronic Signatures Integration",
-      description: "Streamline your document signing process with seamless electronic signature integration directly from your CRM.",
-      benefits: [
-        "Accelerate document signing cycle",
-        "Track signing status in real time",
-        "Automatic reminders for pending signatures",
-        "Secure and legally compliant process"
-      ],
-      icon: "check",
-      caseId: "electronic-signatures"
-    },
-    {
-      title: "Web Forms with CRM Integration",
-      description: "Create customized web forms that automatically feed data directly into your CRM and other business systems.",
-      benefits: [
-        "Capture lead and client information without manual entry",
-        "Ensure data validation at point of entry",
-        "Automatically trigger workflows based on form submissions",
-        "Improve user experience with modern, responsive forms"
-      ],
-      icon: "workflow",
-      caseId: "web-forms-integration"
-    },
-    {
-      title: "Document Management Automation",
-      description: "Automate document organization, storage, version control, and access management across your organization.",
-      benefits: [
-        "Centralize document storage with intelligent organization",
-        "Implement version control and audit trails",
-        "Automate document retention and archiving",
-        "Control document access with role-based permissions"
-      ],
-      icon: "dashboard",
-      caseId: "monday-integration"
-    }
-  ];
+  // Данные для кейсов из централизованного источника
+  const caseStudies = serviceDetails.relatedCaseIds
+    .map(id => getCaseStudyById(id))
+    .filter(Boolean);
 
-  const processes = [
-    {
-      step: 1,
-      title: "Needs Assessment",
-      description: "We analyze your current document and form processes to identify inefficiencies, bottlenecks, and opportunities for automation."
-    },
-    {
-      step: 2,
-      title: "Solution Design",
-      description: "Our team designs a custom document and form automation solution that addresses your specific needs and integrates with your existing systems."
-    },
-    {
-      step: 3,
-      title: "Template Creation",
-      description: "We create customized document templates and form designs that match your branding and include all necessary fields and logic."
-    },
-    {
-      step: 4,
-      title: "Implementation & Integration",
-      description: "We implement the solution and integrate it with your CRM, electronic signature platforms, and other business systems."
-    },
-    {
-      step: 5,
-      title: "Testing & Training",
-      description: "We thoroughly test all components and provide comprehensive training to ensure your team can effectively use and manage the new system."
-    }
-  ];
-
-  // Данные для кейсов из центрального источника
-  const caseStudies = [
-    getCaseStudyById('document-generation'),
-    getCaseStudyById('electronic-signatures'),
-    getCaseStudyById('web-forms-integration')
-  ].filter(Boolean);
-
-  const faqs = [
-    {
-      question: "How secure are automated document solutions?",
-      answer: "Our document automation solutions implement industry-standard security measures, including encryption, secure access controls, and audit trails. We ensure compliance with relevant regulations such as GDPR and can implement additional security measures based on your specific requirements."
-    },
-    {
-      question: "Can I still customize documents after automation?",
-      answer: "Absolutely. Our document automation solutions allow for both automated generation and manual customization when needed. You can set up templates with fixed elements and variable sections that can be edited on a case-by-case basis."
-    },
-    {
-      question: "How long does implementation typically take?",
-      answer: "Implementation time varies based on the complexity of your documents and workflows. Simple document automation can be implemented in 2-3 weeks, while more complex solutions with multiple integrations might take 4-8 weeks. We will provide a detailed timeline during our initial consultation."
-    },
-    {
-      question: "Are electronic signatures legally binding?",
-      answer: "Yes, electronic signatures are legally binding in most countries under laws such as the ESIGN Act in the US and eIDAS in the EU. Our solutions use compliant e-signature technologies that meet legal requirements, including authentication, consent, and record retention."
-    }
-  ];
 
   const integrationSection = (
     <section className="py-20 bg-transparent">
@@ -303,39 +191,15 @@ export default function DocumentationPage() {
   return (
     <ServiceTemplate
       serviceId="documentation"
-      serviceTitle="Documentation & Forms"
-      serviceDescription="Automate document creation, processing, and management to reduce administrative burden, ensure compliance, and improve efficiency."
-      breadcrumbTitle="Documentation & Forms"
-      overview={{
-        title: "What Is Document & Form Automation?",
-        description: (
-          <>
-            <p className="mb-4">
-              Document and form automation is the process of using technology to streamline the creation, processing, management, and storage of business documents and forms.
-            </p>
-            <p className="mb-4">
-              By automating these processes, businesses can eliminate manual data entry, reduce errors, ensure compliance, and significantly improve efficiency across departments.
-            </p>
-            <p>
-              Our document and form automation solutions integrate seamlessly with your existing CRM and business systems to create a unified workflow that saves time and improves accuracy.
-            </p>
-          </>
-        ),
-        features: [
-          "Manual Docs Creation",
-          "Errors and Inconsistencies",
-          "Signing Delays",
-          "Compliance Requirements",
-          "Version Control",
-          "Data Security"
-        ],
-        featuresTitle: "Document Challenges"
-      }}
-      benefits={benefits}
-      features={documentSolutions}
-      processes={processes}
+      serviceTitle={serviceDetails.serviceTitle}
+      serviceDescription={serviceDetails.serviceDescription}
+      breadcrumbTitle={serviceDetails.breadcrumbTitle}
+      overview={serviceDetails.overview}
+      benefits={serviceDetails.benefits}
+      features={serviceDetails.features}
+      processes={serviceDetails.processes}
       caseStudies={caseStudies}
-      faqs={faqs}
+      faqs={serviceDetails.faqs}
       additionalSections={<>{integrationSection}{roiSection}</>}
     />
   );
