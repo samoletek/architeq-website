@@ -335,52 +335,25 @@ export default function Header({
           </div>
         </div>
 
-        {/* Обновленное мобильное меню - полноэкранное */}
+        {/* Мобильное меню - часть хедера */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <>
-              {/* Полноэкранный фон */}
-              <motion.div
-                className="md:hidden fixed inset-0 bg-[#0A0014] z-40"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-              
-              {/* Контент меню */}
-              <motion.div
-                className="md:hidden fixed inset-0 z-50 flex flex-col"
-                initial={{ opacity: 0, y: "-100%" }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: "-100%" }}
-                transition={{ 
-                  duration: 0.3
-                }}
-              >
-                {/* Верхняя панель с логотипом и кнопкой закрытия */}
-                <div className="flex items-center justify-between p-6 border-b border-white/10">
-                  <Link 
-                    href="/" 
-                    className="block"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <ArchiteqLogo size="small" />
-                  </Link>
-                  <button 
-                    className="text-white/60 hover:text-white p-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-label="Close menu"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-                
+            <motion.div
+              className="md:hidden absolute top-full left-0 right-0 bg-[#12071A]/95 border-t border-white/10 rounded-b-xl max-w-[1400px] mx-auto"
+              initial={{ height: 0 }}
+              animate={{ height: "100vh" }}
+              exit={{ height: 0 }}
+              transition={{ 
+                duration: 0.3,
+                ease: "easeInOut"
+              }}
+              style={{ overflow: "hidden" }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
                 {/* Навигационные ссылки */}
-                <nav className="flex-1 overflow-y-auto px-6 py-8">
-                  <div className="space-y-1">
+                {/* Навигационные ссылки */}
+                <nav className="px-6 py-8 flex flex-col items-end">
+                  <div className="space-y-1 text-right">
                     {navigation.map((item, index) => (
                       <motion.div
                         key={item.name}
@@ -430,7 +403,7 @@ export default function Header({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: navigation.length * 0.05 + 0.1 }}
-                    className="mt-12"
+                    className="mt-12 text-right"
                   >
                     <Link 
                       href={ctaButton.href} 
@@ -447,7 +420,6 @@ export default function Header({
                   </motion.div>
                 </nav>
               </motion.div>
-            </>
           )}
         </AnimatePresence>
         
@@ -518,6 +490,8 @@ export default function Header({
           </motion.div>
         )}
       </AnimatePresence>
+      
+      
     </motion.div>
   );
 }

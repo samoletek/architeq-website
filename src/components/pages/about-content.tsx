@@ -734,7 +734,6 @@ function ValuesSection() {
                     ? 'bg-primary text-black shadow-lg shadow-primary/30'
                     : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
                 }`}
-                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {value.title}
@@ -1343,15 +1342,17 @@ function AchievementsSection() {
               variants={statVariants}
               className="group"
             >
-              <div className="relative rounded-2xl p-8 text-center h-full transition-all duration-500 overflow-hidden
+              <div className={`relative rounded-2xl p-8 text-center h-full transition-all duration-500 overflow-hidden
                 bg-[linear-gradient(to_bottom,_#0A2A0A_0%,_#170A24_50%,_#12071A_100%)]
-                border border-secondary/20 hover:border-secondary/40 group-hover:transform group-hover:scale-105">
+                border border-secondary/20 ${isClient && !isMobile ? 'hover:border-secondary/40 group-hover:transform group-hover:scale-105' : ''}`}>
                 
                 {/* Animated counter glow */}
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100"
-                  transition={{ duration: 0.3 }}
-                />
+                {isClient && !isMobile && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100"
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
 
                 <div className="relative z-10">
                   <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">

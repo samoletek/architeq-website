@@ -15,7 +15,7 @@ export const ArchiteqLogo: React.FC<ArchiteqLogoProps> = ({
   
   // Используем стабильные классы для SSR
   const svgClasses = size === "small" 
-    ? "w-full h-full fill-white drop-shadow-[0_0_7px_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:fill-secondary group-hover:drop-shadow-[0_0_8px_#B0FF74]"
+    ? "w-full h-full fill-white drop-shadow-[0_0_7px_rgba(255,255,255,0.8)] transition-all duration-300 md:group-hover:fill-secondary md:group-hover:drop-shadow-[0_0_8px_#B0FF74]"
     : "w-full h-full fill-white";
     
   const finalClassName = `${containerSize} ${className || ''}`;
