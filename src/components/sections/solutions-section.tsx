@@ -8,6 +8,7 @@ import { Icon, IconName } from '@/components/ui/icons/icon';
 import { cn } from '@/lib/utils/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getServicePreviews } from '@/lib/data/services';
+import { useDeviceDetection } from '@/lib/utils/device-detection';
  
 
 // Тип для таба решения
@@ -204,7 +205,7 @@ const salesData = {
   }
 };
 
-// Мобильная карточка как на Services page
+// Простая мобильная карточка как на Services page
 function MobileServiceCard({ service, index }: { 
   service: {
     id: string;
@@ -216,7 +217,6 @@ function MobileServiceCard({ service, index }: {
   }; 
   index: number;
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const currentSalesData = salesData[service.id as keyof typeof salesData];
 
   return (
@@ -236,130 +236,39 @@ function MobileServiceCard({ service, index }: {
         WebkitBackdropFilter: 'blur(20px)'
       }}
     >
-      {/* Sales metrics strip */}
-      <div className="flex justify-between items-center p-3 bg-primary/5 border-b border-primary/10">
-        <div className="flex space-x-4">
-          {currentSalesData?.metrics.slice(0, 2).map((metric, metricIndex) => (
-            <div key={metricIndex} className="text-center">
-              <div className="text-sm font-bold text-secondary">
-                {metric.value}
-                <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
-              </div>
-              <div className="text-xs text-white/50">{metric.label}</div>
+      {/* Sales metrics strip - first metric left, second metric right */}
+      <div className="flex justify-between items-center px-6 py-3 bg-primary/5 border-b border-primary/10">
+        {currentSalesData?.metrics.slice(0, 2).map((metric, metricIndex) => (
+          <div key={metricIndex} className="text-center">
+            <div className="text-sm font-bold text-secondary">
+              {metric.value}
+              <span className="text-xs text-white/60 ml-1">{metric.unit}</span>
             </div>
-          ))}
-        </div>
-        <div className="flex items-center text-xs text-white/60">
-          <motion.div 
-            className="w-1.5 h-1.5 rounded-full bg-secondary mr-1"
-            animate={{
-              opacity: [0.5, 1, 0.5]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-          ROI: {currentSalesData?.timeToROI}
-        </div>
+            <div className="text-xs text-white/50">{metric.label}</div>
+          </div>
+        ))}
       </div>
 
       <div className="p-6">
-        <div 
-          className="flex items-center justify-between cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <h3 className="text-lg font-semibold text-white"
-              style={{
-                textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
-              }}>
-            {service.title}
-          </h3>
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            className="text-light-gray"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
-        </div>
+        <h3 className="text-lg font-semibold text-white mb-3"
+            style={{
+              textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(178,75,243,0.3)'
+            }}>
+          {service.title}
+        </h3>
 
-        <p className="text-light-gray mt-3 text-sm leading-relaxed">
+        <p className="text-light-gray text-sm leading-relaxed mb-6">
           {service.description}
         </p>
 
-        {/* Cases link */}
-        <div className="mt-3 flex items-center justify-between">
-          <Link href={`/cases?filter=${service.id}`}>
-            <div className="flex items-center text-xs text-white/60 hover:text-secondary transition-colors duration-300">
-              <motion.div 
-                className="w-1.5 h-1.5 rounded-full bg-secondary mr-2"
-                animate={{
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              View Cases
-            </div>
+        {/* Single button aligned to the right */}
+        <div className="flex justify-end">
+          <Link href={service.href || `/services/${service.id}`} className="w-1/2">
+            <Button variant="secondary" size="sm" className="w-full shadow-neon-glow">
+              Explore Solution
+            </Button>
           </Link>
-          <div className="text-xs text-secondary font-semibold">
-            +{currentSalesData?.avgEfficiencyGain.split('-')[0]} efficiency
-          </div>
         </div>
-
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-4 pt-4 border-t border-primary/10">
-                {/* Simple Key Features */}
-                <h4 className="text-sm font-semibold text-white mb-3">Key Features:</h4>
-                <div className="space-y-2 mb-4">
-                  {service.features.slice(0, 4).map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-start">
-                      <motion.div 
-                        className="w-3 h-3 rounded-full bg-primary/20 flex items-center justify-center mr-2 mt-1 flex-shrink-0"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: featureIndex * 0.1 }}
-                        style={{
-                          background: 'radial-gradient(circle, rgba(178,75,243,0.3) 0%, rgba(178,75,243,0.1) 100%)'
-                        }}
-                      >
-                        <div className="w-1 h-1 rounded-full bg-primary" />
-                      </motion.div>
-                      <span className="text-white/80 text-xs leading-relaxed">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="flex space-x-2">
-                  <Link href={service.href || `/services/${service.id}`} className="flex-1">
-                    <Button variant="primary" size="sm" className="w-full shadow-neon-glow hover:shadow-neon-glow-intense">
-                      Explore Solution
-                    </Button>
-                  </Link>
-                  <Link href="/contacts" className="flex-1">
-                    <div className="flex items-center justify-center text-secondary font-medium text-sm py-2 transition-all duration-300 hover:opacity-80">
-                      <span>Talk to the Team</span>
-                      <motion.div 
-                        className="w-2 h-2 rounded-full bg-secondary ml-2"
-                        animate={{
-                          scale: [1, 1.3, 1],
-                          opacity: [0.7, 1, 0.7]
-                        }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </motion.div>
   );
@@ -742,8 +651,10 @@ export function SolutionsSection({
   solutions = getDefaultSolutions(),
   className,
   defaultSolutionId,
+  variant = 'default'
 }: SolutionsSectionProps) {
-  const isHomepageMobile = false; // Убираем условный рендеринг для предотвращения гидратации
+  const { isMobile } = useDeviceDetection();
+  const isHomepageMobile = variant === 'homepage' && isMobile;
   
   // Состояние для отслеживания активного решения по индексу
   const [activeIndex, setActiveIndex] = useState<number>(
@@ -809,14 +720,15 @@ export function SolutionsSection({
 
   // Для homepage мобильной версии используем тот же компонент, что и на Services page
   if (isHomepageMobile) {
-    // Преобразуем Solution в Service для совместимости
-    const servicesData = solutions.map(solution => ({
-      id: solution.id,
-      title: solution.label,
-      description: solution.description,
-      features: solution.features,
-      icon: solution.icon,
-      href: solution.href
+    // Получаем данные из центрального источника для мобильной версии
+    const servicePreviews = getServicePreviews();
+    const servicesData = servicePreviews.map(service => ({
+      id: service.id,
+      title: service.title,
+      description: service.shortDescription,
+      features: service.previewFeatures,
+      icon: service.icon,
+      href: service.href
     }));
 
     return (
